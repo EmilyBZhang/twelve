@@ -32,7 +32,7 @@ const ColorSlider = styled.Slider.attrs({
 
 // TODO: Consider using one Level component which takes in a level number as a navigation param
 // TODO: Make a Level interface, subinterface of FunctionComponent
-const Level2: FunctionComponent<Level> = (props) => {
+const Level2: Level = (props) => {
   const [sliderVal, setSliderVal] = useState<number>(0);
   const [congratsMessage] = useState<string>(() => getCongratsMessage());
 

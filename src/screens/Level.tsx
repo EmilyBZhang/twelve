@@ -9,8 +9,6 @@ import { Screen, Level as LevelType } from '../utils/interfaces';
 import useSelectedIndices from '../hooks/useSelectedIndices';
 import playAudio from '../utils/playAudio';
 import colors from '../assets/colors';
-import ScreenContainer from '../components/ScreenContainer';
-import Coin from '../components/Coin';
 
 import LevelSelect from './levels/LevelSelect';
 import Level1 from './levels/Level1';
@@ -34,7 +32,7 @@ const heaven = require('../assets/sounds/heaven.mp3');
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window')
 
-// TODO: Consider using one Level component which takes in a level number as a navigation param
+// TODO: Fix Screen type
 const Level: Screen = (props) => {
   const [selectedIndices, toggleIndex, setSelectedIndices] = useSelectedIndices();
   const musicPlayback = useRef<any>(null);
@@ -73,7 +71,7 @@ const Level: Screen = (props) => {
   const levels = [
     LevelSelect,
     Level1,
-    Level2
+    Level2,
   ];
   if (levelNum == 0) {
     return (
@@ -84,7 +82,7 @@ const Level: Screen = (props) => {
     )
   }
 
-  const LevelX = levels[levelNum] as FunctionComponent<LevelType>;
+  const LevelX = levels[levelNum] as LevelType;
 
   return (
     <LevelX

@@ -1,14 +1,15 @@
 import { FunctionComponent, PropsWithChildren, ReactElement } from 'react';
-import { NavigationScreenOptions } from 'react-navigation';
+import { NavigationScreenProp } from 'react-navigation';
 
-export interface Screen<T = {}> extends FunctionComponent {
-  // Maybe fix? Getting implicit any warning for MainMenu
-  (props: PropsWithChildren<T> | {navigation: any}, context?: any): ReactElement | null;
-  // navigationOptions: ((...args: any[]) => NavigationScreenOptions)
+export interface ScreenProps {
+  navigation: NavigationScreenProp<any>;
 };
 
-export interface Level {
+export interface LevelProps {
   coinsFound: Set<number>;
   onCoinPress: (index: number) => void;
   onGoToLevel?: (index: number) => any;
 }
+
+export type Screen = FunctionComponent<ScreenProps>;
+export type Level = FunctionComponent<LevelProps>;

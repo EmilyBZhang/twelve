@@ -16,7 +16,7 @@ const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
 // TODO: Consider using one Level component which takes in a level number as a navigation param
 // TODO: Make a Level interface, subinterface of FunctionComponent
-const Level1: FunctionComponent<Level> = (props) => {
+const Level1: Level = (props) => {
   const [congratsMessage] = useState<string>(() => getCongratsMessage());
 
   const numCoinsFound = props.coinsFound.size;

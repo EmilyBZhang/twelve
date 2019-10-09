@@ -21,6 +21,7 @@ interface LevelSelectProps {
 const TitleText = styled.Text`
   font-size: 36px;
   font-weight: 900;
+  text-align: center;
   padding-vertical: 64px;
   color: ${colors.foreground};
 `;
@@ -50,10 +51,7 @@ const LevelBoxText = styled.Text`
 `;
 
 const levelListStyle = {
-  width: windowWidth,
-  flex: 1,
-  flexWrap: 'wrap' as 'wrap',
-  flexDirection: 'row' as 'row'
+  width: windowWidth
 };
 
 // TODO: Consider using one Level component which takes in a level number as a navigation param
@@ -64,11 +62,15 @@ const LevelSelect: FunctionComponent<LevelSelectProps> = (props) => {
 
   return (
     <ScreenContainer>
-      <TitleText>Select Level</TitleText>
       <FlatList
         data={levels}
+        numColumns={4}
+        horizontal={false}
         keyExtractor={(level) => String(level)}
         contentContainerStyle={levelListStyle}
+        ListHeaderComponent={
+          <TitleText>Select Level</TitleText>
+        }
         renderItem={({ item: level }) => (
           <LevelBoxContainer>
             <LevelBoxTouchable
