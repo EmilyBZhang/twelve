@@ -1,0 +1,33 @@
+{
+    "compilerOptions": {
+      "allowJs": false,
+      "resolveJsonModule": true,
+      "allowSyntheticDefaultImports": true,
+      "noFallthroughCasesInSwitch": true,
+      "experimentalDecorators": true,
+      "esModuleInterop": true,
+      "isolatedModules": false,
+      "jsx": "react-native",
+      "lib": [
+        "es6"
+      ],
+      "moduleResolution": "node",
+      "noEmit": true,
+      "strict": true,
+      "target": "esnext",
+      "baseUrl": "./",
+      "paths": {
+        "assets/*": ["./src/assets/*"],
+        "components/*": ["./src/components/*"],
+        "hooks/*": ["./src/hooks/*"],
+        "screens/*": ["./src/screens/*"],
+        "utils/*": ["./src/utils/*"],
+        "*": [
+          "./src/typings/*"
+        ]
+      }
+    },
+    "exclude": [
+      "node_modules"
+    ]
+  }
