@@ -8,7 +8,9 @@ export interface ScreenProps {
 export interface LevelProps {
   coinsFound: Set<number>;
   onCoinPress: (index: number) => void;
+  setCoinsFound: (indices: Set<number>) => void;
   onGoToLevel?: (index: number) => any;
+  noSound?: boolean;
 }
 
 export type Screen = FunctionComponent<ScreenProps>;

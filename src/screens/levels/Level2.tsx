@@ -1,8 +1,5 @@
-import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
-import { Animated, Dimensions, FlatList, StatusBar, View, Slider, Text } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-// import Slider from '@react-native-community/slider';
-import { Octicons } from '@expo/vector-icons';
+import React, { useState } from 'react';
+import { Button, Dimensions, View } from 'react-native';
 import styled from 'styled-components/native';
 
 import { Level } from '../../utils/interfaces';
@@ -30,14 +27,12 @@ const ColorSlider = styled.Slider.attrs({
   transform: scaleX(2) scaleY(2) rotate(90deg);
 `;
 
-// TODO: Consider using one Level component which takes in a level number as a navigation param
-// TODO: Make a Level interface, subinterface of FunctionComponent
 const Level2: Level = (props) => {
   const [sliderVal, setSliderVal] = useState<number>(0);
   const [congratsMessage] = useState<string>(() => getCongratsMessage());
 
   const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound == 12;
+  const twelve = numCoinsFound === 12;
 
   const coinSize = 40;
   const deltaX = windowWidth / 4;
@@ -50,7 +45,7 @@ const Level2: Level = (props) => {
     top: initY + deltaY * Math.floor(index / 3)
   }));
 
-  const hintText = sliderVal == 255 ? 'There they are!' : `Where'd they go?`;
+  const hintText = sliderVal === 255 ? 'There they are!' : `Where'd they go?`;
 
   return (
     <ScreenContainer color={`rgb(0, ${sliderVal}, 255)`}>
@@ -64,11 +59,20 @@ const Level2: Level = (props) => {
       <LevelText color={'white'}>
         {twelve ? congratsMessage : hintText}
       </LevelText>
+      {(twelve && props.onGoToLevel) && (
+        <Button
+          title='Next level!'
+          onPress={() => props.onGoToLevel!(3)}
+        />
+      )}
       {Array(12).fill(null).map((_, index: number) => (
-        <View style={{position: 'absolute', ...positions[index]}} key={String(index)}>
+        <View
+          key={String(index)}
+          style={{position: 'absolute', ...positions[index]}}
+        >
           <Coin
-            size={40}
-            hidden={sliderVal == 0}
+            size={coinSize}
+            hidden={sliderVal === 0}
             found={props.coinsFound.has(index)}
             onPress={() => props.onCoinPress(index)}
           />

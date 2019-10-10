@@ -50,7 +50,7 @@ const LevelCounter: FunctionComponent<LevelCounterProps> = (props) => {
         color={color}
         fontSize={fontSize}
       >
-        {props.count}
+        {(props.count >= 0) ? String(props.count) : '?'}
       </CounterText>
     </CounterContainer>
   );

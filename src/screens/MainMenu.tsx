@@ -13,9 +13,9 @@ import playAudio from '../utils/playAudio';
 import colors from '../assets/colors';
 import ScreenContainer from '../components/ScreenContainer';
 
-const { width, height } = Dimensions.get('window');
-const imageHeight = width * 81 / 790;
-const titleHeightInit = (height + imageHeight) / 2;
+const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
+const imageHeight = windowWidth * 81 / 790;
+const titleHeightInit = (windowHeight + imageHeight) / 2;
 const titleHeightEnd = imageHeight * 4;
 
 interface TitleContainerProps {
@@ -30,10 +30,8 @@ interface MenuButtonTextProps {
   playButton?: boolean;
 }
 
-const TitleContainer = styled(Animated.View).attrs((props: TitleContainerProps) => {
-  height: props.height
-})`
-  width: ${width}px;
+const TitleContainer = styled(Animated.View)`
+  width: ${windowWidth}px;
   justify-content: flex-end;
 `;
 
@@ -41,7 +39,7 @@ const TitleImage = styled.Image.attrs({
   source: require('../assets/images/twelve-padded-title.png'),
   resizeMode: 'contain'
 })`
-  width: ${width};
+  width: ${windowWidth};
   height: ${imageHeight};
 `;
 
@@ -55,7 +53,7 @@ const MenuButtons = styled(Animated.View)`
 const MenuButton = styled.TouchableHighlight.attrs({
   underlayColor: colors.foregroundPressed
 })`
-  width: ${width / 2};
+  width: ${windowWidth / 2};
   height: ${(props: MenuButtonProps) => props.playButton ? 60 : 40}px;
   padding: 8px;
   background-color: ${colors.foreground};
@@ -76,13 +74,17 @@ interface CornerButtonProps {
   right?: number;
 }
 
+const CornerButtons = styled(Animated.View)`
+  width: 100%;
+`;
+
 const CornerButton = styled.TouchableHighlight.attrs({
   underlayColor: colors.foregroundPressed
 })`
   background-color: ${colors.foreground};
   border: 1px solid ${colors.foreground};
   position: absolute;
-  ${(props: CornerButtonProps) => props.left != undefined ? (
+  ${(props: CornerButtonProps) => props.left !== undefined ? (
       `left: ${8 + props.left * 48}`
     ) : (
       `right: ${8 + props.right! * 48}`
@@ -108,6 +110,8 @@ const bgMusic = require('../assets/sounds/heatleybros.mp3');
 const MainMenu: Screen = (props) => {
   const [titleHeightAnim] = useState(new Animated.Value(titleHeightInit));
   const [menuOpacityAnim] = useState(new Animated.Value(0));
+  // TODO: Fix the corner buttons
+  const [cornerOpacityAnim] = useState(new Animated.Value(0));
 
   const musicPlayback = useRef<any>(null);
   const [mutedMusic, setMutedMusic] = useState(true); // Use AsyncStorage to save this preference
@@ -119,10 +123,20 @@ const MainMenu: Screen = (props) => {
         toValue: titleHeightEnd,
         duration: 2000,
       }),
-      Animated.timing(menuOpacityAnim, {
-        toValue: 1,
-        duration: 2000,
-      })
+      // TODO: Make corner buttons respond to cornerOpacityAnim
+      // Then change menuOpacityAnim duration to 1000
+      Animated.sequence([
+        Animated.timing(menuOpacityAnim, {
+          toValue: 1,
+          duration: 2000,
+          useNativeDriver: true
+        }),
+        Animated.timing(cornerOpacityAnim, {
+          toValue: 1,
+          duration: 1000,
+          useNativeDriver: true
+        }),
+      ]),
     ]).start();
     const options = {
       shouldPlay: true,

@@ -8,26 +8,15 @@ import { NavigationActions } from 'react-navigation';
 import { Screen, Level as LevelType } from '../utils/interfaces';
 import useSelectedIndices from '../hooks/useSelectedIndices';
 import playAudio from '../utils/playAudio';
+import playBell from '../utils/playBell';
 import colors from '../assets/colors';
 
 import LevelSelect from './levels/LevelSelect';
 import Level1 from './levels/Level1';
 import Level2 from './levels/Level2';
+import Level3 from './levels/Level3';
+import Level4 from './levels/Level4';
 
-const coinSounds = [
-  require(`../assets/sounds/bells/G4.mp3`),
-  require(`../assets/sounds/bells/Ab4.mp3`),
-  require(`../assets/sounds/bells/A4.mp3`),
-  require(`../assets/sounds/bells/Bb4.mp3`),
-  require(`../assets/sounds/bells/B4.mp3`),
-  require(`../assets/sounds/bells/C5.mp3`),
-  require(`../assets/sounds/bells/Db5.mp3`),
-  require(`../assets/sounds/bells/D5.mp3`),
-  require(`../assets/sounds/bells/Eb5.mp3`),
-  require(`../assets/sounds/bells/E5.mp3`),
-  require(`../assets/sounds/bells/F5.mp3`),
-  require(`../assets/sounds/bells/Gb5.mp3`)
-];
 const heaven = require('../assets/sounds/heaven.mp3');
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window')
@@ -38,7 +27,7 @@ const Level: Screen = (props) => {
   const musicPlayback = useRef<any>(null);
 
   const coinsFound = selectedIndices.size;
-  const twelve = coinsFound == 12;
+  const twelve = coinsFound === 12;
 
   useEffect(() => {
     if (twelve) {
@@ -53,8 +42,12 @@ const Level: Screen = (props) => {
   }, [twelve]);
 
   const handleCoinPress = (index: number) => {
+    playBell(coinsFound);
     toggleIndex(index);
-    playAudio(coinSounds[coinsFound]);
+  };
+
+  const handleSetCoinsFound = (indices: Set<number>) => {
+    setSelectedIndices(indices);
   };
   
   const handleNextLevel = (index: number) => {
@@ -72,8 +65,10 @@ const Level: Screen = (props) => {
     LevelSelect,
     Level1,
     Level2,
+    Level3,
+    Level4,
   ];
-  if (levelNum == 0) {
+  if (levelNum === 0) {
     return (
       <LevelSelect
         numLevels={levels.length - 1}
@@ -88,6 +83,7 @@ const Level: Screen = (props) => {
     <LevelX
       coinsFound={selectedIndices}
       onCoinPress={handleCoinPress}
+      setCoinsFound={handleSetCoinsFound}
       onGoToLevel={handleNextLevel}
     />
   );
