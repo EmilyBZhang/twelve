@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import { Text, View } from 'react-native';
 import styled from 'styled-components/native';
 
-import colors from '../assets/colors';
+import colors from 'assets/colors';
 
 interface LevelCounterProps {
   count: number;

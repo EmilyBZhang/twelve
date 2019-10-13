@@ -2,25 +2,22 @@
 // This should be done after user settings are stored and the useSettings hook is made
 
 import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
-import { Alert, Animated, Dimensions, StatusBar } from 'react-native';
+import { Alert, Animated, StatusBar } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
 import { NavigationActions } from 'react-navigation';
 
-import { Screen } from '../utils/interfaces';
-import playAudio from '../utils/playAudio';
-import colors from '../assets/colors';
-import ScreenContainer from '../components/ScreenContainer';
+import { Screen } from 'utils/interfaces';
+import getDimensions from 'utils/getDimensions';
+import playAudio from 'utils/playAudio';
+import colors from 'assets/colors';
+import ScreenContainer from 'components/ScreenContainer';
 
-const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
+const { width: windowWidth, height: windowHeight } = getDimensions();
 const imageHeight = windowWidth * 81 / 790;
 const titleHeightInit = (windowHeight + imageHeight) / 2;
 const titleHeightEnd = imageHeight * 4;
-
-interface TitleContainerProps {
-  height: Animated.Value;
-}
 
 interface MenuButtonProps {
   playButton?: boolean;
@@ -36,7 +33,7 @@ const TitleContainer = styled(Animated.View)`
 `;
 
 const TitleImage = styled.Image.attrs({
-  source: require('../assets/images/twelve-padded-title.png'),
+  source: require('assets/images/twelve-padded-title.png'),
   resizeMode: 'contain'
 })`
   width: ${windowWidth};
@@ -104,7 +101,7 @@ const goToLevel = (index: number) => NavigationActions.navigate({
   }
 });
 
-const bgMusic = require('../assets/sounds/heatleybros.mp3');
+const bgMusic = require('assets/sounds/dive.mp3');
 
 // TODO: fix props
 const MainMenu: Screen = (props) => {

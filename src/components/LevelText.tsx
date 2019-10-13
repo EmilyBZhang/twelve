@@ -2,12 +2,13 @@ import React, { FunctionComponent } from 'react';
 import { Text, View } from 'react-native';
 import styled from 'styled-components/native';
 
-import colors from '../assets/colors';
+import colors from 'assets/colors';
 
 interface LevelTextProps {
   children: string;
   color?: string;
   fontSize?: number;
+  style?: any;
 }
 
 const StyledText = styled.Text<LevelTextProps>`
@@ -24,6 +25,7 @@ const LevelText: FunctionComponent<LevelTextProps> = (props) => {
     <StyledText
       color={color}
       fontSize={fontSize}
+      style={props.style}
     >
       {props.children}
     </StyledText>

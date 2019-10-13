@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
-import { Button, Dimensions, View } from 'react-native';
+import { Button, View } from 'react-native';
 import styled from 'styled-components/native';
 
-import { Level } from '../../utils/interfaces';
-import getCongratsMessage from '../../utils/getCongratsMessage';
-import colors from '../../assets/colors';
-import ScreenContainer from '../../components/ScreenContainer';
-import Coin from '../../components/Coin';
-import LevelText from '../../components/LevelText';
-import LevelCounter from '../../components/LevelCounter';
-
-const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
+import { Level } from 'utils/interfaces';
+import coinPositions from 'utils/coinPositions';
+import getCongratsMessage from 'utils/getCongratsMessage';
+import colors from 'assets/colors';
+import LevelContainer from 'components/LevelContainer';
+import Coin from 'components/Coin';
+import LevelText from 'components/LevelText';
+import LevelCounter from 'components/LevelCounter';
 
 const ColorSlider = styled.Slider.attrs({
   minimumValue: 0,
@@ -22,7 +21,7 @@ const ColorSlider = styled.Slider.attrs({
   height: 10px;
   z-index: 1;
   position: absolute;
-  top: 100px;
+  top: 80px;
   right: -20px;
   transform: scaleX(2) scaleY(2) rotate(90deg);
 `;
@@ -34,21 +33,10 @@ const Level2: Level = (props) => {
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
 
-  const coinSize = 40;
-  const deltaX = windowWidth / 4;
-  const deltaY = windowHeight / 5;
-  const initX = deltaX - coinSize / 2;
-  const initY = deltaY - coinSize / 2;
-
-  const positions = Array(12).fill(null).map((_, index: number) => ({
-    left: initX + deltaX * (index % 3),
-    top: initY + deltaY * Math.floor(index / 3)
-  }));
-
   const hintText = sliderVal === 255 ? 'There they are!' : `Where'd they go?`;
 
   return (
-    <ScreenContainer color={`rgb(0, ${sliderVal}, 255)`}>
+    <LevelContainer color={`rgb(0, ${sliderVal}, 255)`}>
       <ColorSlider
         onValueChange={setSliderVal}
       />
@@ -59,26 +47,25 @@ const Level2: Level = (props) => {
       <LevelText color={'white'}>
         {twelve ? congratsMessage : hintText}
       </LevelText>
-      {(twelve && props.onGoToLevel) && (
+      {twelve && (
         <Button
           title='Next level!'
-          onPress={() => props.onGoToLevel!(3)}
+          onPress={() => props.onNextLevel()}
         />
       )}
       {Array(12).fill(null).map((_, index: number) => (
         <View
           key={String(index)}
-          style={{position: 'absolute', ...positions[index]}}
+          style={{position: 'absolute', ...coinPositions[index]}}
         >
           <Coin
-            size={coinSize}
             hidden={sliderVal === 0}
             found={props.coinsFound.has(index)}
             onPress={() => props.onCoinPress(index)}
           />
         </View>
       ))}
-    </ScreenContainer>
+    </LevelContainer>
   );
 };
 

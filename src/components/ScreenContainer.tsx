@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components/native';
 
-import colors from '../assets/colors';
+import colors from 'assets/colors';
 
 interface ScreenContainerProps {
   children?: any;

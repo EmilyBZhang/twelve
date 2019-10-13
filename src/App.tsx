@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { Animated, Dimensions, StatusBar, StyleSheet, View } from 'react-native';
+import { Animated, StatusBar, StyleSheet, View } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Octicons } from '@expo/vector-icons';
 import styled from 'styled-components/native';

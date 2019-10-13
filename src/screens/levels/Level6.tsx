@@ -10,11 +10,19 @@ import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
 
-const Level4: Level = (props) => {
-  const [congratsMessage] = useState<string>(() => getCongratsMessage());
-  const [redLight, setRedLight] = useState(false);
+const getNextIndex = (selectedIndices = new Set<number>()) => {
+  let tempIndex = Math.floor(Math.random() * (12 - selectedIndices.size));
+  for (let i = 0; i <= tempIndex; i++) {
+    if (selectedIndices.has(i)) tempIndex++;
+  }
+  return tempIndex;
+};
 
-  const hintMessage = useRef('Easy as pie');
+const Level6: Level = (props) => {
+  const [congratsMessage] = useState<string>(() => getCongratsMessage());
+  const [visible, setVisible] = useState(false);
+  const [showNext, setShowNext] = useState(true);
+  const [nextIndex, setNextIndex] = useState(getNextIndex);
 
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
@@ -26,25 +34,32 @@ const Level4: Level = (props) => {
       blinkCoins.current = null;
     } else if (!blinkCoins.current) {
       blinkCoins.current = setInterval(() => {
-        hintMessage.current = 'Oh wait...';
-        setRedLight(state => !state);
+        setVisible(state => !state);
+        setShowNext(true);
       }, 1000);
     }
   }, [twelve]);
 
   const handleCoinPress = (index: number) => {
-    if (redLight) {
-      props.setCoinsFound(new Set<number>());
-    } else {
+    setShowNext(false);
+    if (index === nextIndex) {
+      let newIndices = new Set<number>(props.coinsFound);
+      newIndices.add(index);
+      setNextIndex(() => getNextIndex(newIndices));
       props.onCoinPress(index);
+    } else {
+      setNextIndex(() => getNextIndex());
+      props.setCoinsFound(new Set<number>());
     }
   };
 
   return (
     <LevelContainer>
-      <LevelCounter count={numCoinsFound} />
+      {((visible && showNext) || twelve) && (
+        <LevelCounter count={numCoinsFound} />
+      )}
       <LevelText>
-        {twelve ? congratsMessage : hintMessage.current}
+        {twelve ? congratsMessage : '...?'}
       </LevelText>
       {twelve && (
         <Button
@@ -61,8 +76,9 @@ const Level4: Level = (props) => {
           }}
         >
           <Coin
-            color={redLight ? colors.badCoin : colors.coin}
-            found={props.coinsFound.has(index)}
+            color={colors.selectCoin}
+            found={twelve}
+            hidden={!showNext || !visible || (index !== nextIndex && !props.coinsFound.has(index))}
             onPress={() => handleCoinPress(index)}
           />
         </Animated.View>
@@ -71,4 +87,4 @@ const Level4: Level = (props) => {
   );
 };
 
-export default Level4;
+export default Level6;

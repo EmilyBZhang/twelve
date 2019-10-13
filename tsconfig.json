@@ -21,13 +21,12 @@
         "components/*": ["./src/components/*"],
         "hooks/*": ["./src/hooks/*"],
         "screens/*": ["./src/screens/*"],
-        "utils/*": ["./src/utils/*"],
-        "*": [
-          "./src/typings/*"
-        ]
+        "utils/*": ["./src/utils/*"]
+        // ,"*": ["./src/typings/*"]
       }
     },
     "exclude": [
       "node_modules"
     ]
   }
+  

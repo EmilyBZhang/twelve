@@ -1,17 +1,13 @@
 import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
-import { Animated, Button, Dimensions, FlatList, StatusBar, View, Text } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import { AsyncStorage, FlatList } from 'react-native';
 import { Octicons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
 
-import { Level } from '../../utils/interfaces';
-import colors from '../../assets/colors';
-import ScreenContainer from '../../components/ScreenContainer';
-import Coin from '../../components/Coin';
-import LevelText from '../../components/LevelText';
-import LevelCounter from '../../components/LevelCounter';
+import { getLevelDimensions } from 'utils/getDimensions';
+import colors from 'assets/colors';
+import ScreenContainer from 'components/ScreenContainer';
 
-const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
+const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 
 interface LevelSelectProps {
   numLevels: number;
@@ -26,7 +22,7 @@ const TitleText = styled.Text`
   color: ${colors.foreground};
 `;
 
-const levelBoxSize = windowWidth / 5;
+const levelBoxSize = levelWidth / 5;
 const levelBoxMargin = levelBoxSize / 5;
 
 const LevelBoxContainer = styled.View`
@@ -51,11 +47,9 @@ const LevelBoxText = styled.Text`
 `;
 
 const levelListStyle = {
-  width: windowWidth
+  width: levelWidth
 };
 
-// TODO: Consider using one Level component which takes in a level number as a navigation param
-// TODO: Make a Level interface, subinterface of FunctionComponent
 const LevelSelect: FunctionComponent<LevelSelectProps> = (props) => {
   const levels = Array(props.numLevels).fill(null)
     .map((_, index: number) => index + 1);

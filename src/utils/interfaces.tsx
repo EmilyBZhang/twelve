@@ -9,7 +9,7 @@ export interface LevelProps {
   coinsFound: Set<number>;
   onCoinPress: (index: number) => void;
   setCoinsFound: (indices: Set<number>) => void;
-  onGoToLevel?: (index: number) => any;
+  onNextLevel: () => any;
   noSound?: boolean;
 }
 

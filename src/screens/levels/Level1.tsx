@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import { Button, Dimensions, View } from 'react-native';
+import { Button, View } from 'react-native';
 
-import { Level } from '../../utils/interfaces';
-import getCongratsMessage from '../../utils/getCongratsMessage';
-import ScreenContainer from '../../components/ScreenContainer';
-import Coin from '../../components/Coin';
-import LevelText from '../../components/LevelText';
-import LevelCounter from '../../components/LevelCounter';
-
-const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
+import { Level } from 'utils/interfaces';
+import coinPositions from 'utils/coinPositions';
+import getCongratsMessage from 'utils/getCongratsMessage';
+import LevelContainer from 'components/LevelContainer';
+import Coin from 'components/Coin';
+import LevelText from 'components/LevelText';
+import LevelCounter from 'components/LevelCounter';
 
 const Level1: Level = (props) => {
   const [congratsMessage] = useState<string>(() => getCongratsMessage());
@@ -16,39 +15,27 @@ const Level1: Level = (props) => {
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
 
-  const coinSize = 40;
-  const deltaX = windowWidth / 4;
-  const deltaY = windowHeight / 5;
-  const initX = deltaX - coinSize / 2;
-  const initY = deltaY - coinSize / 2;
-
-  const positions = Array(12).fill(null).map((_, index: number) => ({
-    left: initX + deltaX * (index % 3),
-    top: initY + deltaY * Math.floor(index / 3)
-  }));
-
   return (
-    <ScreenContainer>
+    <LevelContainer>
       <LevelCounter count={numCoinsFound} />
       <LevelText>
         {twelve ? congratsMessage : 'twelve'}
       </LevelText>
-      {(twelve && props.onGoToLevel) && (
+      {twelve && (
         <Button
           title='Next level!'
-          onPress={() => props.onGoToLevel!(2)}
+          onPress={() => props.onNextLevel()}
         />
       )}
       {Array(12).fill(null).map((_, index: number) => (
-        <View style={{position: 'absolute', ...positions[index]}} key={String(index)}>
+        <View style={{position: 'absolute', ...coinPositions[index]}} key={String(index)}>
           <Coin
-            size={coinSize}
             found={props.coinsFound.has(index)}
             onPress={() => props.onCoinPress(index)}
           />
         </View>
       ))}
-    </ScreenContainer>
+    </LevelContainer>
   );
 };
 
