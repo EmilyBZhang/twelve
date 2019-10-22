@@ -1,17 +1,20 @@
 import React, { FunctionComponent, useState, useEffect, useRef } from 'react';
-import { Button, View } from 'react-native';
+import { Button, FlatList } from 'react-native';
 import styled from 'styled-components/native';
 
 import { LevelProps } from 'utils/interfaces';
 import { getLevelDimensions } from 'utils/getDimensions';
 import useCongratsMessage from 'hooks/useCongratsMessage';
 import colors, { CoinColor } from 'assets/colors';
+import styles from 'assets/styles';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
+
+const coinSize = styles.coinSize * 2;
 
 interface SimonSaysProps extends LevelProps {
   simonDoesNotSay?: boolean;
@@ -29,11 +32,24 @@ const ColorScreen = styled.View<ColorScreenProps>`
   ${props => props.border && 'border: 4px solid black;'}
 `;
 
+const coinMargin = styles.coinSize / 4;
+
+const CoinContainer = styled.View`
+  margin: ${coinMargin}px;
+`;
+
+const coinListSize = 2 * (coinSize + coinMargin * 2);
+
+const CoinListContainer = styled.View`
+  width: ${coinListSize}px;
+  height: ${coinListSize}px;
+`;
+
 const coinColors = [
-  colors.coin,
+  colors.badCoin,
   colors.orderedCoin,
   colors.selectCoin,
-  colors.badCoin
+  colors.coin,
 ];
 
 const generateColorOrder = () => {
@@ -133,15 +149,35 @@ const SimonSays: FunctionComponent<SimonSaysProps> = (props) => {
           color={colorIndex < 0 ? null : colorOrder[colorIndex]}
           border={colorIndex >= 0 && negateOrder[colorIndex]}
         />
-        {coinColors.map((coinColor, index: number) => (
+        <CoinListContainer>
+          <FlatList
+            data={coinColors}
+            extraData={[blinkingColors, numCoinsFound]}
+            numColumns={2}
+            keyExtractor={(_, index) => String(index)}
+            renderItem={({ item: coinColor, index }) => (
+              <CoinContainer>
+                <Coin
+                  hidden={blinkingColors}
+                  disabled={blinkingColors}
+                  size={coinSize}
+                  color={coinColor}
+                  onPress={() => handleCoinPress(index)}
+                />
+              </CoinContainer>
+            )}
+          />
+        </CoinListContainer>
+        {/* {coinColors.map((coinColor, index: number) => (
           <Coin
             key={String(index)}
             hidden={blinkingColors}
             disabled={blinkingColors}
+            size={coinSize}
             color={coinColor}
             onPress={() => handleCoinPress(index)}
           />
-        ))}
+        ))} */}
       </>)}
     </LevelContainer>
   );

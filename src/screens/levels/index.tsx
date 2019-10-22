@@ -8,13 +8,14 @@ import LevelCatchCoins from './LevelCatchCoins';
 import LevelRedLight from './LevelRedLight';
 import LevelWindow from './LevelWindow';
 import LevelSimonSays from './LevelSimonSays';
-import LevelSimonDoesNotSay from './LevelSimonDoesNotSay';
 import LevelArrows from './LevelArrows';
-import LevelClock from './LevelClock';
+import LevelFloatingPoint from './LevelFloatingPoint';
 import LevelNewcomerCoin from './LevelNewcomerCoin';
+import LevelClock from './LevelClock';
+import LevelMouseMaze from './LevelMouseMaze';
+import LevelSimonDoesNotSay from './LevelSimonDoesNotSay';
 import LevelPiano from './LevelPiano';
 import LevelBalloon from './LevelBalloon';
-import LevelFloatingPoint from './LevelFloatingPoint';
 
 export default [
   LevelSelect,
@@ -27,6 +28,7 @@ export default [
   LevelArrows,
   LevelFloatingPoint,
   LevelNewcomerCoin,
+  LevelMouseMaze,
   LevelClock,
   LevelSimonDoesNotSay,
   LevelPiano,
