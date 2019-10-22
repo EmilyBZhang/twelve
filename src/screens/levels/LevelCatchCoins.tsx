@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Animated, Button, View } from 'react-native';
+import { Animated, Button, Easing, View } from 'react-native';
 
 import { Level } from 'utils/interfaces';
 import { getLevelDimensions } from 'utils/getDimensions';
-import getCongratsMessage from 'utils/getCongratsMessage';
+import useCongratsMessage from 'hooks/useCongratsMessage';
 import styles from 'assets/styles';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
@@ -15,14 +15,16 @@ const deltaX = levelWidth / 3;
 const deltaY = levelHeight / 5;
 const initY = deltaY - styles.coinSize / 2;
 
-const Level3: Level = (props) => {
-  const [congratsMessage] = useState<string>(() => getCongratsMessage());
+const LevelCatchCoins: Level = (props) => {
   const [coinAnim] = useState(new Animated.Value(-levelWidth));
+
+  const congratsMessage = useCongratsMessage();
 
   useEffect(() => {
     Animated.loop(
       Animated.timing(coinAnim, {
         toValue: levelWidth,
+        easing: Easing.linear,
         duration: 10000,
       })
     ).start();
@@ -31,7 +33,7 @@ const Level3: Level = (props) => {
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
 
-  const positions = Array(12).fill(null).map((_, index: number) => {
+  const coinPositions = Array.from(Array(12), (_, index: number) => {
     const rowIndex = Math.floor(index / 3);
     const xVal = Animated.add(coinAnim, (deltaX * (index % 3)));
     const xProp = (rowIndex % 2 === 0) ? {left: xVal} : {right: xVal};
@@ -49,12 +51,15 @@ const Level3: Level = (props) => {
       </LevelText>
       {twelve && (
         <Button
-          title='Next level!'
+          title={'Next level!'}
           onPress={() => props.onNextLevel()}
         />
       )}
-      {Array(12).fill(null).map((_, index: number) => (
-        <Animated.View style={{position: 'absolute', ...positions[index]}} key={String(index)}>
+      {coinPositions.map((coinPosition, index: number) => (
+        <Animated.View
+          key={String(index)}
+          style={{position: 'absolute', ...coinPosition}}
+        >
           <Coin
             found={props.coinsFound.has(index)}
             onPress={() => props.onCoinPress(index)}
@@ -65,4 +70,4 @@ const Level3: Level = (props) => {
   );
 };
 
-export default Level3;
+export default LevelCatchCoins;

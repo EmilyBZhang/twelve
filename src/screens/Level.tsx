@@ -1,7 +1,7 @@
-// TODO: change the prop for level to be going to the next level instead
+// TODO: See if other things could useCallback/useMemo to optimize renders of memo components
 
-import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
-import { Alert, Animated, AsyncStorage, FlatList, StatusBar, View, Text } from 'react-native';
+import React, { FunctionComponent, useCallback, useEffect, useRef, useState } from 'react';
+import { Alert, AsyncStorage, FlatList } from 'react-native';
 import { Octicons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
 import { NavigationActions } from 'react-navigation';
@@ -13,19 +13,15 @@ import { playCoinSound } from 'utils/playPitch';
 import colors from 'assets/colors';
 
 import LevelNav from 'components/LevelNav';
-import LevelSelect from './levels/LevelSelect';
-import Level1 from './levels/Level1';
-import Level2 from './levels/Level2';
-import Level3 from './levels/Level3';
-import Level4 from './levels/Level4';
-import Level5 from './levels/Level5';
-import Level6 from './levels/Level6';
+import levels from './levels';
+
+const LevelSelect = levels[0];
 
 const heaven = require('assets/sounds/heaven.mp3');
 
-// TODO: Fix Screen type
 const Level: Screen = (props) => {
   const [selectedIndices, toggleIndex, setSelectedIndices] = useSelectedIndices();
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const musicPlayback = useRef<any>(null);
 
   const coinsFound = selectedIndices.size;
@@ -62,57 +58,53 @@ const Level: Screen = (props) => {
     }));
   };
 
-  const goToMainMenu = () => {
+  const goToMainMenu = useCallback(() => {
     props.navigation.dispatch(NavigationActions.navigate({
       routeName: 'MainMenu'
     }));
+  }, []);
+
+  const goToLevelSelect = useCallback(() => goToLevel(0), []);
+
+  let levelNum = props.navigation.getParam('level') || 0;
+  if (levelNum >= levels.length) levelNum = 0;
+
+  const handleNextLevel = useCallback(
+    () => goToLevel(levelNum + 1)
+  , [levelNum]);
+
+  const handleToggleSettings = useCallback(
+    () => setSettingsOpen(state => !state)
+  , []);
+
+  const levelNavProps = {
+    settingsOpen,
+    onBack: (levelNum === 0) ? goToMainMenu : goToLevelSelect,
+    onToggleSettings: handleToggleSettings,
+    onNextLevel: handleNextLevel
   };
 
-  const handleNextLevel = () => {
-    goToLevel(levelNum + 1);
-  };
-
-  const levelNum = props.navigation.getParam('level') || 0;
-  const levels = [
-    LevelSelect,
-    Level1,
-    Level2,
-    Level3,
-    Level4,
-    Level5,
-    Level6
-  ];
-  if (levelNum === 0 || levelNum >= levels.length) {
-    return (
-      <>
-        <LevelNav
-          onBack={goToMainMenu}
-          onOpenSettings={() => Alert.alert(String(`Settings don't work yet, dawg`))}
-        />
-        <LevelSelect
-          numLevels={levels.length - 1}
-          onGoToLevel={goToLevel}
-        />
-      </>
-    );
+  if (levelNum === 0) {
+    return (<>
+      <LevelNav {...levelNavProps} />
+      <LevelSelect
+        numLevels={levels.length - 1}
+        onGoToLevel={goToLevel}
+      />
+    </>);
   }
 
   const LevelX = levels[levelNum] as LevelType;
 
-  return (
-    <>
-      <LevelNav
-        onBack={() => goToLevel(0)}
-        onOpenSettings={() => Alert.alert(String(`Settings don't work yet, dawg, even if you're on level ${levelNum}`))}
-      />
-      <LevelX
-        coinsFound={selectedIndices}
-        onCoinPress={handleCoinPress}
-        setCoinsFound={handleSetCoinsFound}
-        onNextLevel={handleNextLevel}
-      />
-    </>
-  );
+  return (<>
+    <LevelNav {...levelNavProps} />
+    <LevelX
+      coinsFound={selectedIndices}
+      onCoinPress={handleCoinPress}
+      setCoinsFound={handleSetCoinsFound}
+      onNextLevel={handleNextLevel}
+    />
+  </>);
 };
 
 export default Level;

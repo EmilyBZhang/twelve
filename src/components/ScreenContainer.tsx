@@ -1,12 +1,16 @@
-import React, { FunctionComponent } from 'react';
+// TODO: Consider moving LinearGradient to LevelContainer to capture the top bar
+
+import React, { FunctionComponent, memo } from 'react';
 import styled from 'styled-components/native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import colors from 'assets/colors';
 
-interface ScreenContainerProps {
+export interface ScreenContainerProps {
   children?: any;
   color?: string;
   style?: any;
+  gradientColors?: Array<string>;
 }
 
 const Container = styled.View<ScreenContainerProps>`
@@ -16,9 +20,35 @@ const Container = styled.View<ScreenContainerProps>`
   align-items: center;
 `
 
+const GradientContainer = styled(LinearGradient)`
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+`;
+
 const ScreenContainer: FunctionComponent<ScreenContainerProps> = (props) => {
-  const color = props.color || colors.background;
-  return <Container color={color} style={props.style}>{props.children}</Container>;
+  let color = props.color || colors.background;
+  let children = props.children;
+  if (props.gradientColors) {
+    color = 'transparent';
+    children = (
+      <GradientContainer
+        colors={props.gradientColors}
+        style={props.style}
+      >
+        {props.children}
+      </GradientContainer>
+    );
+  }
+  return (
+    <Container
+      color={color}
+      style={props.style}
+    >
+      {children}
+    </Container>
+  );
 }
 
-export default ScreenContainer;
+export default memo(ScreenContainer);

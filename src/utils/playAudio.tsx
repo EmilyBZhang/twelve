@@ -1,4 +1,5 @@
 // TODO: Consider https://github.com/expo/expo/issues/146 (comment by gkufera) or webview
+// Also consider preloading all the audio and then resetting their positions back to 0, as per https://forums.expo.io/t/laggy-audio-on-multiple-plays/3169
 
 import { Audio } from 'expo-av';
 

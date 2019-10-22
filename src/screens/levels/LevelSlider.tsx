@@ -4,13 +4,14 @@ import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
 import coinPositions from 'utils/coinPositions';
-import getCongratsMessage from 'utils/getCongratsMessage';
+import useCongratsMessage from 'hooks/useCongratsMessage';
 import colors from 'assets/colors';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
 
+// TODO: Change absolute dimensions to be relative to screen size
 const ColorSlider = styled.Slider.attrs({
   minimumValue: 0,
   maximumValue: 255,
@@ -26,9 +27,9 @@ const ColorSlider = styled.Slider.attrs({
   transform: scaleX(2) scaleY(2) rotate(90deg);
 `;
 
-const Level2: Level = (props) => {
+const LevelSlider: Level = (props) => {
   const [sliderVal, setSliderVal] = useState<number>(0);
-  const [congratsMessage] = useState<string>(() => getCongratsMessage());
+  const congratsMessage = useCongratsMessage();
 
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
@@ -49,14 +50,14 @@ const Level2: Level = (props) => {
       </LevelText>
       {twelve && (
         <Button
-          title='Next level!'
+          title={'Next level!'}
           onPress={() => props.onNextLevel()}
         />
       )}
-      {Array(12).fill(null).map((_, index: number) => (
+      {coinPositions.map((coinPosition, index: number) => (
         <View
           key={String(index)}
-          style={{position: 'absolute', ...coinPositions[index]}}
+          style={{position: 'absolute', ...coinPosition}}
         >
           <Coin
             hidden={sliderVal === 0}
@@ -69,4 +70,4 @@ const Level2: Level = (props) => {
   );
 };
 
-export default Level2;
+export default LevelSlider;

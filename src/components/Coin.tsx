@@ -1,45 +1,58 @@
-import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
-import { Animated, StatusBar, StyleSheet, View, Text } from 'react-native';
+import React, { FunctionComponent, memo } from 'react';
+import { Text } from 'react-native';
 import styled from 'styled-components/native';
 
-import colors from 'assets/colors';
+import colors, { CoinColor, coinUnderlayColors } from 'assets/colors';
+import styles from 'assets/styles';
 
-interface CoinProps {
+export interface CoinProps {
   onPress: () => any;
   size?: number;
-  color?: string;
+  color?: CoinColor;
   disabled?: boolean;
   hidden?: boolean;
   found?: boolean;
+  label?: string;
+  children?: any;
 }
+export type CoinType = FunctionComponent<CoinProps>;
 
 const CoinTouchable = styled.TouchableHighlight<CoinProps>`
   width: ${props => props.size}px;
   height: ${props => props.size}px;
-  background-color: ${props => props.hidden || props.found ? 'transparent' : props.color};
+  background-color: ${props => (props.hidden || props.found) ? 'transparent' : props.color};
   border-radius: ${props => props.size! / 2}px;
+  justify-content: center;
+  align-items: center;
   ${props => props.found && 'display: none;'}
 `;
 
-const Coin: FunctionComponent<CoinProps> = (props) => {
-  const size = props.size ? props.size : 40;
-  const color = props.color ? props.color : colors.coin;
+// TODO: Consider removing label prop
+const Coin: CoinType = (props) => {
+  const {
+    size = styles.coinSize,
+    color = colors.coin,
+    onPress,
+    found,
+    hidden,
+    disabled,
+    children,
+    label
+  } = props;
 
-  const handleCoinPress = () => {
-    props.onPress();
-  }
   return (
     <CoinTouchable
       size={size}
       color={color}
-      onPress={props.onPress}
-      found={props.found}
-      hidden={props.hidden}
-      disabled={props.disabled || props.found}
+      onPress={onPress}
+      found={found}
+      hidden={hidden}
+      disabled={disabled || found}
+      underlayColor={coinUnderlayColors[color]}
     >
-      <Text></Text>
+      {children || <Text>{label}</Text>}
     </CoinTouchable>
   );
 }
 
-export default Coin;
+export default memo(Coin);

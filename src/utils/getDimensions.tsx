@@ -8,8 +8,12 @@ export const getDimensions = (level = false) => {
   return { width, height };
 };
 
+export const getFullDimensions = () => {
+  return Dimensions.get('window');
+};
+
 export const getLevelDimensions = () => {
   return getDimensions(true);
-}
+};
 
 export default getDimensions;

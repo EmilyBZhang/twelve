@@ -7,7 +7,7 @@ const deltaY = levelHeight / 5;
 const initX = deltaX - styles.coinSize / 2;
 const initY = deltaY - styles.coinSize / 2;
 
-export const positions4x3 = Array(12).fill(null).map((_, index: number) => ({
+export const positions4x3 = Array.from(Array(12), (_, index: number) => ({
   left: initX + deltaX * (index % 3),
   top: initY + deltaY * Math.floor(index / 3)
 }));

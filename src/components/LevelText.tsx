@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 import { Text, View } from 'react-native';
 import styled from 'styled-components/native';
 
@@ -12,10 +12,11 @@ interface LevelTextProps {
 }
 
 const StyledText = styled.Text<LevelTextProps>`
-  font-size: 32px;
-  font-weight: bold;
+  width: 100%;
+  text-align: center;
   color: ${props => props.color};
   font-size: ${props => props.fontSize}px;
+  font-weight: bold;
 `;
 
 const LevelText: FunctionComponent<LevelTextProps> = (props) => {
@@ -32,4 +33,4 @@ const LevelText: FunctionComponent<LevelTextProps> = (props) => {
   );
 };
 
-export default LevelText;
+export default memo(LevelText);

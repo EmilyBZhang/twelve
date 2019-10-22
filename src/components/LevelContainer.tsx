@@ -1,20 +1,15 @@
-// TODO: Make a useDimension hook or util to compensate for the adjusted screen height
-
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 import { Text } from 'react-native';
 import styled from 'styled-components/native';
 
 import colors from 'assets/colors';
 import styles from 'assets/styles';
-import ScreenContainer from 'components/ScreenContainer';
+import ScreenContainer, { ScreenContainerProps } from 'components/ScreenContainer';
 import getDimensions from 'utils/getDimensions';
 
 const { width: windowWidth, height: windowHeight } = getDimensions();
 
-interface LevelContainerProps {
-  children?: any;
-  color?: string;
-  style?: any;
+interface LevelContainerProps extends ScreenContainerProps {
 }
 
 const Buffer = styled.View<LevelContainerProps>`
@@ -24,15 +19,17 @@ const Buffer = styled.View<LevelContainerProps>`
 `
 
 const LevelContainer: FunctionComponent<LevelContainerProps> = (props) => {
-  const color = props.color || colors.background;
-  return (
-    <>
-      <Buffer color={color}></Buffer>
-      <ScreenContainer color={props.color} style={props.style}>
-        {props.children}
-      </ScreenContainer>
-    </>
-  );
+  const { color = colors.background, gradientColors, style, children } = props;
+  return (<>
+    <Buffer color={color}></Buffer>
+    <ScreenContainer
+      color={props.color}
+      gradientColors={gradientColors}
+      style={style}
+    >
+      {children}
+    </ScreenContainer>
+  </>);
 }
 
-export default LevelContainer;
+export default memo(LevelContainer);

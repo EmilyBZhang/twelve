@@ -2,15 +2,16 @@
 // This should be done after user settings are stored and the useSettings hook is made
 
 import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
-import { Alert, Animated, StatusBar } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import { Alert, AsyncStorage, Animated } from 'react-native';
 import { MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
 import { NavigationActions } from 'react-navigation';
 
+import { setSetting, getSetting } from 'utils/settings';
 import { Screen } from 'utils/interfaces';
 import getDimensions from 'utils/getDimensions';
 import playAudio from 'utils/playAudio';
+// import useSettings from 'hooks/useSettings';
 import colors from 'assets/colors';
 import ScreenContainer from 'components/ScreenContainer';
 
@@ -101,7 +102,7 @@ const goToLevel = (index: number) => NavigationActions.navigate({
   }
 });
 
-const bgMusic = require('assets/sounds/dive.mp3');
+const bgMusic = require('assets/sounds/twelvebars.mp3');
 
 // TODO: fix props
 const MainMenu: Screen = (props) => {
@@ -111,8 +112,8 @@ const MainMenu: Screen = (props) => {
   const [cornerOpacityAnim] = useState(new Animated.Value(0));
 
   const musicPlayback = useRef<any>(null);
-  const [mutedMusic, setMutedMusic] = useState(true); // Use AsyncStorage to save this preference
-  const [mutedSfx, setMutedSfx] = useState(true); // Use AsyncStorage to save this preference
+  const [mutedMusic, setMutedMusic] = useState<boolean>(getSetting('musicMuted')); // Use AsyncStorage to save this preference
+  const [mutedSfx, setMutedSfx] = useState<boolean>(getSetting('sfxMuted')); // Use AsyncStorage to save this preference
 
   useEffect(() => {
     Animated.parallel([
@@ -145,23 +146,24 @@ const MainMenu: Screen = (props) => {
   }, []);
 
   const handleMuteMusicPress = () => {
+    setSetting('musicMuted', !mutedMusic);
     setMutedMusic(state => {
       if (musicPlayback.current) {
         musicPlayback.current.sound.setIsMutedAsync(!state)
           .catch((err: any) => console.warn(err));
       }
       return !state;
-    })
+    });
   };
 
   const handleMuteSfxPress = () => {
     Alert.alert('No SFX', 'This button was meant to disable SFX. Not done yet, obviously.');
+    setSetting('sfxMuted', !mutedSfx);
     setMutedSfx(state => !state);
   };
 
   return (
     <ScreenContainer style={{justifyContent: 'flex-start'}}>
-      <StatusBar hidden />
       <TitleContainer style={{height: titleHeightAnim}}>
         <TitleImage />
       </TitleContainer>
@@ -188,25 +190,25 @@ const MainMenu: Screen = (props) => {
           left={0}
           onPress={() => Alert.alert('Settings', `You think a game should have settings?\n\nHA HA HA`)}
         >
-          <Octicons name='gear' size={24} color='white' />
+          <Octicons name={'gear'} size={24} color={'white'} />
         </CornerButton>
         <CornerButton
           left={1}
           onPress={() => Alert.alert('Share twelve', `I'm glad you want to share the nothing that is on this app`)}
         >
-          <MaterialCommunityIcons name='share-variant' size={24} color='white' />
+          <MaterialCommunityIcons name={'share-variant'} size={24} color={'white'} />
         </CornerButton>
         <CornerButton
           right={1}
           onPress={handleMuteMusicPress}
         >
-          <MaterialCommunityIcons name={mutedMusic ? 'music-off' : 'music'} size={24} color='white' />
+          <MaterialCommunityIcons name={mutedMusic ? 'music-off' : 'music'} size={24} color={'white'} />
         </CornerButton>
         <CornerButton
           right={0}
           onPress={handleMuteSfxPress}
         >
-          <Octicons name={mutedSfx ? 'mute' : 'unmute'} size={24} color='white' />
+          <Octicons name={mutedSfx ? 'mute' : 'unmute'} size={24} color={'white'} />
         </CornerButton>
       </MenuButtons>
     </ScreenContainer>

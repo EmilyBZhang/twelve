@@ -13,6 +13,7 @@ interface LevelSelectProps {
   numLevels: number;
   onGoToLevel: (index: number) => any;
 }
+export type LevelSelectType = FunctionComponent<LevelSelectProps>;
 
 const TitleText = styled.Text`
   font-size: 36px;
@@ -20,6 +21,7 @@ const TitleText = styled.Text`
   text-align: center;
   padding-vertical: 64px;
   color: ${colors.foreground};
+  width: 100%;
 `;
 
 const levelBoxSize = levelWidth / 5;
@@ -50,7 +52,7 @@ const levelListStyle = {
   width: levelWidth
 };
 
-const LevelSelect: FunctionComponent<LevelSelectProps> = (props) => {
+const LevelSelect: LevelSelectType = (props) => {
   const levels = Array(props.numLevels).fill(null)
     .map((_, index: number) => index + 1);
 

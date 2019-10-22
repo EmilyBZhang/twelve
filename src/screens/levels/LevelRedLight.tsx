@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Animated, Button, View } from 'react-native';
+import { Button, View } from 'react-native';
 
 import { Level } from 'utils/interfaces';
 import coinPositions from 'utils/coinPositions';
-import getCongratsMessage from 'utils/getCongratsMessage';
+import useCongratsMessage from 'hooks/useCongratsMessage';
 import colors from 'assets/colors';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
 
-const Level4: Level = (props) => {
-  const [congratsMessage] = useState<string>(() => getCongratsMessage());
+const LevelRedLight: Level = (props) => {
+  const congratsMessage = useCongratsMessage();
   const [redLight, setRedLight] = useState(false);
 
   const hintMessage = useRef('Easy as pie');
@@ -22,7 +22,7 @@ const Level4: Level = (props) => {
   const blinkCoins = useRef<any>(null);
   useEffect(() => {
     if (twelve) {
-      clearInterval(blinkCoins.current);
+      if (blinkCoins.current) clearInterval(blinkCoins.current);
       blinkCoins.current = null;
     } else if (!blinkCoins.current) {
       blinkCoins.current = setInterval(() => {
@@ -30,6 +30,9 @@ const Level4: Level = (props) => {
         setRedLight(state => !state);
       }, 1000);
     }
+    return () => {
+      if (blinkCoins.current) clearInterval(blinkCoins.current);
+    };
   }, [twelve]);
 
   const handleCoinPress = (index: number) => {
@@ -48,12 +51,12 @@ const Level4: Level = (props) => {
       </LevelText>
       {twelve && (
         <Button
-          title='Next level!'
+          title={'Next level!'}
           onPress={() => props.onNextLevel()}
         />
       )}
-      {Array(12).fill(null).map((_, index: number) => (
-        <Animated.View
+      {coinPositions.map((_, index: number) => (
+        <View
           key={String(index)}
           style={{
             position: 'absolute',
@@ -65,10 +68,10 @@ const Level4: Level = (props) => {
             found={props.coinsFound.has(index)}
             onPress={() => handleCoinPress(index)}
           />
-        </Animated.View>
+        </View>
       ))}
     </LevelContainer>
   );
 };
 
-export default Level4;
+export default LevelRedLight;

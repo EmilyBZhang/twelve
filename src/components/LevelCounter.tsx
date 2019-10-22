@@ -1,5 +1,4 @@
-import React, { FunctionComponent } from 'react';
-import { Text, View } from 'react-native';
+import React, { FunctionComponent, memo } from 'react';
 import styled from 'styled-components/native';
 
 import colors from 'assets/colors';
@@ -9,10 +8,14 @@ interface LevelCounterProps {
   color?: string;
   fontSize?: number;
   position?: {top?: number, bottom?: number, left?: number, right?: number};
+  width?: number;
+  height?: number;
+  textStyle?: any;
 }
 
 interface CounterContainerProps {
-  size: number;
+  width: number;
+  height: number;
 }
 
 interface CounterTextProps {
@@ -22,8 +25,8 @@ interface CounterTextProps {
 
 const CounterContainer = styled.View<CounterContainerProps>`
   position: absolute;
-  width: ${props => props.size}px;
-  height: ${props => props.size}px;
+  width: ${props => props.width}px;
+  height: ${props => props.height}px;
   justify-content: center;
   align-items: center;
 `;
@@ -33,27 +36,36 @@ const CounterText = styled.Text<CounterTextProps>`
   font-size: ${props => props.fontSize}px;
   font-weight: 800;
   text-align: center;
+  width: 100%;
 `;
 
 const defaultPosition = {bottom: 0, right: 0};
 
 const LevelCounter: FunctionComponent<LevelCounterProps> = (props) => {
-  const position = props.position || defaultPosition;
-  const color = props.color || colors.coin;
-  const fontSize = props.fontSize || 32;
+  const {
+    position = defaultPosition,
+    color = colors.coin,
+    fontSize = 32,
+    count,
+    textStyle
+  } = props;
+  const width = props.width || fontSize * 1.5;
+  const height = props.height || fontSize * 1.5;
   return (
     <CounterContainer
       style={{...position}}
-      size={fontSize * 1.5}
+      width={width}
+      height={height}
     >
       <CounterText
         color={color}
         fontSize={fontSize}
+        style={textStyle}
       >
-        {(props.count >= 0) ? String(props.count) : '?'}
+        {(count >= 0) ? String(count) : '?'}
       </CounterText>
     </CounterContainer>
   );
 };
 
-export default LevelCounter;
+export default memo(LevelCounter);

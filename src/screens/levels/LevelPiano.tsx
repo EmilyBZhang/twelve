@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Animated, Button, View, Text } from 'react-native';
+import { Animated, Button, Easing, Text, View } from 'react-native';
 import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
 import { getLevelDimensions } from 'utils/getDimensions';
 import { playPiano } from 'utils/playPitch';
-import getCongratsMessage from 'utils/getCongratsMessage';
+import useCongratsMessage from 'hooks/useCongratsMessage';
 import styles from 'assets/styles';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
@@ -66,6 +66,7 @@ const BlackKey = styled.TouchableHighlight.attrs({
 `;
 
 const LyricsContainer = styled.View`
+  width: ${levelWidth}px;
   position: absolute;
   bottom: 0px;
   align-items: center;
@@ -85,7 +86,7 @@ const pianoInit = lambInit + lambHeight;
 
 const coinSize = styles.coinSize;
 const coinPositions = notes.map((note: string, index: number) => {
-  const whiteKey = note.length == 1;
+  const whiteKey = note.length === 1;
   if (whiteKey) {
     return ({
       left: Math.floor((index + 1) / 2) * whiteWidth + (whiteWidth - coinSize) / 2,
@@ -98,12 +99,13 @@ const coinPositions = notes.map((note: string, index: number) => {
   });
 });
 
-const Level5: Level = (props) => {
-  const [congratsMessage] = useState<string>(() => getCongratsMessage());
+const LevelPiano: Level = (props) => {
   const [noteIndex, setNoteIndex] = useState(-1);
   const [songIndex, setSongIndex] = useState(-1);
   const [lambTopAnim] = useState(new Animated.Value(lambInit));
   const [pianoTopAnim] = useState(new Animated.Value(pianoInit));
+  
+  const congratsMessage = useCongratsMessage();
 
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
@@ -118,15 +120,18 @@ const Level5: Level = (props) => {
       }),
       Animated.timing(lambTopAnim, {
         toValue: lambInit,
+        easing: Easing.quad,
         duration: 600
       }),
       Animated.parallel([
         Animated.timing(lambTopAnim, {
           toValue: levelHeight,
+          easing: Easing.linear,
           duration: 2000
         }),
         Animated.timing(pianoTopAnim, {
           toValue: levelHeight + lambHeight,
+          easing: Easing.linear,
           duration: 2000
         })
       ])
@@ -135,12 +140,13 @@ const Level5: Level = (props) => {
 
   const handleNotePress = (note: string, index: number) => {
     playPiano(`${note}4`);
-    if (twelve) return;
-    const validFirst = index >= 4 && index <= 8;
+    if (songIndex === maryIntervals.length) return;
+    // const validFirst = index >= 4 && index <= 8;
+    const validFirst = index === 4;
     if (validFirst && songIndex < 0) {
       setSongIndex(0);
     } else if (index - noteIndex == maryIntervals[songIndex]) {
-      if (songIndex + 1 == 12) {
+      if (songIndex + 1 === maryIntervals.length) {
         handleWin();
       }
       setSongIndex(state => state + 1);
@@ -153,24 +159,22 @@ const Level5: Level = (props) => {
   };
 
   return (
-    <LevelContainer style={{justifyContent: 'flex-start'}}>
+    <LevelContainer>
       <LevelCounter
         count={numCoinsFound}
         position={{top: 0, right: 0}}
       />
-      {twelve && (
-        <>
-          <LevelText>{congratsMessage}</LevelText>
-          <Button
-            title='Next level!'
-            onPress={() => props.onNextLevel()}
-          />
-        </>
-      )}
+      {twelve && (<>
+        <LevelText>{congratsMessage}</LevelText>
+        <Button
+          title={'Next level!'}
+          onPress={() => props.onNextLevel()}
+        />
+      </>)}
       <Lamb style={{top: lambTopAnim}} />
       <PianoContainer style={{top: pianoTopAnim}}>
         {notes.map((note: string, index: number) => {
-          const whiteKey = note.length == 1;
+          const whiteKey = note.length === 1;
           if (whiteKey) return (
             <WhiteKeyContainer key={String(index)}>
               <WhiteKey onPressIn={() => handleNotePress(note, index)} >
@@ -192,8 +196,8 @@ const Level5: Level = (props) => {
       </PianoContainer>
       {notes.map((_, index: number) => (
         <View
-          style={{position: 'absolute', ...coinPositions[index]}}
           key={String(index)}
+          style={{position: 'absolute', ...coinPositions[index]}}
         >
           <Coin
             found={props.coinsFound.has(index)}
@@ -208,4 +212,4 @@ const Level5: Level = (props) => {
   );
 };
 
-export default Level5;
+export default LevelPiano;

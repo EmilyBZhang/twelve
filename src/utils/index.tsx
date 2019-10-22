@@ -1,4 +1,14 @@
-import getCongratsMessage from './getCongratsMessage';
-import { } from './interfaces';
+import * as interfaces from './interfaces';
+import getDimensions, { getLevelDimensions } from './getDimensions';
+import getPositions4x3 from './coinPositions';
+import playAudio from './playAudio';
+import * as playPitch from './playPitch';
 
-// TODO: import the rest of these and then export them all as an object
+export default {
+  interfaces,
+  getDimensions,
+  getLevelDimensions,
+  getPositions4x3,
+  playAudio,
+  playPitch
+};

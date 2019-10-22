@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 const messages = [
   'Astounding!',
   'Congratulations!',
@@ -18,4 +20,9 @@ const getCongratsMessage = () => {
   return messages[index];
 };
 
-export default getCongratsMessage;
+const useCongratsMessage = () => {
+  const congratsMessage = useMemo<string>(getCongratsMessage, []);
+  return congratsMessage;
+};
+
+export default useCongratsMessage;

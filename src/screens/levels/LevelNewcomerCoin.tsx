@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Animated, Button, View } from 'react-native';
+import { Button, View } from 'react-native';
 
 import { Level } from 'utils/interfaces';
 import coinPositions from 'utils/coinPositions';
-import getCongratsMessage from 'utils/getCongratsMessage';
+import useCongratsMessage from 'hooks/useCongratsMessage';
 import colors from 'assets/colors';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
@@ -18,8 +18,8 @@ const getNextIndex = (selectedIndices = new Set<number>()) => {
   return tempIndex;
 };
 
-const Level6: Level = (props) => {
-  const [congratsMessage] = useState<string>(() => getCongratsMessage());
+const LevelNewcomerCoin: Level = (props) => {
+  const congratsMessage = useCongratsMessage();
   const [visible, setVisible] = useState(false);
   const [showNext, setShowNext] = useState(true);
   const [nextIndex, setNextIndex] = useState(getNextIndex);
@@ -30,7 +30,7 @@ const Level6: Level = (props) => {
   const blinkCoins = useRef<any>(null);
   useEffect(() => {
     if (twelve) {
-      clearInterval(blinkCoins.current);
+      if (blinkCoins.current) clearInterval(blinkCoins.current);
       blinkCoins.current = null;
     } else if (!blinkCoins.current) {
       blinkCoins.current = setInterval(() => {
@@ -38,6 +38,9 @@ const Level6: Level = (props) => {
         setShowNext(true);
       }, 1000);
     }
+    return () => {
+      if (blinkCoins.current) clearInterval(blinkCoins.current);
+    };
   }, [twelve]);
 
   const handleCoinPress = (index: number) => {
@@ -63,16 +66,16 @@ const Level6: Level = (props) => {
       </LevelText>
       {twelve && (
         <Button
-          title='Next level!'
+          title={'Next level!'}
           onPress={() => props.onNextLevel()}
         />
       )}
-      {Array(12).fill(null).map((_, index: number) => (
-        <Animated.View
+      {coinPositions.map((coinPosition, index: number) => (
+        <View
           key={String(index)}
           style={{
             position: 'absolute',
-            ...coinPositions[index]
+            ...coinPosition
           }}
         >
           <Coin
@@ -81,10 +84,10 @@ const Level6: Level = (props) => {
             hidden={!showNext || !visible || (index !== nextIndex && !props.coinsFound.has(index))}
             onPress={() => handleCoinPress(index)}
           />
-        </Animated.View>
+        </View>
       ))}
     </LevelContainer>
   );
 };
 
-export default Level6;
+export default LevelNewcomerCoin;
