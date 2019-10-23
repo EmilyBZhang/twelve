@@ -2,7 +2,9 @@ import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
 import { AsyncStorage, FlatList } from 'react-native';
 import { Octicons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
+import { useSelector } from 'react-redux';
 
+import { RootState } from 'reducers/settings/actions';
 import { getLevelDimensions } from 'utils/getDimensions';
 import colors from 'assets/colors';
 import ScreenContainer from 'components/ScreenContainer';
@@ -32,14 +34,20 @@ const LevelBoxContainer = styled.View`
   margin-bottom: ${levelBoxMargin}px;
 `;
 
+interface LevelBoxProps {
+  completed: boolean;
+}
+
 const LevelBoxTouchable = styled.TouchableHighlight.attrs({
   underlayColor: colors.foregroundPressed
-})`
+})<LevelBoxProps>`
   width: ${levelBoxSize}px;
   height: ${levelBoxSize}px;
   background-color: ${colors.foreground};
   justify-content: center;
   align-items: center;
+  ${props => props.disabled && `opacity: 0.5;`}
+  ${props => props.completed && `border: 2px solid gold;`}
 `;
 
 const LevelBoxText = styled.Text`
@@ -53,26 +61,27 @@ const levelListStyle = {
 };
 
 const LevelSelect: LevelSelectType = (props) => {
-  const levels = Array(props.numLevels).fill(null)
-    .map((_, index: number) => index + 1);
+  const levelStatuses = useSelector((state: RootState) => state.settings.levelStatus);
 
   return (
     <ScreenContainer>
       <FlatList
-        data={levels}
+        data={levelStatuses}
         numColumns={4}
         horizontal={false}
-        keyExtractor={(level) => String(level)}
+        keyExtractor={(_, index) => String(index)}
         contentContainerStyle={levelListStyle}
         ListHeaderComponent={
           <TitleText>Select Level</TitleText>
         }
-        renderItem={({ item: level }) => (
+        renderItem={({ item: levelStatus, index }) => (
           <LevelBoxContainer>
             <LevelBoxTouchable
-              onPress={() => props.onGoToLevel(level)}
+              completed={levelStatus.completed}
+              disabled={!levelStatus.unlocked}
+              onPress={() => props.onGoToLevel(index + 1)}
             >
-              <LevelBoxText>{level}</LevelBoxText>
+              <LevelBoxText>{index + 1}</LevelBoxText>
             </LevelBoxTouchable>
           </LevelBoxContainer>
         )}

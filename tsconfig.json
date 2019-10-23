@@ -21,6 +21,7 @@
         "assets/*": ["./src/assets/*"],
         "components/*": ["./src/components/*"],
         "hooks/*": ["./src/hooks/*"],
+        "reducers/*": ["./src/reducers/*"],
         "screens/*": ["./src/screens/*"],
         "utils/*": ["./src/utils/*"]
         // ,"*": ["./src/typings/*"]

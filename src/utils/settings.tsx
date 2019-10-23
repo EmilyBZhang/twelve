@@ -5,7 +5,7 @@
 // TODO: Look into making the errors print out individually instead of in catch statements.
 
 import React, { useState } from 'react';
-import { AsyncStorage, Settings } from 'react-native';
+import { AsyncStorage } from 'react-native';
 
 import levels from 'screens/levels';
 
@@ -22,6 +22,7 @@ const defaultSettings = {
   language: 'en'
 } as SettingsObject;
 
+/*
 let settings = {...defaultSettings};
 
 AsyncStorage.getAllKeys((err, keys) => {
@@ -54,16 +55,6 @@ export const getSetting = (name: string) => {
   return settings[name];
 };
 
-export const setSetting = (name: string, val: any) => {
-  settings[name] = val;
-  AsyncStorage.setItem(
-    name,
-    JSON.stringify(val),
-    err => err && console.warn(err)
-  );
-  return settings[name];
-};
-
 export const getAllSettings = () => {
   return settings;
 };
@@ -85,11 +76,23 @@ export const mergeSettings = (newSettings: SettingsObject) => {
   ).catch(err => console.warn(err));
   return settings;
 };
+*/
 
-export const resetSettings = () => {
-  settings = defaultSettings;
-  AsyncStorage.multiRemove(Object.keys(settings));
-  return settings;
+export const setSetting = (name: string, val: any) => {
+  AsyncStorage.setItem(
+    name,
+    JSON.stringify(val),
+    err => err && console.warn(err)
+  );
 };
 
-export default getAllSettings;
+export const resetSettings = () => {
+  // settings = defaultSettings;
+  // AsyncStorage.multiRemove(Object.keys(settings));
+  // return settings;
+  AsyncStorage.multiRemove(Object.keys(defaultSettings), (err) => err && console.warn(err));
+  console.log('Reset keys:\n', Object.keys(defaultSettings));
+  return defaultSettings;
+};
+
+// export default getAllSettings;

@@ -60,7 +60,7 @@ const generateColorOrder = () => {
 
 const generateNegateOrder = (simonDoesNotSay: boolean) => {
   return Array.from(Array(12), () => (
-    simonDoesNotSay && !!(Math.round(Math.random()))
+    simonDoesNotSay && (Math.random() < 0.5)
   ))
 };
 
@@ -168,16 +168,6 @@ const SimonSays: FunctionComponent<SimonSaysProps> = (props) => {
             )}
           />
         </CoinListContainer>
-        {/* {coinColors.map((coinColor, index: number) => (
-          <Coin
-            key={String(index)}
-            hidden={blinkingColors}
-            disabled={blinkingColors}
-            size={coinSize}
-            color={coinColor}
-            onPress={() => handleCoinPress(index)}
-          />
-        ))} */}
       </>)}
     </LevelContainer>
   );

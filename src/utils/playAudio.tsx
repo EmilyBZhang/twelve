@@ -2,6 +2,10 @@
 // Also consider preloading all the audio and then resetting their positions back to 0, as per https://forums.expo.io/t/laggy-audio-on-multiple-plays/3169
 
 import { Audio } from 'expo-av';
+import { PlaybackSource, PlaybackStatusToSet } from 'expo-av/build/AV';
+
+import Actions from 'reducers/settings/actionTypes';
+import { RootState } from 'reducers/settings/actions';
 
 const defaultOptions = {
   shouldPlay: true,
@@ -9,10 +13,29 @@ const defaultOptions = {
   isMuted: false
 };
 
-const playAudio = async (sound: any, setMusicPlayback?: (res: any) => any, options = defaultOptions) => {
+type MiddlewareArg = {getState: () => RootState};
+type Action = {type: Actions, payload?: any};
+type Next = (action: Action) => any;
+
+export const changePlaybackOptions = ({ getState }: MiddlewareArg) => (
+  (next: Next) => (action: Action) => {
+    if (action.type === Actions.TOGGLE_SFX) {
+      defaultOptions.isMuted = !getState().settings.sfxMuted;
+    } else if (action.type === Actions.INIT_SETTINGS) {
+      defaultOptions.isMuted = action.payload.sfxMuted || getState().settings.sfxMuted;
+    }
+    return next(action);
+  }
+);
+
+const playAudio = async (sound: PlaybackSource, setMusicPlayback?: (res: any) => any, options?: PlaybackStatusToSet) => {
+  const initialStatus = {
+    ...defaultOptions,
+    ...options
+  };
   Audio.Sound.createAsync(
     sound,
-    options
+    initialStatus
   ).then(res => {
     res.sound.setOnPlaybackStatusUpdate(status => {
       // @ts-ignore
@@ -20,7 +43,9 @@ const playAudio = async (sound: any, setMusicPlayback?: (res: any) => any, optio
         if (setMusicPlayback) setMusicPlayback(res);
         return;
       };
-      if (!options.isLooping) res.sound.unloadAsync().catch((err: any) => console.warn(err + ' line 20'));
+      if (!initialStatus.isLooping) {
+        res.sound.unloadAsync().catch((err: any) => console.warn(err + ' line 20'));
+      }
     });
   }).catch(err => console.warn(err + ' line 22'));
 };

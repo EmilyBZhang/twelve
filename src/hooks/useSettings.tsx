@@ -2,3 +2,5 @@
 // Probably return an object of settings along with a dispatch
 
 // TODO: Probably use Redux to manage this useSettings hook
+
+import { useDispatch, useSelector } from 'react-redux';

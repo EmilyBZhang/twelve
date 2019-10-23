@@ -1,8 +1,7 @@
 # twelve
-Twelve - mobile puzzle game
+Twelve - a mobile puzzle game about collecting dots. Each level has its own twist!
 
 # TODO
 * Fix sound (inconsistent)
 * Import Montserrat for the game font
-* Save and load user settings with AsyncStorage
-* See what the issue is with node_modules/@expo/vector-icons/tsconfig.json
+* Consider creating a useSettings hook to make dispatching settings changes easier

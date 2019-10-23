@@ -1,7 +1,7 @@
 // TODO: Mouse fainting animation if fail, play sounds, add animations
 
 import React, { useState } from 'react';
-import { Button, FlatList, View, ActivityIndicator, Alert } from 'react-native';
+import { Button, FlatList } from 'react-native';
 import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';

@@ -1,19 +1,23 @@
 // TODO: Move playAudio to a separate component which will be included in App.tsx
 // This should be done after user settings are stored and the useSettings hook is made
 
-import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
-import { Alert, AsyncStorage, Animated } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { Alert, Animated } from 'react-native';
 import { MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
 import { NavigationActions } from 'react-navigation';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { setSetting, getSetting } from 'utils/settings';
+import { RootState, toggleMusic, toggleSfx } from 'reducers/settings/actions';
+// import { setSetting, getSetting } from 'utils/settings';
 import { Screen } from 'utils/interfaces';
 import getDimensions from 'utils/getDimensions';
 import playAudio from 'utils/playAudio';
 // import useSettings from 'hooks/useSettings';
 import colors from 'assets/colors';
 import ScreenContainer from 'components/ScreenContainer';
+import MuteMusicIcon from 'components/icons/MuteMusicIcon';
+import MuteSfxIcon from 'components/icons/MuteSfxIcon';
 
 const { width: windowWidth, height: windowHeight } = getDimensions();
 const imageHeight = windowWidth * 81 / 790;
@@ -112,8 +116,11 @@ const MainMenu: Screen = (props) => {
   const [cornerOpacityAnim] = useState(new Animated.Value(0));
 
   const musicPlayback = useRef<any>(null);
-  const [mutedMusic, setMutedMusic] = useState<boolean>(getSetting('musicMuted')); // Use AsyncStorage to save this preference
-  const [mutedSfx, setMutedSfx] = useState<boolean>(getSetting('sfxMuted')); // Use AsyncStorage to save this preference
+  
+  const settingsReady = useSelector((state: RootState) => state.settings.settingsReady);
+  const musicMuted = useSelector((state: RootState) => state.settings.musicMuted);
+  const sfxMuted = useSelector((state: RootState) => state.settings.sfxMuted);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     Animated.parallel([
@@ -136,30 +143,31 @@ const MainMenu: Screen = (props) => {
         }),
       ]),
     ]).start();
-    const options = {
-      shouldPlay: true,
-      isLooping: true,
-      isMuted: mutedMusic
-    };
-    const setMusicPlayback = (playback: any) => musicPlayback.current = playback;
-    playAudio(bgMusic, setMusicPlayback, options);
   }, []);
 
+  useEffect(() => {
+    if (!settingsReady) return;
+    if (musicPlayback.current) {
+      musicPlayback.current.sound.setIsMutedAsync(musicMuted)
+        .catch((err: any) => console.warn(err));
+    } else if (musicPlayback.current === null) {
+      const options = {
+        shouldPlay: true,
+        isLooping: true,
+        isMuted: musicMuted
+      };
+      musicPlayback.current = 0;
+      const setMusicPlayback = (playback: any) => musicPlayback.current = playback;
+      playAudio(bgMusic, setMusicPlayback, options);
+    }
+  }, [musicMuted, settingsReady])
+
   const handleMuteMusicPress = () => {
-    setSetting('musicMuted', !mutedMusic);
-    setMutedMusic(state => {
-      if (musicPlayback.current) {
-        musicPlayback.current.sound.setIsMutedAsync(!state)
-          .catch((err: any) => console.warn(err));
-      }
-      return !state;
-    });
+    dispatch(toggleMusic());
   };
 
   const handleMuteSfxPress = () => {
-    Alert.alert('No SFX', 'This button was meant to disable SFX. Not done yet, obviously.');
-    setSetting('sfxMuted', !mutedSfx);
-    setMutedSfx(state => !state);
+    dispatch(toggleSfx());
   };
 
   return (
@@ -201,14 +209,15 @@ const MainMenu: Screen = (props) => {
         <CornerButton
           right={1}
           onPress={handleMuteMusicPress}
+          disabled={!settingsReady}
         >
-          <MaterialCommunityIcons name={mutedMusic ? 'music-off' : 'music'} size={24} color={'white'} />
+          <MuteMusicIcon muted={musicMuted} />
         </CornerButton>
         <CornerButton
           right={0}
           onPress={handleMuteSfxPress}
         >
-          <Octicons name={mutedSfx ? 'mute' : 'unmute'} size={24} color={'white'} />
+          <MuteSfxIcon muted={sfxMuted} />
         </CornerButton>
       </MenuButtons>
     </ScreenContainer>

@@ -1,10 +1,15 @@
 import React, { FunctionComponent } from 'react';
 import { Text, Modal, View, TouchableOpacity, Button } from 'react-native';
 import styled from 'styled-components/native';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { toggleMusic, toggleSfx, RootState } from 'reducers/settings/actions';
 import { resetSettings } from 'utils/settings';
 import getDimensions from 'utils/getDimensions';
+import colors from 'assets/colors';
 import styles from 'assets/styles';
+import MuteMusicIcon from 'components/icons/MuteMusicIcon';
+import MuteSfxIcon from 'components/icons/MuteSfxIcon';
 
 const { width: screenWidth, height: screenHeight } = getDimensions();
 
@@ -27,7 +32,22 @@ const FullScreenModal = styled.View`
   align-items: center;
 `;
 
+const SettingsButton = styled.TouchableHighlight.attrs({
+  underlayColor: colors.foregroundPressed
+})`
+  background-color: ${colors.foreground};
+  margin: 8px;
+  width: 40px;
+  height: 40px;
+  justify-content: center;
+  align-items: center;
+`;
+
 const SettingsModal: FunctionComponent<SettingsModalProps> = (props) => {
+  const musicMuted = useSelector((state: RootState) => state.settings.musicMuted);
+  const sfxMuted = useSelector((state: RootState) => state.settings.sfxMuted);
+  const dispatch = useDispatch();
+
   if (!props.visible) return null;
   return (
     <FullScreenModal>
@@ -38,15 +58,22 @@ const SettingsModal: FunctionComponent<SettingsModalProps> = (props) => {
           height: '100%',
           justifyContent: 'center',
           alignItems: 'center'
-        }}>
-        <Text style={{color: 'white', textAlign: 'center'}}>
-          So uh... funny story. Settings don't work yet.{'\n\n'}
-          Press anywhere to close this important message.{'\n\n'}
+        }}
+      >
+        <SettingsButton onPress={() => dispatch(toggleMusic())}>
+          <MuteMusicIcon muted={musicMuted} />
+        </SettingsButton>
+        <SettingsButton onPress={() => dispatch(toggleSfx())}>
+          <MuteSfxIcon muted={sfxMuted} />
+        </SettingsButton>
+        <Text style={{color: 'white', textAlign: 'center', fontSize: 24}}>
+          {'\n'}Press anywhere to close{'\n'}
         </Text>
-        {props.onNextLevel && (
+        {props.onNextLevel && (<>
           <Button title={'Skip level'} onPress={props.onNextLevel} />
-        )}
-        <Button title={'Reset settings'} onPress={() => {resetSettings}} />
+          <Text>{'\n'}</Text>
+        </>)}
+        <Button title={'Reset settings'} onPress={() => resetSettings()} />
       </TouchableOpacity>
     </FullScreenModal>
   );

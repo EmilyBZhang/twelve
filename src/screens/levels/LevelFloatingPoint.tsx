@@ -65,7 +65,6 @@ const LevelFloatingPoint: Level = (props) => {
       props.onCoinPress(Math.floor(numCoinsFound));
     }
     setNumCoinsFound(newNumCoinsFound);
-    console.log(newNumCoinsFound);
   };
 
   const color = colorAnim.interpolate({
