@@ -2,9 +2,8 @@ import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
 import { AsyncStorage, FlatList } from 'react-native';
 import { Octicons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
-import { useSelector } from 'react-redux';
 
-import { RootState } from 'reducers/settings/actions';
+import useSettings from 'hooks/useSettings';
 import { getLevelDimensions } from 'utils/getDimensions';
 import colors from 'assets/colors';
 import ScreenContainer from 'components/ScreenContainer';
@@ -61,7 +60,7 @@ const levelListStyle = {
 };
 
 const LevelSelect: LevelSelectType = (props) => {
-  const levelStatuses = useSelector((state: RootState) => state.settings.levelStatus);
+  const [{ levelStatus: levelStatuses }] = useSettings();
 
   return (
     <ScreenContainer>

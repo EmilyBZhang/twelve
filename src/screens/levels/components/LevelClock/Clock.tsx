@@ -7,7 +7,7 @@ import { getLevelDimensions } from 'utils/getDimensions';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 
-export const clockSize = levelWidth * 3 / 4;
+export const clockSize = levelWidth;
 export const clockBorderWidth = 4;
 export const clockRadius = clockSize / 2 - clockBorderWidth;
 

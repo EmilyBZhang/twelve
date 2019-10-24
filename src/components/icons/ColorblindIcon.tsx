@@ -1,25 +1,25 @@
 import React, { FunctionComponent } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-interface MuteSfxIconProps {
-  muted?: boolean;
+interface ColorblindIconProps {
+  colorblind?: boolean;
   size?: number;
   color?: string;
 }
 
-const MuteSfxIcon: FunctionComponent<MuteSfxIconProps> = (props) => {
+const ColorblindIcon: FunctionComponent<ColorblindIconProps> = (props) => {
   const {
     size = 24,
     color = 'white',
-    muted
+    colorblind
   } = props;
   return (
     <MaterialCommunityIcons
-      name={muted ? 'volume-off' : 'volume-high'}
+      name={colorblind ? 'eye-off' : 'eye'}
       size={size}
       color={color}
     />
   );
 }
 
-export default MuteSfxIcon;
+export default ColorblindIcon;

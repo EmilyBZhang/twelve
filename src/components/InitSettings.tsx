@@ -1,13 +1,12 @@
 import React, { FunctionComponent, useEffect } from 'react';
 import { AsyncStorage } from 'react-native';
-import { useDispatch } from 'react-redux';
 
+import useSettings from 'hooks/useSettings';
 import { SettingsPartialState } from 'reducers/settings';
-import { initSettings } from 'reducers/settings/actions';
 import levels from 'screens/levels';
 
 const InitSettings: FunctionComponent = (props) => {
-  const dispatch = useDispatch();
+  const { initSettings } = useSettings()[1];
 
   useEffect(() => {
     AsyncStorage.getAllKeys((err, keys) => {
@@ -42,7 +41,7 @@ const InitSettings: FunctionComponent = (props) => {
         console.log('LOADED THESE SETTINGS:');
         console.log(settings);
 
-        dispatch(initSettings(settings as SettingsPartialState));
+        initSettings(settings as SettingsPartialState);
       });
     });
   }, []);

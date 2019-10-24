@@ -5,9 +5,8 @@ import { Alert, AsyncStorage, FlatList } from 'react-native';
 import { Octicons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
 import { NavigationActions } from 'react-navigation';
-import { useDispatch } from 'react-redux';
 
-import { completeLevel } from 'reducers/settings/actions'
+import useSettings from 'hooks/useSettings';
 import { Screen, Level as LevelType } from 'utils/interfaces';
 import useSelectedIndices from 'hooks/useSelectedIndices';
 import playAudio from 'utils/playAudio';
@@ -26,7 +25,7 @@ const Level: Screen = (props) => {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const musicPlayback = useRef<any>(null);
 
-  const dispatch = useDispatch();
+  const { completeLevel } = useSettings()[1];
 
   const coinsFound = selectedIndices.size;
   const twelve = coinsFound === 12;
@@ -47,13 +46,13 @@ const Level: Screen = (props) => {
     playCoinSound(coinsFound);
     toggleIndex(index);
     if (selectedIndices.size + 1 === 12 && !selectedIndices.has(index)) {
-      dispatch(completeLevel(levelNum));
+      completeLevel(levelNum);
     }
   };
 
   const handleSetCoinsFound = (indices: Set<number>) => {
     setSelectedIndices(indices);
-    if (indices.size === 12) dispatch(completeLevel(levelNum));
+    if (indices.size === 12) completeLevel(levelNum);
   };
   
   const goToLevel = (index: number) => {

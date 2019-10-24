@@ -69,6 +69,13 @@ const settings = (state = initialState, action: Action) => {
         sfxMuted: !state.sfxMuted
       });
     }
+    case Actions.TOGGLE_COLORBLIND: {
+      setSetting('colorblind', !state.colorblind);
+      return ({
+        ...state,
+        colorblind: !state.colorblind
+      });
+    }
     case Actions.COMPLETE_LEVEL: {
       const newLevelStatus = state.levelStatus.slice();
       const index = action.payload.levelNum - 1;

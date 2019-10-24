@@ -1,8 +1,5 @@
 import Actions from './actionTypes';
-import rootReducer from '../';
 import { SettingsPartialState } from './';
-
-export type RootState = ReturnType<typeof rootReducer>;
 
 export const initSettings = (settings: SettingsPartialState) => ({
   type: Actions.INIT_SETTINGS,
@@ -15,6 +12,10 @@ export const toggleMusic = () => ({
 
 export const toggleSfx = () => ({
   type: Actions.TOGGLE_SFX
+});
+
+export const toggleColorblind = () => ({
+  type: Actions.TOGGLE_COLORBLIND
 });
 
 export const completeLevel = (levelNum: number) => ({

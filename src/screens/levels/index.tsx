@@ -1,7 +1,6 @@
-import React, { FunctionComponent } from 'react';
-
 import { Level } from 'utils/interfaces';
 import LevelSelect, { LevelSelectType } from './LevelSelect';
+
 import Level1 from './Level1';
 import LevelSlider from './LevelSlider';
 import LevelCatchCoins from './LevelCatchCoins';

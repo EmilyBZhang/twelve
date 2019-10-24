@@ -64,6 +64,7 @@ const generateNegateOrder = (simonDoesNotSay: boolean) => {
   ))
 };
 
+// TODO: Consider changing this to [3, 4, 5] and [0, 3, 7]
 const numIterations = [2, 4, 6];
 const startingIndices = [0, 2, 6];
 

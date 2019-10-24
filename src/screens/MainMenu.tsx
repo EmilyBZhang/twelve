@@ -6,14 +6,11 @@ import { Alert, Animated } from 'react-native';
 import { MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
 import { NavigationActions } from 'react-navigation';
-import { useDispatch, useSelector } from 'react-redux';
 
-import { RootState, toggleMusic, toggleSfx } from 'reducers/settings/actions';
-// import { setSetting, getSetting } from 'utils/settings';
+import useSettings from 'hooks/useSettings';
 import { Screen } from 'utils/interfaces';
 import getDimensions from 'utils/getDimensions';
 import playAudio from 'utils/playAudio';
-// import useSettings from 'hooks/useSettings';
 import colors from 'assets/colors';
 import ScreenContainer from 'components/ScreenContainer';
 import MuteMusicIcon from 'components/icons/MuteMusicIcon';
@@ -116,11 +113,11 @@ const MainMenu: Screen = (props) => {
   const [cornerOpacityAnim] = useState(new Animated.Value(0));
 
   const musicPlayback = useRef<any>(null);
-  
-  const settingsReady = useSelector((state: RootState) => state.settings.settingsReady);
-  const musicMuted = useSelector((state: RootState) => state.settings.musicMuted);
-  const sfxMuted = useSelector((state: RootState) => state.settings.sfxMuted);
-  const dispatch = useDispatch();
+
+  const [
+    { musicMuted, sfxMuted, settingsReady },
+    { toggleMusic, toggleSfx }
+  ] = useSettings();
 
   useEffect(() => {
     Animated.parallel([
@@ -163,11 +160,11 @@ const MainMenu: Screen = (props) => {
   }, [musicMuted, settingsReady])
 
   const handleMuteMusicPress = () => {
-    dispatch(toggleMusic());
+    toggleMusic();
   };
 
   const handleMuteSfxPress = () => {
-    dispatch(toggleSfx());
+    toggleSfx();
   };
 
   return (

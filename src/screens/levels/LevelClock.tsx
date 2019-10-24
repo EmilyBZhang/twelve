@@ -9,9 +9,9 @@ import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
-import Clock, { clockRadius } from './components/LevelClock/Clock';
+import Clock, { clockSize, clockRadius } from './components/LevelClock/Clock';
 
-const coinSize = styles.coinSize * 7 / 12;
+const coinSize = clockSize * 13 / 144;
 const coinPositions = Array.from(Array(12), (_, index) => {
   const rad = Math.PI * 2 * index / 12;
   const R = clockRadius - coinSize / 2;

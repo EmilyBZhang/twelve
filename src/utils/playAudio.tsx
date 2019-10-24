@@ -5,7 +5,7 @@ import { Audio } from 'expo-av';
 import { PlaybackSource, PlaybackStatusToSet } from 'expo-av/build/AV';
 
 import Actions from 'reducers/settings/actionTypes';
-import { RootState } from 'reducers/settings/actions';
+import { ReduxState } from 'reducers/store';
 
 const defaultOptions = {
   shouldPlay: true,
@@ -13,7 +13,7 @@ const defaultOptions = {
   isMuted: false
 };
 
-type MiddlewareArg = {getState: () => RootState};
+type MiddlewareArg = {getState: () => ReduxState};
 type Action = {type: Actions, payload?: any};
 type Next = (action: Action) => any;
 
