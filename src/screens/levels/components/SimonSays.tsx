@@ -11,6 +11,7 @@ import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
+import ColorHint from 'components/ColorHint';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 
@@ -20,16 +21,21 @@ interface SimonSaysProps extends LevelProps {
   simonDoesNotSay?: boolean;
 }
 
+const colorScreenSize = levelWidth / 2;
+const colorScreenBorderWidth = 4;
+
 interface ColorScreenProps {
   color: CoinColor | null;
   border: boolean;
 }
 
 const ColorScreen = styled.View<ColorScreenProps>`
-  width: ${levelWidth / 2}px;
-  height: ${levelWidth / Math.sqrt(2)}px;
+  width: ${colorScreenSize}px;
+  height: ${colorScreenSize * Math.sqrt(2)}px;
   background-color: ${props => props.color || 'transparent'};
-  ${props => props.border && 'border: 4px solid black;'}
+  justify-content: center;
+  align-items: center;
+  ${props => props.border && `border: ${colorScreenBorderWidth}px solid black;`}
 `;
 
 const coinMargin = styles.coinSize / 4;
@@ -149,7 +155,13 @@ const SimonSays: FunctionComponent<SimonSaysProps> = (props) => {
         <ColorScreen
           color={colorIndex < 0 ? null : colorOrder[colorIndex]}
           border={colorIndex >= 0 && negateOrder[colorIndex]}
-        />
+        >
+          <ColorHint
+            size={colorScreenSize - colorScreenBorderWidth * 2}
+            backgroundColor={colorOrder[colorIndex]}
+            opacity={colorIndex === -1 ? 0 : 1}
+          />
+        </ColorScreen>
         <CoinListContainer>
           <FlatList
             data={coinColors}

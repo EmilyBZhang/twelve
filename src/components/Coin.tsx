@@ -4,9 +4,10 @@ import styled from 'styled-components/native';
 
 import colors, { CoinColor, coinUnderlayColors } from 'assets/colors';
 import styles from 'assets/styles';
+import ColorHint from 'components/ColorHint';
 
 export interface CoinProps {
-  onPress: () => any;
+  onPress?: () => any;
   size?: number;
   color?: CoinColor;
   disabled?: boolean;
@@ -14,6 +15,7 @@ export interface CoinProps {
   found?: boolean;
   label?: string;
   children?: any;
+  colorHintOpacity?: number;
 }
 export type CoinType = FunctionComponent<CoinProps>;
 
@@ -37,7 +39,8 @@ const Coin: CoinType = (props) => {
     hidden,
     disabled,
     children,
-    label
+    label,
+    colorHintOpacity = (props.hidden || props.found) ? 0 : 1
   } = props;
 
   return (
@@ -50,7 +53,16 @@ const Coin: CoinType = (props) => {
       disabled={disabled || found}
       underlayColor={coinUnderlayColors[color]}
     >
-      {children || <Text>{label}</Text>}
+      <>
+        {!!colorHintOpacity && (
+          <ColorHint
+            backgroundColor={color}
+            size={size / 2}
+            opacity={colorHintOpacity}
+          />
+        )}
+        {children || <Text>{label}</Text>}
+      </>
     </CoinTouchable>
   );
 }

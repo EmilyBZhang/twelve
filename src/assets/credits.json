@@ -1,0 +1,41 @@
+{
+  "title": "Credits",
+  "body": [
+    {
+      "header": "Programming",
+      "names": [
+        "Bradon Zhang"
+      ]
+    },
+    {
+      "header": "Level Ideas",
+      "names": [
+        "Bradon Zhang",
+        "Alan Dai"
+      ]
+    },
+    {
+      "header": "Music",
+      "names": [
+        "Alan Dai"
+      ]
+    },
+    {
+      "header": "Sound Effects",
+      "names": [
+        "Bradon Zhang"
+      ]
+    },
+    {
+      "header": "Playtesting",
+      "names": [
+        "Jaeson Alcoriza",
+        "Mark Itkin",
+        "Matthew Po",
+        "Steffi Shew",
+        "Sagan Sutherland",
+        "Rohil Tuli"
+      ]
+    }
+  ]
+}

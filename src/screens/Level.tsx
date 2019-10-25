@@ -1,9 +1,6 @@
 // TODO: See if other things could useCallback/useMemo to optimize renders of memo components
 
-import React, { FunctionComponent, useCallback, useEffect, useRef, useState } from 'react';
-import { Alert, AsyncStorage, FlatList } from 'react-native';
-import { Octicons } from '@expo/vector-icons';
-import styled from 'styled-components/native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { NavigationActions } from 'react-navigation';
 
 import useSettings from 'hooks/useSettings';

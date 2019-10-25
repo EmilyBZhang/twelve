@@ -86,7 +86,7 @@ export const setSetting = (name: string, val: any) => {
   );
 };
 
-export const resetSettings = () => {
+export const clearSettings = () => {
   // settings = defaultSettings;
   // AsyncStorage.multiRemove(Object.keys(settings));
   // return settings;

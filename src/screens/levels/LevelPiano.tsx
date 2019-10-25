@@ -1,3 +1,5 @@
+// TODO: Invert relationship between WhiteKey & WhiteKeyContainer and BlackKey & BlackKeyContainer
+
 import React, { useState, useEffect } from 'react';
 import { Animated, Button, Easing, Text, View } from 'react-native';
 import styled from 'styled-components/native';
@@ -178,7 +180,7 @@ const LevelPiano: Level = (props) => {
           if (whiteKey) return (
             <WhiteKeyContainer key={String(index)}>
               <WhiteKey onPressIn={() => handleNotePress(note, index)} >
-                <Text></Text>
+                <Text />
               </WhiteKey>
             </WhiteKeyContainer>
           );
@@ -188,7 +190,7 @@ const LevelPiano: Level = (props) => {
               offset={Math.floor(index / 2 + 1)}
             >
               <BlackKey onPressIn={() => handleNotePress(note, index)}>
-                <Text></Text>
+                <Text />
               </BlackKey>
             </BlackKeyContainer>
           );

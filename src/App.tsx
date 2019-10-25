@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import store from 'reducers/store';
 import MainMenu from 'screens/MainMenu';
 import Level from 'screens/Level';
+import Credits from 'screens/Credits';
 import colors from 'assets/colors';
 import InitSettings from 'components/InitSettings';
 
@@ -18,6 +19,9 @@ const AppNavigator = createStackNavigator({
     },
     Level: {
       screen: Level
+    },
+    Credits: {
+      screen: Credits
     }
   }, {
     initialRouteName: 'MainMenu',

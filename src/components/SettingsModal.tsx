@@ -3,7 +3,7 @@ import { Text, Modal, View, TouchableOpacity, Button } from 'react-native';
 import styled from 'styled-components/native';
 
 import useSettings from 'hooks/useSettings';
-import { resetSettings } from 'utils/settings';
+import { clearSettings } from 'utils/settings';
 import getDimensions from 'utils/getDimensions';
 import colors from 'assets/colors';
 import styles from 'assets/styles';
@@ -11,7 +11,7 @@ import MuteMusicIcon from 'components/icons/MuteMusicIcon';
 import MuteSfxIcon from 'components/icons/MuteSfxIcon';
 import ColorblindIcon from 'components/icons/ColorblindIcon';
 
-const { width: screenWidth, height: screenHeight } = getDimensions();
+const { width: windowWidth, height: windowHeight } = getDimensions();
 
 interface SettingsModalProps {
   onClose: () => any;
@@ -24,8 +24,8 @@ const FullScreenModal = styled.View`
   top: 0px;
   left: 0px;
   backgroundColor: #00000080;
-  width: ${screenWidth}px;
-  height: ${screenHeight}px;
+  width: ${windowWidth}px;
+  height: ${windowHeight}px;
   margin: 0px;
   z-index: ${styles.levelNavZIndex + 1};
   justify-content: center;
@@ -68,13 +68,13 @@ const SettingsModal: FunctionComponent<SettingsModalProps> = (props) => {
         }}
       >
         <SettingsButtonsContainer>
-          <SettingsButton onPress={() => toggleMusic()}>
+          <SettingsButton onPress={toggleMusic}>
             <MuteMusicIcon muted={musicMuted} />
           </SettingsButton>
-          <SettingsButton onPress={() => toggleSfx()}>
+          <SettingsButton onPress={toggleSfx}>
             <MuteSfxIcon muted={sfxMuted} />
           </SettingsButton>
-          <SettingsButton onPress={() => toggleColorblind()}>
+          <SettingsButton onPress={toggleColorblind}>
             <ColorblindIcon colorblind={colorblind} />
           </SettingsButton>
         </SettingsButtonsContainer>
@@ -85,7 +85,7 @@ const SettingsModal: FunctionComponent<SettingsModalProps> = (props) => {
           <Button title={'Skip level'} onPress={props.onNextLevel} />
           <Text>{'\n'}</Text>
         </>)}
-        <Button title={'Reset settings'} onPress={() => resetSettings()} />
+        <Button title={'Clear settings'} onPress={clearSettings} />
       </TouchableOpacity>
     </FullScreenModal>
   );

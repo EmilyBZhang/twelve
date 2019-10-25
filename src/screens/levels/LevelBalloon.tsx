@@ -2,6 +2,7 @@
 // Rising will cause the balloons to reach a certain point on the screen, where they'll pop
 // TODO: Keep entities even if the app goes out of focus
 // TODO: Add types
+// IDEA: MaterialCommunityIcons balloon
 
 import React, { useMemo, useRef, useState, useEffect, FunctionComponent } from 'react';
 import { Alert, Animated, Button, Easing, PanResponder, View } from 'react-native';

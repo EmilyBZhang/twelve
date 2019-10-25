@@ -1,5 +1,8 @@
 export type CoinColor = 'blue' | 'yellow' | 'green' | 'red';
 
+/**
+ * Color constants for the project
+ */
 const colors = {
   foreground: 'indigo',
   background: 'cyan',
@@ -16,9 +19,22 @@ const colors = {
 
 export default colors;
 
+/**
+ * underlayColor prop for TouchableHighlight with a given CoinColor
+ */
 export const coinUnderlayColors = {
   [colors.coin]: colors.coinUnderlay,
   [colors.orderedCoin]: colors.orderedCoinUnderlay,
   [colors.selectCoin]: colors.selectCoinUnderlay,
   [colors.badCoin]: colors.badCoinUnderlay,
+};
+
+/**
+ * MaterialCommunityIcons name associated with each color
+ */
+export const colorIcons = {
+  [colors.coin]: 'plus', // Maybe cash, checkmark, star, or target/bullseye
+  [colors.orderedCoin]: 'delta', // Maybe nut
+  [colors.selectCoin]: 'asterisk',
+  [colors.badCoin]: 'alert-octagon',
 };

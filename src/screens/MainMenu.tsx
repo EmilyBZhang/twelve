@@ -103,6 +103,10 @@ const goToLevel = (index: number) => NavigationActions.navigate({
   }
 });
 
+const goToCredits = () => NavigationActions.navigate({
+  routeName: 'Credits'
+});
+
 const bgMusic = require('assets/sounds/twelvebars.mp3');
 
 // TODO: fix props
@@ -187,7 +191,7 @@ const MainMenu: Screen = (props) => {
           <MenuButtonText>SELECT LEVEL</MenuButtonText>
         </MenuButton>
         <MenuButton
-          onPress={() => Alert.alert('Credits', 'Nobody\n\n*WHEEZE*')}
+          onPress={() => props.navigation.dispatch(goToCredits())}
         >
           <MenuButtonText>CREDITS</MenuButtonText>
         </MenuButton>

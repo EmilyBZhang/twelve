@@ -136,6 +136,7 @@ const LevelArrows: Level = (props) => {
             found={props.coinsFound.has(index)}
             onPress={() => handleCoinPress(index)}
             label={String(index)}
+            colorHintOpacity={0}
           >
             {icons[index]}
           </Coin>

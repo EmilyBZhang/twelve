@@ -1,5 +1,7 @@
+// TODO: Add colorblind option for this level
+
 import React, { useState, useEffect } from 'react';
-import { Animated, Button, Text, TouchableHighlight, Easing } from 'react-native';
+import { Animated, Button, Easing, View } from 'react-native';
 import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
@@ -15,15 +17,21 @@ const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 
 const coinSize = styles.coinSize * 4;
 
-const CoinContainer = styled(Animated.View)`
+const CoinContainer = styled.View`
+  background-color: white;
   width: ${coinSize}px;
   height: ${coinSize}px;
   border-radius: ${coinSize / 2}px;
 `;
 
-const Coin = styled.TouchableHighlight.attrs({
-  children: <Text></Text>
+const CoinTouchable = styled.TouchableOpacity.attrs({
+  activeOpacity: 0.75
 })`
+  flex: 1;
+  border-radius: ${coinSize / 2}px;
+`;
+
+const Coin = styled(Animated.View)`
   flex: 1;
   border-radius: ${coinSize / 2}px;
 `;
@@ -86,8 +94,10 @@ const LevelFloatingPoint: Level = (props) => {
           onPress={() => props.onNextLevel()}
         />
       </>) : (
-        <CoinContainer style={{backgroundColor: color}}>
-          <Coin onPress={handleCoinPress} />
+        <CoinContainer>
+          <CoinTouchable onPress={handleCoinPress}>
+            <Coin style={{backgroundColor: color}} />
+          </CoinTouchable>
         </CoinContainer>
       )}
     </LevelContainer>

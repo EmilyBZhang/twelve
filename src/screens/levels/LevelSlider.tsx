@@ -63,6 +63,7 @@ const LevelSlider: Level = (props) => {
             hidden={sliderVal === 0}
             found={props.coinsFound.has(index)}
             onPress={() => props.onCoinPress(index)}
+            colorHintOpacity={sliderVal / 255}
           />
         </View>
       ))}
