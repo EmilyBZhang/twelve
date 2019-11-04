@@ -18,6 +18,8 @@ interface LevelNavProps {
   onToggleSettings: () => any;
   onBack: () => any;
   onNextLevel?: () => any;
+  onRestartLevel?: () => any;
+  settingsTitle?: string;
 }
 
 interface ButtonProps {
@@ -50,7 +52,7 @@ const TopTouchable = styled.TouchableOpacity.attrs({
 `;
 
 const LevelNav: FunctionComponent<LevelNavProps> = (props) => {
-  const { settingsOpen, onToggleSettings, onBack } = props;
+  const { settingsTitle, settingsOpen, onToggleSettings, onBack } = props;
 
   const backHandler = useRef<NativeEventSubscription | null>(null);
 
@@ -70,8 +72,10 @@ const LevelNav: FunctionComponent<LevelNavProps> = (props) => {
   return (<>
     <SettingsModal
       visible={settingsOpen}
+      title={settingsTitle}
       onClose={onToggleSettings}
       onNextLevel={props.onNextLevel}
+      onRestartLevel={props.onRestartLevel}
     />
     <ButtonContainer left={0}>
       <TopTouchable onPress={onBack}>

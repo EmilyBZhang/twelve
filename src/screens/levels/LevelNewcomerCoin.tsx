@@ -1,14 +1,29 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, View } from 'react-native';
+import { Animated, Button, View, Easing } from 'react-native';
+import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
 import coinPositions from 'utils/coinPositions';
-import useCongratsMessage from 'hooks/useCongratsMessage';
-import colors from 'assets/colors';
+import { getLevelDimensions } from 'utils/getDimensions';
+import styles from 'assets/styles';
+import colors, { CoinColor } from 'assets/colors';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
+import ColorHint from 'components/ColorHint';
+
+const { width: levelWidth, height: levelHeight } = getLevelDimensions();
+const coinSize = styles.coinSize;
+
+const GhostCoin= styled(Animated.View)`
+  position: absolute;
+  width: ${coinSize}px;
+  height: ${coinSize}px;
+  border-radius: ${coinSize / 2}px;
+  justify-content: center;
+  align-items: center;
+`;
 
 const getNextIndex = (selectedIndices = new Set<number>()) => {
   let tempIndex = Math.floor(Math.random() * (12 - selectedIndices.size));
@@ -19,10 +34,12 @@ const getNextIndex = (selectedIndices = new Set<number>()) => {
 };
 
 const LevelNewcomerCoin: Level = (props) => {
-  const congratsMessage = useCongratsMessage();
   const [visible, setVisible] = useState(false);
   const [showNext, setShowNext] = useState(true);
   const [nextIndex, setNextIndex] = useState(getNextIndex);
+  const [ghostPos, setGhostPos] = useState({left: levelWidth, top: levelHeight});
+  const [ghostColor, setGhostColor] = useState<CoinColor | undefined>(undefined);
+  const [ghostAnim] = useState(new Animated.Value(0));
 
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
@@ -45,31 +62,39 @@ const LevelNewcomerCoin: Level = (props) => {
 
   const handleCoinPress = (index: number) => {
     setShowNext(false);
+    setGhostPos(coinPositions[index]);
     if (index === nextIndex) {
+      props.onCoinPress(index);
       let newIndices = new Set<number>(props.coinsFound);
       newIndices.add(index);
       setNextIndex(() => getNextIndex(newIndices));
-      props.onCoinPress(index);
+      setGhostColor(colors.coin);
     } else {
       setNextIndex(() => getNextIndex());
       props.setCoinsFound(new Set<number>());
+      setGhostColor(colors.badCoin);
     }
+    ghostAnim.setValue(0);
+    Animated.timing(ghostAnim, {
+      toValue: 1,
+      duration: 400,
+      easing: Easing.out(Easing.ease),
+      useNativeDriver: true
+    }).start(() => setGhostColor(undefined));
   };
+
+  const ghostTranslateY = ghostAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, -coinSize]
+  });
+  const ghostOpacity = Animated.subtract(1, ghostAnim);
 
   return (
     <LevelContainer>
       {((visible && showNext) || twelve) && (
         <LevelCounter count={numCoinsFound} />
       )}
-      <LevelText>
-        {twelve ? congratsMessage : '...?'}
-      </LevelText>
-      {twelve && (
-        <Button
-          title={'Next level!'}
-          onPress={() => props.onNextLevel()}
-        />
-      )}
+      <LevelText hidden={twelve}>...?</LevelText>
       {coinPositions.map((coinPosition, index: number) => (
         <View
           key={String(index)}
@@ -86,6 +111,19 @@ const LevelNewcomerCoin: Level = (props) => {
           />
         </View>
       ))}
+      <GhostCoin style={{
+        ...ghostPos,
+        backgroundColor: ghostColor,
+        opacity: ghostColor ? ghostOpacity : 0,
+        transform: [
+          {translateY: ghostTranslateY}
+        ]
+      }}>
+        <ColorHint
+          color={ghostColor}
+          size={coinSize / 2}
+        />
+      </GhostCoin>
     </LevelContainer>
   );
 };

@@ -5,7 +5,6 @@ import styled from 'styled-components/native';
 import { Level } from 'utils/interfaces';
 import getLevelDimensions from 'utils/getDimensions';
 import styles from 'assets/styles';
-import useCongratsMessage from 'hooks/useCongratsMessage';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
@@ -74,8 +73,6 @@ const LevelWindow: Level = (props) => {
   const [windowOffset, setWindowOffset] = useState(0);
   const [translateYAnim] = useState(new Animated.Value(0));
 
-  const congratsMessage = useCongratsMessage();
-
   const panResponder = useMemo(() => PanResponder.create({
     onStartShouldSetPanResponder: (e, gestureState) => true,
     onStartShouldSetPanResponderCapture: (e, gestureState) => true,
@@ -123,38 +120,29 @@ const LevelWindow: Level = (props) => {
   return (
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
-      <LevelText>
-        {twelve ? congratsMessage : hintText}
-      </LevelText>
-      {twelve ? (
-        <Button
-          title={'Next level!'}
-          onPress={() => props.onNextLevel()}
-        />
-      ) : (
-        <WindowFrame>
-          <Window {...movingStyleProp}>
-            {Array.from(Array(4), (_, index) => (
-              <WindowPane key={String(index)}>
-                {renderCoin(index + 8)}
-              </WindowPane>
-            ))}
-          </Window>
-          <Windowsill
-            active={windowsillActive}
-            {...movingStyleProp}
-            {...panResponder.panHandlers}
-          />
-          {coinStyles.map((coinStyle, index: number) => (
-            <View
-              key={String(index)}
-              style={{position: 'absolute', ...coinStyle}}
-            >
-              {renderCoin(index)}
-            </View>
+      <LevelText>{hintText}</LevelText>
+      <WindowFrame>
+        <Window {...movingStyleProp}>
+          {Array.from(Array(4), (_, index) => (
+            <WindowPane key={String(index)}>
+              {renderCoin(index + 8)}
+            </WindowPane>
           ))}
-        </WindowFrame>
-      )}
+        </Window>
+        <Windowsill
+          active={windowsillActive}
+          {...movingStyleProp}
+          {...panResponder.panHandlers}
+        />
+        {coinStyles.map((coinStyle, index: number) => (
+          <View
+            key={String(index)}
+            style={{position: 'absolute', ...coinStyle}}
+          >
+            {renderCoin(index)}
+          </View>
+        ))}
+      </WindowFrame>
     </LevelContainer>
   );
 };

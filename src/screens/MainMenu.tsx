@@ -42,6 +42,16 @@ const TitleImage = styled.Image.attrs({
   height: ${imageHeight};
 `;
 
+const TwelveTitle = styled.Text.attrs({
+  children: 'twelve'
+})`
+  font-size: 54px;
+  font-family: montserrat-black;
+  text-align: center;
+  width: 100%;
+  color: ${colors.foreground};
+`;
+
 const MenuButtons = styled(Animated.View)`
   flex: 1;
   justify-content: center;
@@ -64,6 +74,7 @@ const MenuButton = styled.TouchableHighlight.attrs({
 
 const MenuButtonText = styled.Text`
   font-size: ${(props: MenuButtonTextProps) => props.playButton ? 24 : 16}px;
+  font-family: montserrat;
   text-align: center;
   color: white;
 `;
@@ -135,7 +146,7 @@ const MainMenu: Screen = (props) => {
         Animated.timing(menuOpacityAnim, {
           toValue: 1,
           duration: 2000,
-          useNativeDriver: true
+          // useNativeDriver: true
         }),
         Animated.timing(cornerOpacityAnim, {
           toValue: 1,
@@ -173,8 +184,8 @@ const MainMenu: Screen = (props) => {
 
   return (
     <ScreenContainer style={{justifyContent: 'flex-start'}}>
-      <TitleContainer style={{height: titleHeightAnim}}>
-        <TitleImage />
+      <TitleContainer style={{height: titleHeightAnim, opacity: menuOpacityAnim}}>
+        <TwelveTitle />
       </TitleContainer>
       <MenuButtons
         style={{opacity: menuOpacityAnim}}

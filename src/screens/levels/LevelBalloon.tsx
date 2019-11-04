@@ -14,7 +14,6 @@ import { Level } from 'utils/interfaces';
 import getLevelDimensions from 'utils/getDimensions';
 import coinPositions from 'utils/coinPositions';
 import styles from 'assets/styles';
-import useCongratsMessage from 'hooks/useCongratsMessage';
 import LevelContainer from 'components/LevelContainer';
 import Coin, { CoinProps } from 'components/Coin';
 import LevelText from 'components/LevelText';
@@ -103,8 +102,6 @@ const LevelBalloon: Level = (props) => {
   const gameEngine = useRef<GameEngine | null>(null);
   const world = useMemo(() => initWorld(), []);
   const entities = useRef(world);
-
-  const congratsMessage = useCongratsMessage();
 
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;

@@ -1,20 +1,26 @@
-export type CoinColor = 'blue' | 'yellow' | 'green' | 'red';
+// TODO: Consider adding transparent to CoinColor
+export type CoinColor = 'blue' | 'yellow' | 'green' | 'red' | 'white' | 'black';
 
 /**
  * Color constants for the project
  */
 const colors = {
   foreground: 'indigo',
-  background: 'cyan',
+  background: '#00ffff', // cyan
   foregroundPressed: '#260041',
   coin: 'blue' as CoinColor,
   orderedCoin: 'yellow' as CoinColor,
   selectCoin: 'green' as CoinColor,
   badCoin: 'red' as CoinColor,
+  onCoin: 'white' as CoinColor,
+  offCoin: 'black' as CoinColor,
   coinUnderlay: 'darkblue',
   orderedCoinUnderlay: '#c0c000',
   selectCoinUnderlay: 'darkgreen',
   badCoinUnderlay: 'darkred',
+  onCoinUnderlay: 'lightgray',
+  // TODO: Make offCoin consistent with other coins in that it goes from light to dark
+  offCoinUnderlay: 'darkgray'
 };
 
 export default colors;
@@ -27,14 +33,27 @@ export const coinUnderlayColors = {
   [colors.orderedCoin]: colors.orderedCoinUnderlay,
   [colors.selectCoin]: colors.selectCoinUnderlay,
   [colors.badCoin]: colors.badCoinUnderlay,
+  [colors.onCoin]: colors.onCoinUnderlay,
+  [colors.offCoin]: colors.offCoinUnderlay
 };
 
 /**
  * MaterialCommunityIcons name associated with each color
  */
 export const colorIcons = {
-  [colors.coin]: 'plus', // Maybe cash, checkmark, star, or target/bullseye
-  [colors.orderedCoin]: 'delta', // Maybe nut
+  [colors.coin]: 'plus',
+  [colors.orderedCoin]: 'nut',
   [colors.selectCoin]: 'asterisk',
   [colors.badCoin]: 'alert-octagon',
+  [colors.onCoin]: 'power-on',
+  [colors.offCoin]: 'power-off'
 };
+
+/**
+ * Set of CoinColor colors which are dark
+ */
+export const darkCoinColors = new Set([
+  colors.coin,
+  colors.selectCoin,
+  colors.offCoin
+]);

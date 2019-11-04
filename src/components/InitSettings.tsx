@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { FunctionComponent, useEffect, memo } from 'react';
 import { AsyncStorage } from 'react-native';
 
 import useSettings from 'hooks/useSettings';
@@ -27,14 +27,20 @@ const InitSettings: FunctionComponent = (props) => {
         // Prevent issues if new levels are added or old ones removed
         if ('levelStatus' in settings) {
           const numLevels = levels.length - 1;
-          while (settings.levelStatus.length < numLevels) {
-            settings.levelStatus.push({
-              completed: false,
-              unlocked: settings.levelStatus[settings.length - 1].completed
-            })
-          }
-          if (settings.levelStatus.length > numLevels) {
+          const numSaved = settings.levelStatus.length;
+
+          if (numSaved > numLevels) {
             settings.levelStatus = settings.levelStatus.slice(0, numLevels);
+          } else if (numSaved < numLevels) {
+            const remainingLevels = Array(numLevels - numSaved)
+              .fill({
+                completed: false,
+                unlocked: false
+              });
+            remainingLevels[0].unlocked = (
+              settings.levelStatus[numSaved - 1].completed
+            );
+            settings.levelStatus.push(...remainingLevels);
           }
         }
 
@@ -49,4 +55,4 @@ const InitSettings: FunctionComponent = (props) => {
   return null;
 };
 
-export default InitSettings;
+export default memo(InitSettings);

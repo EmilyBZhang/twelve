@@ -2,13 +2,13 @@ import React, { FunctionComponent, memo } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import useSettings from 'hooks/useSettings';
-import colors, { CoinColor, colorIcons } from 'assets/colors';
+import colors, { CoinColor, colorIcons, darkCoinColors } from 'assets/colors';
 import styles from 'assets/styles';
 
 type IconColor = 'white' | 'black';
 
 interface ColorHintProps {
-  backgroundColor?: CoinColor;
+  color?: CoinColor;
   iconColor?: IconColor;
   size?: number;
   opacity?: number;
@@ -19,14 +19,13 @@ const ColorHint: FunctionComponent<ColorHintProps> = (props) => {
 
   if (!settings.colorblind) return null;
 
-  const darkColor = props.backgroundColor === colors.coin || props.backgroundColor === colors.selectCoin;
   const {
-    backgroundColor = colors.coin,
-    iconColor = darkColor ? 'white' : 'black',
+    color = colors.coin,
+    iconColor = darkCoinColors.has(color) ? 'white' : 'black',
     size = styles.coinSize / 2,
     opacity
   } = props;
-  const iconName = colorIcons[backgroundColor];
+  const iconName = colorIcons[color];
 
   return (
     <MaterialCommunityIcons

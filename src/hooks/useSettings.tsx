@@ -1,8 +1,3 @@
-// TODO: Make this a hook to get user settings (e.g. music muted?) to use on all screens
-// Probably return an object of settings along with a dispatch
-
-// TODO: Probably use Redux to manage this useSettings hook
-
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 
 import * as actions from 'reducers/settings/actions';

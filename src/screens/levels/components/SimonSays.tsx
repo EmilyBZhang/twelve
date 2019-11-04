@@ -4,7 +4,6 @@ import styled from 'styled-components/native';
 
 import { LevelProps } from 'utils/interfaces';
 import { getLevelDimensions } from 'utils/getDimensions';
-import useCongratsMessage from 'hooks/useCongratsMessage';
 import colors, { CoinColor } from 'assets/colors';
 import styles from 'assets/styles';
 import LevelContainer from 'components/LevelContainer';
@@ -77,9 +76,7 @@ const startingIndices = [0, 2, 6];
 const SimonSays: FunctionComponent<SimonSaysProps> = (props) => {
   const { simonDoesNotSay } = props;
   const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound === 12;
 
-  const congratsMessage = useCongratsMessage();
   const [blinkingColors, setBlinkingColors] = useState(true);
   const [iterationsIndex, setIterationsIndex] = useState(0);
   const [colorOrder, setColorOrder] = useState(generateColorOrder());
@@ -143,45 +140,36 @@ const SimonSays: FunctionComponent<SimonSaysProps> = (props) => {
   return (
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
-      {twelve ? (<>
-        <LevelText>
-          {congratsMessage}
-        </LevelText>
-        <Button
-          title={'Next level!'}
-          onPress={() => props.onNextLevel()}
+      <ColorScreen
+        color={colorIndex < 0 ? null : colorOrder[colorIndex]}
+        border={colorIndex >= 0 && negateOrder[colorIndex]}
+      >
+        <ColorHint
+          color={colorOrder[colorIndex]}
+          size={colorScreenSize - colorScreenBorderWidth * 2}
+          opacity={colorIndex === -1 ? 0 : 1}
         />
-      </>) : (<>
-        <ColorScreen
-          color={colorIndex < 0 ? null : colorOrder[colorIndex]}
-          border={colorIndex >= 0 && negateOrder[colorIndex]}
-        >
-          <ColorHint
-            size={colorScreenSize - colorScreenBorderWidth * 2}
-            backgroundColor={colorOrder[colorIndex]}
-            opacity={colorIndex === -1 ? 0 : 1}
-          />
-        </ColorScreen>
-        <CoinListContainer>
-          <FlatList
-            data={coinColors}
-            extraData={[blinkingColors, numCoinsFound]}
-            numColumns={2}
-            keyExtractor={(_, index) => String(index)}
-            renderItem={({ item: coinColor, index }) => (
-              <CoinContainer>
-                <Coin
-                  hidden={blinkingColors}
-                  disabled={blinkingColors}
-                  size={coinSize}
-                  color={coinColor}
-                  onPress={() => handleCoinPress(index)}
-                />
-              </CoinContainer>
-            )}
-          />
-        </CoinListContainer>
-      </>)}
+      </ColorScreen>
+      <CoinListContainer>
+        <FlatList
+          data={coinColors}
+          extraData={[blinkingColors, numCoinsFound]}
+          scrollEnabled={false}
+          numColumns={2}
+          keyExtractor={(_, index) => String(index)}
+          renderItem={({ item: coinColor, index }) => (
+            <CoinContainer>
+              <Coin
+                hidden={blinkingColors}
+                disabled={blinkingColors}
+                size={coinSize}
+                color={coinColor}
+                onPress={() => handleCoinPress(index)}
+              />
+            </CoinContainer>
+          )}
+        />
+      </CoinListContainer>
     </LevelContainer>
   );
 };

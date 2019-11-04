@@ -7,7 +7,6 @@ import { Level } from 'utils/interfaces';
 import coinPositions from 'utils/coinPositions';
 import colors from 'assets/colors';
 import styles from 'assets/styles';
-import useCongratsMessage from 'hooks/useCongratsMessage';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
@@ -101,10 +100,7 @@ const icons = directions.map((direction) => {
 const LevelArrows: Level = (props) => {
   const [nextIndex, setNextIndex] = useState(-1);
 
-  const congratsMessage = useCongratsMessage();
-
   const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound === 12;
 
   const handleCoinPress = (index: number) => {
     if (index === nextIndex || nextIndex === -1) {
@@ -119,13 +115,6 @@ const LevelArrows: Level = (props) => {
   return (
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
-      {twelve && (<>
-        <LevelText>{congratsMessage}</LevelText>
-        <Button
-          title={'Next level!'}
-          onPress={() => props.onNextLevel()}
-        />
-      </>)}
       {coinPositions.map((coinPosition, index: number) => (
         <View
           key={String(index)}

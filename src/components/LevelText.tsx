@@ -5,9 +5,11 @@ import styled from 'styled-components/native';
 import colors from 'assets/colors';
 
 interface LevelTextProps {
-  children: string;
+  children: any;
   color?: string;
   fontSize?: number;
+  fontFamily?: string;
+  hidden?: boolean;
   style?: any;
 }
 
@@ -16,19 +18,28 @@ const StyledText = styled.Text<LevelTextProps>`
   text-align: center;
   color: ${props => props.color};
   font-size: ${props => props.fontSize}px;
-  font-weight: bold;
+  font-family: ${props => props.fontFamily};
+  ${props => props.hidden && 'display: none;'}
 `;
 
 const LevelText: FunctionComponent<LevelTextProps> = (props) => {
-  const color = props.color || colors.foreground;
-  const fontSize = props.fontSize || 32;
+  const {
+    color = colors.foreground,
+    fontSize = 32,
+    fontFamily = 'montserrat-bold',
+    style,
+    hidden,
+    children
+  } = props;
   return (
     <StyledText
       color={color}
       fontSize={fontSize}
-      style={props.style}
+      fontFamily={fontFamily}
+      style={style}
+      hidden={hidden}
     >
-      {props.children}
+      {children}
     </StyledText>
   );
 };

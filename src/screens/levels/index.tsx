@@ -10,10 +10,15 @@ import LevelSimonSays from './LevelSimonSays';
 import LevelArrows from './LevelArrows';
 import LevelFloatingPoint from './LevelFloatingPoint';
 import LevelNewcomerCoin from './LevelNewcomerCoin';
-import LevelClock from './LevelClock';
 import LevelMouseMaze from './LevelMouseMaze';
+import LevelClock from './LevelClock';
+import LevelTwoSliders from './LevelTwoSliders';
+import LevelSlideDown from './LevelSlideDown';
 import LevelSimonDoesNotSay from './LevelSimonDoesNotSay';
 import LevelPiano from './LevelPiano';
+import LevelBipartiteCircuit from './LevelBipartiteCircuit';
+import LevelBinary1 from './LevelBinary1';
+import LevelBinary2 from './LevelBinary2';
 import LevelBalloon from './LevelBalloon';
 
 export default [
@@ -25,11 +30,16 @@ export default [
   LevelWindow,
   LevelSimonSays,
   LevelArrows,
+  LevelBipartiteCircuit,
   LevelFloatingPoint,
   LevelNewcomerCoin,
   LevelMouseMaze,
+  LevelBinary1,
   LevelClock,
+  LevelSlideDown,
+  LevelTwoSliders,
   LevelSimonDoesNotSay,
   LevelPiano,
+  LevelBinary2,
   LevelBalloon,
 ] as [LevelSelectType, ...Array<Level>];

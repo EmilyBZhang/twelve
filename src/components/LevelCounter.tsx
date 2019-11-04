@@ -34,7 +34,7 @@ const CounterContainer = styled.View<CounterContainerProps>`
 const CounterText = styled.Text<CounterTextProps>`
   color: ${props => props.color};
   font-size: ${props => props.fontSize}px;
-  font-weight: 800;
+  font-family: montserrat-bold;
   text-align: center;
   width: 100%;
 `;
@@ -62,7 +62,7 @@ const LevelCounter: FunctionComponent<LevelCounterProps> = (props) => {
         fontSize={fontSize}
         style={textStyle}
       >
-        {(count >= 0) ? String(count) : '?'}
+        {count}
       </CounterText>
     </CounterContainer>
   );

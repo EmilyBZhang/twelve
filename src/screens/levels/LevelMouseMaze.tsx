@@ -7,7 +7,6 @@ import styled from 'styled-components/native';
 import { Level } from 'utils/interfaces';
 import { getLevelDimensions } from 'utils/getDimensions';
 import colors from 'assets/colors';
-import useCongratsMessage from 'hooks/useCongratsMessage';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
@@ -124,8 +123,6 @@ const LevelMouseMaze: Level = (props) => {
   const [cheeseIndices, setCheeseIndices] = useState(cheeseStartIndices);
   const [lastMove, setLastMove] = useState<Direction>('bottom');
 
-  const congratsMessage = useCongratsMessage();
-
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
 
@@ -168,7 +165,7 @@ const LevelMouseMaze: Level = (props) => {
   };
 
   const NavCoin = styled(Coin).attrs((props: HasDirection) => ({
-    color: colors.selectCoin,
+    color: colors.orderedCoin,
     disabled: twelve,
     onPress: () => handleCoinPress(props.direction)
   }))<HasDirection>``;
@@ -176,13 +173,6 @@ const LevelMouseMaze: Level = (props) => {
   return (
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
-      {twelve && (<>
-        <LevelText>{congratsMessage}</LevelText>
-        <Button
-          title={'Next level!'}
-          onPress={() => props.onNextLevel()}
-        />
-      </>)}
       <NavCoin direction={'top'} />
       <MazeRowContainer>
         <NavCoin direction={'left'} />

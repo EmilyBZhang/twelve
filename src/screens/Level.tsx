@@ -12,6 +12,7 @@ import colors from 'assets/colors';
 
 import LevelNav from 'components/LevelNav';
 import levels from './levels';
+import WinModal from 'components/WinModal';
 
 const LevelSelect = levels[0];
 
@@ -21,6 +22,9 @@ const Level: Screen = (props) => {
   const [selectedIndices, toggleIndex, setSelectedIndices] = useSelectedIndices();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const musicPlayback = useRef<any>(null);
+
+  let levelNum = props.navigation.getParam('level') || 0;
+  if (levelNum >= levels.length) levelNum = 0;
 
   const { completeLevel } = useSettings()[1];
 
@@ -62,6 +66,12 @@ const Level: Screen = (props) => {
     }));
   };
 
+  // TODO: Fix this function if possible, feels unclean
+  const restartLevel = () => {
+    props.navigation.goBack();
+    goToLevel(levelNum);
+  };
+
   const goToMainMenu = useCallback(() => {
     props.navigation.dispatch(NavigationActions.navigate({
       routeName: 'MainMenu'
@@ -70,22 +80,29 @@ const Level: Screen = (props) => {
 
   const goToLevelSelect = useCallback(() => goToLevel(0), []);
 
-  let levelNum = props.navigation.getParam('level') || 0;
-  if (levelNum >= levels.length) levelNum = 0;
-
   const handleNextLevel = useCallback(
-    () => goToLevel(levelNum + 1)
-  , [levelNum]);
+    () => goToLevel(levelNum + 1),
+    [levelNum]
+  );
+
+  const handleRestartLevel = useCallback(
+    () => restartLevel(),
+    [levelNum]
+  );
 
   const handleToggleSettings = useCallback(
-    () => setSettingsOpen(state => !state)
-  , []);
+    () => setSettingsOpen(state => !state),
+    []
+  );
 
   const levelNavProps = {
     settingsOpen,
+    // TODO: Look into NavigationActions.back or props.navigation.goBack
     onBack: (levelNum === 0) ? goToMainMenu : goToLevelSelect,
     onToggleSettings: handleToggleSettings,
-    onNextLevel: handleNextLevel
+    onNextLevel: handleNextLevel,
+    onRestartLevel: handleRestartLevel,
+    ...levelNum && {settingsTitle: `Level ${levelNum}`}
   };
 
   if (levelNum === 0) {
@@ -102,6 +119,10 @@ const Level: Screen = (props) => {
 
   return (<>
     <LevelNav {...levelNavProps} />
+    <WinModal
+      onNextLevel={handleNextLevel}
+      visible={twelve}
+    />
     <LevelX
       coinsFound={selectedIndices}
       onCoinPress={handleCoinPress}

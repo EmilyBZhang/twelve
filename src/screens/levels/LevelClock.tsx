@@ -2,7 +2,6 @@ import React from 'react';
 import { Button, View } from 'react-native';
 
 import { Level } from 'utils/interfaces';
-import useCongratsMessage from 'hooks/useCongratsMessage';
 import colors from 'assets/colors';
 import styles from 'assets/styles';
 import LevelContainer from 'components/LevelContainer';
@@ -22,7 +21,6 @@ const coinPositions = Array.from(Array(12), (_, index) => {
 });
 
 const LevelClock: Level = (props) => {
-  const congratsMessage = useCongratsMessage();
 
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
@@ -42,15 +40,7 @@ const LevelClock: Level = (props) => {
   return (
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
-      <LevelText>
-        {twelve ? congratsMessage : `It's about time!`}
-      </LevelText>
-      {twelve && (
-        <Button
-          title={'Next level!'}
-          onPress={() => props.onNextLevel()}
-        />
-      )}
+      <LevelText>It's about time!</LevelText>
       <Clock>
         {coinPositions.map((coinPosition, index: number) => (
           <View

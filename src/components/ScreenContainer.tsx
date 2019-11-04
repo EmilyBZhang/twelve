@@ -13,6 +13,7 @@ export interface ScreenContainerProps {
   gradientColors?: Array<string>;
 }
 
+// TODO: Consider SafeAreaView
 const Container = styled.View<ScreenContainerProps>`
   flex: 1;
   background-color: ${props => props.color};

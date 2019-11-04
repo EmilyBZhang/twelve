@@ -56,7 +56,7 @@ const Coin: CoinType = (props) => {
       <>
         {!!colorHintOpacity && (
           <ColorHint
-            backgroundColor={color}
+            color={color}
             size={size / 2}
             opacity={colorHintOpacity}
           />

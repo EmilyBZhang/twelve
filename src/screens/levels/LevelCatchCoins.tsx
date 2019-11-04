@@ -1,9 +1,10 @@
+// TODO: Convert animation to an x translation so that useNativeDriver can be true
+
 import React, { useState, useEffect } from 'react';
 import { Animated, Button, Easing, View } from 'react-native';
 
 import { Level } from 'utils/interfaces';
 import { getLevelDimensions } from 'utils/getDimensions';
-import useCongratsMessage from 'hooks/useCongratsMessage';
 import styles from 'assets/styles';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
@@ -18,8 +19,6 @@ const initY = deltaY - styles.coinSize / 2;
 const LevelCatchCoins: Level = (props) => {
   const [coinAnim] = useState(new Animated.Value(-levelWidth));
 
-  const congratsMessage = useCongratsMessage();
-
   useEffect(() => {
     Animated.loop(
       Animated.timing(coinAnim, {
@@ -33,6 +32,7 @@ const LevelCatchCoins: Level = (props) => {
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
 
+  // Convert to be translation rather than layout
   const coinPositions = Array.from(Array(12), (_, index: number) => {
     const rowIndex = Math.floor(index / 3);
     const xVal = Animated.add(coinAnim, (deltaX * (index % 3)));
@@ -46,15 +46,7 @@ const LevelCatchCoins: Level = (props) => {
   return (
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
-      <LevelText>
-        {twelve ? congratsMessage : 'Can you catch them?'}
-      </LevelText>
-      {twelve && (
-        <Button
-          title={'Next level!'}
-          onPress={() => props.onNextLevel()}
-        />
-      )}
+      <LevelText hidden={twelve}>Can you catch them?</LevelText>
       {coinPositions.map((coinPosition, index: number) => (
         <Animated.View
           key={String(index)}

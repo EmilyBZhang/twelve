@@ -21,8 +21,8 @@ const { width: windowWidth, height: windowHeight } = getDimensions();
 const TitleText = styled.Text`
   width: 100%;
   text-align: center;
-  fontSize: 36px;
-  fontWeight: bold;
+  font-size: 36px;
+  font-family: montserrat-extra-bold;
   color: ${colors.foreground};
   margin-top: ${styles.levelNavHeight}px;
   margin-bottom: 12px;
@@ -36,15 +36,16 @@ const SectionContainer = styled.View`
 const SectionHeader = styled.Text`
   width: 100%;
   text-align: center;
-  fontSize: 20px;
-  fontWeight: bold;
+  font-size: 20px;
+  font-family: montserrat-bold;
   color: black;
 `;
 
 const SectionItem = styled.Text`
   width: 100%;
   text-align: center;
-  fontSize: 18px;
+  font-size: 18px;
+  font-family: montserrat;
   color: black;
 `;
 

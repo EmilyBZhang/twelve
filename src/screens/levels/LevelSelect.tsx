@@ -1,6 +1,5 @@
 import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
-import { AsyncStorage, FlatList } from 'react-native';
-import { Octicons } from '@expo/vector-icons';
+import { FlatList } from 'react-native';
 import styled from 'styled-components/native';
 
 import useSettings from 'hooks/useSettings';
@@ -18,7 +17,7 @@ export type LevelSelectType = FunctionComponent<LevelSelectProps>;
 
 const TitleText = styled.Text`
   font-size: 36px;
-  font-weight: 900;
+  font-family: montserrat-extra-bold;
   text-align: center;
   padding-vertical: 64px;
   color: ${colors.foreground};
@@ -53,6 +52,7 @@ const LevelBoxText = styled.Text`
   color: white;
   text-align: center;
   font-size: 36px;
+  font-family: montserrat;
 `;
 
 const levelListStyle = {

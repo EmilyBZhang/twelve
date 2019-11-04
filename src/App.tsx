@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { StatusBar } from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -10,6 +10,8 @@ import Level from 'screens/Level';
 import Credits from 'screens/Credits';
 import colors from 'assets/colors';
 import InitSettings from 'components/InitSettings';
+import InitFonts from 'components/InitFonts';
+import ScreenContainer from 'components/ScreenContainer';
 
 console.disableYellowBox = true;
 
@@ -35,12 +37,19 @@ const AppNavigator = createStackNavigator({
 });
 const AppContainer = createAppContainer(AppNavigator);
 
-const App: FunctionComponent = () => (
-  <Provider store={store}>
-    <InitSettings />
-    <StatusBar hidden />
-    <AppContainer />
-  </Provider>
-);
+const App: FunctionComponent = () => {
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+
+  return (
+    <Provider store={store}>
+      <InitSettings />
+      <InitFonts onLoad={() => setFontsLoaded(true)} />
+      <StatusBar hidden />
+      {fontsLoaded ? (
+        <AppContainer />
+      ) : <ScreenContainer />}
+    </Provider>
+  );
+};
 
 export default App;

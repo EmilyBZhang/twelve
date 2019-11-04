@@ -7,6 +7,7 @@ import { clearSettings } from 'utils/settings';
 import getDimensions from 'utils/getDimensions';
 import colors from 'assets/colors';
 import styles from 'assets/styles';
+import LevelText from 'components/LevelText';
 import MuteMusicIcon from 'components/icons/MuteMusicIcon';
 import MuteSfxIcon from 'components/icons/MuteSfxIcon';
 import ColorblindIcon from 'components/icons/ColorblindIcon';
@@ -15,21 +16,44 @@ const { width: windowWidth, height: windowHeight } = getDimensions();
 
 interface SettingsModalProps {
   onClose: () => any;
+  title?: string;
   visible?: boolean;
   onNextLevel?: () => any;
+  onRestartLevel?: () => any;
 }
 
 const FullScreenModal = styled.View`
   position: absolute;
   top: 0px;
   left: 0px;
-  backgroundColor: #00000080;
+  backgroundColor: #000000C0;
   width: ${windowWidth}px;
   height: ${windowHeight}px;
   margin: 0px;
   z-index: ${styles.levelNavZIndex + 1};
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+`;
+
+const CloseArea = styled.TouchableOpacity`
+  width: 100%;
+  height: 100%;
+  justify-content: flex-start;
+  align-items: center;
+`;
+
+const SettingsTitleContainer = styled.View`
+  width: 100%;
+  padding-vertical: 64px;
+  align-items: center;
+`;
+
+const SettingsText = styled.Text`
+  color: white;
+  text-align: center;
+  font-size: 24px;
+  font-family: montserrat;
+  width: 100%;
 `;
 
 const SettingsButtonsContainer = styled.View`
@@ -56,17 +80,14 @@ const SettingsModal: FunctionComponent<SettingsModalProps> = (props) => {
   ] = useSettings();
 
   if (!props.visible) return null;
+
   return (
     <FullScreenModal>
-      <TouchableOpacity
-        onPress={() => props.onClose()}
-        style={{
-          width: '100%',
-          height: '100%',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
-      >
+      <CloseArea onPress={props.onClose}>
+        <SettingsTitleContainer>
+          {props.title && <LevelText color={'white'}>{props.title}</LevelText>}
+          <SettingsText>Settings</SettingsText>
+        </SettingsTitleContainer>
         <SettingsButtonsContainer>
           <SettingsButton onPress={toggleMusic}>
             <MuteMusicIcon muted={musicMuted} />
@@ -78,15 +99,19 @@ const SettingsModal: FunctionComponent<SettingsModalProps> = (props) => {
             <ColorblindIcon colorblind={colorblind} />
           </SettingsButton>
         </SettingsButtonsContainer>
-        <Text style={{color: 'white', textAlign: 'center', fontSize: 24}}>
+        <SettingsText>
           {'\n'}Press anywhere to close{'\n'}
-        </Text>
+        </SettingsText>
+        {props.onRestartLevel && (<>
+          <Button title={'Restart level'} onPress={props.onRestartLevel} />
+          <Text>{'\n'}</Text>
+        </>)}
         {props.onNextLevel && (<>
           <Button title={'Skip level'} onPress={props.onNextLevel} />
           <Text>{'\n'}</Text>
         </>)}
         <Button title={'Clear settings'} onPress={clearSettings} />
-      </TouchableOpacity>
+      </CloseArea>
     </FullScreenModal>
   );
 };

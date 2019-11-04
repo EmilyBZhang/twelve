@@ -7,7 +7,6 @@ import styled from 'styled-components/native';
 import { Level } from 'utils/interfaces';
 import { getLevelDimensions } from 'utils/getDimensions';
 import { playPiano } from 'utils/playPitch';
-import useCongratsMessage from 'hooks/useCongratsMessage';
 import styles from 'assets/styles';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
@@ -106,8 +105,6 @@ const LevelPiano: Level = (props) => {
   const [songIndex, setSongIndex] = useState(-1);
   const [lambTopAnim] = useState(new Animated.Value(lambInit));
   const [pianoTopAnim] = useState(new Animated.Value(pianoInit));
-  
-  const congratsMessage = useCongratsMessage();
 
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
@@ -166,13 +163,6 @@ const LevelPiano: Level = (props) => {
         count={numCoinsFound}
         position={{top: 0, right: 0}}
       />
-      {twelve && (<>
-        <LevelText>{congratsMessage}</LevelText>
-        <Button
-          title={'Next level!'}
-          onPress={() => props.onNextLevel()}
-        />
-      </>)}
       <Lamb style={{top: lambTopAnim}} />
       <PianoContainer style={{top: pianoTopAnim}}>
         {notes.map((note: string, index: number) => {

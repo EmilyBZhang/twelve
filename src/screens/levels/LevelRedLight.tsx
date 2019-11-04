@@ -3,7 +3,6 @@ import { Button, View } from 'react-native';
 
 import { Level } from 'utils/interfaces';
 import coinPositions from 'utils/coinPositions';
-import useCongratsMessage from 'hooks/useCongratsMessage';
 import colors from 'assets/colors';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
@@ -11,7 +10,6 @@ import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
 
 const LevelRedLight: Level = (props) => {
-  const congratsMessage = useCongratsMessage();
   const [redLight, setRedLight] = useState(false);
 
   const hintMessage = useRef('Easy as pie');
@@ -46,15 +44,7 @@ const LevelRedLight: Level = (props) => {
   return (
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
-      <LevelText>
-        {twelve ? congratsMessage : hintMessage.current}
-      </LevelText>
-      {twelve && (
-        <Button
-          title={'Next level!'}
-          onPress={() => props.onNextLevel()}
-        />
-      )}
+      <LevelText hidden={twelve}>{hintMessage.current}</LevelText>
       {coinPositions.map((_, index: number) => (
         <View
           key={String(index)}
