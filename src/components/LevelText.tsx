@@ -3,6 +3,7 @@ import { Text, View } from 'react-native';
 import styled from 'styled-components/native';
 
 import colors from 'assets/colors';
+import styles from 'assets/styles';
 
 interface LevelTextProps {
   children: any;
@@ -25,7 +26,7 @@ const StyledText = styled.Text<LevelTextProps>`
 const LevelText: FunctionComponent<LevelTextProps> = (props) => {
   const {
     color = colors.foreground,
-    fontSize = 32,
+    fontSize = styles.levelTextSize,
     fontFamily = 'montserrat-bold',
     style,
     hidden,

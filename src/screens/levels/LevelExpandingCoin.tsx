@@ -7,8 +7,11 @@ import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
+import styles from 'assets/styles';
 
-const Level1: Level = (props) => {
+const coinSize = styles.coinSize;
+
+const LevelExpandingCoin: Level = (props) => {
 
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
@@ -16,20 +19,12 @@ const Level1: Level = (props) => {
   return (
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
-      <LevelText hidden={twelve}>twelve</LevelText>
-      {coinPositions.map((coinPosition, index: number) => (
-        <View
-          key={String(index)}
-          style={{position: 'absolute', ...coinPosition}}
-        >
-          <Coin
-            found={props.coinsFound.has(index)}
-            onPress={() => props.onCoinPress(index)}
-          />
-        </View>
-      ))}
+      <Coin
+        onPress={() => props.onCoinPress(numCoinsFound)}
+        size={coinSize * Math.pow(13 / 12, numCoinsFound)}
+      />
     </LevelContainer>
   );
 };
 
-export default Level1;
+export default LevelExpandingCoin;

@@ -20,7 +20,7 @@ const windowsillHeight = 24;
 
 const WindowFrame = styled.View`
   width: ${windowFrameWidth}px;
-  height: ${windowFrameWidth + windowsillHeight}
+  height: ${windowFrameWidth + windowsillHeight}px;
   border: ${windowFrameBorderWidth}px solid brown;
   overflow: hidden;
 `;
@@ -79,7 +79,7 @@ const LevelWindow: Level = (props) => {
     onMoveShouldSetPanResponder: (e, gestureState) => true,
     onMoveShouldSetPanResponderCapture: (e, gestureState) => true,
     onPanResponderTerminationRequest: (e, gestureState) => true,
-    onShouldBlockNativeResponder: (evt, gestureState) => true,
+    onShouldBlockNativeResponder: (e, gestureState) => true,
     onPanResponderGrant: (e, gestureState) => {
       setWindowsillActive(true);
     },

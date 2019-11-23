@@ -19,13 +19,14 @@ const LevelSelect = levels[0];
 const heaven = require('assets/sounds/heaven.mp3');
 
 const Level: Screen = (props) => {
+  
   const [selectedIndices, toggleIndex, setSelectedIndices] = useSelectedIndices();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const musicPlayback = useRef<any>(null);
-
+  
   let levelNum = props.navigation.getParam('level') || 0;
-  if (levelNum >= levels.length) levelNum = 0;
-
+  if (levelNum > levels.length) levelNum = 0;
+  
   const { completeLevel } = useSettings()[1];
 
   const coinsFound = selectedIndices.size;
@@ -80,6 +81,12 @@ const Level: Screen = (props) => {
 
   const goToLevelSelect = useCallback(() => goToLevel(0), []);
 
+  const goToCredits = useCallback(() => {
+    props.navigation.dispatch(NavigationActions.navigate({
+      routeName: 'Credits'
+    }));
+  }, []);
+
   const handleNextLevel = useCallback(
     () => goToLevel(levelNum + 1),
     [levelNum]
@@ -94,6 +101,11 @@ const Level: Screen = (props) => {
     () => setSettingsOpen(state => !state),
     []
   );
+
+  if (levelNum === levels.length) {
+    goToCredits();
+    return null;
+  }
 
   const levelNavProps = {
     settingsOpen,

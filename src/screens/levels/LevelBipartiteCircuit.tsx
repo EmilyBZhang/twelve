@@ -10,6 +10,7 @@ import colors from 'assets/colors';
 import styles from 'assets/styles';
 import { BitColor } from './components/LevelBinary';
 import { calcPositions } from 'utils/coinPositions';
+import { flatten } from 'utils/arrays';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
@@ -34,12 +35,12 @@ const circuitMap = [
   [7]
 ];
 
-const linePositions = circuitMap.map((outputs, inIndex) => outputs.map((out) => ({
+const linePositions = flatten(circuitMap.map((outputs, inIndex) => outputs.map((out) => ({
   x1: inIndex * xGap + 1,
   y1: 0,
   x2: (out - 4) * xGap + 1,
   y2: yGap
-}))).reduce((accum, lines) => accum.concat(lines), []);
+}))));
 
 const CircuitSvgContainer = styled(Animated.View)`
   position: absolute;

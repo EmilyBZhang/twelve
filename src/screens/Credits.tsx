@@ -30,7 +30,8 @@ const TitleText = styled.Text`
 
 const SectionContainer = styled.View`
   width: 100%;
-  margin-vertical: 12px;
+  margin-top: 12px;
+  margin-bottom: 12px;
 `;
 
 const SectionHeader = styled.Text`
@@ -62,7 +63,8 @@ const BadgeRow = styled.View`
 `;
 
 const BadgeLink = styled.TouchableOpacity`
-  margin-horizontal: 12px;
+  margin-left: 12px;
+  margin-right: 12px;
   justify-content: center;
   align-items: center;
 `;

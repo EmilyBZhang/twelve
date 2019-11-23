@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useState, useCallback } from 'react';
 import { StatusBar } from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -37,13 +37,16 @@ const AppNavigator = createStackNavigator({
 });
 const AppContainer = createAppContainer(AppNavigator);
 
+// TODO: Consider keeping the twelve logo while the fonts are loading, or change the splash image to be blank
 const App: FunctionComponent = () => {
   const [fontsLoaded, setFontsLoaded] = useState(false);
+
+  const initFonts = useCallback(() => setFontsLoaded(true), []);
 
   return (
     <Provider store={store}>
       <InitSettings />
-      <InitFonts onLoad={() => setFontsLoaded(true)} />
+      <InitFonts onLoad={initFonts} />
       <StatusBar hidden />
       {fontsLoaded ? (
         <AppContainer />

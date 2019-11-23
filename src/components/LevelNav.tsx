@@ -31,10 +31,10 @@ const ButtonContainer = styled.View<ButtonProps>`
   position: absolute;
   top: 0px;
   ${props => (props.left !== undefined) ? (
-      `left: ${props.left * styles.levelNavHeight}`
+      `left: ${props.left * styles.levelNavHeight}px;`
     ) : (
-      `right: ${props.right! * styles.levelNavHeight}`
-  )}px;
+      `right: ${props.right! * styles.levelNavHeight}px;`
+  )}
   z-index: 1728;
 `;
 

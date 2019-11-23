@@ -2,6 +2,7 @@ import React, { FunctionComponent } from 'react';
 import { Text, Modal, View, TouchableOpacity, Button } from 'react-native';
 import styled from 'styled-components/native';
 
+import levels from 'screens/levels';
 import useSettings from 'hooks/useSettings';
 import { clearSettings } from 'utils/settings';
 import getDimensions from 'utils/getDimensions';
@@ -26,7 +27,7 @@ const FullScreenModal = styled.View`
   position: absolute;
   top: 0px;
   left: 0px;
-  backgroundColor: #000000C0;
+  background-color: #000000c0;
   width: ${windowWidth}px;
   height: ${windowHeight}px;
   margin: 0px;
@@ -44,7 +45,8 @@ const CloseArea = styled.TouchableOpacity`
 
 const SettingsTitleContainer = styled.View`
   width: 100%;
-  padding-vertical: 64px;
+  padding-top: 64px;
+  padding-bottom: 64px;
   align-items: center;
 `;
 
@@ -76,10 +78,14 @@ const SettingsButton = styled.TouchableHighlight.attrs({
 const SettingsModal: FunctionComponent<SettingsModalProps> = (props) => {
   const [
     { musicMuted, sfxMuted, colorblind },
-    { toggleMusic, toggleSfx, toggleColorblind }
+    { toggleMusic, toggleSfx, toggleColorblind, completeLevel }
   ] = useSettings();
 
   if (!props.visible) return null;
+
+  const handlePassAllLevels = () => {
+    levels.forEach((_, index) => index && completeLevel(index));
+  };
 
   return (
     <FullScreenModal>
@@ -110,6 +116,7 @@ const SettingsModal: FunctionComponent<SettingsModalProps> = (props) => {
           <Button title={'Skip level'} onPress={props.onNextLevel} />
           <Text>{'\n'}</Text>
         </>)}
+        <Button title={'Pass all levels'} onPress={handlePassAllLevels} />
         <Button title={'Clear settings'} onPress={clearSettings} />
       </CloseArea>
     </FullScreenModal>

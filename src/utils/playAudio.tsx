@@ -28,7 +28,18 @@ export const changePlaybackOptions = ({ getState }: MiddlewareArg) => (
   }
 );
 
-const playAudio = async (sound: PlaybackSource, setMusicPlayback?: (res: any) => any, options?: PlaybackStatusToSet) => {
+export const playAudioWithPreload = async (name: string, sound: PlaybackSource, setSoundPlayback?: (res: any) => any, options?: PlaybackStatusToSet) => {
+  // TODO: Make this function
+};
+
+/**
+ * Play an audio file asynchronously.
+ * 
+ * @param sound Audio file to play
+ * @param setSoundPlayback Optional callback to save a reference to the sound playback
+ * @param options Options for playing the sound, as specified in the initialStatus param for Audio.Sound.createAsync()
+ */
+export const playAudio = async (sound: PlaybackSource, setSoundPlayback?: (res: any) => any, options?: PlaybackStatusToSet) => {
   const initialStatus = {
     ...defaultOptions,
     ...options
@@ -40,14 +51,14 @@ const playAudio = async (sound: PlaybackSource, setMusicPlayback?: (res: any) =>
     res.sound.setOnPlaybackStatusUpdate(status => {
       // @ts-ignore
       if (!status.didJustFinish) {
-        if (setMusicPlayback) setMusicPlayback(res);
+        if (setSoundPlayback) setSoundPlayback(res);
         return;
       };
       if (!initialStatus.isLooping) {
-        res.sound.unloadAsync().catch((err: any) => console.warn(err + ' line 20'));
+        res.sound.unloadAsync().catch((err: any) => console.warn(err + ' CTRL-SHIFT-F UNLOADASYNCERROR'));
       }
     });
-  }).catch(err => console.warn(err + ' line 22'));
+  }).catch(err => console.warn(err + ' CTRL-SHIFT-F AUDIOCREATEASYNCERROR'));
 };
 
 export default playAudio;

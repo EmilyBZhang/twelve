@@ -20,7 +20,7 @@ const colors = {
   badCoinUnderlay: 'darkred',
   onCoinUnderlay: 'lightgray',
   // TODO: Make offCoin consistent with other coins in that it goes from light to dark
-  offCoinUnderlay: 'darkgray'
+  offCoinUnderlay: 'darkgray',
 };
 
 export default colors;

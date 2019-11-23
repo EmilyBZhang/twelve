@@ -8,7 +8,6 @@ import colors, { CoinColor } from 'assets/colors';
 import styles from 'assets/styles';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
-import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
 import ColorHint from 'components/ColorHint';
 
@@ -75,7 +74,9 @@ const startingIndices = [0, 2, 6];
 
 const SimonSays: FunctionComponent<SimonSaysProps> = (props) => {
   const { simonDoesNotSay } = props;
+  
   const numCoinsFound = props.coinsFound.size;
+  const twelve = numCoinsFound === 12;
 
   const [blinkingColors, setBlinkingColors] = useState(true);
   const [iterationsIndex, setIterationsIndex] = useState(0);
@@ -147,7 +148,7 @@ const SimonSays: FunctionComponent<SimonSaysProps> = (props) => {
         <ColorHint
           color={colorOrder[colorIndex]}
           size={colorScreenSize - colorScreenBorderWidth * 2}
-          opacity={colorIndex === -1 ? 0 : 1}
+          opacity={(colorIndex === -1 || twelve) ? 0 : 1}
         />
       </ColorScreen>
       <CoinListContainer>

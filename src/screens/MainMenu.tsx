@@ -1,8 +1,8 @@
 // TODO: Move playAudio to a separate component which will be included in App.tsx
 // This should be done after user settings are stored and the useSettings hook is made
 
-import React, { useEffect, useRef, useState } from 'react';
-import { Alert, Animated } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Alert, Animated, Share } from 'react-native';
 import { MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
 import { NavigationActions } from 'react-navigation';
@@ -15,6 +15,7 @@ import colors from 'assets/colors';
 import ScreenContainer from 'components/ScreenContainer';
 import MuteMusicIcon from 'components/icons/MuteMusicIcon';
 import MuteSfxIcon from 'components/icons/MuteSfxIcon';
+import SettingsModal from 'components/SettingsModal';
 
 const { width: windowWidth, height: windowHeight } = getDimensions();
 const imageHeight = windowWidth * 81 / 790;
@@ -95,10 +96,10 @@ const CornerButton = styled.TouchableHighlight.attrs({
   border: 1px solid ${colors.foreground};
   position: absolute;
   ${(props: CornerButtonProps) => props.left !== undefined ? (
-      `left: ${8 + props.left * 48}`
+      `left: ${8 + props.left * 48}px;`
     ) : (
-      `right: ${8 + props.right! * 48}`
-  )}px;
+      `right: ${8 + props.right! * 48}px;`
+  )}
   bottom: 8px;
   width: 40px;
   height: 40px;
@@ -122,6 +123,7 @@ const bgMusic = require('assets/sounds/twelvebars.mp3');
 
 // TODO: fix props
 const MainMenu: Screen = (props) => {
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [titleHeightAnim] = useState(new Animated.Value(titleHeightInit));
   const [menuOpacityAnim] = useState(new Animated.Value(0));
   // TODO: Fix the corner buttons
@@ -130,7 +132,7 @@ const MainMenu: Screen = (props) => {
   const musicPlayback = useRef<any>(null);
 
   const [
-    { musicMuted, sfxMuted, settingsReady },
+    { musicMuted, sfxMuted, settingsReady, levelStatus },
     { toggleMusic, toggleSfx }
   ] = useSettings();
 
@@ -174,22 +176,43 @@ const MainMenu: Screen = (props) => {
     }
   }, [musicMuted, settingsReady])
 
-  const handleMuteMusicPress = () => {
+  const handleMuteMusicPress = useCallback(() => {
     toggleMusic();
-  };
+  }, []);
 
-  const handleMuteSfxPress = () => {
+  const handleMuteSfxPress = useCallback(() => {
     toggleSfx();
-  };
+  }, []);
+
+  const handleToggleSettings = useCallback(() => {
+    setSettingsOpen(state => !state);
+  }, [])
+
+  const handleShare = useCallback(() => {
+    const numLevelsCompleted = levelStatus.reduce(
+      (accum, level) => accum + (level.completed ? 1 : 0),
+      0
+    );
+    Share.share({
+      title: 'Try Twelve!',
+      message: `I've solved ${numLevelsCompleted} level${(numLevelsCompleted === 1) ? '' : 's'} in Twelve! How many can you solve? https://expo.io/@bradonzhang/twelve`,
+      url: 'https://expo.io/@bradonzhang/twelve'
+    });
+  }, []);
 
   return (
     <ScreenContainer style={{justifyContent: 'flex-start'}}>
+      <SettingsModal
+        visible={settingsOpen}
+        onClose={handleToggleSettings}
+      />
       <TitleContainer style={{height: titleHeightAnim, opacity: menuOpacityAnim}}>
         <TwelveTitle />
       </TitleContainer>
       <MenuButtons
         style={{opacity: menuOpacityAnim}}
       >
+        {/* TODO: Move all props.navigation.dispatch into the usecallback */}
         <MenuButton
           playButton
           onPress={() => props.navigation.dispatch(goToLevel(1))}
@@ -208,13 +231,13 @@ const MainMenu: Screen = (props) => {
         </MenuButton>
         <CornerButton
           left={0}
-          onPress={() => Alert.alert('Settings', `You think a game should have settings?\n\nHA HA HA`)}
+          onPress={handleToggleSettings}
         >
           <Octicons name={'gear'} size={24} color={'white'} />
         </CornerButton>
         <CornerButton
           left={1}
-          onPress={() => Alert.alert('Share twelve', `I'm glad you want to share the nothing that is on this app`)}
+          onPress={handleShare}
         >
           <MaterialCommunityIcons name={'share-variant'} size={24} color={'white'} />
         </CornerButton>

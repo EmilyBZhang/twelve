@@ -2,6 +2,7 @@ import React, { FunctionComponent, memo } from 'react';
 import styled from 'styled-components/native';
 
 import colors from 'assets/colors';
+import styles from 'assets/styles';
 
 interface LevelCounterProps {
   count: number;
@@ -45,7 +46,7 @@ const LevelCounter: FunctionComponent<LevelCounterProps> = (props) => {
   const {
     position = defaultPosition,
     color = colors.coin,
-    fontSize = 32,
+    fontSize = styles.levelTextSize,
     count,
     textStyle
   } = props;
