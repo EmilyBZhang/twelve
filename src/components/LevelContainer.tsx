@@ -23,15 +23,19 @@ const Buffer = styled.View<LevelContainerProps>`
 
 const LevelContainer: FunctionComponent<LevelContainerProps> = (props) => {
   const {
-    color = colors.background,
     gradientColors,
     style,
     children,
     transparentBuffer
   } = props;
+
+  const bufferColor = props.color || (
+    (gradientColors && gradientColors[0]) || colors.background
+  );
+
   return (<>
     <Buffer
-      color={color}
+      color={bufferColor}
       transparentBuffer={transparentBuffer}
     />
     <ScreenContainer

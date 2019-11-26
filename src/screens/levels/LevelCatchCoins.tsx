@@ -5,6 +5,7 @@ import { Animated, Button, Easing, View } from 'react-native';
 
 import { Level } from 'utils/interfaces';
 import { getLevelDimensions } from 'utils/getDimensions';
+import coinPositions from 'utils/coinPositions';
 import styles from 'assets/styles';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
@@ -17,31 +18,26 @@ const deltaY = levelHeight / 5;
 const initY = deltaY - styles.coinSize / 2;
 
 const LevelCatchCoins: Level = (props) => {
-  const [coinAnim] = useState(new Animated.Value(-levelWidth));
+  const [coinAnim] = useState(new Animated.Value(-1));
 
   useEffect(() => {
     Animated.loop(
       Animated.timing(coinAnim, {
-        toValue: levelWidth,
+        toValue: 1,
         easing: Easing.linear,
         duration: 10000,
+        useNativeDriver: true
       })
     ).start();
   }, []);
 
+  const calcTranslation = (index: number) => {
+    const factor = levelWidth * (((index % 6) < 3) ? 1 : -1);
+    return Animated.multiply(coinAnim, factor);
+  };
+
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
-
-  // Convert to be translation rather than layout
-  const coinPositions = Array.from(Array(12), (_, index: number) => {
-    const rowIndex = Math.floor(index / 3);
-    const xVal = Animated.add(coinAnim, (deltaX * (index % 3)));
-    const xProp = (rowIndex % 2 === 0) ? {left: xVal} : {right: xVal};
-    return {
-      ...xProp,
-      top: initY + deltaY * rowIndex
-    };
-  });
 
   return (
     <LevelContainer>
@@ -50,7 +46,11 @@ const LevelCatchCoins: Level = (props) => {
       {coinPositions.map((coinPosition, index: number) => (
         <Animated.View
           key={String(index)}
-          style={{position: 'absolute', ...coinPosition}}
+          style={{
+            ...coinPosition,
+            position: 'absolute',
+            transform: [{translateX: calcTranslation(index)}]
+          }}
         >
           <Coin
             found={props.coinsFound.has(index)}

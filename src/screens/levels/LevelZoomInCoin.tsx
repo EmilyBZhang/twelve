@@ -26,7 +26,6 @@ const Container = styled(Animated.View)`
 
 const minScale = 2 / levelWidth;
 const maxScale = 1;
-console.log(`Min: ${minScale}`);
 
 const calcBoundedScale = (scale: number) => {
   return Math.min(maxScale, Math.max(minScale, scale));

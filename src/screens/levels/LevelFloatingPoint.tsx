@@ -51,9 +51,11 @@ const LevelFloatingPoint: Level = (props) => {
   const [redOpacity, setRedOpacity] = useState(0);
   const [redOpacityAnim] = useState(new Animated.Value(redOpacity));
   
-  redOpacityAnim.addListener(({ value }) => setRedOpacity(value));
-
+  
   useEffect(() => {
+    const listener = redOpacityAnim.addListener(
+      ({ value }) => setRedOpacity(value)
+    );
     Animated.loop(
       Animated.sequence([
         Animated.timing(redOpacityAnim, {
@@ -68,6 +70,7 @@ const LevelFloatingPoint: Level = (props) => {
         })
       ])
     ).start();
+    return () => redOpacityAnim.removeListener(listener);
   }, [])
   
   const twelve = numCoinsFound === 12;

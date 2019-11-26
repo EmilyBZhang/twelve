@@ -15,8 +15,16 @@ import { Screen } from 'utils/interfaces';
 import getDimensions from 'utils/getDimensions';
 import ScreenContainer from 'components/ScreenContainer';
 import LevelNav from 'components/LevelNav';
+import FallingCoins from 'components/FallingCoins';
 
 const { width: windowWidth, height: windowHeight } = getDimensions();
+
+const FallingCoinsContainer = styled.View`
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: -1;
+`;
 
 const TitleText = styled.Text`
   width: 100%;
@@ -95,6 +103,8 @@ const Credits: Screen = (props) => {
 
   // scrollAnim.addListener(({ value }) => setScrollValue(value));
 
+  const animateBg = props.navigation.getParam('animateBg') || false;
+
   const goToMainMenu = useCallback(() => {
     props.navigation.dispatch(NavigationActions.navigate({
       routeName: 'MainMenu'
@@ -129,6 +139,9 @@ const Credits: Screen = (props) => {
   return (
     <ScreenContainer>
       <LevelNav {...levelNavProps} />
+      <FallingCoinsContainer>
+        <FallingCoins active={animateBg} />
+      </FallingCoinsContainer>
       <FlatList
         // ref={ref => creditsList.current = ref}
         // onLayout={e => setCreditsHeight(e.nativeEvent.layout.height)} Does not work

@@ -1,0 +1,141 @@
+// TODO: Make some coins red coins
+// TODO: Change animation to be a "popcorn" effect from the bottom
+// TODO: Add ash-falling animation (similar to snowing)
+// TODO: Add volcano image that the coins spawn out of (z-index 1)
+
+import React, { useEffect, useRef, useState, FunctionComponent } from 'react';
+import { Animated, Easing } from 'react-native';
+import styled from 'styled-components/native';
+
+import { Level } from 'utils/interfaces';
+import getDimensions, { getLevelDimensions } from 'utils/getDimensions';
+import { randInt, randFloat, bernoulli } from 'utils/random';
+import styles from 'assets/styles';
+import LevelContainer from 'components/LevelContainer';
+import Coin from 'components/Coin';
+import LevelText from 'components/LevelText';
+import LevelCounter from 'components/LevelCounter';
+import colors from 'assets/colors';
+
+const { width: windowWidth, height: windowHeight } = getDimensions();
+const { width: levelWidth, height: levelHeight } = getLevelDimensions();
+
+// const deltaX = levelWidth / 13;
+// const initX = deltaX - styles.coinSize;
+// const initY = -styles.levelNavHeight - styles.coinSize;
+const initX = (levelWidth - styles.coinSize) / 2;
+const initY = levelHeight * 2 / 3;
+
+const coinPosition = {
+  position: 'absolute',
+  top: initY,
+  left: initX
+};
+
+const generateInitOffsets = () => (
+  Array.from(Array(12), () => new Animated.Value(0))
+);
+
+const Volcano = styled.Image.attrs({
+  source: require('assets/images/volcano.png'),
+  resizeMode: 'stretch'
+})`
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  width: ${levelWidth}px;
+  height: ${levelHeight - initY}px;
+`;
+
+const counterPosition = {top: 0};
+
+const LevelVolcano: Level = (props) => {
+  const [xOffsets] = useState(generateInitOffsets);
+  const [yOffsets] = useState(generateInitOffsets);
+  const loopAnim = useRef(true);
+
+  useEffect(() => {
+    if (!loopAnim.current) return;
+    const animCoin = (yOffset: Animated.Value, index: number) => {
+      const xOffset = xOffsets[index];
+      const factor = randFloat(1, 2);
+      const duration = 2000 * factor;
+      const xSign = bernoulli() ? 1 : -1;
+      const minX = (levelWidth + styles.coinSize) / 2;
+      Animated.parallel([
+        Animated.timing(xOffset, {
+          toValue: xSign * randInt(minX, minX * 2),
+          duration,
+          easing: Easing.linear,
+          useNativeDriver: true
+        }),
+        Animated.sequence([
+          Animated.timing(yOffset, {
+            toValue: -levelHeight / 3 * factor,
+            duration: duration / 2,
+            easing: Easing.out(Easing.quad),
+            useNativeDriver: true
+          }),
+          Animated.timing(yOffset, {
+            toValue: 0,
+            duration: duration / 2,
+            easing: Easing.quad,
+            useNativeDriver: true
+          }),
+        ]),
+      ]).start(() => {
+        if (loopAnim.current) {
+          xOffset.setValue(0);
+          yOffset.setValue(0);
+          animCoin(yOffset, index);
+        }
+      });
+    };
+    yOffsets.forEach(animCoin);
+    return () => {
+      loopAnim.current = false;
+    };
+  }, [loopAnim.current]);
+
+  const numCoinsFound = props.coinsFound.size;
+  const twelve = numCoinsFound === 12;
+
+  const handleCoinPress = (index: number) => {
+    if (props.coinsFound.has(index)) {
+      props.setCoinsFound(new Set());
+    } else {
+      props.onCoinPress(index);
+    }
+  };
+
+  return (
+    <LevelContainer
+      gradientColors={['black', 'darkred', 'darkred', '#322110']}
+    >
+      <LevelCounter
+        count={numCoinsFound}
+        position={counterPosition}
+      />
+      <Volcano />
+      {yOffsets.map((yOffset, index: number) => (
+        <Animated.View
+          key={String(index)}
+          style={{
+            ...coinPosition,
+            transform: [
+              {translateY: yOffset},
+              {translateX: xOffsets[index]},
+            ]
+          }}
+        >
+          <Coin
+            color={props.coinsFound.has(index) ? colors.badCoin : colors.coin}
+            onPress={() => handleCoinPress(index)}
+          />
+        </Animated.View>
+      ))}
+    </LevelContainer>
+  );
+};
+
+export default LevelVolcano;

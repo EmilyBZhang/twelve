@@ -20,10 +20,14 @@ const blackHeight = whiteHeight * 7 / 12;
 const blackWidth = whiteWidth * 137 / 235;
 const lambHeight = levelWidth * 699 / 1000; // Adjust for dimensions of image
 
+const lambInit = -styles.levelNavHeight;
+const pianoInit = lambInit + lambHeight;
+
 const Lamb = styled(Animated.Image).attrs({
   source: require('assets/images/lamb.jpg')
 })`
   position: absolute;
+  top: ${lambInit}px;
   left: 0px;
   width: ${levelWidth}px;
   height: ${lambHeight}px;
@@ -32,6 +36,7 @@ const Lamb = styled(Animated.Image).attrs({
 
 const PianoContainer = styled(Animated.View)`
   position: absolute;
+  top: ${pianoInit}px;
   left: 0px;
   width: ${levelWidth}px;
   height: ${whiteHeight}px;
@@ -81,10 +86,6 @@ const notes = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
 const maryIntervals = [-2, -2, 2, 2, 0, 0, -2, 0, 0, 2, 3, 0];
 const syllables = ['Ma', 'ry', ' had', ' a', ' lit', 'tle', ' lamb,', ' lit', 'tle', ' lamb,', ' lit', 'tle', ' lamb!'];
 
-
-const lambInit = -styles.levelNavHeight;
-const pianoInit = lambInit + lambHeight;
-
 const coinSize = styles.coinSize;
 const coinPositions = notes.map((note: string, index: number) => {
   const whiteKey = note.length === 1;
@@ -103,8 +104,8 @@ const coinPositions = notes.map((note: string, index: number) => {
 const LevelPiano: Level = (props) => {
   const [noteIndex, setNoteIndex] = useState(-1);
   const [songIndex, setSongIndex] = useState(-1);
-  const [lambTopAnim] = useState(new Animated.Value(lambInit));
-  const [pianoTopAnim] = useState(new Animated.Value(pianoInit));
+  const [lambAnim] = useState(() => new Animated.Value(0));
+  const [pianoAnim] = useState(() => new Animated.Value(0));
 
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
@@ -113,25 +114,29 @@ const LevelPiano: Level = (props) => {
   // TODO: Consider whether to push piano off-screen or to make it fade to reveal coins
   const handleWin = () => {
     Animated.sequence([
-      Animated.timing(lambTopAnim, {
-        toValue: lambInit - lambHeight * 2 / 3,
-        duration: 1000
+      Animated.timing(lambAnim, {
+        toValue: -lambHeight * 2 / 3,
+        duration: 1000,
+        useNativeDriver: true
       }),
-      Animated.timing(lambTopAnim, {
-        toValue: lambInit,
+      Animated.timing(lambAnim, {
+        toValue: 0,
         easing: Easing.quad,
-        duration: 600
+        duration: 600,
+        useNativeDriver: true
       }),
       Animated.parallel([
-        Animated.timing(lambTopAnim, {
-          toValue: levelHeight,
+        Animated.timing(lambAnim, {
+          toValue: levelHeight - lambInit,
           easing: Easing.linear,
-          duration: 2000
+          duration: 2000,
+          useNativeDriver: true
         }),
-        Animated.timing(pianoTopAnim, {
-          toValue: levelHeight + lambHeight,
+        Animated.timing(pianoAnim, {
+          toValue: levelHeight + lambHeight - pianoInit,
           easing: Easing.linear,
-          duration: 2000
+          duration: 2000,
+          useNativeDriver: true
         })
       ])
     ]).start();
@@ -163,8 +168,8 @@ const LevelPiano: Level = (props) => {
         count={numCoinsFound}
         position={{top: 0, right: 0}}
       />
-      <Lamb style={{top: lambTopAnim}} />
-      <PianoContainer style={{top: pianoTopAnim}}>
+      <Lamb style={{transform: [{translateY: lambAnim}]}} />
+      <PianoContainer style={{transform: [{translateY: pianoAnim}]}}>
         {notes.map((note: string, index: number) => {
           const whiteKey = note.length === 1;
           if (whiteKey) return (

@@ -1,8 +1,8 @@
 // TODO: For devices without DeviceMotion enabled, there should be an option
 //       to rotate the screen 180 degrees by pinching and rotating the screen
 import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
-import { DeviceMotion, DeviceMotionMeasurement } from 'expo-sensors';
+import { Animated } from 'react-native';
+import { DeviceMotion } from 'expo-sensors';
 import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
@@ -13,31 +13,35 @@ import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
 
-type Rotation = DeviceMotionMeasurement['rotation'];
-
-const initRotation = {alpha: 0, beta: 0, gamma: 0};
-
 const UpsideDownContainer = styled.View`
   flex: 1;
   transform: rotate(180deg) translateY(${styles.levelNavHeight}px);
 `;
 
 const LevelUpsideDown: Level = (props) => {
-  const [rotationData, setRotationData] = useState<Rotation>(initRotation);
-  
-  const { alpha, beta, gamma } = rotationData;
+  const [opacity, setOpacity] = useState(0);
+  const [opacityAnim] = useState(new Animated.Value(opacity));
 
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
 
   useEffect(() => {
     if (twelve) return;
+    const listener = opacityAnim.addListener(({ value }) => setOpacity(value));
     DeviceMotion.setUpdateInterval(1000 / 12);
     const subscription = DeviceMotion.addListener(res => {
-      console.log(res.rotation);
-      if (res.rotation) setRotationData(res.rotation);
+      if (res.rotation) {
+        const opacity = Math.max(0, -res.rotation.beta / Math.PI * 2);
+        Animated.event(
+          [{opacity: opacityAnim}])({opacity},
+          {useNativeDriver: true}
+        );
+      }
     });
-    return subscription.remove;
+    return () => {
+      subscription.remove();
+      opacityAnim.removeListener(listener);
+    };
   }, [twelve]);
 
   return (
@@ -46,15 +50,19 @@ const LevelUpsideDown: Level = (props) => {
         <LevelCounter count={numCoinsFound} />
         <LevelText hidden={twelve}>twelve</LevelText>
         {!twelve && coinPositions.map((coinPosition, index: number) => (
-          <View
+          <Animated.View
             key={String(index)}
-            style={{position: 'absolute', opacity: Math.max(0, -beta / Math.PI * 2), ...coinPosition}}
+            style={{
+              position: 'absolute',
+              opacity: opacityAnim,
+              ...coinPosition
+            }}
           >
             <Coin
-              found={props.coinsFound.has(index) || beta >= 0}
+              found={props.coinsFound.has(index) || opacity === 0}
               onPress={() => props.onCoinPress(index)}
             />
-          </View>
+          </Animated.View>
         ))}
       </LevelContainer>
     </UpsideDownContainer>

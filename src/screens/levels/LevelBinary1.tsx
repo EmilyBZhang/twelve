@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, View, Animated } from 'react-native';
+import { Animated, Easing, View } from 'react-native';
 import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
@@ -22,14 +22,12 @@ const deltaY = levelHeight / 4;
 const initX = deltaX * 2 - coinSize / 2;
 const initY = deltaY - coinSize / 2;
 
-const coinPositions = Array.from(Array(12), (_, i) => {
-  const index = i % 6;
+const bitPositions = Array.from(Array(6), (_, index) => {
   const r = Math.floor(index / 3);
   const c = index % 3;
   return ({
     top: initY + deltaY * r,
-    left: initX + deltaX * c,
-    zIndex: (i < 6) ? 1 : 0
+    left: initX + deltaX * c
   });
 });
 
@@ -38,6 +36,10 @@ const resultBitPositions = Array.from(Array(4), (_, index) => ({
   top: initY + deltaY * 2,
   left: initX + deltaX * (index - 1)
 }));
+
+const coinPositions = [
+  ...resultBitPositions, ...resultBitPositions, ...resultBitPositions
+];
 
 const Plus = styled.View.attrs({
   children: <LevelText>+</LevelText>
@@ -83,54 +85,73 @@ const LevelBinary1: Level = (props) => {
   }
 
   const twelveAchieved = result === 12;
-  const handleCoinPress = twelveAchieved ? props.onCoinPress : handleBitPress;
 
   useEffect(() => {
     if (!twelveAchieved) return;
-    Animated.timing(coinRevealAnim, {
-      toValue: 1,
-      duration: 1000,
-      useNativeDriver: true
-    }).start();
+    Animated.sequence([
+      Animated.timing(coinRevealAnim, {
+        toValue: 1,
+        duration: 1000,
+        easing: Easing.exp,
+        useNativeDriver: true
+      }),
+      Animated.timing(coinRevealAnim, {
+        toValue: 3,
+        duration: 1000,
+        easing: Easing.exp,
+        useNativeDriver: true
+      }),
+      Animated.timing(coinRevealAnim, {
+        toValue: 5,
+        duration: 1000,
+        easing: Easing.exp,
+        useNativeDriver: true
+      }),
+    ]).start();
   }, [twelveAchieved]);
 
   const calcTranslation = (index: number) => {
-    if (index < 6) return 0;
-    const delta = deltaY / 3 * ((index < 9) ? 1 : -1);
-    return Animated.multiply(coinRevealAnim, delta);
+    const inputRange = [0, 1, 3, 5];
+    const outputRange = inputRange.map(num => -num * deltaY / 2);
+    if (index < 4) outputRange[2] = outputRange[1];
+    if (index < 8) outputRange[3] = outputRange[2];
+    return coinRevealAnim.interpolate({inputRange, outputRange});
   };
 
-  const coins = coinPositions.map((coinPosition, index) => {
-    const bitColor = onBits.has(index % 6) ? colors.onCoin : colors.offCoin;
+  const bits = bitPositions.map((bitPosition, index) => {
+    const bitColor = onBits.has(index) ? colors.onCoin : colors.offCoin;
 
     return (
-      <Animated.View
+      <View
         key={String(index)}
         style={{
-          ...coinPosition,
+          ...bitPosition,
           position: 'absolute',
-          transform: [
-            {translateY: calcTranslation(index)}
-          ]
         }}
       >
         <Coin
-          found={props.coinsFound.has(index)}
-          onPress={() => handleCoinPress(index)}
-        >
-          <BitColor style={{
-            backgroundColor: bitColor,
-            opacity: Animated.subtract(1, coinRevealAnim),
-          }}>
-            <ColorHint
-              color={bitColor}
-              size={coinSize / 2}
-            />
-          </BitColor>
-        </Coin>
-      </Animated.View>
+          color={bitColor}
+          disabled={twelveAchieved}
+          onPress={() => handleBitPress(index)}
+        />
+      </View>
     );
   });
+
+  const coins = coinPositions.map((coinPosition, index) => (
+    <Animated.View
+      key={String(index)}
+      style={{
+        ...coinPosition,
+        transform: [{translateY: calcTranslation(index)}]
+      }}
+    >
+      <Coin
+        found={props.coinsFound.has(index)}
+        onPress={() => props.onCoinPress(index)}
+      />
+    </Animated.View>
+  ));
 
   const resultBits = resultBitPositions.map((resultBitPosition, index) => {
     const shift = resultBitPositions.length - index - 1;
@@ -157,9 +178,10 @@ const LevelBinary1: Level = (props) => {
   return (
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
-      {coins}
       <Plus />
       <Line />
+      {bits}
+      {coins}
       {resultBits}
     </LevelContainer>
   );

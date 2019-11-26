@@ -4,13 +4,11 @@ import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
 import { getLevelDimensions } from 'utils/getDimensions';
-import coinPositions from 'utils/coinPositions';
 import useSelectedIndices from 'hooks/useSelectedIndices';
 import styles from 'assets/styles';
 import colors from 'assets/colors';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
-import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
@@ -57,7 +55,7 @@ const targetLetters = [
 ].map(text => text.split(''));
 const targetMessage = 'one+twelve';
 
-const Level1: Level = (props) => {
+const LevelElevenPlusTwo: Level = (props) => {
   const [messageIndex, setMessageIndex] = useState(0);
   const [
     usedLettersIndices,
@@ -95,8 +93,11 @@ const Level1: Level = (props) => {
       {row.map((letter, index) => {
         const showLetter = (letter === ' ') || (messageIndex > numLetters++);
         return (
-          <LetterTouchable disabled>
-            <Letter key={String(index)}>
+          <LetterTouchable
+            key={String(index)}
+            disabled
+          >
+            <Letter>
               {showLetter ? letter : ' '}
             </Letter>
             {(madeMessage && rowIndex === 1) && (<>
@@ -147,4 +148,4 @@ const Level1: Level = (props) => {
   );
 };
 
-export default Level1;
+export default LevelElevenPlusTwo;

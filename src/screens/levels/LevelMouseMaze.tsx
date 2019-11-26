@@ -1,7 +1,7 @@
 // TODO: Mouse fainting animation if fail, play sounds, add animations
 
 import React, { useState } from 'react';
-import { Button, FlatList } from 'react-native';
+import { Animated, Easing, FlatList } from 'react-native';
 import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
@@ -37,12 +37,19 @@ interface HasDirection {
   direction: Direction;
 }
 
-const rotations = {
-  bottom: '0deg',
-  left: '90deg',
-  right: '-90deg',
-  top: '180deg'
-} as {[direction: string]: string};
+enum Directions {
+  bottom,
+  left,
+  top,
+  right
+}
+
+const dirId = {
+  bottom: 0,
+  left: 1,
+  top: 2,
+  right: 3,
+} as {[direction: string]: number};
 
 const mazeStyle = {
   width: mazeSize,
@@ -69,13 +76,12 @@ interface MouseProps {
   rotate: string;
 }
 
-const Mouse = styled.Image.attrs({
+const Mouse = styled(Animated.Image).attrs({
   source: require('assets/images/mouse.png'),
   resizeMode: 'contain'
 })<MouseProps>`
   width: 100%;
   height: 100%;
-  transform: rotate(${props => props.rotate});
 `;
 
 const Cheese = styled.Image.attrs({
@@ -117,11 +123,24 @@ const mazeBorders = mazeBorderCodes.map((direction) => (
 
 const mouseStartIndex = 12;
 const cheeseStartIndices = new Set([4, 7, 15]);
+const startDirection = Directions.top;
+
+const indexToXY = (index: number) => {
+  const r = Math.floor(index / MAZE_COLS);
+  const c = index % MAZE_COLS;
+  return ({
+    x: c * mazeTileSize,
+    y: r * mazeTileSize
+  });
+};
+
+const startXY = indexToXY(mouseStartIndex);
 
 const LevelMouseMaze: Level = (props) => {
   const [mouseIndex, setMouseIndex] = useState(mouseStartIndex);
   const [cheeseIndices, setCheeseIndices] = useState(cheeseStartIndices);
-  const [lastMove, setLastMove] = useState<Direction>('bottom');
+  const [rotateAnim] = useState(() => new Animated.Value(startDirection));
+  const [moveAnim] = useState(() => new Animated.ValueXY(startXY));
 
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
@@ -149,7 +168,8 @@ const LevelMouseMaze: Level = (props) => {
           props.setCoinsFound(new Set<number>());
           setMouseIndex(mouseStartIndex);
           setCheeseIndices(cheeseStartIndices);
-          setLastMove('bottom');
+          rotateAnim.setValue(startDirection);
+          moveAnim.setValue(startXY);
           return;
         }
       }
@@ -160,8 +180,19 @@ const LevelMouseMaze: Level = (props) => {
         setCheeseIndices(newCheeseIndices);
       }
       setMouseIndex(newMouseIndex);
+      Animated.timing(moveAnim, {
+        toValue: indexToXY(newMouseIndex),
+        duration: 125,
+        easing: Easing.linear,
+        useNativeDriver: true
+      }).start();
     }
-    setLastMove(direction);
+    Animated.timing(rotateAnim, {
+      toValue: dirId[direction],
+      duration: 125,
+      easing: Easing.linear,
+      useNativeDriver: true
+    }).start();
   };
 
   const NavCoin = styled(Coin).attrs((props: HasDirection) => ({
@@ -169,6 +200,11 @@ const LevelMouseMaze: Level = (props) => {
     disabled: twelve,
     onPress: () => handleCoinPress(props.direction)
   }))<HasDirection>``;
+
+  const rotate = rotateAnim.interpolate({
+    inputRange: [0, 4],
+    outputRange: ['0deg', '360deg']
+  });
 
   return (
     <LevelContainer>
@@ -186,8 +222,16 @@ const LevelMouseMaze: Level = (props) => {
             contentContainerStyle={mazeStyle}
             renderItem={({ item: borders, index }) => {
               let children = null;
-              if (index === mouseIndex) {
-                children = <Mouse rotate={rotations[lastMove]} />
+              if (index === 0) {
+                const { top: translateY, left: translateX } = moveAnim.getLayout();
+                console.log(translateY, translateX);
+                children = (
+                  <Mouse style={{transform: [
+                    {translateY},
+                    {translateX},
+                    {rotate},
+                  ]}} />
+                )
               } else if (cheeseIndices.has(index)) {
                 children = <Cheese />
               }

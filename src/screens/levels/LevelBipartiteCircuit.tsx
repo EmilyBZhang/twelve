@@ -21,11 +21,19 @@ const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 
 const coinSize = styles.coinSize;
 
-const bitPositions = calcPositions(2, 4);
-const coinPositions = bitPositions.concat(bitPositions);
+const positions = calcPositions(2, 4);
+const bitPositions = positions.slice(0, 4);
+const resultBitPositions = positions.slice(4);
+console.log(bitPositions);
+console.log(resultBitPositions);
+const coinPositions = [
+  ...bitPositions,
+  ...resultBitPositions,
+  ...resultBitPositions
+];
 
-const xGap = coinPositions[1].left - coinPositions[0].left;
-const yGap = coinPositions[4].top - coinPositions[0].top;
+const xGap = positions[1].left - positions[0].left;
+const yGap = positions[4].top - positions[0].top;
 
 // Maps the index of the top row to the bottom
 const circuitMap = [
@@ -58,8 +66,6 @@ const LevelBipartiteCircuit: Level = (props) => {
 
   const [onBits, toggleBit, setBits] = useSelectedIndices();
   const [coinRevealAnim] = useState(new Animated.Value(0));
-  const [circuitOpacityAnim] = useState(new Animated.Value(1));
-  const [coinAnimComplete, setCoinAnimComplete] = useState(false);
 
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
@@ -78,21 +84,21 @@ const LevelBipartiteCircuit: Level = (props) => {
   const twelveAchieved = (
     onBits.has(4) && onBits.has(5) && !onBits.has(6) && !onBits.has(7)
   );
-  const handleCoinPress = twelveAchieved ? props.onCoinPress : handleBitPress;
 
   useEffect(() => {
     if (!twelveAchieved) return;
-    Animated.parallel([
+    Animated.sequence([
       Animated.timing(coinRevealAnim, {
         toValue: 1,
         duration: 1000,
         useNativeDriver: true
       }),
-      Animated.timing(circuitOpacityAnim, {
-        toValue: 0,
-        duration: 1000
-      })
-    ]).start(() => setCoinAnimComplete(true));
+      Animated.timing(coinRevealAnim, {
+        toValue: 2,
+        duration: 1000,
+        useNativeDriver: true
+      }),
+    ]).start();
   }, [twelveAchieved]);
 
   const circuitLines = linePositions.map((linePosition, index) => (
@@ -104,62 +110,84 @@ const LevelBipartiteCircuit: Level = (props) => {
   ));
 
   const calcTranslation = (index: number) => {
-    if (index < 8) return 0;
-    const delta = yGap / 2 * ((index < 12) ? 1 : -1);
-    return Animated.multiply(coinRevealAnim, delta);
+    const inputRange = [0, 1, 2];
+    const down = yGap / 2;
+    const up = -down;
+    const outputRange = [
+      0,
+      (index < 4) ? down : up,
+      (index < 8) ? up : down
+    ];
+    return coinRevealAnim.interpolate({inputRange, outputRange});
   };
 
-  const calcCoinBorderRadius = (index: number) => Animated.multiply(
-    ((index % 8) < 4) ? 1 : coinRevealAnim,
-    coinSize / 2
-  );
-
-  const coins = coinPositions.map((coinPosition, index) => {
-    const bitColor = onBits.has(index % 8) ? colors.onCoin : colors.offCoin;
+  const bits = bitPositions.map((bitPosition, index) => {
+    const bitColor = onBits.has(index) ? colors.onCoin : colors.offCoin;
 
     return (
-      <Animated.View
+      <View
         key={String(index)}
         style={{
-          ...coinPosition,
+          ...bitPosition,
           position: 'absolute',
-          zIndex: (index < 8) ? 1 : 0,
-          backgroundColor: colors.coin,
-          borderRadius: calcCoinBorderRadius(index),
-          transform: [
-            {translateY: calcTranslation(index)}
-          ]
         }}
       >
         <Coin
-          disabled={(index >= 4) && !coinAnimComplete}
-          found={props.coinsFound.has(index) || (coinAnimComplete && (index >= 12))}
-          onPress={() => handleCoinPress(index)}
-        >
-          <BitColor style={{
-            backgroundColor: bitColor,
-            opacity: Animated.subtract(1, coinRevealAnim),
-            borderRadius: calcCoinBorderRadius(index)
-          }}>
-            <ColorHint
-              color={bitColor}
-              size={coinSize / 2}
-            />
-          </BitColor>
-        </Coin>
-      </Animated.View>
+          color={bitColor}
+          disabled={twelveAchieved}
+          onPress={() => handleBitPress(index)}
+        />
+      </View>
+    );
+  });
+
+  const coins = coinPositions.map((coinPosition, index) => (
+    <Animated.View
+      key={String(index)}
+      style={{
+        ...coinPosition,
+        position: 'absolute',
+        transform: [{translateY: calcTranslation(index)}]
+      }}
+    >
+      <Coin
+        found={props.coinsFound.has(index)}
+        onPress={() => props.onCoinPress(index)}
+      />
+    </Animated.View>
+  ));
+
+  const resultBits = resultBitPositions.map((resultBitPosition, index) => {
+    const bitColor = onBits.has(index + 4) ? colors.onCoin : colors.offCoin;
+    return (
+      <BitColor
+        square
+        key={String(index)}
+        style={{
+          backgroundColor: bitColor,
+          position: 'absolute',
+          ...resultBitPosition
+        }}
+      >
+        <ColorHint
+          color={bitColor}
+          size={coinSize / 2}
+        />
+      </BitColor>
     );
   });
 
   return (
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
-      <CircuitSvgContainer opacity={circuitOpacityAnim}>
+      <CircuitSvgContainer>
         <CircuitSvg>
           {circuitLines}
         </CircuitSvg>
       </CircuitSvgContainer>
       {coins}
+      {bits}
+      {resultBits}
     </LevelContainer>
   );
 };

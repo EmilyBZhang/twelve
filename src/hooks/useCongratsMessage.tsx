@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
 
+import { randElem } from 'utils/random';
+
 const messages = [
   'Astounding!',
   'Congratulations!',
@@ -16,8 +18,7 @@ const messages = [
 ];
 
 const getCongratsMessage = () => {
-  const index = Math.floor(Math.random() * messages.length);
-  return messages[index];
+  return randElem(messages);
 };
 
 const useCongratsMessage = () => {

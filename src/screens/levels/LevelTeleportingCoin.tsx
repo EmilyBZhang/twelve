@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
+import { randInt } from 'utils/random';
 import styles from 'assets/styles';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
@@ -23,8 +24,8 @@ const CoinContainer = styled.View<CoinContainerProps>`
 `;
 
 const getRandomCoinPosition = () => {
-  const x = Math.floor(Math.random() * (levelWidth - styles.coinSize));
-  const y = Math.floor(Math.random() * (levelHeight - styles.coinSize));
+  const x = randInt(levelWidth - styles.coinSize);
+  const y = randInt(levelHeight - styles.coinSize);
   return {x, y};
 };
 

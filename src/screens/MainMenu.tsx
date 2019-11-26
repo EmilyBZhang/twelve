@@ -2,7 +2,7 @@
 // This should be done after user settings are stored and the useSettings hook is made
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Alert, Animated, Share } from 'react-native';
+import { Alert, Animated, Platform, Share, View } from 'react-native';
 import { MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
 import { NavigationActions } from 'react-navigation';
@@ -16,11 +16,12 @@ import ScreenContainer from 'components/ScreenContainer';
 import MuteMusicIcon from 'components/icons/MuteMusicIcon';
 import MuteSfxIcon from 'components/icons/MuteSfxIcon';
 import SettingsModal from 'components/SettingsModal';
+import FallingCoins from 'components/FallingCoins';
 
 const { width: windowWidth, height: windowHeight } = getDimensions();
-const imageHeight = windowWidth * 81 / 790;
-const titleHeightInit = (windowHeight + imageHeight) / 2;
-const titleHeightEnd = imageHeight * 4;
+const titleSize = 54;
+const titleHeightInit = (windowHeight + titleSize) / 2;
+const titleHeightEnd = titleSize * 3;
 
 interface MenuButtonProps {
   playButton?: boolean;
@@ -35,18 +36,10 @@ const TitleContainer = styled(Animated.View)`
   justify-content: flex-end;
 `;
 
-const TitleImage = styled.Image.attrs({
-  source: require('assets/images/twelve-padded-title.png'),
-  resizeMode: 'contain'
-})`
-  width: ${windowWidth};
-  height: ${imageHeight};
-`;
-
 const TwelveTitle = styled.Text.attrs({
   children: 'twelve'
 })`
-  font-size: 54px;
+  font-size: ${titleSize}px;
   font-family: montserrat-black;
   text-align: center;
   width: 100%;
@@ -124,6 +117,7 @@ const bgMusic = require('assets/sounds/twelvebars.mp3');
 // TODO: fix props
 const MainMenu: Screen = (props) => {
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [screenActive, setScreenActive] = useState(true);
   const [titleHeightAnim] = useState(new Animated.Value(titleHeightInit));
   const [menuOpacityAnim] = useState(new Animated.Value(0));
   // TODO: Fix the corner buttons
@@ -176,6 +170,30 @@ const MainMenu: Screen = (props) => {
     }
   }, [musicMuted, settingsReady])
 
+  const handlePlayPress = useCallback(() => {
+    setScreenActive(false);
+    let firstNotComplete = 0;
+    for (let i = 0; i < levelStatus.length; ++i) {
+      const level = levelStatus[i];
+      if (!level.completed && level.unlocked) {
+        firstNotComplete = i + 1;
+        break;
+      }
+    }
+    if (firstNotComplete === 0) firstNotComplete = 1;
+    props.navigation.dispatch(goToLevel(firstNotComplete));
+  }, [levelStatus]);
+
+  const handleSelectLevelPress = useCallback(() => {
+    setScreenActive(false);
+    props.navigation.dispatch(goToLevel(0));
+  }, []);
+
+  const handleCreditsPress = useCallback(() => {
+    setScreenActive(false);
+    props.navigation.dispatch(goToCredits());
+  }, []);
+
   const handleMuteMusicPress = useCallback(() => {
     toggleMusic();
   }, []);
@@ -195,7 +213,7 @@ const MainMenu: Screen = (props) => {
     );
     Share.share({
       title: 'Try Twelve!',
-      message: `I've solved ${numLevelsCompleted} level${(numLevelsCompleted === 1) ? '' : 's'} in Twelve! How many can you solve? https://expo.io/@bradonzhang/twelve`,
+      message: `I've solved ${numLevelsCompleted} level${(numLevelsCompleted === 1) ? '' : 's'} in Twelve! How many can you solve?${Platform.OS === 'android' ? ' https://expo.io/@bradonzhang/twelve' : ''}`,
       url: 'https://expo.io/@bradonzhang/twelve'
     });
   }, []);
@@ -206,26 +224,28 @@ const MainMenu: Screen = (props) => {
         visible={settingsOpen}
         onClose={handleToggleSettings}
       />
+      <View style={{position: 'absolute', top: 0, left: 0}}>
+        <FallingCoins active={screenActive} />
+      </View>
       <TitleContainer style={{height: titleHeightAnim, opacity: menuOpacityAnim}}>
         <TwelveTitle />
       </TitleContainer>
       <MenuButtons
         style={{opacity: menuOpacityAnim}}
       >
-        {/* TODO: Move all props.navigation.dispatch into the usecallback */}
         <MenuButton
           playButton
-          onPress={() => props.navigation.dispatch(goToLevel(1))}
+          onPress={handlePlayPress}
         >
           <MenuButtonText playButton>PLAY</MenuButtonText>
         </MenuButton>
         <MenuButton
-          onPress={() => props.navigation.dispatch(goToLevel(0))}
+          onPress={handleSelectLevelPress}
         >
           <MenuButtonText>SELECT LEVEL</MenuButtonText>
         </MenuButton>
         <MenuButton
-          onPress={() => props.navigation.dispatch(goToCredits())}
+          onPress={handleCreditsPress}
         >
           <MenuButtonText>CREDITS</MenuButtonText>
         </MenuButton>

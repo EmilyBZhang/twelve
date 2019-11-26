@@ -31,10 +31,12 @@ import LevelElevenPlusTwo from './LevelElevenPlusTwo';
 import LevelCMYSliders from './LevelCMYSliders';
 import LevelUpsideDown from './LevelUpsideDown';
 import LevelBinary0 from './LevelBinary0';
+import LevelMonths from './LevelMonths';
+import LevelVolcano from './LevelVolcano';
+import LevelDodecahedron from './LevelDodecahedron';
 
 export default [
   LevelSelect,
-  // LevelExpandingCoin,
   Level1,
   LevelSlider,
   LevelCatchCoins,
@@ -42,26 +44,42 @@ export default [
   LevelWindow,
   LevelScratchOff,
   LevelShrinkingCoin,
+  LevelBinary0,
   LevelSimonSays,
   LevelArrows,
-  LevelBipartiteCircuit,
   LevelFloatingPoint,
   LevelMouseMaze,
   LevelSlideDown,
   LevelRGBSliders,
   LevelNewcomerCoin,
-  LevelBinary1,
+  LevelBipartiteCircuit,
   LevelRabbitHole,
   LevelClock,
   Level12Wire,
   LevelTeleportingCoin,
   LevelSimonDoesNotSay,
-  LevelPiano,
-  LevelBinary2,
+  LevelBinary1,
+  LevelElevenPlusTwo,
   LevelZoomInCoin,
   LevelUpsideDown,
   LevelCMYSliders,
-  LevelElevenPlusTwo,
-  LevelBinary0,
+  LevelVolcano,
+  LevelMonths,
+  LevelPiano,
+  LevelBinary2,
+  // LevelDodecahedron,
   // LevelBalloon,
+  // LevelExpandingCoin,
 ] as [LevelSelectType, ...Array<Level>];
+
+// TENTATIVE SCHEMA:
+// level % 12 === 1: some basic twist to level 1
+// level % 12 === 2: color-based level
+// level % 12 === 3: animation-based level
+// level % 12 === 4: something about red/blue coins
+// level % 12 === 5: an odd structure
+// ... others (unless I think of some other pattern)
+// level % 12 === 0: a remix level
+// binary levels should be on powers of two
+// last 12 levels are "challenge" levels or meta levels
+//   should include piano, binary2, settings-to-win, and "scavenger hunt" level

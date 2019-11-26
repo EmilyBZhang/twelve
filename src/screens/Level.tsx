@@ -83,7 +83,10 @@ const Level: Screen = (props) => {
 
   const goToCredits = useCallback(() => {
     props.navigation.dispatch(NavigationActions.navigate({
-      routeName: 'Credits'
+      routeName: 'Credits',
+      params: {
+        animateBg: true
+      }
     }));
   }, []);
 

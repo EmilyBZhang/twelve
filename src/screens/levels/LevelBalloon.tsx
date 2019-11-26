@@ -112,7 +112,7 @@ const LevelBalloon: Level = (props) => {
   }
 
   return (
-    <LevelContainer color={'#0080ff'} gradientColors={['#0080ff', 'cyan']}>
+    <LevelContainer gradientColors={['#0080ff', 'cyan']}>
       <Cloud style={{transform: [{translateX: cloudAnim}]}} />
       <Cloud style={{transform: [{translateX: Animated.add(cloudAnim, levelWidth)}]}} />
       <GameEngine

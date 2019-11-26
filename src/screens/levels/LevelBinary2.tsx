@@ -2,7 +2,7 @@
 // TODO: Change this level to "lock" a few bits (esp the last bits on the first two numbers)
 
 import React, { useState, useEffect } from 'react';
-import { Button, View, Animated } from 'react-native';
+import { Easing, View, Animated } from 'react-native';
 import { Foundation } from '@expo/vector-icons';
 import styled from 'styled-components/native';
 
@@ -26,22 +26,26 @@ const deltaY = levelHeight / 5;
 const initX = deltaX * 4 - coinSize / 2;
 const initY = deltaY - coinSize / 2;
 
-const coinPositions = Array.from(Array(12), (_, i) => {
-  const index = (i < 9) ? i : (i - 9) * 3;
+const bitPositions = Array.from(Array(9), (_, index) => {
   const r = Math.floor(index / 3);
   const c = index % 3;
   return ({
+    position: 'absolute' as 'absolute',
     top: initY + deltaY * r,
-    left: initX + deltaX * c,
-    zIndex: (i < 9) ? 1 : 0
+    left: initX + deltaX * c
   });
 });
 
 const resultBitPositions = Array.from(Array(6), (_, index) => ({
-  position: 'absolute',
+  position: 'absolute' as 'absolute',
   top: initY + deltaY * 3,
   left: initX + deltaX * (index - 3)
 }));
+
+const coinPositions = [
+  ...resultBitPositions,
+  ...resultBitPositions
+];
 
 interface OpProps {
   row: number;
@@ -109,53 +113,64 @@ const LevelBinary: Level = (props) => {
 
   useEffect(() => {
     if (!twelveAchieved) return;
-    Animated.timing(coinRevealAnim, {
-      toValue: 1,
-      duration: 1000,
-      useNativeDriver: true
-    }).start(() => setCoinAnimComplete(true));
+    Animated.sequence([
+      Animated.timing(coinRevealAnim, {
+        toValue: 3,
+        duration: 1000,
+        easing: Easing.elastic(2),
+        useNativeDriver: true
+      }),
+      Animated.timing(coinRevealAnim, {
+        toValue: 5,
+        duration: 1000,
+        easing: Easing.elastic(2),
+        useNativeDriver: true
+      }),
+    ]).start();
   }, [twelveAchieved]);
 
   const calcTranslation = (index: number) => {
-    if (index < 9) return 0;
-    return Animated.multiply(coinRevealAnim, -deltaX);
+    const inputRange = [0, 3, 5];
+    const outputRange = inputRange.map(num => -num * deltaY / 2);
+    if (index < 6) outputRange[2] = outputRange[1];
+    return coinRevealAnim.interpolate({inputRange, outputRange});
   };
 
-  const coins = coinPositions.map((coinPosition, index) => {
-    const bitIndex = (index < 9) ? index : (index - 9) * 3;
-    const bitColor = onBits.has(bitIndex) ? colors.onCoin : colors.offCoin;
+  const bits = bitPositions.map((bitPosition, index) => {
+    const bitColor = onBits.has(index) ? colors.onCoin : colors.offCoin;
+    const locked = lockedBits.has(index);
 
     return (
-      <Animated.View
+      <View
         key={String(index)}
-        style={{
-          ...coinPosition,
-          position: 'absolute',
-          transform: [
-            {translateX: calcTranslation(index)}
-          ]
-        }}
+        style={bitPosition}
       >
         <Coin
-          disabled={lockedBits.has(bitIndex) && !twelveAchieved}
-          found={props.coinsFound.has(index)}
-          onPress={() => handleCoinPress(index)}
+          color={bitColor}
+          disabled={locked || twelveAchieved}
+          onPress={() => handleBitPress(index)}
+          colorHintOpacity={locked ? 0 : 1}
         >
-          <BitColor style={{
-            backgroundColor: bitColor,
-            opacity: Animated.subtract(1, coinRevealAnim),
-          }}>
-            {lockedBits.has(bitIndex) ? <LockIcon /> : (
-              <ColorHint
-                color={bitColor}
-                size={coinSize / 2}
-              />
-            )}
-          </BitColor>
+          {locked && <LockIcon />}
         </Coin>
-      </Animated.View>
+      </View>
     );
   });
+
+  const coins = coinPositions.map((coinPosition, index) => (
+    <Animated.View
+      key={String(index)}
+      style={{
+        ...coinPosition,
+        transform: [{translateY: calcTranslation(index)}]
+      }}
+    >
+      <Coin
+        found={props.coinsFound.has(index)}
+        onPress={() => props.onCoinPress(index)}
+      />
+    </Animated.View>
+  ));
 
   const resultBits = resultBitPositions.map((resultBitPosition, index) => {
     const shift = resultBitPositions.length - index - 1;
@@ -187,12 +202,11 @@ const LevelBinary: Level = (props) => {
   return (
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
-      {coins}
-      {!coinAnimComplete && (<>
-        <Op row={1}>×</Op>
-        <Op row={2}>-</Op>
-      </>)}
+      <Op row={1}>×</Op>
+      <Op row={2}>-</Op>
       <Line />
+      {bits}
+      {coins}
       {resultBits}
     </LevelContainer>
   );

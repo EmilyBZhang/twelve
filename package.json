@@ -20,8 +20,11 @@
     "deep-equal": "^1.1.0",
     "expo": "^35.0.0",
     "expo-av": "^7.0.1",
+    "expo-gl": "~7.0.0",
+    "expo-graphics": "^1.1.0",
     "expo-linear-gradient": "^7.0.1",
     "expo-sensors": "~7.0.0",
+    "expo-three": "^5.2.0",
     "global": "^4.4.0",
     "matter-js": "^0.14.2",
     "mem": "^5.1.1",
@@ -39,7 +42,8 @@
     "react-navigation-stack": "^1.9.3",
     "react-redux": "^7.1.1",
     "redux": "^4.0.4",
-    "styled-components": "^4.4.0"
+    "styled-components": "^4.4.0",
+    "three": "^0.110.0"
   },
   "devDependencies": {
     "@types/jest": "^24.0.18",

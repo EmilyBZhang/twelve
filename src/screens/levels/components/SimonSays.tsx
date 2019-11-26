@@ -4,6 +4,7 @@ import styled from 'styled-components/native';
 
 import { LevelProps } from 'utils/interfaces';
 import { getLevelDimensions } from 'utils/getDimensions';
+import { randElem, bernoulli } from 'utils/random';
 import colors, { CoinColor } from 'assets/colors';
 import styles from 'assets/styles';
 import LevelContainer from 'components/LevelContainer';
@@ -58,19 +59,19 @@ const coinColors = [
 
 const generateColorOrder = () => {
   return Array.from(Array(12), () => (
-    coinColors[Math.floor(Math.random() * coinColors.length)]
+    randElem(coinColors)
   ));
 };
 
 const generateNegateOrder = (simonDoesNotSay: boolean) => {
   return Array.from(Array(12), () => (
-    simonDoesNotSay && (Math.random() < 0.5)
+    simonDoesNotSay && bernoulli()
   ))
 };
 
 // TODO: Consider changing this to [3, 4, 5] and [0, 3, 7]
-const numIterations = [2, 4, 6];
-const startingIndices = [0, 2, 6];
+const numIterations = [2, 4, 5, 1];
+const startingIndices = [0, 2, 6, 11];
 
 const SimonSays: FunctionComponent<SimonSaysProps> = (props) => {
   const { simonDoesNotSay } = props;

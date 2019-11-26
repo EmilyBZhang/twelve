@@ -11,6 +11,7 @@ import Credits from 'screens/Credits';
 import colors from 'assets/colors';
 import InitSettings from 'components/InitSettings';
 import InitFonts from 'components/InitFonts';
+import TitleScreen from 'components/TitleScreen';
 import ScreenContainer from 'components/ScreenContainer';
 
 console.disableYellowBox = true;

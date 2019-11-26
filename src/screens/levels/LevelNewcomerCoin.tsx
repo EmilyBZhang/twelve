@@ -5,6 +5,7 @@ import styled from 'styled-components/native';
 import { Level } from 'utils/interfaces';
 import coinPositions from 'utils/coinPositions';
 import { getLevelDimensions } from 'utils/getDimensions';
+import { randInt } from 'utils/random';
 import styles from 'assets/styles';
 import colors, { CoinColor } from 'assets/colors';
 import LevelContainer from 'components/LevelContainer';
@@ -26,7 +27,7 @@ const GhostCoin= styled(Animated.View)`
 `;
 
 const getNextIndex = (selectedIndices = new Set<number>()) => {
-  let tempIndex = Math.floor(Math.random() * (12 - selectedIndices.size));
+  let tempIndex = randInt(12 - selectedIndices.size);
   for (let i = 0; i <= tempIndex; i++) {
     if (selectedIndices.has(i)) tempIndex++;
   }
