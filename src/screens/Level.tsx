@@ -96,7 +96,7 @@ const Level: Screen = (props) => {
   );
 
   const handleRestartLevel = useCallback(
-    () => restartLevel(),
+    restartLevel,
     [levelNum]
   );
 
@@ -135,6 +135,7 @@ const Level: Screen = (props) => {
   return (<>
     <LevelNav {...levelNavProps} />
     <WinModal
+      level={levelNum}
       onNextLevel={handleNextLevel}
       visible={twelve}
     />

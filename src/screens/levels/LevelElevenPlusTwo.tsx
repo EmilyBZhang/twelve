@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
 import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
@@ -133,17 +132,6 @@ const LevelElevenPlusTwo: Level = (props) => {
         <Letter>=</Letter>
       </LetterTouchable>
       {revealedLetters}
-      {/* {madeMessage && coinPositions.map((coinPosition, index: number) => (
-        <View
-          key={String(index)}
-          style={{position: 'absolute', ...coinPosition}}
-        >
-          <Coin
-            found={props.coinsFound.has(index)}
-            onPress={() => props.onCoinPress(index)}
-          />
-        </View>
-      ))} */}
     </LevelContainer>
   );
 };

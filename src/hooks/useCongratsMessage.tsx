@@ -21,8 +21,8 @@ const getCongratsMessage = () => {
   return randElem(messages);
 };
 
-const useCongratsMessage = () => {
-  const congratsMessage = useMemo<string>(getCongratsMessage, []);
+const useCongratsMessage = (deps?: Array<any>) => {
+  const congratsMessage = useMemo<string>(getCongratsMessage, deps);
   return congratsMessage;
 };
 

@@ -14,7 +14,7 @@ import Coin from 'components/Coin';
 import ScreenContainer from './ScreenContainer';
 
 interface FallingCoinsProps {
-  active?: boolean
+  active?: boolean;
 }
 
 const { width: windowWidth, height: windowHeight } = getDimensions();

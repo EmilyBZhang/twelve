@@ -34,6 +34,7 @@ import LevelBinary0 from './LevelBinary0';
 import LevelMonths from './LevelMonths';
 import LevelVolcano from './LevelVolcano';
 import LevelDodecahedron from './LevelDodecahedron';
+import LevelDraw12 from './LevelDraw12';
 
 export default [
   LevelSelect,
@@ -67,6 +68,7 @@ export default [
   LevelMonths,
   LevelPiano,
   LevelBinary2,
+  LevelDraw12,
   // LevelDodecahedron,
   // LevelBalloon,
   // LevelExpandingCoin,

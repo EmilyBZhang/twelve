@@ -2,26 +2,13 @@ import React, { useMemo, useRef, useState } from 'react';
 import { Animated, Easing, FlatList } from 'react-native';
 import styled from 'styled-components/native';
 
-import WirePart, { wirePartSize, WireType } from './components/Level12Wire/WirePart';
+import WirePart, { wirePartSize, WireType } from './components/WirePart';
 import { Level } from 'utils/interfaces';
-import coinPositions from 'utils/coinPositions';
 import styles from 'assets/styles';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
-import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
-import { getLevelDimensions } from 'utils/getDimensions';
-import colors from 'assets/colors';
 import { arraysEqual } from 'utils/arrays';
-
-const { width: levelWidth, height: levelHeight } = getLevelDimensions();
-
-const footerStyle = {
-  height: wirePartSize,
-  flexDirection: 'row' as 'row',
-  justifyContent: 'space-around' as 'space-around',
-  alignItems: 'center' as 'center'
-};
 
 const WiresContainer = styled.View`
   width: ${wirePartSize * 3}px;
@@ -60,7 +47,10 @@ const targetWireOrientations = [
 ];
 
 const Level12Wire: Level = (props) => {
-  const [wireOrientations, setWireOrientations] = useState(initWireOrientations);
+  const [
+    wireOrientations,
+    setWireOrientations
+  ] = useState(() => initWireOrientations.slice());
   const [coinAnim] = useState(new Animated.Value(0));
   
   const coinsRevealed = useRef(false);
@@ -77,7 +67,6 @@ const Level12Wire: Level = (props) => {
   }
 
   const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound === 12;
 
   const handleOrientationChange = useMemo(() => {
     return wireOrientations.map((_, index) => () => setWireOrientations(state => {
@@ -132,21 +121,6 @@ const Level12Wire: Level = (props) => {
               </WirePartContainer>
             );
           }}
-          // ListFooterComponentStyle={footerStyle}
-          // ListFooterComponent={<>
-          //   {coinsRevealed.current && Array.from(Array(3), (_, index) => (
-          //     <Animated.View
-          //       key={String(index)}
-          //       style={{opacity: coinAnim}}
-          //     >
-          //       <Coin
-          //         hidden={props.coinsFound.has(index + 9)}
-          //         disabled={props.coinsFound.has(index + 9)}
-          //         onPress={() => props.onCoinPress(index + 9)}
-          //       />
-          //     </Animated.View>
-          //   ))}
-          // </>}
         />
       </WiresContainer>
     </LevelContainer>

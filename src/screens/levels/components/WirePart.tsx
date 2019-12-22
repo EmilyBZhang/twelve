@@ -9,7 +9,8 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 export enum WireType {
   line,
   segment,
-  corner
+  corner,
+  joint
 }
 
 interface WirePartProps {
@@ -70,6 +71,9 @@ const WireTypeComponents = {
   [WireType.corner]: (<>
     <WirePartHalf />
     <WirePartHalf direction={'left'} />
+    <WireJoint />
+  </>),
+  [WireType.joint]: (<>
     <WireJoint />
   </>),
 }

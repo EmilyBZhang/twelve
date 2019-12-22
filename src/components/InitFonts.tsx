@@ -12,7 +12,7 @@ const InitFonts: FunctionComponent<InitFontsProps> = (props) => {
       'montserrat-bold': require('assets/fonts/Montserrat-Bold.ttf'),
       'montserrat-extra-bold': require('assets/fonts/Montserrat-ExtraBold.ttf'),
       'montserrat-black': require('assets/fonts/Montserrat-Black.ttf')
-    }).then(() => props.onLoad()).catch(err => console.warn(err));
+    }).then(() => props.onLoad()).catch(console.warn);
   }, []);
   
   return null;

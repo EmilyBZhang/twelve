@@ -2,7 +2,7 @@
 // This should be done after user settings are stored and the useSettings hook is made
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Alert, Animated, Platform, Share, View } from 'react-native';
+import { Animated, Share, View } from 'react-native';
 import { MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
 import { NavigationActions } from 'react-navigation';
@@ -12,6 +12,7 @@ import { Screen } from 'utils/interfaces';
 import getDimensions from 'utils/getDimensions';
 import playAudio from 'utils/playAudio';
 import colors from 'assets/colors';
+import strings from 'assets/strings';
 import ScreenContainer from 'components/ScreenContainer';
 import MuteMusicIcon from 'components/icons/MuteMusicIcon';
 import MuteSfxIcon from 'components/icons/MuteSfxIcon';
@@ -20,7 +21,7 @@ import FallingCoins from 'components/FallingCoins';
 
 const { width: windowWidth, height: windowHeight } = getDimensions();
 const titleSize = 54;
-const titleHeightInit = (windowHeight + titleSize) / 2;
+const initTitleHeight = (windowHeight + titleSize) / 2;
 const titleHeightEnd = titleSize * 3;
 
 interface MenuButtonProps {
@@ -98,7 +99,7 @@ const CornerButton = styled.TouchableHighlight.attrs({
   height: 40px;
   justify-content: center;
   align-items: center;
-`
+`;
 
 // TODO: Make goToLevel a util function
 const goToLevel = (index: number) => NavigationActions.navigate({
@@ -118,7 +119,7 @@ const bgMusic = require('assets/sounds/twelvebars.mp3');
 const MainMenu: Screen = (props) => {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [screenActive, setScreenActive] = useState(true);
-  const [titleHeightAnim] = useState(new Animated.Value(titleHeightInit));
+  const [titleHeightAnim] = useState(new Animated.Value(initTitleHeight));
   const [menuOpacityAnim] = useState(new Animated.Value(0));
   // TODO: Fix the corner buttons
   const [cornerOpacityAnim] = useState(new Animated.Value(0));
@@ -168,11 +169,11 @@ const MainMenu: Screen = (props) => {
       const setMusicPlayback = (playback: any) => musicPlayback.current = playback;
       playAudio(bgMusic, setMusicPlayback, options);
     }
-  }, [musicMuted, settingsReady])
+  }, [musicMuted, settingsReady]);
 
   const handlePlayPress = useCallback(() => {
     setScreenActive(false);
-    let firstNotComplete = 0;
+    let firstNotComplete = 1;
     for (let i = 0; i < levelStatus.length; ++i) {
       const level = levelStatus[i];
       if (!level.completed && level.unlocked) {
@@ -180,9 +181,8 @@ const MainMenu: Screen = (props) => {
         break;
       }
     }
-    if (firstNotComplete === 0) firstNotComplete = 1;
     props.navigation.dispatch(goToLevel(firstNotComplete));
-  }, [levelStatus]);
+  }, []);
 
   const handleSelectLevelPress = useCallback(() => {
     setScreenActive(false);
@@ -204,7 +204,7 @@ const MainMenu: Screen = (props) => {
 
   const handleToggleSettings = useCallback(() => {
     setSettingsOpen(state => !state);
-  }, [])
+  }, []);
 
   const handleShare = useCallback(() => {
     const numLevelsCompleted = levelStatus.reduce(
@@ -213,7 +213,7 @@ const MainMenu: Screen = (props) => {
     );
     Share.share({
       title: 'Try Twelve!',
-      message: `I've solved ${numLevelsCompleted} level${(numLevelsCompleted === 1) ? '' : 's'} in Twelve! How many can you solve?${Platform.OS === 'android' ? ' https://expo.io/@bradonzhang/twelve' : ''}`,
+      message: strings.generateShareMessage(numLevelsCompleted),
       url: 'https://expo.io/@bradonzhang/twelve'
     });
   }, []);

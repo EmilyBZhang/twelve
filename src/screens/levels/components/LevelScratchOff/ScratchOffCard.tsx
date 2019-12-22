@@ -67,8 +67,6 @@ const Particle: FunctionComponent<ParticleProps> = observer((props) => {
   );
 });
 
-const initParticlesHidden = Array(numParticles).fill(false) as Array<boolean>;
-
 // const squareOffsets = [
 //   // -particleCols - 1,
 //   -particleCols,
@@ -80,6 +78,10 @@ const initParticlesHidden = Array(numParticles).fill(false) as Array<boolean>;
 // ];
 
 const ScratchOffCard: FunctionComponent<ScratchOffCardProps> = (props) => {
+  const initParticlesHidden = useMemo(
+    () => Array<boolean>(numParticles).fill(false),
+    []
+  );
   const particlesHidden = observable(useRef(initParticlesHidden).current);
 
   const handleCardGrantOrMove = (e: GestureResponderEvent) => {

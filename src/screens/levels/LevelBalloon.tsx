@@ -100,7 +100,7 @@ const LevelBalloon: Level = (props) => {
   }, []);
 
   const gameEngine = useRef<GameEngine | null>(null);
-  const world = useMemo(() => initWorld(), []);
+  const world = useMemo(initWorld, []);
   const entities = useRef(world);
 
   const numCoinsFound = props.coinsFound.size;

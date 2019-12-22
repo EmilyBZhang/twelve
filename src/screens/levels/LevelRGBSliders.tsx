@@ -1,4 +1,3 @@
-// TODO: Consider adding "lock" icons (color = background color) when the coins aren't pressable
 // TODO: Consider merging this file with LevelCMYSliders similar to SimonSays
 
 import React, { useState, FunctionComponent } from 'react';

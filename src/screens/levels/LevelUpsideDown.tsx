@@ -7,15 +7,21 @@ import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
 import coinPositions from 'utils/coinPositions';
+import { getLevelDimensions } from 'utils/getDimensions';
 import styles from 'assets/styles';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
 
+const { width: levelWidth, height: levelHeight } = getLevelDimensions();
+
 const UpsideDownContainer = styled.View`
-  flex: 1;
-  transform: rotate(180deg) translateY(${styles.levelNavHeight}px);
+  width: ${levelWidth}px;
+  height: ${levelHeight}px;
+  justify-content: center;
+  align-items: center;
+  transform: rotate(180deg);
 `;
 
 const LevelUpsideDown: Level = (props) => {
@@ -28,12 +34,12 @@ const LevelUpsideDown: Level = (props) => {
   useEffect(() => {
     if (twelve) return;
     const listener = opacityAnim.addListener(({ value }) => setOpacity(value));
-    DeviceMotion.setUpdateInterval(1000 / 12);
+    DeviceMotion.setUpdateInterval(1000 / 60);
     const subscription = DeviceMotion.addListener(res => {
       if (res.rotation) {
         const opacity = Math.max(0, -res.rotation.beta / Math.PI * 2);
-        Animated.event(
-          [{opacity: opacityAnim}])({opacity},
+        Animated.event([{opacity: opacityAnim}])(
+          {opacity},
           {useNativeDriver: true}
         );
       }
@@ -45,8 +51,8 @@ const LevelUpsideDown: Level = (props) => {
   }, [twelve]);
 
   return (
-    <UpsideDownContainer>
-      <LevelContainer>
+    <LevelContainer>
+      <UpsideDownContainer>
         <LevelCounter count={numCoinsFound} />
         <LevelText hidden={twelve}>twelve</LevelText>
         {!twelve && coinPositions.map((coinPosition, index: number) => (
@@ -64,8 +70,8 @@ const LevelUpsideDown: Level = (props) => {
             />
           </Animated.View>
         ))}
-      </LevelContainer>
-    </UpsideDownContainer>
+      </UpsideDownContainer>
+    </LevelContainer>
   );
 };
 

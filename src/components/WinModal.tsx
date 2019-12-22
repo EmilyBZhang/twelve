@@ -13,6 +13,7 @@ const { width: windowWidth, height: windowHeight } = getDimensions();
 // TODO: Add restart level functionality after cleaning up UI
 interface WinModalProps {
   onNextLevel: () => any;
+  level?: number;
   visible?: boolean;
 }
 
@@ -22,7 +23,7 @@ const FullScreenModal = styled.View`
   top: 0px;
   left: 0px;
   padding-top: ${styles.levelNavHeight}px;
-  backgroundColor: ${colors.background}80;
+  background-color: ${colors.background}80;
   width: ${windowWidth}px;
   height: ${windowHeight}px;
   margin: 0px;
@@ -32,7 +33,7 @@ const FullScreenModal = styled.View`
 `;
 
 const WinModal: FunctionComponent<WinModalProps> = (props) => {
-  const congratsMessage = useCongratsMessage();
+  const congratsMessage = useCongratsMessage([props.level]);
 
   if (!props.visible) return null;
 
