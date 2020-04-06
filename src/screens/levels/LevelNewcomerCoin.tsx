@@ -95,8 +95,8 @@ const LevelNewcomerCoin: Level = (props) => {
       {((visible && showNext) || twelve) && (
         <LevelCounter count={numCoinsFound} />
       )}
-      <LevelText hidden={twelve}>...?</LevelText>
-      {coinPositions.map((coinPosition, index: number) => (
+      <LevelText hidden={twelve}>Don't blink!</LevelText>
+      {coinPositions.map((coinPosition, index) => (
         <View
           key={String(index)}
           style={{

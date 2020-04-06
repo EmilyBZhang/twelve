@@ -44,7 +44,8 @@ const Level: Screen = (props) => {
     }
   }, [twelve]);
 
-  const handleCoinPress = (index: number) => {
+  const handleCoinPress = (index?: number) => {
+    if (index === undefined) index = coinsFound;
     playCoinSound(coinsFound);
     toggleIndex(index);
     if (selectedIndices.size + 1 === 12 && !selectedIndices.has(index)) {
@@ -52,7 +53,8 @@ const Level: Screen = (props) => {
     }
   };
 
-  const handleSetCoinsFound = (indices: Set<number>) => {
+  const handleSetCoinsFound = (indices?: Set<number>) => {
+    if (!indices) indices = new Set();
     setSelectedIndices(indices);
     if (indices.size === 12) completeLevel(levelNum);
   };

@@ -8,11 +8,11 @@ import {
 } from 'react-native-gesture-handler';
 
 import { Level } from 'utils/interfaces';
+import { getLevelDimensions } from 'utils/getDimensions';
+import styles from 'assets/styles';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelCounter from 'components/LevelCounter';
-import { getLevelDimensions } from 'utils/getDimensions';
-import styles from 'assets/styles';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 
@@ -21,7 +21,6 @@ const Container = styled(Animated.View)`
   height: 100%;
   justify-content: center;
   align-items: center;
-  /* background-color: pink; */
 `;
 
 const minScale = 2 / levelWidth;
@@ -51,7 +50,6 @@ const LevelZoomInCoin: Level = (props) => {
 
   const changeScale = (newScale: number) => {
     const newLastScale = calcBoundedScale(newScale);
-    console.log(newLastScale);
     baseScale.setValue(newLastScale);
     pinchScale.setValue(1);
     setLastScale(newLastScale);

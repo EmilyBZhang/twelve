@@ -108,7 +108,7 @@ const LevelRGBSliders: Level = (props) => {
 
   const goodTotal = greenBg + blueBg + blueCoin;
   const badTotal = redBg + redCoin + greenCoin;
-  const canPress = (goodTotal === 255 * 3) && (badTotal === 0);
+  const canPress = (goodTotal >= 255 * 3 - 36) && (badTotal <= 36);
 
   const bgColor = `rgb(${redBg}, ${greenBg}, ${blueBg})`;
   const coinColor = `rgb(${redCoin}, ${greenCoin}, ${blueCoin})`;
@@ -125,7 +125,7 @@ const LevelRGBSliders: Level = (props) => {
       <RGBSliders setColors={[setRedBg, setGreenBg, setBlueBg] as SetColors} />
       {/* <LevelText color={'white'} hidden={twelve}>{hintText}</LevelText> */}
       <RGBSliders setColors={[setRedCoin, setGreenCoin, setBlueCoin] as SetColors} />
-      {coinPositions.map((coinPosition, index: number) => (
+      {coinPositions.map((coinPosition, index) => (
         <View
           key={String(index)}
           style={{

@@ -55,7 +55,7 @@ const LevelSlideDown: Level = (props) => {
       <LevelCounter count={numCoinsFound} />
       <CoinContainer shifted={numCoinsFound}>
         <LevelText hidden={twelve}>The sky is falling!</LevelText>
-        {coinPositions.map((coinPosition, index: number) => (
+        {coinPositions.map((coinPosition, index) => (
           <View
             key={String(index)}
             style={{position: 'absolute', ...coinPosition}}

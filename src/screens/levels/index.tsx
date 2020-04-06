@@ -21,6 +21,7 @@ import LevelBinary1 from './LevelBinary1';
 import LevelBinary2 from './LevelBinary2';
 import LevelRabbitHole from './LevelRabbitHole';
 import LevelBalloon from './LevelBalloon';
+import LevelBalloon2 from './LevelBalloon2';
 import LevelExpandingCoin from './LevelExpandingCoin';
 import LevelScratchOff from './LevelScratchOff';
 import Level12Wire from './Level12Wire';
@@ -33,8 +34,19 @@ import LevelUpsideDown from './LevelUpsideDown';
 import LevelBinary0 from './LevelBinary0';
 import LevelMonths from './LevelMonths';
 import LevelVolcano from './LevelVolcano';
-import LevelDodecahedron from './LevelDodecahedron';
 import LevelDraw12 from './LevelDraw12';
+import LevelThreeCardMonte from './LevelThreeCardMonte';
+import LevelFitSquares from './LevelFitSquares';
+import LevelMatchCards from './LevelMatchCards';
+import LevelMultiplyTo12 from './LevelMultiplyTo12';
+import LevelA1Z26 from './LevelA1Z26';
+import LevelPolygons from './LevelPolygons';
+import LevelEyes from './LevelEyes';
+import LevelCompass from './LevelCompass';
+import LevelHoleJigsaw from './LevelHoleJigsaw';
+import LevelDodecahedron from './LevelDodecahedron';
+import LevelLandscape from './LevelLandscape';
+import LevelWarning from './LevelWarning';
 
 export default [
   LevelSelect,
@@ -69,7 +81,20 @@ export default [
   LevelPiano,
   LevelBinary2,
   LevelDraw12,
-  // LevelDodecahedron,
+  LevelFitSquares,
+  LevelMatchCards,
+  LevelMultiplyTo12,
+  LevelA1Z26,
+  LevelEyes,
+  LevelDodecahedron,
+  LevelLandscape,
+  LevelBalloon,
+  LevelWarning,
+  LevelBalloon2,
+  LevelCompass,
+  LevelHoleJigsaw,
+  // LevelPolygons,
+  // LevelThreeCardMonte,
   // LevelBalloon,
   // LevelExpandingCoin,
 ] as [LevelSelectType, ...Array<Level>];

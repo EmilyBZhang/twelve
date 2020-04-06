@@ -71,7 +71,7 @@ const FallingCoins: FunctionComponent<FallingCoinsProps> = (props) => {
 
   return (
     <ScreenContainer color={'transparent'}>
-      {coinPositions.map((coinPosition, index: number) => {
+      {coinPositions.map((coinPosition, index) => {
         const { left: translateX, top: translateY } = coinPosition.getLayout();
         return (
           <Animated.View

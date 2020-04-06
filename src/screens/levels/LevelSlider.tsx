@@ -55,7 +55,7 @@ const LevelSlider: Level = (props) => {
         color={'white'}
       />
       <LevelText color={'white'} hidden={twelve}>{hintText}</LevelText>
-      {coinPositions.map((coinPosition, index: number) => (
+      {coinPositions.map((coinPosition, index) => (
         <View
           key={String(index)}
           style={{position: 'absolute', ...coinPosition}}

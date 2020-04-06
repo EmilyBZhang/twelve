@@ -17,7 +17,7 @@ const Level1: Level = (props) => {
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
       <LevelText hidden={twelve}>twelve</LevelText>
-      {coinPositions.map((coinPosition, index: number) => (
+      {coinPositions.map((coinPosition, index) => (
         <View
           key={String(index)}
           style={{position: 'absolute', ...coinPosition}}

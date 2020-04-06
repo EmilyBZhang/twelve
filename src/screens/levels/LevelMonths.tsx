@@ -1,5 +1,5 @@
-import React from 'react';
-import { View } from 'react-native';
+import React, { FunctionComponent } from 'react';
+import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
 import coinPositions from 'utils/coinPositions';
@@ -9,6 +9,7 @@ import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
+import Calendar from './components/LevelMonths/Calendar';
 
 // TODO: Consider using month initials instead of length in days
 const daysPerMonth = [
@@ -16,23 +17,48 @@ const daysPerMonth = [
 ];
 const days = daysPerMonth.slice().sort();
 
+const dayLabels = [28, 30, 31];
+
+const CoinOptionsContainer = styled.View`
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-evenly;
+`;
+
 const LevelMonths: Level = (props) => {
 
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
 
-  const handleCoinPress = (index: number) => {
-    if (days[index] === daysPerMonth[numCoinsFound]) {
-      props.onCoinPress(index);
+  const handleCoinPress = (value: number) => {
+    if (value === daysPerMonth[numCoinsFound]) {
+      props.onCoinPress(numCoinsFound);
     } else {
       props.setCoinsFound(new Set());
     }
   };
 
+  const renderCoin = (value: number) => (
+    <Coin
+      key={String(value)}
+      size={styles.coinSize * 1.5}
+      color={colors.orderedCoin}
+      onPress={() => handleCoinPress(value)}
+      colorHintOpacity={0}
+    >
+      <LevelText
+        color={'black'}
+        fontSize={styles.coinSize / 2}
+      >
+        {value}
+      </LevelText>
+    </Coin>
+  );
+
   return (
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
-      {coinPositions.map((coinPosition, index) => (
+      {/* {coinPositions.map((coinPosition, index) => (
         <View
           key={String(index)}
           style={{position: 'absolute', ...coinPosition}}
@@ -51,7 +77,11 @@ const LevelMonths: Level = (props) => {
             </LevelText>
           </Coin>
         </View>
-      ))}
+      ))} */}
+      <CoinOptionsContainer>
+        {dayLabels.map((dayLabel, index) => renderCoin(dayLabel))}
+      </CoinOptionsContainer>
+      <Calendar numCompleted={numCoinsFound} />
     </LevelContainer>
   );
 };

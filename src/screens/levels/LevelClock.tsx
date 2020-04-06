@@ -42,7 +42,7 @@ const LevelClock: Level = (props) => {
       <LevelCounter count={numCoinsFound} />
       <LevelText>It's about time!</LevelText>
       <Clock>
-        {coinPositions.map((coinPosition, index: number) => (
+        {coinPositions.map((coinPosition, index) => (
           <View
             key={String(index)}
             style={{position: 'absolute', ...coinPosition}}

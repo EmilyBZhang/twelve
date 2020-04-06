@@ -119,7 +119,7 @@ const LevelCMYSliders: Level = (props) => {
       <LevelCounter count={numCoinsFound} />
       <CMYSliders setColors={[setCyanBg, setMagentaBg, setYellowBg] as SetColors} />
       <CMYSliders setColors={[setCyanCoin, setMagentaCoin, setYellowCoin] as SetColors} />
-      {coinPositions.map((coinPosition, index: number) => (
+      {coinPositions.map((coinPosition, index) => (
         <View
           key={String(index)}
           style={{

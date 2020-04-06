@@ -185,12 +185,12 @@ const MainMenu: Screen = (props) => {
   }, []);
 
   const handleSelectLevelPress = useCallback(() => {
-    setScreenActive(false);
+    // setScreenActive(false);
     props.navigation.dispatch(goToLevel(0));
   }, []);
 
   const handleCreditsPress = useCallback(() => {
-    setScreenActive(false);
+    // setScreenActive(false);
     props.navigation.dispatch(goToCredits());
   }, []);
 

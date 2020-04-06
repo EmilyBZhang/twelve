@@ -24,8 +24,10 @@ const FullScreenModal = styled.View`
   left: 0px;
   padding-top: ${styles.levelNavHeight}px;
   background-color: ${colors.background}80;
-  width: ${windowWidth}px;
-  height: ${windowHeight}px;
+  width: 100%;
+  /* ${windowWidth}px; */
+  height: 100%;
+  /* ${windowHeight}px; */
   margin: 0px;
   z-index: ${styles.levelNavZIndex - 1};
   justify-content: center;

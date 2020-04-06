@@ -1,92 +1,64 @@
 // TODO: IDEA: All the coins are in helium balloons, and you need to press/hold the screen to get them to rise
 // Rising will cause the balloons to reach a certain point on the screen, where they'll pop
 // TODO: Keep entities even if the app goes out of focus
-// TODO: Add types
-// IDEA: MaterialCommunityIcons balloon
 
-import React, { useMemo, useRef, useState, useEffect, FunctionComponent } from 'react';
-import { Alert, Animated, Button, Easing, PanResponder, View } from 'react-native';
-import styled from 'styled-components/native';
-import { GameEngine } from 'react-native-game-engine';
+import React, { useMemo, useRef, useState, useEffect } from 'react';
+import { Animated, Easing } from 'react-native';
+import { GameEngine, GameEvent } from 'react-native-game-engine';
 import Matter from 'matter-js';
 
 import { Level } from 'utils/interfaces';
 import getLevelDimensions from 'utils/getDimensions';
-import coinPositions from 'utils/coinPositions';
 import styles from 'assets/styles';
 import LevelContainer from 'components/LevelContainer';
-import Coin, { CoinProps } from 'components/Coin';
-import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
-import Physics from './components/LevelBalloon/Physics';
+import physics from 'utils/physics';
+import {
+  Balloon,
+  Ground,
+  CoinContainer,
+  Cloud,
+  createBalloonBody,
+  createWalls,
+} from './components/balloon';
+import system from './components/LevelBalloon/system';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 
-const coinSize = styles.coinSize;
+const { coinSize } = styles;
 
-interface CoinViewProps extends CoinProps {
-  body: Matter.Body;
-}
-
-const CoinView: FunctionComponent<CoinViewProps> = (props) => {
-  const { body, ...coinProps } = props;
-  const { x, y } = body.position;
-  return (
-    <View style={{
-      position: 'absolute',
-      top: y - coinSize,
-      left: x - coinSize / 2,
-      // backgroundColor: 'red'
-    }}>
-      <Coin {...coinProps} />
-    </View>
-  );
-};
-
-const Floor = (props) => (
-  <View style={{
-    position: 'absolute',
-    top: levelHeight,
-    left: 0
-  }}/>
-);
-
-const Cloud = styled(Animated.Image).attrs({
-  source: require('assets/images/cloud.png')
-})`
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: ${levelWidth}px;
-  height: ${levelWidth * 500 / 1171}px;
-`;
-
-const initWorld = () => {
+const initEntities = () => {
   const engine = Matter.Engine.create();
   const world = engine.world;
-  world.gravity.y = 1 / 12;
-  const coin = Matter.Bodies.rectangle(levelWidth / 2, levelHeight / 2, coinSize, coinSize, { mass: 1 });
-  const floor = Matter.Bodies.rectangle(levelWidth / 2, levelHeight + 72 - coinSize / 2, levelWidth, 144, { isStatic: true });
-  Matter.World.add(world, [coin, floor]);
+  const balloon = createBalloonBody(levelWidth / 2, levelHeight / 2);
+  const { ground, wallL, wallR } = createWalls();
+  Matter.World.add(world, [balloon, ground, wallL, wallR]);
   return ({
     physics: {
       engine,
       world
     },
-    coin: {
-      body: coin,
-      onPress: () => Alert.alert('Hey, you donkey', `This level ain't complete yet. Try some other ones!`),
-      renderer: CoinView
+    balloon: {
+      body: balloon,
+      renderer: Balloon
     },
-    floor: {
-      body: floor,
-      renderer: Floor
+    ground: {
+      body: ground,
+      renderer: Ground
+    },
+    state: {
+      numTouches: 0
     }
   });
 };
 
+interface BalloonEvent extends GameEvent {
+  type: 'coinPress';
+  index: number;
+}
+
 const LevelBalloon: Level = (props) => {
-  const [beingTouched, setBeingTouched] = useState(false);
+  const { onCoinPress, coinsFound } = props;
   const [cloudAnim] = useState(new Animated.Value(0));
 
   useEffect(() => {
@@ -100,21 +72,39 @@ const LevelBalloon: Level = (props) => {
   }, []);
 
   const gameEngine = useRef<GameEngine | null>(null);
-  const world = useMemo(initWorld, []);
-  const entities = useRef(world);
+  const entities = useMemo(() => {
+    const getCoin = (index: number) => ({
+      visible: false,
+      body: Matter.Bodies.circle(
+        levelWidth / 2 + (index - 5.5) * coinSize / 5.5,
+        0,
+        coinSize / 2,
+        { frictionAir: 1 / 12, restitution: 0.75 }
+      ),
+      renderer: CoinContainer,
+    });
+    const coins = Array.from(Array(12), (_, index) => getCoin(index));
+    const coinObj = coins.reduce((coinObj, coin, index) => (
+      {...coinObj, [`coin${index}`]: coin}),
+      {}
+    );
+    return {...initEntities(), ...coinObj};
+  }, []);
 
-  const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound === 12;
+  const handleEvent = (e: BalloonEvent) => {
+    if (e.type === 'coinPress') {
+      onCoinPress(e.index);
+    }
+  };
 
-  const handleEvent = (e: any) => {
-    if (e.type === 'touch-started') setBeingTouched(true);
-    else if (e.type === 'touch-ended') setBeingTouched(false);
-  }
+  const numCoinsFound = coinsFound.size;
 
   return (
     <LevelContainer gradientColors={['#0080ff', 'cyan']}>
       <Cloud style={{transform: [{translateX: cloudAnim}]}} />
-      <Cloud style={{transform: [{translateX: Animated.add(cloudAnim, levelWidth)}]}} />
+      <Cloud style={{
+        transform: [{translateX: Animated.add(cloudAnim, levelWidth)}]
+      }} />
       <GameEngine
         ref={ref => gameEngine.current = ref}
         style={{
@@ -123,12 +113,12 @@ const LevelBalloon: Level = (props) => {
           left: 0,
           width: levelWidth,
           height: levelHeight,
-          // backgroundColor: beingTouched ? 'pink' : 'transparent'
         }}
-        entities={entities.current}
-        systems={[Physics]}
+        entities={entities}
+        systems={[physics, system]}
         onEvent={handleEvent}
       />
+      <LevelCounter count={numCoinsFound} color={'white'} />
     </LevelContainer>
   );
 };

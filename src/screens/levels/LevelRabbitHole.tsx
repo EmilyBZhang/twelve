@@ -45,7 +45,7 @@ const LevelRabbitHole: Level = (props) => {
         <ScreenContainer gradientColors={[colors.background, 'black']} />
         <UnitContainer>
           <LevelCounter count={numCoinsFound} />
-          {coinPositions.map((coinPosition, index: number) => (
+          {coinPositions.map((coinPosition, index) => (
             <View
               key={String(index)}
               style={{position: 'absolute', ...coinPosition}}

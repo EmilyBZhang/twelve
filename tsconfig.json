@@ -25,10 +25,12 @@
         "screens/*": ["./src/screens/*"],
         "utils/*": ["./src/utils/*"]
         // ,"*": ["./src/typings/*"]
-      }
+      },
+      "typeRoots": ["./types", "./node_modules/@types"]
     },
     "exclude": [
-      "node_modules"
+      "node_modules",
+      "typings"
     ]
   }
   

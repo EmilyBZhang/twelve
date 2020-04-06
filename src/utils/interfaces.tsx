@@ -7,8 +7,8 @@ export interface ScreenProps {
 
 export interface LevelProps {
   coinsFound: Set<number>;
-  onCoinPress: (index: number) => void;
-  setCoinsFound: (indices: Set<number>) => void;
+  onCoinPress: (index?: number) => void;
+  setCoinsFound: (indices?: Set<number>) => void;
   onNextLevel: () => any;
   noSound?: boolean;
 }

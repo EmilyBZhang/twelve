@@ -1,158 +1,130 @@
-// Level will have a dodecahedron, each side having a coin
-
-import React from 'react';
-import { View, PanResponder, PanResponderInstance } from 'react-native';
-import { AR } from 'expo';
-// TODO: Add types
-import { View as GraphicsView } from 'expo-graphics';
+import React, { useRef } from 'react';
+import {
+  View,
+  TouchableWithoutFeedback,
+  GestureResponderEvent,
+} from 'react-native';
 import ExpoTHREE, { THREE } from 'expo-three';
+import { View as GraphicsView, ContextCreateProps } from 'expo-graphics';
+import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
-import coinPositions from 'utils/coinPositions';
 import { getLevelDimensions } from 'utils/getDimensions';
-import LevelContainer from 'components/LevelContainer';
-import Coin from 'components/Coin';
-import LevelText from 'components/LevelText';
-import LevelCounter from 'components/LevelCounter';
 import colors from 'assets/colors';
+import styles from 'assets/styles';
+import LevelCounter from 'components/LevelCounter';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 
-const LevelDodecaheron: Level = (props) => {
+const axes = [
+  new THREE.Vector3(1, 0, 0),
+  new THREE.Vector3(0, 1, 0),
+  new THREE.Vector3(0, 0, 1),
+];
+
+const rotateUnit = Math.PI / 180;
+
+const LevelContainer = styled.View`
+  position: absolute;
+  top: ${styles.levelNavHeight}px;
+  width: ${levelWidth}px;
+  height: ${levelHeight}px;
+`;
+
+const LevelDodecahedron: Level = (props) => {
+
+  const renderer = useRef<ExpoTHREE.Renderer>();
+  const scene = useRef<THREE.Scene>(new THREE.Scene());
+  const raycaster = useRef<THREE.Raycaster>(new THREE.Raycaster());
+  const camera = useRef<THREE.Camera>(new THREE.Camera());
+  const geometry = useRef<THREE.Geometry>(new THREE.Geometry());
+  const mesh = useRef<THREE.Mesh>(new THREE.Mesh());
+  const count = useRef<number>(0);
 
   const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound === 12;
+
+  const handlePressIn = (e: GestureResponderEvent) => {
+    const { locationX, locationY } = e.nativeEvent;
+    const x = (locationX / levelWidth) * 2 - 1;
+    const y = -(locationY / levelHeight) * 2 + 1;
+    raycaster.current.setFromCamera(new THREE.Vector2(x, y), camera.current);
+
+    const intersects = raycaster.current.intersectObject(mesh.current);
+    if (intersects.length) {
+      const index = intersects[0].faceIndex!;
+      // TODO: Find better way to compare colors
+      const hex = `#${geometry.current.faces[index].color.getHexString()}`;
+      if (hex === colors.badCoin) return reset();
+
+      props.onCoinPress(count.current);
+      count.current++;
+
+      const firstIndex = index - (index % 3);
+      for (let i = 0; i < 3; i++) {
+        geometry.current.faces[firstIndex + i].color.setRGB(1, 0, 0);
+      }
+      geometry.current.colorsNeedUpdate = true;
+    }
+  };
+
+  const reset = () => {
+    props.setCoinsFound();
+    count.current = 0;
+    geometry.current.faces.forEach(face => {
+      face.color.setStyle(colors.coin);
+    });
+    geometry.current.colorsNeedUpdate = true;
+  };
+
+  const rotate = () => {
+    mesh.current.rotateOnWorldAxis(
+      axes[count.current % axes.length],
+      rotateUnit
+    );
+  };
+
+  const handleContextCreate = (props: ContextCreateProps) => {
+    const { gl, scale: pixelRatio } = props;
+    const width = levelWidth;
+    const height = levelHeight;
+
+    renderer.current = new ExpoTHREE.Renderer({gl, pixelRatio, width, height});
+    scene.current = new THREE.Scene();
+    camera.current = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+    camera.current.position.z = 5;
+
+    geometry.current = new THREE.DodecahedronGeometry(1.5, 0);
+    const material = new THREE.MeshLambertMaterial({
+      vertexColors: THREE.FaceColors
+    });
+    reset();
+
+    mesh.current = new THREE.Mesh(geometry.current, material);
+    scene.current.add(mesh.current);
+
+    scene.current.add(new THREE.AmbientLight(0xffffff, 0.5));
+    const light = new THREE.DirectionalLight(0xffffff, 0.5);
+    light.position.set(3, 3, 3);
+    scene.current.add(light);
+  };
+
+  const handleGLRender = () => {
+    if (!renderer.current) return;
+    rotate();
+    renderer.current.render(scene.current, camera.current);
+  };
 
   return (
-    <LevelContainer>
-      <LevelCounter count={numCoinsFound} />
-      <LevelText hidden={twelve}>twelve</LevelText>
-      {coinPositions.map((coinPosition, index: number) => (
-        <View
-          key={String(index)}
-          style={{position: 'absolute', ...coinPosition}}
-        >
-          <Coin
-            found={props.coinsFound.has(index)}
-            onPress={() => props.onCoinPress(index)}
-          />
-        </View>
-      ))}
-    </LevelContainer>
+    <TouchableWithoutFeedback onPressIn={handlePressIn}>
+      <LevelContainer>
+        <LevelCounter count={numCoinsFound} />
+        <GraphicsView
+          onContextCreate={handleContextCreate}
+          onRender={handleGLRender}
+        />
+      </LevelContainer>
+    </TouchableWithoutFeedback>
   );
 };
 
-interface TestProps {
-  _panResponder: any;
-}
-
-class App extends React.Component {
-  _panResponder: PanResponderInstance;
-  renderer: ExpoTHREE.Renderer;
-  scene: ExpoTHREE.THREE.Scene;
-  camera: ExpoTHREE.THREE.Camera;
-  cube: THREE.Mesh;
-  constructor(props) {
-    super(props);
-    this._panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: (e, gestureState) => true,
-      onStartShouldSetPanResponderCapture: (e, gestureState) => true,
-      onMoveShouldSetPanResponder: (e, gestureState) => true,
-      onMoveShouldSetPanResponderCapture: (e, gestureState) => true,
-      onPanResponderTerminationRequest: (e, gestureState) => true,
-      onShouldBlockNativeResponder: (e, gestureState) => true,
-      onPanResponderGrant: (e, gestureState) => {
-        // setWindowsillActive(true);
-      },
-      onPanResponderMove: (e, gestureState) => {
-        // console.log(e.nativeEvent);
-        // console.log(gestureState);
-        this.cube.rotation.y += gestureState.vx;
-        this.cube.rotation.x += gestureState.vy;
-        console.log(this.cube.up);
-        // new ExpoTHREE.THREE.Vector3(1, 0, 0);
-        // new ExpoTHREE.THREE.Vector3(1, 0, 0);
-        // this.cube.rotateOnAxis()
-        console.log(this.cube.rotation);
-        // const dy = calcDy(windowOffset + gestureState.dy);
-        // Animated.event([{dy: translateYAnim}])({dy});
-      },
-      onPanResponderRelease: (e, gestureState) => {
-        // setWindowsillActive(false);
-        // const dy = calcDy(windowOffset + gestureState.dy);
-        // setWindowOffset(dy);
-      },
-      onPanResponderTerminate: (e, gestureState) => {
-        // setWindowsillActive(false);
-        // const dy = calcDy(windowOffset + gestureState.dy);
-        // setWindowOffset(dy);
-      },
-    });
-  }
-  // componentWillMount() {
-  //   THREE.suppressExpoWarnings();
-  // }
-
-  render() {
-    // Create an `ExpoGraphics.View` covering the whole screen, tell it to call our
-    // `onContextCreate` function once it's initialized.
-    return (<>
-      <View
-        {...this._panResponder.panHandlers}
-        style={{
-          position: 'absolute',
-          width: levelWidth,
-          height: levelHeight,
-          zIndex: 1
-        }}
-      >
-        <LevelContainer color={'transparent'}>
-          <LevelText>Test</LevelText>
-        </LevelContainer>
-      </View>
-      <GraphicsView
-        onContextCreate={this.onContextCreate}
-        onRender={this.onRender}
-      />
-    </>);
-  }
-
-  // This is called by the `ExpoGraphics.View` once it's initialized
-  onContextCreate = async ({
-    gl,
-    canvas,
-    width,
-    height,
-    scale: pixelRatio,
-  }) => {
-    this.renderer = new ExpoTHREE.Renderer({ gl, pixelRatio, width, height });
-    this.renderer.setClearColor(colors.background)
-    this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-    this.camera.position.z = 5;
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-
-    const material = new THREE.MeshPhongMaterial({
-      color: '#ff0000',
-    });
-    
-    this.cube = new THREE.Mesh(geometry, material);
-    this.scene.add(this.cube);
-
-    this.scene.add(new THREE.AmbientLight('#404040'));
-
-    const light = new THREE.DirectionalLight('#ffffff', 0.5);
-    light.position.set(3, 3, 3);
-    this.scene.add(light);
-  };
-
-  onRender = delta => {
-    // this.cube.rotation.x += 3.5 * delta;
-    // this.cube.rotation.y += 2 * delta;
-    // this.cube.rotation.z += delta;
-    this.renderer.render(this.scene, this.camera);
-  };
-}
-
-
-export default App//LevelDodecaheron;
+export default LevelDodecahedron;

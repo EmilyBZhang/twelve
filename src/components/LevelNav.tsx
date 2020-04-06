@@ -67,7 +67,7 @@ const LevelNav: FunctionComponent<LevelNavProps> = (props) => {
     return () => {
       backHandler.current && backHandler.current.remove();
     }
-  }, [onBack, settingsOpen])
+  }, [onBack, settingsOpen]);
 
   return (<>
     <SettingsModal

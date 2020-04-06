@@ -24,8 +24,6 @@ const coinSize = styles.coinSize;
 const positions = calcPositions(2, 4);
 const bitPositions = positions.slice(0, 4);
 const resultBitPositions = positions.slice(4);
-console.log(bitPositions);
-console.log(resultBitPositions);
 const coinPositions = [
   ...bitPositions,
   ...resultBitPositions,

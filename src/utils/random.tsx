@@ -50,4 +50,19 @@ export const randElem = <T extends unknown>(
  */
 export const bernoulli = (p: number = 0.5) => {
   return Math.random() < p;
-}
+};
+
+/**
+ * Randomly shuffles an array in-place.
+ * 
+ * @param arr Array to shuffle.
+ */
+export const shuffleArray = <T extends unknown>(arr: Array<T>) => {
+  let n = arr.length;
+  for (let i = arr.length; i > 0; --i) {
+    const index = randInt(i);
+    const temp = arr[index];
+    arr[index] = arr[i - 1];
+    arr[i - 1] = temp;
+  }
+};

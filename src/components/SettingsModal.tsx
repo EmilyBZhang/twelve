@@ -28,8 +28,10 @@ const FullScreenModal = styled.View`
   top: 0px;
   left: 0px;
   background-color: #000000c0;
-  width: ${windowWidth}px;
-  height: ${windowHeight}px;
+  width: 100%;
+  /* ${windowWidth}px; */
+  height: 100%;
+  /* ${windowHeight}px; */
   margin: 0px;
   z-index: ${styles.levelNavZIndex + 1};
   justify-content: flex-start;
@@ -75,6 +77,7 @@ const SettingsButton = styled.TouchableHighlight.attrs({
   align-items: center;
 `;
 
+// TODO: Add ScrollView to modal
 const SettingsModal: FunctionComponent<SettingsModalProps> = (props) => {
   const [
     { musicMuted, sfxMuted, colorblind },

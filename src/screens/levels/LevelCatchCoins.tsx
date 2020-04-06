@@ -43,7 +43,7 @@ const LevelCatchCoins: Level = (props) => {
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
       <LevelText hidden={twelve}>Can you catch them?</LevelText>
-      {coinPositions.map((coinPosition, index: number) => (
+      {coinPositions.map((coinPosition, index) => (
         <Animated.View
           key={String(index)}
           style={{

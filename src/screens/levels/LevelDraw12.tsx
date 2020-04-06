@@ -71,7 +71,6 @@ const CoinContainer = styled(Animated.View)`
   height: ${wirePartSize}px;
   justify-content: center;
   align-items: center;
-  background-color: rgba(255, 0, 0, 0.2);
 `;
 
 /**
@@ -97,9 +96,11 @@ const jointPositions = Array.from(Array(9), (_, index) => ({
   y: (Math.floor(index / 3) + 0.5) * wirePartSize,
 }));
 
-const coinPositions = jointPositions.map(({ x, y }) => ({
-  top: minY + y - wirePartSize / 2,
-  left: minX + x - wirePartSize / 2,
+const initY = minY - styles.levelNavHeight * 3 / 2;
+const initX = minX;
+const coinPositions = jointPositions.map((_, index) => ({
+  top: initY + wirePartSize * Math.floor(index / 3),
+  left: initX + wirePartSize * (index % 3)
 }));
 
 const calcPointIndexFromBox = (x: number, y: number) => {
@@ -182,12 +183,12 @@ const LevelDraw12: Level = (props) => {
   const [lineStartXY, setLineStartXY] = useState<Point | null>(null);
   const [lineEndXY, setLineEndXY] = useState<Point | null>(null);
   const [coinAnim] = useState(new Animated.Value(0));
-
-  console.log(graph.length, correctEdges.current.size, totalNumEdges.current);
   
   const coinsRevealed = targetNumEdges === totalNumEdges.current && (
     targetNumEdges === correctEdges.current.size
   );
+
+  const numCoinsFound = props.coinsFound.size;
 
   useEffect(() => {
     if (!coinsRevealed) return;
@@ -288,7 +289,7 @@ const LevelDraw12: Level = (props) => {
 
   return (
     <LevelContainer>
-      <LevelCounter count={coinsRevealed ? 12 : 0} />
+      <LevelCounter count={numCoinsFound} />
       <LineDrawerContainer {...panResponder.panHandlers}>
         <CircuitContainer>
           {jointPositions.map((jointPosition, index) => (

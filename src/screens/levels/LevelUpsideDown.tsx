@@ -8,7 +8,6 @@ import styled from 'styled-components/native';
 import { Level } from 'utils/interfaces';
 import coinPositions from 'utils/coinPositions';
 import { getLevelDimensions } from 'utils/getDimensions';
-import styles from 'assets/styles';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
@@ -55,7 +54,8 @@ const LevelUpsideDown: Level = (props) => {
       <UpsideDownContainer>
         <LevelCounter count={numCoinsFound} />
         <LevelText hidden={twelve}>twelve</LevelText>
-        {!twelve && coinPositions.map((coinPosition, index: number) => (
+      </UpsideDownContainer>
+      {!twelve && coinPositions.map((coinPosition, index: number) => (
           <Animated.View
             key={String(index)}
             style={{
@@ -70,7 +70,6 @@ const LevelUpsideDown: Level = (props) => {
             />
           </Animated.View>
         ))}
-      </UpsideDownContainer>
     </LevelContainer>
   );
 };
