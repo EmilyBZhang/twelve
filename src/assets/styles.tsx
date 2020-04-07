@@ -1,6 +1,6 @@
 import { Dimensions } from 'react-native';
 
-const { width: windowWidth, height: windowHeight } = Dimensions.get('screen');
+const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
 const styles = {
   coinSize: windowWidth / 9,
