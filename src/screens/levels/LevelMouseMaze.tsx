@@ -224,7 +224,6 @@ const LevelMouseMaze: Level = (props) => {
               let children = null;
               if (index === 0) {
                 const { top: translateY, left: translateX } = moveAnim.getLayout();
-                console.log(translateY, translateX);
                 children = (
                   <Mouse style={{transform: [
                     {translateY},

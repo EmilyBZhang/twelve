@@ -76,10 +76,10 @@ const LevelDodecahedron: Level = (props) => {
     geometry.current.colorsNeedUpdate = true;
   };
 
-  const rotate = () => {
+  const rotate = (angle: number) => {
     mesh.current.rotateOnWorldAxis(
       axes[count.current % axes.length],
-      rotateUnit
+      angle
     );
   };
 
@@ -108,9 +108,9 @@ const LevelDodecahedron: Level = (props) => {
     scene.current.add(light);
   };
 
-  const handleGLRender = () => {
+  const handleGLRender = (delta: number) => {
     if (!renderer.current) return;
-    rotate();
+    rotate(rotateUnit * delta * 60);
     renderer.current.render(scene.current, camera.current);
   };
 
