@@ -39,6 +39,13 @@ declare module 'react-native-game-engine' {
     };
     id: number;
     type: TouchEventName;
+    delta?: {
+      locationX: number;
+      locationY: number;
+      pageX: number;
+      pageY: number;
+      timestamp: number;
+    }
   }
 
   export interface Actions {

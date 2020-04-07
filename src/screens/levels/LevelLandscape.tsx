@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, Image } from 'react-native';
+import React, { useEffect } from 'react';
+import { View } from 'react-native';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import styled from 'styled-components/native';
 
@@ -7,7 +7,6 @@ import { Level } from 'utils/interfaces';
 import { calcPositions } from 'utils/coinPositions';
 // import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
-import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
 import getDimensions from 'utils/getDimensions';
 import styles from 'assets/styles';
@@ -38,7 +37,6 @@ const Map = styled.Image.attrs({
 const LevelLandscape: Level = (props) => {
 
   useEffect(() => {
-    console.log(windowWidth, windowHeight);
     // TODO: Fix race condition for level restart
     ScreenOrientation.lockAsync(
       ScreenOrientation.OrientationLock.ALL
@@ -54,7 +52,6 @@ const LevelLandscape: Level = (props) => {
   return (
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
-      {/* <LevelText hidden={twelve}>twelve</LevelText> */}
       <Map />
       {coinPositions.map((coinPosition, index: number) => (
         <View

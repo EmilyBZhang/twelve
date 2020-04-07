@@ -47,6 +47,7 @@ import LevelHoleJigsaw from './LevelHoleJigsaw';
 import LevelDodecahedron from './LevelDodecahedron';
 import LevelLandscape from './LevelLandscape';
 import LevelWarning from './LevelWarning';
+import LevelRace from './LevelRace';
 
 export default [
   LevelSelect,
@@ -90,6 +91,7 @@ export default [
   LevelLandscape,
   LevelBalloon,
   LevelWarning,
+  LevelRace,
   LevelBalloon2,
   LevelCompass,
   LevelHoleJigsaw,

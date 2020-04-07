@@ -2,6 +2,8 @@ import { Dimensions } from 'react-native';
 
 import styles from 'assets/styles';
 
+// TODO: Test if these dimensions are correct for SafeAreaView (e.g. iPhone X)
+
 /**
  * Get the dimensions of the screen
  * 

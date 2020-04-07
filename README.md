@@ -5,4 +5,5 @@ Built with ♥ and React Native (but mostly ♥).
 
 # TODO
 * Fix sound (inconsistent)
-* Switch from Redux to MobX
+* Consider switching from Animated to Reanimated
+* Consider switching from Redux to useContext + useReducer

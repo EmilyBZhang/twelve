@@ -53,7 +53,7 @@ const initEntities = () => {
       renderer: Ground
     },
     state: {
-      numTouches: 0
+      numTouches: [0, 0, 0]
     }
   });
 };
