@@ -3,7 +3,6 @@
     "name": "twelve",
     "slug": "twelve",
     "privacy": "public",
-    "sdkVersion": "35.0.0",
     "platforms": [
       "ios",
       "android",
@@ -37,7 +36,7 @@
       }
     },
     "androidNavigationBar": {
-      "visible": false
+      "visible": "sticky-immersive"
     },
     "description": "A puzzle game about collecting twelve dots... with a special twist in each level!",
     "githubUrl": "https://github.com/BradonZhang/twelve"

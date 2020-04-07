@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Image } from 'react-native';
-import { ScreenOrientation } from 'expo';
+import * as ScreenOrientation from 'expo-screen-orientation';
 import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
@@ -41,7 +41,7 @@ const LevelLandscape: Level = (props) => {
     console.log(windowWidth, windowHeight);
     // TODO: Fix race condition for level restart
     ScreenOrientation.lockAsync(
-      ScreenOrientation.OrientationLock.ALL_BUT_UPSIDE_DOWN
+      ScreenOrientation.OrientationLock.ALL
     );
     return () => {
       ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
