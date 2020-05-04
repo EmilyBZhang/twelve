@@ -3,12 +3,12 @@ import { System } from 'react-native-game-engine';
 
 import styles from 'assets/styles';
 
-const system: System = (entities, actions) => {
+const system: System = (entities, update) => {
   
   const { physics, balloon, state } = entities;
   const { world } = physics;
 
-  const { touches, time, dispatch } = actions;
+  const { touches, time, dispatch } = update;
 
   if (balloon) {
     if (state.numTouches > 0) {

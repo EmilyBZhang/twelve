@@ -48,6 +48,9 @@ import LevelDodecahedron from './LevelDodecahedron';
 import LevelLandscape from './LevelLandscape';
 import LevelWarning from './LevelWarning';
 import LevelRace from './LevelRace';
+import LevelRaceGE from './LevelRaceGE';
+import LevelThreeStacks from './LevelThreeStacks';
+import LevelStackQueue from './LevelStackQueue';
 
 export default [
   LevelSelect,
@@ -90,14 +93,16 @@ export default [
   LevelDodecahedron,
   LevelLandscape,
   LevelBalloon,
+  LevelThreeStacks,
+  LevelStackQueue,
   LevelWarning,
+  LevelRaceGE,
   LevelRace,
   LevelBalloon2,
   LevelCompass,
   LevelHoleJigsaw,
   // LevelPolygons,
   // LevelThreeCardMonte,
-  // LevelBalloon,
   // LevelExpandingCoin,
 ] as [LevelSelectType, ...Array<Level>];
 

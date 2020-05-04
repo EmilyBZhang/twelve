@@ -56,7 +56,7 @@ interface BalloonEntities {
 }
 
 // TODO: Change numTouches to respond to three different regions of touches
-const system: System = (entities, actions) => {
+const system: System = (entities, update) => {
   
   const {
     physics,
@@ -68,7 +68,7 @@ const system: System = (entities, actions) => {
   const balloons = [balloon0, balloon1, balloon2];
   const { world } = physics;
 
-  const { touches, time, dispatch } = actions;
+  const { touches, time, dispatch } = update;
 
   state.numTouches.forEach((numTouches, index) => {
     if (balloons[index]) {

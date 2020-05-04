@@ -7,3 +7,4 @@ Built with ♥ and React Native (but mostly ♥).
 * Fix sound (inconsistent)
 * Consider switching from Animated to Reanimated
 * Consider switching from Redux to useContext + useReducer
+* Better organize project constants (e.g. react-native-game-engine's 16 ms frame)

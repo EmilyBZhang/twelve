@@ -61,6 +61,7 @@ const LevelSlider: Level = (props) => {
           style={{position: 'absolute', ...coinPosition}}
         >
           <Coin
+            noShimmer
             hidden={sliderVal === 0}
             found={props.coinsFound.has(index)}
             onPress={() => props.onCoinPress(index)}

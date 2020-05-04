@@ -1,4 +1,5 @@
 import * as RNGE from 'react-native-game-engine';
+import { ScaledSize } from 'react-native';
 
 declare module 'react-native-game-engine' {
 
@@ -10,13 +11,6 @@ declare module 'react-native-game-engine' {
   }
 
   export type Entities = {[id: string]: {[prop: string]: any}};
-
-  export interface ScreenProps {
-    fontScale: number;
-    height: number;
-    scale: number;
-    width: number;
-  }
 
   export interface TimeProps {
     current: number;
@@ -48,13 +42,24 @@ declare module 'react-native-game-engine' {
     }
   }
 
-  export interface Actions {
-    dispatch: (event: GameEvent) => any;
+  export interface GameEngineUpdate {
+    dispatch: (event: GameEvent) => void;
     events: Array<GameEvent>;
-    screen: ScreenProps;
+    screen: ScaledSize;
     time: TimeProps;
     touches: Array<TouchEvent>;
   }
 
-  export type System = (entities: Entities, actions: Actions) => Entities;
+  export interface GameLoopUpdate {
+    touches: Array<TouchEvent>;
+    screen: ScaledSize;
+    time: {
+      current: number;
+      previous: number;
+      delta: number;
+      previousDelta: number;
+    };
+  }
+
+  export type System = (entities: Entities, update: GameEngineUpdate) => Entities;
 }

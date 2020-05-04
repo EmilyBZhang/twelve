@@ -1,5 +1,5 @@
-import React, { FunctionComponent, memo } from 'react';
-import { Text } from 'react-native';
+import React, { FunctionComponent, memo, useState, useEffect } from 'react';
+import { Animated, Text, Easing } from 'react-native';
 import styled from 'styled-components/native';
 
 import colors, { CoinColor, coinUnderlayColors } from 'assets/colors';
@@ -13,6 +13,7 @@ export interface CoinProps {
   disabled?: boolean;
   hidden?: boolean;
   found?: boolean;
+  noShimmer?: boolean;
   label?: string;
   children?: any;
   colorHintOpacity?: number;
@@ -26,7 +27,16 @@ const CoinTouchable = styled.TouchableHighlight<CoinProps>`
   border-radius: ${props => props.size! / 2}px;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
   ${props => props.found && 'display: none;'}
+`;
+
+const Shimmer = styled(Animated.View)<CoinProps>`
+  position: absolute;
+  background-color: lightgray;
+  opacity: 0.5;
+  height: ${props => props.size! / 4}px;
+  width: ${props => props.size}px;
 `;
 
 // TODO: Consider removing label prop
@@ -38,10 +48,31 @@ const Coin: CoinType = (props) => {
     found,
     hidden,
     disabled,
+    noShimmer,
     children,
     label,
     colorHintOpacity = (props.hidden || props.found) ? 0 : 1
   } = props;
+
+  const [shimmerAnim] = useState(new Animated.Value(0));
+
+  useEffect(() => {
+    Animated.loop(
+      Animated.timing(shimmerAnim, {
+        toValue: 1,
+        duration: 12000,
+        easing: t => Easing.inOut(Easing.ease)(Math.max((t * 12 - 11), 0)),
+        useNativeDriver: true,
+      })
+    ).start();
+  }, []);
+
+  const shimmerRadius = (size * (Math.SQRT2 + 0.5) / 4);
+
+  const shimmerTranslate = shimmerAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-shimmerRadius, shimmerRadius]
+  });
 
   return (
     <CoinTouchable
@@ -54,6 +85,15 @@ const Coin: CoinType = (props) => {
       underlayColor={coinUnderlayColors[color]}
     >
       <>
+        {(!hidden && !found && !noShimmer) && (
+          <Shimmer size={size} style={{
+            transform: [
+              {translateX: shimmerTranslate},
+              {translateY: shimmerTranslate},
+              {rotate: '-45deg'},
+            ]
+          }} />
+        )}
         {!!colorHintOpacity && (
           <ColorHint
             color={color}
