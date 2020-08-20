@@ -9,6 +9,7 @@ interface LevelCounterProps {
   color?: string;
   fontSize?: number;
   position?: {top?: number, bottom?: number, left?: number, right?: number};
+  zIndex?: number;
   width?: number;
   height?: number;
   textStyle?: any;
@@ -17,6 +18,7 @@ interface LevelCounterProps {
 interface CounterContainerProps {
   width: number;
   height: number;
+  zIndex: number;
 }
 
 interface CounterTextProps {
@@ -28,6 +30,7 @@ const CounterContainer = styled.View<CounterContainerProps>`
   position: absolute;
   width: ${props => props.width}px;
   height: ${props => props.height}px;
+  z-index: ${props => props.zIndex};
   justify-content: center;
   align-items: center;
 `;
@@ -47,6 +50,7 @@ const LevelCounter: FunctionComponent<LevelCounterProps> = (props) => {
     position = defaultPosition,
     color = colors.coin,
     fontSize = styles.levelTextSize,
+    zIndex = 0,
     count,
     textStyle
   } = props;
@@ -54,9 +58,11 @@ const LevelCounter: FunctionComponent<LevelCounterProps> = (props) => {
   const height = props.height || fontSize * 1.5;
   return (
     <CounterContainer
+      pointerEvents={'none'}
       style={{...position}}
       width={width}
       height={height}
+      zIndex={zIndex}
     >
       <CounterText
         color={color}

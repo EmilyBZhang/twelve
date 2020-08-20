@@ -27,7 +27,7 @@ const FullScreenModal = styled.View`
   position: absolute;
   top: 0px;
   left: 0px;
-  background-color: #000000c0;
+  background-color: #000000bf;
   width: 100%;
   /* ${windowWidth}px; */
   height: 100%;

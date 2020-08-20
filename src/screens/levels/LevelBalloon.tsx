@@ -8,11 +8,11 @@ import { GameEngine, GameEvent } from 'react-native-game-engine';
 import Matter from 'matter-js';
 
 import { Level } from 'utils/interfaces';
-import getLevelDimensions from 'utils/getDimensions';
+import { getLevelDimensions } from 'utils/getDimensions';
 import styles from 'assets/styles';
 import LevelContainer from 'components/LevelContainer';
 import LevelCounter from 'components/LevelCounter';
-import physics from 'utils/physics';
+import Physics from './systems/Physics';
 import {
   Balloon,
   Ground,
@@ -115,7 +115,7 @@ const LevelBalloon: Level = (props) => {
           height: levelHeight,
         }}
         entities={entities}
-        systems={[physics, system]}
+        systems={[Physics, system]}
         onEvent={handleEvent}
       />
       <LevelCounter count={numCoinsFound} color={'white'} />

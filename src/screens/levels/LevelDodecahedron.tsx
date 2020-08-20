@@ -52,7 +52,6 @@ const LevelDodecahedron: Level = (props) => {
     const intersects = raycaster.current.intersectObject(mesh.current);
     if (intersects.length) {
       const index = intersects[0].faceIndex!;
-      // TODO: Find better way to compare colors
       const hex = `#${geometry.current.faces[index].color.getHexString()}`;
       if (hex === colors.badCoin) return reset();
 
@@ -61,7 +60,7 @@ const LevelDodecahedron: Level = (props) => {
 
       const firstIndex = index - (index % 3);
       for (let i = 0; i < 3; i++) {
-        geometry.current.faces[firstIndex + i].color.setRGB(1, 0, 0);
+        geometry.current.faces[firstIndex + i].color.setStyle(colors.badCoin);
       }
       geometry.current.colorsNeedUpdate = true;
     }

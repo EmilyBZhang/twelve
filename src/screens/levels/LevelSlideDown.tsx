@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, View } from 'react-native';
+import { Animated, View } from 'react-native';
 import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
@@ -16,18 +16,18 @@ const deltaY = levelHeight / 5 / 3;
 
 const coinSize = styles.coinSize;
 
-interface CoinContainerProps {
+interface BufferProps {
   shifted: number;
 }
 
-const CoinContainer = styled.View<CoinContainerProps>`
+const Buffer = styled.View<BufferProps>`
   width: 100%;
-  height: 100%;
-  transform: translateY(${props => (props.shifted % 12 === 0) ? (
-    0
-  ) : (
-    props.shifted * deltaY + coinSize / 2
-  )}px);
+  height: ${props => 2 * (props.shifted * deltaY + coinSize / 2)}px;
+`;
+
+const CoinContainer = styled.View`
+  width: ${levelWidth}px;
+  height: ${levelHeight}px;
   justify-content: center;
   align-items: center;
 `;
@@ -53,7 +53,8 @@ const LevelSlideDown: Level = (props) => {
   return (
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
-      <CoinContainer shifted={numCoinsFound}>
+      <Buffer shifted={numCoinsFound} />
+      <CoinContainer>
         <LevelText hidden={twelve}>The sky is falling!</LevelText>
         {coinPositions.map((coinPosition, index) => (
           <View
@@ -63,7 +64,7 @@ const LevelSlideDown: Level = (props) => {
             <Coin
               found={props.coinsFound.has(index)}
               onPress={() => handleCoinPress(index)}
-              />
+            />
           </View>
         ))}
       </CoinContainer>

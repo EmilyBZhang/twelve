@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import styles from 'assets/styles';
 import Coin from 'components/Coin';
-import getLevelDimensions from 'utils/getDimensions';
+import { getLevelDimensions } from 'utils/getDimensions';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 

@@ -2,7 +2,7 @@
 // Also consider preloading all the audio and then resetting their positions back to 0, as per https://forums.expo.io/t/laggy-audio-on-multiple-plays/3169
 
 import { Audio } from 'expo-av';
-import { PlaybackSource, PlaybackStatusToSet } from 'expo-av/build/AV';
+import { AVPlaybackSource, AVPlaybackStatusToSet } from 'expo-av/build/AV';
 
 import Actions from 'reducers/settings/actionTypes';
 import { ReduxState } from 'reducers/store';
@@ -28,7 +28,7 @@ export const changePlaybackOptions = ({ getState }: MiddlewareArg) => (
   }
 );
 
-export const playAudioWithPreload = async (name: string, sound: PlaybackSource, setSoundPlayback?: (res: any) => any, options?: PlaybackStatusToSet) => {
+export const playAudioWithPreload = async (name: string, sound: AVPlaybackSource, setSoundPlayback?: (res: any) => any, options?: AVPlaybackStatusToSet) => {
   // TODO: Make this function
 };
 
@@ -39,7 +39,7 @@ export const playAudioWithPreload = async (name: string, sound: PlaybackSource, 
  * @param setSoundPlayback Optional callback to save a reference to the sound playback
  * @param options Options for playing the sound, as specified in the initialStatus param for Audio.Sound.createAsync()
  */
-export const playAudio = async (sound: PlaybackSource, setSoundPlayback?: (res: any) => any, options?: PlaybackStatusToSet) => {
+export const playAudio = async (sound: AVPlaybackSource, setSoundPlayback?: (res: any) => any, options?: AVPlaybackStatusToSet) => {
   const initialStatus = {
     ...defaultOptions,
     ...options

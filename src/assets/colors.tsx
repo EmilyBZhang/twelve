@@ -11,22 +11,52 @@ const colors = {
   // foreground: '#003459',
   // background: '#00a8e8',
   // orderedCoin: '#fbbc05' as CoinColor,
-  foreground: 'indigo',
-  background: '#00ffff',// cyan
+
+  // Other pastels:
+  // Blue: #77dbfd
+  // Red: #ffb7b8
+  // Green: #c3e4b9
+  // Yellow: #f5f59d
+
+  foreground: '#4b0082',
+  // background: '#b4807d',
+  background: '#f0c8f0',
   foregroundPressed: '#260041',
-  coin: '#0000ff' as CoinColor,
-  orderedCoin: '#ffff00' as CoinColor,
-  selectCoin: '#008000' as CoinColor,
-  badCoin: '#ff0000' as CoinColor,
+
+  darkWood: '#8b4513',
+  lightWood: '#deb887',
+
+  coin: '#1e90ff' as CoinColor,
+  orderedCoin: '#e6c436' as CoinColor,
+  selectCoin: '#61b75d' as CoinColor,
+  badCoin: '#ff3d3d' as CoinColor,
+
+  lightText: '#ffffff',
+  darkText: '#000000',
+
+  plainSurface: '#bfbfbf',
+  grass: '#61b75d',
+
+
+  // foreground: '#4b0082', // indigo
+  // background: '#00ffff',// cyan
+  // foregroundPressed: '#260041',
+  // coin: '#0000ff' as CoinColor,
+  // orderedCoin: '#ffff00' as CoinColor,
+  // selectCoin: '#008000' as CoinColor,
+  // badCoin: '#ff0000' as CoinColor,
   onCoin: '#ffffff' as CoinColor,
-  offCoin: '#000000' as CoinColor,
+  offCoin: '#282828' as CoinColor,
+  // TODO: Convert all colors to hex
   coinUnderlay: 'darkblue',
-  orderedCoinUnderlay: '#c0c000',
+  orderedCoinUnderlay: '#bfbf00',
   selectCoinUnderlay: 'darkgreen',
   badCoinUnderlay: 'darkred',
   onCoinUnderlay: 'lightgray',
-  // TODO: Make offCoin consistent with other coins in that it goes from light to dark
-  offCoinUnderlay: 'darkgray',
+  offCoinUnderlay: '#000000',
+
+
+  disabledCoinOpacity: 0.5,
 };
 
 // #5D608E
@@ -50,9 +80,9 @@ export const coinUnderlayColors = {
  */
 export const colorIcons = {
   [colors.coin]: 'plus',
-  [colors.orderedCoin]: 'nut',
+  [colors.orderedCoin]: 'axis',
   [colors.selectCoin]: 'asterisk',
-  [colors.badCoin]: 'alert-octagon',
+  [colors.badCoin]: 'stop',
   [colors.onCoin]: 'power-on',
   [colors.offCoin]: 'power-off'
 };

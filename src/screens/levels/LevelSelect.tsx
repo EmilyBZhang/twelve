@@ -16,6 +16,15 @@ interface LevelSelectProps {
 }
 export type LevelSelectType = FunctionComponent<LevelSelectProps>;
 
+const levelBubbleColors = [
+  colors.foreground,
+  colors.coin,
+  colors.selectCoin,
+  colors.orderedCoin,
+  colors.darkWood,
+  colors.badCoin,
+];
+
 const TitleText = styled.Text`
   font-size: 36px;
   font-family: montserrat-extra-bold;
@@ -27,6 +36,7 @@ const TitleText = styled.Text`
 `;
 
 interface LevelBoxProps {
+  index: number;
   unlocked: boolean;
   completed: boolean;
   children?: any;
@@ -42,16 +52,19 @@ const LevelBoxContainer = styled(Animated.View)`
   justify-content: center;
   align-items: center;
   border-radius: ${levelBoxSize / 2}px;
-  background-color: ${colors.foreground};
 `;
 
-const LevelBoxTouchable = styled.TouchableHighlight.attrs<LevelBoxProps>(props => ({
+// TODO: Consider changing to TouchableHighlight with corresponding underlay colors
+const LevelBoxTouchable = styled.TouchableOpacity.attrs<LevelBoxProps>(props => ({
   disabled: !props.unlocked,
-  underlayColor: colors.foregroundPressed
+  activeOpacity: 5/6,
 }))<LevelBoxProps>`
   margin-left: ${levelBoxMargin}px;
   margin-bottom: ${levelBoxMargin}px;
   border-radius: ${levelBoxSize / 2}px;
+  background-color: ${props => (
+    levelBubbleColors[Math.floor(props.index / 12) % levelBubbleColors.length]
+  )};
   ${props => !props.unlocked && `opacity: 0.5;`}
 `;
   // ${props => props.completed && `border: 2px solid gold;`}
@@ -67,12 +80,13 @@ const LevelBoxText = styled.Text<LevelBoxProps>`
 const CompletedIcon = styled(MaterialCommunityIcons)
   .attrs<LevelBoxProps>(props => ({
     name: 'star',
-    color: props.completed ? 'gold' : colors.foregroundPressed,
+    // TODO: Move these to colors.tsx
+    color: props.completed ? 'gold' : 'black',
     size: levelBoxSize / 4,
 }))<LevelBoxProps>`
   position: absolute;
   bottom: ${levelBoxSize / 8}px;
-  opacity: ${props => props.unlocked ? 1 : 0.5};
+  opacity: ${props => props.completed ? 1 : props.unlocked ? 0.5 : 0.25};
 `;
 
 const LevelBox: FunctionComponent<LevelBoxProps> = (props) => {
@@ -117,7 +131,6 @@ const LevelBox: FunctionComponent<LevelBoxProps> = (props) => {
       onPress={onPress}
     >
       <LevelBoxContainer style={{
-        // opacity,
         transform: [{scaleX: scale}, {scaleY: scale}],
       }}>
         <CompletedIcon {...levelStatus} />
@@ -150,6 +163,7 @@ const LevelSelect: LevelSelectType = (props) => {
         renderItem={({ item: levelStatus, index }) => (
           <LevelBox
             {...levelStatus}
+            index={index}
             onPress={() => props.onGoToLevel(index + 1)}
           >
             {index + 1}

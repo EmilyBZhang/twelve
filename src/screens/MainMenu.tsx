@@ -71,7 +71,7 @@ const MenuButtonText = styled.Text`
   font-size: ${(props: MenuButtonTextProps) => props.playButton ? 24 : 16}px;
   font-family: montserrat;
   text-align: center;
-  color: white;
+  color: ${colors.lightText};
 `;
 
 interface CornerButtonProps {
@@ -253,13 +253,13 @@ const MainMenu: Screen = (props) => {
           left={0}
           onPress={handleToggleSettings}
         >
-          <Octicons name={'gear'} size={24} color={'white'} />
+          <Octicons name={'gear'} size={24} color={colors.lightText} />
         </CornerButton>
         <CornerButton
           left={1}
           onPress={handleShare}
         >
-          <MaterialCommunityIcons name={'share-variant'} size={24} color={'white'} />
+          <MaterialCommunityIcons name={'share-variant'} size={24} color={colors.lightText} />
         </CornerButton>
         <CornerButton
           right={1}

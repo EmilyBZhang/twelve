@@ -3,7 +3,7 @@ import { Alert, Animated, Button, PanResponder, View, Text } from 'react-native'
 import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
-import getLevelDimensions from 'utils/getDimensions';
+import { getLevelDimensions } from 'utils/getDimensions';
 import styles from 'assets/styles';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';

@@ -92,6 +92,13 @@ const Level: Screen = (props) => {
     }));
   }, []);
 
+  // TODO: Check if prev/next levels are unlocked
+  const handlePrevLevel = useCallback(
+    () => goToLevel(levelNum - 1),
+    [levelNum]
+  );
+
+  // TODO: Check if prev/next levels are unlocked
   const handleNextLevel = useCallback(
     () => goToLevel(levelNum + 1),
     [levelNum]
@@ -117,8 +124,11 @@ const Level: Screen = (props) => {
     // TODO: Look into NavigationActions.back or props.navigation.goBack
     onBack: (levelNum === 0) ? goToMainMenu : goToLevelSelect,
     onToggleSettings: handleToggleSettings,
+    onPrevLevel: handlePrevLevel,
     onNextLevel: handleNextLevel,
     onRestartLevel: handleRestartLevel,
+    level: levelNum,
+    // TODO: Consider removing this from LevelNav
     ...levelNum && {settingsTitle: `Level ${levelNum}`}
   };
 

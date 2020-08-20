@@ -54,7 +54,7 @@ const dirId = {
 const mazeStyle = {
   width: mazeSize,
   height: mazeSize,
-  backgroundColor: '#c0c0c0',
+  backgroundColor: colors.plainSurface,
   borderWidth: mazeBorderWidth,
   borderColor: 'black',
   padding: 0,

@@ -30,7 +30,7 @@ interface ColorScreenProps {
 
 const ColorScreen = styled.View<ColorScreenProps>`
   width: ${colorScreenSize}px;
-  height: ${colorScreenSize * Math.sqrt(2)}px;
+  height: ${colorScreenSize}px;
   background-color: ${props => props.color || 'transparent'};
   justify-content: center;
   align-items: center;

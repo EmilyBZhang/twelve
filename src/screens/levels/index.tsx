@@ -41,7 +41,7 @@ import LevelMatchCards from './LevelMatchCards';
 import LevelMultiplyTo12 from './LevelMultiplyTo12';
 import LevelA1Z26 from './LevelA1Z26';
 import LevelPolygons from './LevelPolygons';
-import LevelEyes from './LevelEyes';
+import LevelClockOrder from './LevelClockOrder';
 import LevelCompass from './LevelCompass';
 import LevelHoleJigsaw from './LevelHoleJigsaw';
 import LevelDodecahedron from './LevelDodecahedron';
@@ -51,6 +51,20 @@ import LevelRace from './LevelRace';
 import LevelRaceGE from './LevelRaceGE';
 import LevelThreeStacks from './LevelThreeStacks';
 import LevelStackQueue from './LevelStackQueue';
+import LevelBallMaze from './LevelBallMaze';
+import LevelAcyclicAddition from './LevelAcyclicAddition';
+import LevelSearch from './LevelSearch';
+import LevelD12 from './LevelD12';
+import LevelSlidingPuzzle from './LevelSlidingPuzzle';
+import LevelBalance from './LevelBalance';
+import Level69 from './Level69';
+import LevelRacecar from './LevelRacecar';
+import LevelPlusFlip from './LevelPlusFlip';
+import LevelProduct from './LevelProduct';
+import Level12 from './Level12';
+
+
+
 
 export default [
   LevelSelect,
@@ -65,11 +79,12 @@ export default [
   LevelSimonSays,
   LevelArrows,
   LevelFloatingPoint,
-  LevelMouseMaze,
+  Level12,
   LevelSlideDown,
   LevelRGBSliders,
   LevelNewcomerCoin,
   LevelBipartiteCircuit,
+  LevelMouseMaze,
   LevelRabbitHole,
   LevelClock,
   Level12Wire,
@@ -89,18 +104,42 @@ export default [
   LevelMatchCards,
   LevelMultiplyTo12,
   LevelA1Z26,
-  LevelEyes,
-  LevelDodecahedron,
+  LevelClockOrder,
   LevelLandscape,
+  LevelDodecahedron,
   LevelBalloon,
   LevelThreeStacks,
   LevelStackQueue,
+  LevelBallMaze,
+  LevelAcyclicAddition,
+  LevelSearch,
+  LevelSlidingPuzzle,
+  LevelBalance,
+  LevelPlusFlip,
+  Level69,
   LevelWarning,
+  LevelProduct,
+  LevelD12,
   LevelRaceGE,
   LevelRace,
   LevelBalloon2,
   LevelCompass,
   LevelHoleJigsaw,
+  LevelRacecar,
+  LevelWarning,
+  LevelWarning,
+  LevelWarning,
+  LevelWarning,
+  LevelWarning,
+  LevelWarning,
+  LevelWarning,
+  LevelWarning,
+  LevelWarning,
+  LevelWarning,
+  Level69,
+  LevelWarning,
+  LevelWarning,
+  LevelWarning,
   // LevelPolygons,
   // LevelThreeCardMonte,
   // LevelExpandingCoin,

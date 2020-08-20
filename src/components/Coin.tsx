@@ -24,6 +24,7 @@ const CoinTouchable = styled.TouchableHighlight<CoinProps>`
   width: ${props => props.size}px;
   height: ${props => props.size}px;
   background-color: ${props => (props.hidden || props.found) ? 'transparent' : props.color};
+  opacity: ${props => props.disabled ? colors.disabledCoinOpacity : 1};
   border-radius: ${props => props.size! / 2}px;
   justify-content: center;
   align-items: center;
@@ -85,7 +86,7 @@ const Coin: CoinType = (props) => {
       underlayColor={coinUnderlayColors[color]}
     >
       <>
-        {(!hidden && !found && !noShimmer) && (
+        {(!hidden && !disabled && !found && !noShimmer) && (
           <Shimmer size={size} style={{
             transform: [
               {translateX: shimmerTranslate},

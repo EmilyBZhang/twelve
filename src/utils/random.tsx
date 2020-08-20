@@ -1,3 +1,8 @@
+import styles from 'assets/styles';
+import { getLevelDimensions } from 'utils/getDimensions';
+
+const { width: levelWidth, height: levelHeight } = getLevelDimensions();
+
 /**
  * Selects a random float (uniformly) from the range [first, second).
  * 
@@ -53,7 +58,7 @@ export const bernoulli = (p: number = 0.5) => {
 };
 
 /**
- * Randomly shuffles an array in-place.
+ * Randomly shuffles an array in place.
  * 
  * @param arr Array to shuffle.
  */
@@ -65,4 +70,53 @@ export const shuffleArray = <T extends unknown>(arr: Array<T>) => {
     arr[index] = arr[i - 1];
     arr[i - 1] = temp;
   }
+};
+
+/**
+ * Selects a random 2D point, with x in range [x0, x1) and y in range [y0, y1).
+ * 
+ * @param x0 Leftmost point
+ * @param y0 Topmost point
+ * @param x1 Rightmost point
+ * @param y1 Bottommost point
+ */
+export const randPoint = (x0: number, y0: number, x1: number, y1: number) => ({
+  x: randFloat(x0, x1),
+  y: randFloat(y0, y1),
+});
+
+const defaultRandCoinOptions = {
+  coinSize: styles.coinSize,
+  x0: 0,
+  y0: 0,
+  x1: levelWidth,
+  y1: levelHeight,
+};
+
+/**
+ * Selects a random 2D point for a coin.
+ * 
+ * Generates based on a coin size and the vertices of the box (x0, y0), (x1, y1).
+ * 
+ * @param options Object with props: coinSize, x0, y0, x1, y1
+ */
+export const randCoinPoint = (options = defaultRandCoinOptions) => (
+  randPoint(
+    options.x0,
+    options.y0,
+    options.x1 - options.coinSize,
+    options.y1 - options.coinSize
+  )
+);
+
+/**
+ * Selects a random 2D position for a coin.
+ * 
+ * Generates based on a coin size and the vertices of the box (x0, y0), (x1, y1).
+ * 
+ * @param options Object with props: coinSize, x0, y0, x1, y1
+ */
+export const randCoinPosition = (options = defaultRandCoinOptions) => {
+  const { x, y } = randCoinPoint(options);
+  return { left: x, top: y };
 };

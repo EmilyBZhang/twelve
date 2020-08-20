@@ -112,11 +112,11 @@ const LevelFitSquares: Level = (props) => {
 
   const [lastX, setLastX] = useState(initX);
   const [baseX] = useState(new Animated.Value(lastX));
-  const [panX] = useState(new Animated.Value(0))
+  const [panX] = useState(new Animated.Value(0));
   
   const [lastY, setLastY] = useState(initY);
   const [baseY] = useState(new Animated.Value(lastY));
-  const [panY] = useState(new Animated.Value(0))
+  const [panY] = useState(new Animated.Value(0));
 
   const [lastScale, setLastScale] = useState(initScale);
   const [baseScale] = useState(new Animated.Value(lastScale));
@@ -191,8 +191,8 @@ const LevelFitSquares: Level = (props) => {
 
   const handlePanGestureStateChange = (e: PanGestureHandlerStateChangeEvent) => {
     if (e.nativeEvent.oldState === State.ACTIVE) {
-      const finalX = changeX(lastX + e.nativeEvent.translationX);
-      const finalY = changeY(lastY + e.nativeEvent.translationY);
+      changeX(lastX + e.nativeEvent.translationX);
+      changeY(lastY + e.nativeEvent.translationY);
     }
   };
 

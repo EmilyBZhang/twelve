@@ -17,7 +17,7 @@ import ColorHint from 'components/ColorHint';
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 const coinSize = styles.coinSize;
 
-const GhostCoin= styled(Animated.View)`
+const GhostCoin = styled(Animated.View)`
   position: absolute;
   width: ${coinSize}px;
   height: ${coinSize}px;
@@ -105,6 +105,7 @@ const LevelNewcomerCoin: Level = (props) => {
           }}
         >
           <Coin
+            noShimmer
             color={colors.selectCoin}
             found={twelve}
             hidden={!showNext || !visible || (index !== nextIndex && !props.coinsFound.has(index))}

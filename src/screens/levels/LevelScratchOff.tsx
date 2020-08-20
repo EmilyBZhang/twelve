@@ -34,7 +34,6 @@ const LevelScratchOff: Level = (props) => {
   return (
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
-      <ScratchOffCard />
       <LevelText hidden={twelve}>Feeling lucky?</LevelText>
       {coinPositions.map((coinPosition, index) => (
         <View
@@ -47,6 +46,7 @@ const LevelScratchOff: Level = (props) => {
           />
         </View>
       ))}
+      <ScratchOffCard />
     </LevelContainer>
   );
 };

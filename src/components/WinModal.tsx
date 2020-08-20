@@ -1,5 +1,5 @@
 import React, { FunctionComponent, memo } from 'react';
-import { Text, Modal, View, TouchableOpacity, Button } from 'react-native';
+import { Button } from 'react-native';
 import styled from 'styled-components/native';
 
 import useCongratsMessage from 'hooks/useCongratsMessage';
@@ -7,6 +7,7 @@ import getDimensions from 'utils/getDimensions';
 import colors from 'assets/colors';
 import styles from 'assets/styles';
 import LevelText from './LevelText';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 
 const { width: windowWidth, height: windowHeight } = getDimensions();
 
@@ -34,6 +35,57 @@ const FullScreenModal = styled.View`
   align-items: center;
 `;
 
+const NextLevelButton = styled.TouchableHighlight.attrs({
+  underlayColor: colors.foregroundPressed
+})`
+  background-color: ${colors.foreground};
+  padding: ${styles.coinSize / 2}px;
+  border-radius: ${styles.coinSize}px;
+  margin: ${styles.coinSize}px;
+  /* padding:  */
+`;
+
+const NextLevelText = styled.Text`
+  font-size: ${styles.coinSize / 2};
+  font-family: montserrat-bold;
+  color: ${colors.lightText};
+  text-align: center;
+`;
+
+interface BubbleTouchableProps {
+  backgroundColor?: string;
+  size?: number;
+}
+
+const BubbleTouchable = styled.TouchableHighlight<BubbleTouchableProps>`
+  background-color: ${props => props.backgroundColor || colors.background};
+  width: ${props => props.size !== undefined ? props.size : windowWidth / 2}px;
+  border-radius: ${props => props.size !== undefined ? props.size / 2 : windowWidth / 4}px;
+  justify-content: center;
+  align-items: center;
+`;
+
+interface BubbleProps {
+  backgroundColor: string;
+  underlayColor: string;
+  color: string;
+  title: string;
+  onPress?: () => any;
+}
+
+const Bubble: FunctionComponent<BubbleProps> = (props) => {
+  const { backgroundColor, underlayColor, color, title, onPress } = props;
+
+  return (
+    <BubbleTouchable
+      backgroundColor={backgroundColor}
+      underlayColor={underlayColor}
+    >
+      <LevelText>{title}</LevelText>
+    </BubbleTouchable>
+  );
+};
+
 const WinModal: FunctionComponent<WinModalProps> = (props) => {
   const congratsMessage = useCongratsMessage([props.level]);
 
@@ -42,7 +94,10 @@ const WinModal: FunctionComponent<WinModalProps> = (props) => {
   return (
     <FullScreenModal>
       <LevelText>{congratsMessage}</LevelText>
-      <Button title={'Next level!'} onPress={props.onNextLevel} />
+      {/* <Bubble title={congratsMessage}>{congratsMessage}</Bubble> */}
+      <NextLevelButton onPress={props.onNextLevel}>
+        <NextLevelText>Next level!</NextLevelText>
+      </NextLevelButton>
     </FullScreenModal>
   );
 };
