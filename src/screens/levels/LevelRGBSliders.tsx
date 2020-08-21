@@ -42,20 +42,22 @@ interface RGBSlidersProps {
 const RGBSliders: FunctionComponent<RGBSlidersProps> = (props) => {
   const [setRed, setGreen, setBlue] = props.setColors;
 
-  return (<>
-    <ColorSlider
-      thumbTintColor={'red'}
-      onValueChange={setRed}
-    />
-    <ColorSlider
-      thumbTintColor={'lime'}
-      onValueChange={setGreen}
-    />
-    <ColorSlider
-      thumbTintColor={'blue'}
-      onValueChange={setBlue}
-    />
-  </>)
+  return (
+    <>
+      <ColorSlider
+        thumbTintColor={'red'}
+        onValueChange={setRed}
+      />
+      <ColorSlider
+        thumbTintColor={'lime'}
+        onValueChange={setGreen}
+      />
+      <ColorSlider
+        thumbTintColor={'blue'}
+        onValueChange={setBlue}
+      />
+    </>
+  );
 };
 
 interface ColorProps {

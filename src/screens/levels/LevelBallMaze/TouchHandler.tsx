@@ -10,7 +10,6 @@ const TouchHandler: System = (entities, update) => {
 
   const touch = touches.find(touch => touch.type === 'start');
   if (!touch) return entities;
-  else console.log(touch.event);
 
   const bodies = Matter.Query.point(fgWorld.bodies, {
     x: touch.event.pageX,

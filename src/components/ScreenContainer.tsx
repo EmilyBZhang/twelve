@@ -13,7 +13,7 @@ export interface ScreenContainerProps {
   gradientColors?: Array<string>;
 }
 
-// TODO: Consider SafeAreaView
+// TODO: See if SafeAreaView works on devices with notches
 const Container = styled.View<ScreenContainerProps>`
   flex: 1;
   background-color: ${props => props.color};

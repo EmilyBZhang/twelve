@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Animated, Easing, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 
@@ -21,9 +21,15 @@ const TransformedContainer = styled.View`
   align-items: center;
 `;
 
+const CoinsContainer = styled(Animated.View)`
+  position: absolute;
+  z-index: ${styles.levelNavZIndex + 1};
+  width: ${styles.coinSize}px;
+  height: ${styles.coinSize}px;
+`;
+
 const CoinContainer = styled(Animated.View)`
   position: absolute;
-  z-index: ${styles.levelNavZIndex};
 `;
 
 const LevelPressLevelDisplay: Level = (props) => {
@@ -41,6 +47,8 @@ const LevelPressLevelDisplay: Level = (props) => {
     }).start();
   }, [coinsRevealed]);
 
+  const handleReveal = useCallback(() => setCoinsRevealed(true), []);
+
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
 
@@ -52,23 +60,23 @@ const LevelPressLevelDisplay: Level = (props) => {
           style={{ backgroundColor: 'transparent' }}
         >
           <Animated.View style={{ opacity: Animated.subtract(1, coinOpacity) }}>
-            <TouchableOpacity onPress={() => setCoinsRevealed(true)}>
+            <TouchableOpacity onPressIn={handleReveal}>
               <TopText style={{ color: colors.coin }}>12</TopText>
             </TouchableOpacity>
           </Animated.View>
         </CenterContainer>
-        {Array.from(Array(12), (_, index) => (
-          <CoinContainer
-            key={String(index)}
-            style={{ opacity: coinOpacity }}
-            pointerEvents={coinsRevealed ? 'auto' : 'none'}
-          >
-            <Coin
-              found={props.coinsFound.has(index)}
-              onPress={() => props.onCoinPress(index)}
-            />
-          </CoinContainer>
-        ))}
+        {coinsRevealed && (
+          <CoinsContainer style={{ opacity: coinOpacity }}>
+            {Array.from(Array(12), (_, index) => (
+              <CoinContainer key={String(index)}>
+                <Coin
+                  found={props.coinsFound.has(index)}
+                  onPress={() => props.onCoinPress(index)}
+                />
+              </CoinContainer>
+            ))}
+          </CoinsContainer>
+        )}
       </TransformedContainer>
       <LevelContainer>
         <LevelCounter count={numCoinsFound} />

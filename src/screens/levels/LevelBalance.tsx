@@ -249,22 +249,22 @@ const LevelBalance: Level = (props) => {
             }}
           />
         ))}
-        <CoinsContainer
-          pointerEvents={isSolved ? 'auto' : 'none'}
-          style={{ opacity: coinOpacity }}
-        >
-          {coinPositions.map((coinPosition, index) => (
-            <View
-              key={String(index)}
-              style={{ ...coinPosition, position: 'absolute' }}
-            >
-              <Coin
-                found={props.coinsFound.has(index)}
-                onPress={() => props.onCoinPress(index)}
-              />
-            </View>
-          ))}
-        </CoinsContainer>
+        {isSolved && (
+          <CoinsContainer style={{ opacity: coinOpacity }}>
+            <LevelCounter count={numCoinsFound} />
+            {coinPositions.map((coinPosition, index) => (
+              <View
+                key={String(index)}
+                style={{ ...coinPosition, position: 'absolute' }}
+              >
+                <Coin
+                  found={props.coinsFound.has(index)}
+                  onPress={() => props.onCoinPress(index)}
+                />
+              </View>
+            ))}
+          </CoinsContainer>
+        )}
       </Inventory>
     </LevelContainer>
   );

@@ -62,7 +62,7 @@ import LevelRacecar from './LevelRacecar';
 import LevelPlusFlip from './LevelPlusFlip';
 import LevelProduct from './LevelProduct';
 import Level12 from './Level12';
-
+import LevelPermuteTwoTwelves from './LevelPermuteTwoTwelves';
 
 
 
@@ -79,7 +79,7 @@ export default [
   LevelSimonSays,
   LevelArrows,
   LevelFloatingPoint,
-  Level12,
+  // Level12,
   LevelSlideDown,
   LevelRGBSliders,
   LevelNewcomerCoin,
@@ -116,6 +116,7 @@ export default [
   LevelSlidingPuzzle,
   LevelBalance,
   LevelPlusFlip,
+  LevelPermuteTwoTwelves,
   Level69,
   LevelWarning,
   LevelProduct,

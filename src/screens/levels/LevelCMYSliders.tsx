@@ -40,20 +40,22 @@ interface CMYSlidersProps {
 const CMYSliders: FunctionComponent<CMYSlidersProps> = (props) => {
   const [setCyan, setMagenta, setYellow] = props.setColors;
 
-  return (<>
-    <ColorSlider
-      thumbTintColor={'cyan'}
-      onValueChange={setCyan}
-    />
-    <ColorSlider
-      thumbTintColor={'magenta'}
-      onValueChange={setMagenta}
-    />
-    <ColorSlider
-      thumbTintColor={'yellow'}
-      onValueChange={setYellow}
-    />
-  </>)
+  return (
+    <>
+      <ColorSlider
+        thumbTintColor={'cyan'}
+        onValueChange={setCyan}
+      />
+      <ColorSlider
+        thumbTintColor={'magenta'}
+        onValueChange={setMagenta}
+      />
+      <ColorSlider
+        thumbTintColor={'yellow'}
+        onValueChange={setYellow}
+      />
+    </>
+  );
 };
 
 interface ColorProps {

@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
+import React, { FunctionComponent, memo, useEffect, useRef, useState } from 'react';
 import { Animated, FlatList } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import styled from 'styled-components/native';
@@ -35,12 +35,15 @@ const TitleText = styled.Text`
   width: 100%;
 `;
 
-interface LevelBoxProps {
-  index: number;
+interface LevelProps {
   unlocked: boolean;
   completed: boolean;
-  children?: any;
-  onPress?: () => any;
+  index: number;
+}
+
+interface LevelBoxProps extends LevelProps {
+  children: any;
+  onGoToLevel: (levelNum: number) => any;
 }
 
 const levelBoxSize = levelWidth / 5;
@@ -55,10 +58,10 @@ const LevelBoxContainer = styled(Animated.View)`
 `;
 
 // TODO: Consider changing to TouchableHighlight with corresponding underlay colors
-const LevelBoxTouchable = styled.TouchableOpacity.attrs<LevelBoxProps>(props => ({
+const LevelBoxTouchable = styled.TouchableOpacity.attrs<LevelProps>(props => ({
   disabled: !props.unlocked,
   activeOpacity: 5/6,
-}))<LevelBoxProps>`
+}))<LevelProps>`
   margin-left: ${levelBoxMargin}px;
   margin-bottom: ${levelBoxMargin}px;
   border-radius: ${levelBoxSize / 2}px;
@@ -69,7 +72,7 @@ const LevelBoxTouchable = styled.TouchableOpacity.attrs<LevelBoxProps>(props => 
 `;
   // ${props => props.completed && `border: 2px solid gold;`}
 
-const LevelBoxText = styled.Text<LevelBoxProps>`
+const LevelBoxText = styled.Text`
   color: white;
   text-align: center;
   font-size: ${levelBoxSize / 2}px;
@@ -78,21 +81,21 @@ const LevelBoxText = styled.Text<LevelBoxProps>`
 `;
 
 const CompletedIcon = styled(MaterialCommunityIcons)
-  .attrs<LevelBoxProps>(props => ({
+  .attrs<LevelProps>(props => ({
     name: 'star',
     // TODO: Move these to colors.tsx
     color: props.completed ? 'gold' : 'black',
     size: levelBoxSize / 4,
-}))<LevelBoxProps>`
+}))<LevelProps>`
   position: absolute;
   bottom: ${levelBoxSize / 8}px;
   opacity: ${props => props.completed ? 1 : props.unlocked ? 0.5 : 0.25};
 `;
 
-const LevelBox: FunctionComponent<LevelBoxProps> = (props) => {
+const LevelBox: FunctionComponent<LevelBoxProps> = memo((props) => {
   const [outlineAnim] = useState(new Animated.Value(0));
 
-  const { onPress, children, ...levelStatus } = props;
+  const { onGoToLevel, children, ...levelStatus } = props;
 
   useEffect(() => {
     if (levelStatus.unlocked && !levelStatus.completed) {
@@ -101,12 +104,12 @@ const LevelBox: FunctionComponent<LevelBoxProps> = (props) => {
           Animated.timing(outlineAnim, {
             toValue: 1,
             duration: 1000,
-            useNativeDriver: true
+            useNativeDriver: true,
           }),
           Animated.timing(outlineAnim, {
             toValue: 0,
             duration: 1000,
-            useNativeDriver: true
+            useNativeDriver: true,
           }),
         ])
       );
@@ -128,19 +131,19 @@ const LevelBox: FunctionComponent<LevelBoxProps> = (props) => {
   return (
     <LevelBoxTouchable
       {...levelStatus}
-      onPress={onPress}
+      onPress={() => onGoToLevel(levelStatus.index + 1)}
     >
       <LevelBoxContainer style={{
         transform: [{scaleX: scale}, {scaleY: scale}],
       }}>
         <CompletedIcon {...levelStatus} />
-        <LevelBoxText {...levelStatus}>
+        <LevelBoxText>
           {children}
         </LevelBoxText>
       </LevelBoxContainer>
     </LevelBoxTouchable>
   );
-};
+});
 
 const levelListStyle = {
   width: levelWidth
@@ -157,6 +160,8 @@ const LevelSelect: LevelSelectType = (props) => {
         horizontal={false}
         keyExtractor={(_, index) => String(index)}
         contentContainerStyle={levelListStyle}
+        initialNumToRender={9}
+        maxToRenderPerBatch={9}
         ListHeaderComponent={
           <TitleText>Select Level</TitleText>
         }
@@ -164,7 +169,7 @@ const LevelSelect: LevelSelectType = (props) => {
           <LevelBox
             {...levelStatus}
             index={index}
-            onPress={() => props.onGoToLevel(index + 1)}
+            onGoToLevel={props.onGoToLevel}
           >
             {index + 1}
           </LevelBox>

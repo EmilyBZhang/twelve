@@ -99,10 +99,12 @@ const LevelElevenPlusTwo: Level = (props) => {
             <Letter>
               {showLetter ? letter : ' '}
             </Letter>
-            {(madeMessage && rowIndex === 1) && (<>
-              {renderCoin(index)}
-              {renderCoin(index + 6)}
-            </>)}
+            {(madeMessage && rowIndex === 1) && (
+              <>
+                {renderCoin(index)}
+                {renderCoin(index + 6)}
+              </>
+            )}
           </LetterTouchable>
         );
       })}

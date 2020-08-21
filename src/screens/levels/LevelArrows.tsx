@@ -79,16 +79,18 @@ const icons = directions.map((direction) => {
     default:
       // Combine two vector icons for a triple-arrow
       // The way it's set up, it only works for down/up
-      icon = (<>
-        <ArrowIcon
-          name={`chevron-${fullDirection}`}
-          translateY={styles.coinSize / 6}
-        />
-        <ArrowIcon
-          name={`chevron-double-${fullDirection}`}
-          translateY={-styles.coinSize / 6}
-        />
-      </>);
+      icon = (
+        <>
+          <ArrowIcon
+            name={`chevron-${fullDirection}`}
+            translateY={styles.coinSize / 6}
+          />
+          <ArrowIcon
+            name={`chevron-double-${fullDirection}`}
+            translateY={-styles.coinSize / 6}
+          />
+        </>
+      );
   }
   return (
     <ArrowContainer>

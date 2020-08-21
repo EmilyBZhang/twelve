@@ -121,21 +121,20 @@ const LevelPlusFlip: Level = (props) => {
           </CoinContainer>
         ))}
       </CoinsContainer>
-      <CoinsContainer
-        pointerEvents={isSolved ? 'auto' : 'none'}
-        style={{ opacity: coinOpacity }}
-      >
-        {coinIndices.map((coinIndex, index) => (
-          <CoinContainer key={String(index)}>
-            {(coinIndex >= 0) && (
-              <Coin
-                found={props.coinsFound.has(coinIndex)}
-                onPress={() => props.onCoinPress(coinIndex)}
-              />
-            )}
-          </CoinContainer>
-        ))}
-      </CoinsContainer>
+      {isSolved && (
+        <CoinsContainer style={{ opacity: coinOpacity }}>
+          {coinIndices.map((coinIndex, index) => (
+            <CoinContainer key={String(index)}>
+              {(coinIndex >= 0) && (
+                <Coin
+                  found={props.coinsFound.has(coinIndex)}
+                  onPress={() => props.onCoinPress(coinIndex)}
+                />
+              )}
+            </CoinContainer>
+          ))}
+        </CoinsContainer>
+      )}
     </LevelContainer>
   );
 };

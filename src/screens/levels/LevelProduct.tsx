@@ -112,15 +112,15 @@ const LevelProduct: Level = (props) => {
         <Cell>
           <Arrow
             disabled={isSolved}
-            direction={'right'}
-            onPress={() => transfer('hats', -1)}
+            direction={'left'}
+            onPress={() => transfer('hats', 1)}
           />
         </Cell>
         <Cell>
           <Arrow
             disabled={isSolved}
-            direction={'left'}
-            onPress={() => transfer('hats', 1)}
+            direction={'right'}
+            onPress={() => transfer('hats', -1)}
           />
         </Cell>
         <Cell>
@@ -132,15 +132,15 @@ const LevelProduct: Level = (props) => {
         <Cell>
           <Arrow
             disabled={isSolved}
-            direction={'right'}
-            onPress={() => transfer('shirts', -1)}
+            direction={'left'}
+            onPress={() => transfer('shirts', 1)}
           />
         </Cell>
         <Cell>
           <Arrow
             disabled={isSolved}
-            direction={'left'}
-            onPress={() => transfer('shirts', 1)}
+            direction={'right'}
+            onPress={() => transfer('shirts', -1)}
           />
         </Cell>
         <Cell>
@@ -152,15 +152,15 @@ const LevelProduct: Level = (props) => {
         <Cell>
           <Arrow
             disabled={isSolved}
-            direction={'right'}
-            onPress={() => transfer('pants', -1)}
+            direction={'left'}
+            onPress={() => transfer('pants', 1)}
           />
         </Cell>
         <Cell>
           <Arrow
             disabled={isSolved}
-            direction={'left'}
-            onPress={() => transfer('pants', 1)}
+            direction={'right'}
+            onPress={() => transfer('pants', -1)}
           />
         </Cell>
         <Cell>
@@ -175,19 +175,18 @@ const LevelProduct: Level = (props) => {
           <LevelText>{numOutfits2}</LevelText>
         </Cell>
       </Grid>
-      <Grid
-        pointerEvents={isSolved ? 'auto' : 'none'}
-        style={{ position: 'absolute', opacity: coinOpacity }}
-      >
-        {Array.from(Array(12), (_, index) => (
-          <Cell key={String(index)}>
-            <Coin
-              found={props.coinsFound.has(index)}
-              onPress={() => props.onCoinPress(index)}
-            />
-          </Cell>
-        ))}
-      </Grid>
+      {isSolved && (
+        <Grid style={{ position: 'absolute', opacity: coinOpacity }}>
+          {Array.from(Array(12), (_, index) => (
+            <Cell key={String(index)}>
+              <Coin
+                found={props.coinsFound.has(index)}
+                onPress={() => props.onCoinPress(index)}
+              />
+            </Cell>
+          ))}
+        </Grid>
+      )}
     </LevelContainer>
   );
 };

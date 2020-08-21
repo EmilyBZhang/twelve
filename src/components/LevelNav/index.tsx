@@ -58,54 +58,56 @@ const LevelNav: FunctionComponent<LevelNavProps> = (props) => {
     }
   }, [onBack, settingsOpen]);
 
-  return (<>
-    <SettingsModal
-      visible={settingsOpen}
-      title={settingsTitle}
-      onClose={onToggleSettings}
-      onNextLevel={onNextLevel}
-      onRestartLevel={onRestartLevel}
-    />
-    <CenterContainer>
-      {!!level && (
-        <>
-          <NavButton onPress={onPrevLevel}>
-            <Octicons
-              name={'chevron-left'}
-              size={styles.levelNavHeight * 7/12}
-              color={colors.foreground}
-            />
-          </NavButton>
-          <TopText>{level}</TopText>
-          <NavButton onPress={onNextLevel}>
-            <Octicons
-              name={'chevron-right'}
-              size={styles.levelNavHeight * 7/12}
-              color={colors.foreground}
-            />
-          </NavButton>
-        </>
-      )}
-    </CenterContainer>
-    <LeftContainer>
-      <NavButton onPress={onBack} outlined>
-        <AntDesign
-          name={'caretleft'}
-          size={styles.levelNavHeight * 7/12}
-          color={colors.foreground}
-        />
-      </NavButton>
-    </LeftContainer>
-    <RightContainer>
-      <NavButton onPress={onToggleSettings} outlined>
-        <Octicons
-          name={'gear'}
-          size={styles.levelNavHeight * 7/12}
-          color={colors.foreground}
-        />
-      </NavButton>
-    </RightContainer>
-  </>);
+  return (
+    <>
+      <SettingsModal
+        visible={settingsOpen}
+        title={settingsTitle}
+        onClose={onToggleSettings}
+        onNextLevel={onNextLevel}
+        onRestartLevel={onRestartLevel}
+      />
+      <CenterContainer>
+        {!!level && (
+          <>
+            <NavButton onPress={onPrevLevel}>
+              <Octicons
+                name={'chevron-left'}
+                size={styles.levelNavHeight * 7/12}
+                color={colors.foreground}
+              />
+            </NavButton>
+            <TopText>{level}</TopText>
+            <NavButton onPress={onNextLevel}>
+              <Octicons
+                name={'chevron-right'}
+                size={styles.levelNavHeight * 7/12}
+                color={colors.foreground}
+              />
+            </NavButton>
+          </>
+        )}
+      </CenterContainer>
+      <LeftContainer>
+        <NavButton onPress={onBack} outlined>
+          <AntDesign
+            name={'caretleft'}
+            size={styles.levelNavHeight * 7/12}
+            color={colors.foreground}
+          />
+        </NavButton>
+      </LeftContainer>
+      <RightContainer>
+        <NavButton onPress={onToggleSettings} outlined>
+          <Octicons
+            name={'gear'}
+            size={styles.levelNavHeight * 7/12}
+            color={colors.foreground}
+          />
+        </NavButton>
+      </RightContainer>
+    </>
+  );
 };
 
 export default memo(LevelNav);

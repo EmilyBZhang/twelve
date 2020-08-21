@@ -1,5 +1,4 @@
 import React, { FunctionComponent, memo } from 'react';
-import { Text } from 'react-native';
 import styled from 'styled-components/native';
 
 import colors from 'assets/colors';
@@ -21,6 +20,12 @@ const Buffer = styled.View<LevelContainerProps>`
   height: ${styles.levelNavHeight}px;
 `
 
+// TODO: Use this to fix navigation UI for devices with notches
+const Container = styled.SafeAreaView`
+  width: 100%;
+  height: 100%;
+`;
+
 const LevelContainer: FunctionComponent<LevelContainerProps> = (props) => {
   const {
     gradientColors,
@@ -33,19 +38,21 @@ const LevelContainer: FunctionComponent<LevelContainerProps> = (props) => {
     (gradientColors && gradientColors[0]) || colors.background
   );
 
-  return (<>
-    <Buffer
-      color={bufferColor}
-      transparentBuffer={transparentBuffer}
-    />
-    <ScreenContainer
-      color={props.color}
-      gradientColors={gradientColors}
-      style={style}
-    >
-      {children}
-    </ScreenContainer>
-  </>);
+  return (
+    <>
+      <Buffer
+        color={bufferColor}
+        transparentBuffer={transparentBuffer}
+      />
+      <ScreenContainer
+        color={props.color}
+        gradientColors={gradientColors}
+        style={style}
+      >
+        {children}
+      </ScreenContainer>
+    </>
+  );
 }
 
 export default memo(LevelContainer);

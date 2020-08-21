@@ -65,6 +65,7 @@ const LevelWarning: Level = (props) => {
             viewBox="0 0 10 10"
             refX="0"
             refY="5"
+            // @ts-ignore
             markerUnits="strokeWidth"
             markerWidth="4"
             markerHeight="3"

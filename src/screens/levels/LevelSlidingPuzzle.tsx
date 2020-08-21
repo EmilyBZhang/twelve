@@ -138,16 +138,10 @@ const Tile: FunctionComponent<TileProps> = memo((props) => {
           { translateY: Animated.multiply(slideAnim.y, tileSize) },
         ]
       }}>
-        <TileTouchable
-          onPressIn={handleTilePressIn}
-        >
+        <TileTouchable onPressIn={handleTilePressIn}>
           <>
-            <TileImage
-              source={images[value]}
-            />
-            <Animated.View style={{
-              position: 'absolute',
-            }}>
+            <TileImage source={images[value]} />
+            <Animated.View style={{ position: 'absolute' }}>
               <TileText>{value}</TileText>
             </Animated.View>
           </>
@@ -267,20 +261,19 @@ const LevelSlidingPuzzle: Level = (props) => {
             handleTilePressIn={handleTilePressArr[index]}
           />
         ))}
-        <CoinsContainer
-          pointerEvents={isSolved ? 'auto' : 'none'}
-          style={{ opacity: coinOpacity }}
-        >
-          <TwelveImage />
-          {Array.from(Array(12), (_, index) => (
-            <CoinContainer key={String(index)}>
-              <Coin
-                found={props.coinsFound.has(index)}
-                onPress={() => props.onCoinPress(index)}
-              />
-            </CoinContainer>
-          ))}
-        </CoinsContainer>
+        {isSolved && (
+          <CoinsContainer style={{ opacity: coinOpacity }}>
+            <TwelveImage />
+            {Array.from(Array(12), (_, index) => (
+              <CoinContainer key={String(index)}>
+                <Coin
+                  found={props.coinsFound.has(index)}
+                  onPress={() => props.onCoinPress(index)}
+                />
+              </CoinContainer>
+            ))}
+          </CoinsContainer>
+        )}
       </PuzzleContainer>
       <LevelCounter count={numCoinsFound} />
     </LevelContainer>

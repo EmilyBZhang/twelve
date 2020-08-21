@@ -106,18 +106,20 @@ const getStar = (n: number, size = polygonSize) => {
       y: r + Math.sin(angle * (i * 2 + 1)) * r,
     });
   }
-  return (<>
-    <Polygon
-      stroke={'black'}
-      strokeWidth={1}
-      points={points.slice(0, n / 2).reduce(pointsFromArray, '')}
-    />
-    <Polygon
-      stroke={'black'}
-      strokeWidth={1}
-      points={points.slice(n / 2).reduce(pointsFromArray, '')}
-    />
-  </>)
+  return (
+    <>
+      <Polygon
+        stroke={'black'}
+        strokeWidth={1}
+        points={points.slice(0, n / 2).reduce(pointsFromArray, '')}
+      />
+      <Polygon
+        stroke={'black'}
+        strokeWidth={1}
+        points={points.slice(n / 2).reduce(pointsFromArray, '')}
+      />
+    </>
+  );
 };
 
 const LevelPolygons: Level = (props) => {

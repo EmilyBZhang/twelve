@@ -59,7 +59,7 @@ const Level: Screen = (props) => {
     if (indices.size === 12) completeLevel(levelNum);
   };
   
-  const goToLevel = (index: number) => {
+  const goToLevel = useCallback((index: number) => {
     setSelectedIndices(new Set<number>());
     props.navigation.dispatch(NavigationActions.navigate({
       routeName: 'Level',
@@ -67,7 +67,7 @@ const Level: Screen = (props) => {
         level: index
       }
     }));
-  };
+  }, []);
 
   // TODO: Fix this function if possible, feels unclean
   const restartLevel = () => {
@@ -132,32 +132,34 @@ const Level: Screen = (props) => {
     ...levelNum && {settingsTitle: `Level ${levelNum}`}
   };
 
-  if (levelNum === 0) {
-    return (<>
+  if (levelNum === 0) return (
+    <>
       <LevelNav {...levelNavProps} />
       <LevelSelect
         numLevels={levels.length - 1}
         onGoToLevel={goToLevel}
       />
-    </>);
-  }
+    </>
+  );
 
   const LevelX = levels[levelNum] as LevelType;
 
-  return (<>
-    <LevelNav {...levelNavProps} />
-    <WinModal
-      level={levelNum}
-      onNextLevel={handleNextLevel}
-      visible={twelve}
-    />
-    <LevelX
-      coinsFound={selectedIndices}
-      onCoinPress={handleCoinPress}
-      setCoinsFound={handleSetCoinsFound}
-      onNextLevel={handleNextLevel}
-    />
-  </>);
+  return (
+    <>
+      <LevelNav {...levelNavProps} />
+      <WinModal
+        level={levelNum}
+        onNextLevel={handleNextLevel}
+        visible={twelve}
+      />
+      <LevelX
+        coinsFound={selectedIndices}
+        onCoinPress={handleCoinPress}
+        setCoinsFound={handleSetCoinsFound}
+        onNextLevel={handleNextLevel}
+      />
+    </>
+  );
 };
 
 export default Level;

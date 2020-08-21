@@ -4,7 +4,7 @@
  * @param m Number to modulo
  * @param n Modulus for the operation
  */
-export const positiveModulo = (m: number, n: number) => ((m % n) + m) % n;
+export const positiveModulo = (m: number, n: number) => ((m % n) + n) % n;
 
 /**
  * Returns the n-th triangular number.

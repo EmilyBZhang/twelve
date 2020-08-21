@@ -111,14 +111,18 @@ const SettingsModal: FunctionComponent<SettingsModalProps> = (props) => {
         <SettingsText>
           {'\n'}Press anywhere to close{'\n'}
         </SettingsText>
-        {props.onRestartLevel && (<>
-          <Button title={'Restart level'} onPress={props.onRestartLevel} />
-          <Text>{'\n'}</Text>
-        </>)}
-        {props.onNextLevel && (<>
-          <Button title={'Skip level'} onPress={props.onNextLevel} />
-          <Text>{'\n'}</Text>
-        </>)}
+        {props.onRestartLevel && (
+          <>
+            <Button title={'Restart level'} onPress={props.onRestartLevel} />
+            <Text>{'\n'}</Text>
+          </>
+        )}
+        {props.onNextLevel && (
+          <>
+            <Button title={'Skip level'} onPress={props.onNextLevel} />
+            <Text>{'\n'}</Text>
+          </>
+        )}
         <Button title={'Pass all levels'} onPress={handlePassAllLevels} />
         <Button title={'Clear settings'} onPress={clearSettings} />
       </CloseArea>
