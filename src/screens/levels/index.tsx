@@ -63,7 +63,7 @@ import LevelPlusFlip from './LevelPlusFlip';
 import LevelProduct from './LevelProduct';
 import Level12 from './Level12';
 import LevelPermuteTwoTwelves from './LevelPermuteTwoTwelves';
-
+import LevelScavengerHunt from './LevelScavengerHunt';
 
 
 export default [
@@ -140,7 +140,7 @@ export default [
   Level69,
   LevelWarning,
   LevelWarning,
-  LevelWarning,
+  LevelScavengerHunt,
   // LevelPolygons,
   // LevelThreeCardMonte,
   // LevelExpandingCoin,
