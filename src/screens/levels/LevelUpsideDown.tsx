@@ -1,7 +1,7 @@
 // TODO: For devices without DeviceMotion enabled, there should be an option
 //       to rotate the screen 180 degrees by pinching and rotating the screen
 import React, { useState, useEffect } from 'react';
-import { Animated } from 'react-native';
+import { Animated, View } from 'react-native';
 import { DeviceMotion } from 'expo-sensors';
 import styled from 'styled-components/native';
 
@@ -24,15 +24,15 @@ const UpsideDownContainer = styled.View`
 `;
 
 const LevelUpsideDown: Level = (props) => {
-  const [opacity, setOpacity] = useState(0);
-  const [opacityAnim] = useState(new Animated.Value(opacity));
+  const [isVisible, setIsVisible] = useState(false);
+  const [opacityAnim] = useState(new Animated.Value(0));
 
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
 
   useEffect(() => {
     if (twelve) return;
-    const listener = opacityAnim.addListener(({ value }) => setOpacity(value));
+    const listener = opacityAnim.addListener(({ value }) => setIsVisible(value > 0));
     DeviceMotion.setUpdateInterval(1000 / 60);
     const subscription = DeviceMotion.addListener(res => {
       if (res.rotation) {
@@ -55,21 +55,28 @@ const LevelUpsideDown: Level = (props) => {
         <LevelCounter count={numCoinsFound} />
         <LevelText hidden={twelve}>twelve</LevelText>
       </UpsideDownContainer>
-      {!twelve && coinPositions.map((coinPosition, index: number) => (
-          <Animated.View
+      <Animated.View style={{
+        opacity: opacityAnim,
+        width: levelWidth,
+        height: levelHeight,
+        position: 'absolute'
+      }}>
+        {!twelve && coinPositions.map((coinPosition, index: number) => (
+          <View
             key={String(index)}
             style={{
               position: 'absolute',
-              opacity: opacityAnim,
-              ...coinPosition
+              ...coinPosition,
             }}
           >
             <Coin
-              found={props.coinsFound.has(index) || opacity === 0}
+              found={props.coinsFound.has(index)}
+              disabled={!isVisible}
               onPress={() => props.onCoinPress(index)}
             />
-          </Animated.View>
+          </View>
         ))}
+      </Animated.View>
     </LevelContainer>
   );
 };
