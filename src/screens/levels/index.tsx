@@ -64,6 +64,7 @@ import LevelProduct from './LevelProduct';
 import Level12 from './Level12';
 import LevelPermuteTwoTwelves from './LevelPermuteTwoTwelves';
 import LevelScavengerHunt from './LevelScavengerHunt';
+import LevelWordSearch from './LevelWordSearch';
 
 
 export default [
@@ -119,6 +120,7 @@ export default [
   LevelPermuteTwoTwelves,
   Level69,
   LevelWarning,
+  LevelWordSearch,
   LevelHoleJigsaw,
   LevelProduct,
   LevelD12,
@@ -127,7 +129,6 @@ export default [
   LevelBalloon2,
   LevelCompass,
   LevelRacecar,
-  LevelWarning,
   LevelWarning,
   LevelWarning,
   LevelWarning,
