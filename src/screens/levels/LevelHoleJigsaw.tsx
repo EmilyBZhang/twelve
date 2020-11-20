@@ -1,5 +1,5 @@
-import React, { useState, useMemo, FunctionComponent } from 'react';
-import { Animated, Text } from 'react-native';
+import React, { useState, useEffect, useMemo, useRef, FunctionComponent } from 'react';
+import { Animated, Easing } from 'react-native';
 import {
   State,
   Directions,
@@ -11,13 +11,10 @@ import styled from 'styled-components/native';
 import { Level } from 'utils/interfaces';
 import colors from 'assets/colors';
 import styles from 'assets/styles';
-import coinPositions from 'utils/coinPositions';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
-import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
 import { getLevelDimensions } from 'utils/getDimensions';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { randCoinPoint } from 'utils/random';
 
 const { coinSize } = styles;
@@ -25,9 +22,41 @@ const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 const { UP, LEFT, RIGHT, DOWN } = Directions;
 
 const boardSize = levelWidth;
-const yCutoff = boardSize;
 const cellDims = 3;
 const cellSize = boardSize / cellDims;
+
+const largeStart = cellSize - coinSize / 2;
+const smallStart = (cellSize - coinSize) / 2;
+const horiCoinPositions = Array.from(Array(6), (_, index) => {
+  const row = Math.floor(index / cellDims);
+  const col = index % cellDims;
+  return ({
+    top: largeStart + row * cellSize,
+    left: smallStart + col * cellSize,
+  });
+});
+const vertCoinPositions = Array.from(Array(6), (_, index) => {
+  const row = index % cellDims;
+  const col = Math.floor(index / cellDims);
+  return ({
+    top: smallStart + row * cellSize,
+    left: largeStart + col * cellSize,
+  });
+});
+const coinPositions = [...horiCoinPositions, ...vertCoinPositions];
+
+const CoinBoard = styled(Animated.View)`
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: ${boardSize}px;
+  height: ${boardSize}px;
+  background-color: ${colors.lightWood};
+`;
+
+const CoinContainer = styled.View`
+  position: absolute;
+`;
 
 const dropJigsawPiece = (absoluteX: number, absoluteY: number) => {
   const x = absoluteX;
@@ -61,8 +90,9 @@ const holes = [
 const Cell = styled.View`
   width: ${cellSize}px;
   height: ${cellSize}px;
-  background-color: ${colors.lightWood};
-  border: 4px solid ${colors.darkWood};
+  background-color: ${colors.plainSurface};
+  border: 1px dotted ${colors.lightWood};
+  border-radius: 1;
 `;
 
 const JigsawContainer = styled.View`
@@ -73,32 +103,24 @@ const JigsawContainer = styled.View`
   position: absolute;
 `;
 
-const Board = styled.View`
-  width: ${boardSize};
-  height: ${boardSize};
-  flex-direction: row;
-  flex-wrap: wrap;
-  position: absolute;
-  top: 0px;
-`;
-
 const JigsawPieceContainer = styled(Animated.View)`
   position: absolute;
   top: 0px;
   left: 0px;
   width: ${cellSize}px;
   height: ${cellSize}px;
-  background-color: ${colors.selectCoin};
+  background-color: ${colors.lightWood};
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  opacity: 0.75;
+  opacity: ${5/6};
+  /* elevation: 12; */
 `;
 
 interface JigsawPieceProps {
-  revealed: boolean;
   // Bitmap of Directions values as defined in react-native-gesture-handler
   directions: number;
+  onPlace: (index: number) => any;
 }
 
 const anchors = {
@@ -120,13 +142,15 @@ const AnchoredCoin: FunctionComponent<AnchoredCoinProps> = (props) => {
       ...anchors[direction],
       position: 'absolute',
     }}>
-      <Coin />
+      <Coin color={colors.coin} disabled noShimmer />
     </Animated.View>
   );
 };
 
 const JigsawPiece: FunctionComponent<JigsawPieceProps> = (props) => {
-  const { revealed, directions } = props;
+  const { directions, onPlace } = props;
+
+  const [active, setActive] = useState(false);
 
   // TODO: Add functionality in randCoinPoint to remove specifying all params
   const { x, y } = useMemo(() => randCoinPoint({
@@ -149,7 +173,6 @@ const JigsawPiece: FunctionComponent<JigsawPieceProps> = (props) => {
   const handleStateChange = (e: PanGestureHandlerStateChangeEvent) => {
     if (e.nativeEvent.state === State.END) {
       const { absoluteX, absoluteY, translationX, translationY } = e.nativeEvent;
-      console.log(absoluteX, absoluteY);
       panX.setValue(0);
       panY.setValue(0);
       const { x, y, index } = dropJigsawPiece(absoluteX, absoluteY);
@@ -162,6 +185,10 @@ const JigsawPiece: FunctionComponent<JigsawPieceProps> = (props) => {
         baseX.setValue(x);
         baseY.setValue(y);
       }
+      onPlace(index);
+      setActive(false);
+    } else if (e.nativeEvent.state === State.BEGAN) {
+      setActive(true);
     }
   };
 
@@ -170,63 +197,88 @@ const JigsawPiece: FunctionComponent<JigsawPieceProps> = (props) => {
       onGestureEvent={handleGestureEvent}
       onHandlerStateChange={handleStateChange}
     >
-      <JigsawPieceContainer style={{ transform: [
-        { translateX: Animated.add(baseX, panX) },
-        { translateY: Animated.add(baseY, panY) },
-      ]}} >
-        {!revealed && (
-          <>
-            {!!(directions & UP) && <AnchoredCoin direction={UP} />}
-            {!!(directions & LEFT) && <AnchoredCoin direction={LEFT} />}
-            {!!(directions & RIGHT) && <AnchoredCoin direction={RIGHT} />}
-            {!!(directions & DOWN) && <AnchoredCoin direction={DOWN} />}
-          </>
-        )}
+      <JigsawPieceContainer style={{
+        ...active && {
+          zIndex: 1,
+          opacity: 1,
+        },
+        transform: [
+          { translateX: Animated.add(baseX, panX) },
+          { translateY: Animated.add(baseY, panY) },
+          { scaleX: active ? 7/6 : 1 },
+          { scaleY: active ? 7/6 : 1 },
+        ],
+      }} >
+        {!!(directions & UP) && <AnchoredCoin direction={UP} />}
+        {!!(directions & LEFT) && <AnchoredCoin direction={LEFT} />}
+        {!!(directions & RIGHT) && <AnchoredCoin direction={RIGHT} />}
+        {!!(directions & DOWN) && <AnchoredCoin direction={DOWN} />}
       </JigsawPieceContainer>
     </PanGestureHandler>
   );
 };
 
+const initPieces = Array.from(Array(cellDims * cellDims), () => -1);
+
 const LevelHoleJigsaw: Level = (props) => {
 
-  const [anim] = useState(new Animated.Value(1));
-
-  const scale = Animated.add(1, Animated.multiply(2, anim));
+  const [anim] = useState(new Animated.Value(0));
+  const [isRevealed, setIsRevealed] = useState(false);
+  const pieces = useRef([...initPieces]);
+  const numCorrect = useRef(0);
 
   const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound === 12;
 
-  const handlePress = () => {
-    // Animated.event([{scale: anim}])({scale: 1.2}, {useNativeDriver: true});
+  useEffect(() => {
+    if (!isRevealed) return;
     Animated.timing(anim, {
       toValue: 1,
       duration: 1000,
+      easing: Easing.linear,
       useNativeDriver: true,
     }).start();
+  }, [isRevealed]);
+
+  const handlePlace = (pieceIndex: number, slotIndex: number) => {
+    const wasMatched = pieces.current[pieceIndex] === pieceIndex;
+    const isMatched = pieceIndex === slotIndex;
+    pieces.current[pieceIndex] = slotIndex;
+    numCorrect.current += Number(isMatched) - Number(wasMatched);
+    if (numCorrect.current === pieces.current.length) setIsRevealed(true);
+    console.log(pieces.current);
+    console.log(numCorrect.current);
   };
 
   return (
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
       <JigsawContainer>
-        <Cell />
-        <Cell />
-        <Cell />
-        <Cell />
-        <Cell />
-        <Cell />
-        <Cell />
-        <Cell />
-        <Cell />
+        {holes.map((_, index) => (
+          <Cell key={String(index)} />
+        ))}
         {holes.map((hole, index) => (
-          <JigsawPiece key={String(index)} revealed={false} directions={hole} />
+          <JigsawPiece
+            key={String(index)}
+            directions={hole}
+            onPlace={(slotIndex) => handlePlace(index, slotIndex)}
+          />
         ))}
       </JigsawContainer>
-      {/* <TouchableOpacity onPress={handlePress}>
-        <Square style={{
-          transform: [{scaleX: scale}, {scaleY: scale}]
-        }} />
-      </TouchableOpacity> */}
+      {isRevealed && (
+        <CoinBoard style={{ opacity: anim }}>
+          {coinPositions.map((coinPosition, index) => (
+            <CoinContainer
+              key={String(index)}
+              style={coinPosition}
+            >
+              <Coin
+                found={props.coinsFound.has(index)}
+                onPress={() => props.onCoinPress(index)}
+              />
+            </CoinContainer>
+          ))}
+        </CoinBoard>
+      )}
     </LevelContainer>
   );
 };

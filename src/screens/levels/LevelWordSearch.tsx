@@ -1,8 +1,8 @@
 // Word search, maybe 8x8 or 9x9
 // Find twelve twice
 
-import React, { useState, useRef } from 'react';
-import { Animated } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { Animated, Easing } from 'react-native';
 import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
@@ -29,17 +29,13 @@ const puzzle = [
 
 const ans = 'twelve';
 
-interface LetterProps {
-  active?: boolean;
-}
-
-const Letter = styled.Text<LetterProps>`
+const Letter = styled.Text`
   font-family: montserrat-black;
   font-size: ${styles.coinSize}px;
   color: ${colors.foreground};
   text-align: center;
   border-radius: ${styles.coinSize / 2}px;
-  ${props => props.active ? `background-color: ${colors.coin}80;` : ''}
+  width: 100%;
 `;
 
 const RowContainer = styled.View`
@@ -51,6 +47,8 @@ const RowContainer = styled.View`
 
 const CellTouchable = styled.TouchableOpacity`
   flex: 1;
+  justify-content: center;
+  align-items: center;
 `;
 
 interface Cell {
@@ -60,19 +58,21 @@ interface Cell {
 
 const getIndex = (row: number, col: number) => row * numCols + col;
 
+const CoinContainer = styled(Animated.View)`
+  position: absolute;
+`;
+
+// TODO: Consider using MobX to optimize this level with activeCells + clearedCells
 const LevelWordSearch: Level = (props) => {
 
-  const [anim1] = useState(new Animated.Value(0));
-  const [anim2] = useState(new Animated.Value(0));
+  const [anim] = useState(new Animated.Value(0));
   const [prev, setPrev] = useState<Cell | null>(null);
+  const [numClears, setNumClears] = useState(0);
   const direction = useRef<Cell | null>(null);
   const activeCells = useRef(new Set<number>());
+  const clearedCells = useRef(new Set<number>());
 
   const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound === 12;
-
-  const revealActiveCells = () => {
-  };
 
   const handleLetterPress = (row: number, col: number) => {
     const letter = puzzle[row][col];
@@ -121,10 +121,22 @@ const LevelWordSearch: Level = (props) => {
         (prev.row + direction.current.row === row) && (prev.col + direction.current.col === col)
       );
       if (isMatch) {
-        if (nextIndex + 1 === ans.length) {
-          // TODO: word is found
-        }
         activeCells.current.add(getIndex(row, col));
+        if (nextIndex + 1 === ans.length) {
+          clearedCells.current = new Set([...clearedCells.current, ...activeCells.current]);
+          Animated.timing(anim, {
+            toValue: 1,
+            duration: 500,
+            easing: Easing.linear,
+            useNativeDriver: true,
+          }).start(() => {
+            anim.setValue(0);
+            clearedCells.current.forEach(cell => {
+              activeCells.current.delete(cell);
+            });
+            setNumClears(numClears => numClears + 1);
+          });
+        }
         setPrev({ row, col });
         return;
       }
@@ -137,16 +149,37 @@ const LevelWordSearch: Level = (props) => {
       <LevelCounter count={numCoinsFound} />
       {puzzle.map((row, rowIndex) => (
         <RowContainer key={String(rowIndex)}>
-          {row.map((letter, colIndex) => (
-            <CellTouchable onPress={() => handleLetterPress(rowIndex, colIndex)}>
-              <Letter
+          {row.map((letter, colIndex) => {
+            const index = getIndex(rowIndex, colIndex);
+            const active = activeCells.current.has(index);
+            const cleared = clearedCells.current.has(index);
+            return (
+              <CellTouchable
                 key={String(colIndex)}
-                active={activeCells.current.has(getIndex(rowIndex, colIndex))}
+                disabled={cleared}
+                onPress={() => handleLetterPress(rowIndex, colIndex)}
               >
-                {letter}
-              </Letter>
-            </CellTouchable>
-          ))}
+                {active && (
+                  <CoinContainer>
+                    <Coin
+                      noShimmer
+                      color={colors.selectCoin}
+                      colorHintOpacity={0}
+                    />
+                  </CoinContainer>
+                )}
+                <Letter>{(!cleared || active) ? letter : ' '}</Letter>
+                {cleared && (
+                  <CoinContainer style={{ opacity: active ? anim : 1 }}>
+                    <Coin
+                      found={props.coinsFound.has(index)}
+                      onPress={() => props.onCoinPress(index)}
+                    />
+                  </CoinContainer>
+                )}
+              </CellTouchable>
+            );
+          })}
         </RowContainer>
       ))}
     </LevelContainer>

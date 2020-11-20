@@ -169,8 +169,8 @@ const Credits: Screen = (props) => {
               iconName={'github-box'}
             />
             <Badge
-              url={strings.urls.soundcloud}
-              iconName={'soundcloud'}
+              url={strings.urls.youtube}
+              iconName={'youtube'}
             />
           </BadgeRow>
         )}

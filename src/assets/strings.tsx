@@ -3,7 +3,8 @@ import { Platform } from 'react-native';
 const strings = {
   urls: {
     github: 'https://github.com/BradonZhang/twelve',
-    soundcloud: 'https://soundcloud.com/alan-dai-4'
+    soundcloud: 'https://soundcloud.com/alan-dai-4',
+    youtube: 'https://www.youtube.com/channel/UCAsBq_Z2WhRYgBEH8vDlEQg',
   },
   generateShareMessage: (numLevelsCompleted: number) => (
     `I've solved ${numLevelsCompleted} level${

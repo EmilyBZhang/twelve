@@ -65,6 +65,15 @@ import Level12 from './Level12';
 import LevelPermuteTwoTwelves from './LevelPermuteTwoTwelves';
 import LevelScavengerHunt from './LevelScavengerHunt';
 import LevelWordSearch from './LevelWordSearch';
+import LevelSoda from './LevelSoda';
+
+
+
+
+
+
+
+
 
 
 export default [
@@ -118,10 +127,11 @@ export default [
   LevelBalance,
   LevelPlusFlip,
   LevelPermuteTwoTwelves,
-  Level69,
-  LevelWarning,
   LevelWordSearch,
   LevelHoleJigsaw,
+  Level69,
+  LevelWarning,
+  LevelSoda,
   LevelProduct,
   LevelD12,
   LevelRaceGE,
@@ -129,7 +139,6 @@ export default [
   LevelBalloon2,
   LevelCompass,
   LevelRacecar,
-  LevelWarning,
   LevelWarning,
   LevelWarning,
   LevelWarning,
