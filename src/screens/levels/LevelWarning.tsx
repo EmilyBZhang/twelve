@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { Button } from 'react-native';
 import Svg, { Defs, Marker, Path, Rect, Circle, Line, Polygon } from 'react-native-svg';
 
 import { Level } from 'utils/interfaces';
@@ -12,6 +12,8 @@ import { getLevelDimensions } from 'utils/getDimensions';
 
 const { width: levelWidth } = getLevelDimensions();
 
+const allCoinSet = new Set(Array.from(Array(12), (_, index) => index));
+
 const LevelWarning: Level = (props) => {
 
   const numCoinsFound = props.coinsFound.size;
@@ -23,6 +25,7 @@ const LevelWarning: Level = (props) => {
         WARNING: All levels afterward are purely
         experimental and are not complete!
       </LevelText>
+      <Button title={'Click here to win'} onPress={() => props.setCoinsFound(allCoinSet)} />
     </LevelContainer>
   );
 

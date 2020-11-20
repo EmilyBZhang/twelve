@@ -149,7 +149,7 @@ const LevelPiano: Level = (props) => {
     const validFirst = index === 4;
     if (validFirst && songIndex < 0) {
       setSongIndex(0);
-    } else if (index - noteIndex == maryIntervals[songIndex]) {
+    } else if (index - noteIndex === maryIntervals[songIndex]) {
       if (songIndex + 1 === maryIntervals.length) {
         handleWin();
       }

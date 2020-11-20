@@ -66,6 +66,7 @@ import LevelPermuteTwoTwelves from './LevelPermuteTwoTwelves';
 import LevelScavengerHunt from './LevelScavengerHunt';
 import LevelWordSearch from './LevelWordSearch';
 import LevelSoda from './LevelSoda';
+import LevelPulley from './LevelPulley';
 
 
 
@@ -89,7 +90,7 @@ export default [
   LevelSimonSays,
   LevelArrows,
   LevelFloatingPoint,
-  // Level12,
+  Level12,
   LevelSlideDown,
   LevelRGBSliders,
   LevelNewcomerCoin,
@@ -130,6 +131,7 @@ export default [
   LevelWordSearch,
   LevelHoleJigsaw,
   Level69,
+  LevelPulley,
   LevelWarning,
   LevelSoda,
   LevelProduct,
@@ -139,8 +141,6 @@ export default [
   LevelBalloon2,
   LevelCompass,
   LevelRacecar,
-  LevelWarning,
-  LevelWarning,
   LevelWarning,
   LevelWarning,
   LevelWarning,

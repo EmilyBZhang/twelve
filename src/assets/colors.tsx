@@ -20,7 +20,9 @@ const colors = {
 
   foreground: '#4b0082',
   // background: '#b4807d',
-  background: '#f0c8f0',
+  // background: '#d080d0',
+  // background: '#f0c8f0',
+  background: '#e0e0e0',
   foregroundPressed: '#260041',
 
   darkWood: '#8b4513',

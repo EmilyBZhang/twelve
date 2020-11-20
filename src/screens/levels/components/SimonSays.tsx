@@ -103,7 +103,7 @@ const SimonSays: FunctionComponent<SimonSaysProps> = (props) => {
     if (blinkingColors) {
       intervalRef.current = setInterval(() => {
         const i = intervalIndex.current;
-        if (i == iterations * 2) {
+        if (i === iterations * 2) {
           clearInterval(intervalRef.current);
           intervalRef.current = null;
           intervalIndex.current = 0;
@@ -112,7 +112,7 @@ const SimonSays: FunctionComponent<SimonSaysProps> = (props) => {
           return;
         }
         const start = startingIndices[iterationsIndex];
-        setColorIndex((i % 2 == 0) ? -1 : start + Math.floor(i / 2));
+        setColorIndex((i % 2 === 0) ? -1 : start + Math.floor(i / 2));
         intervalIndex.current++;
       }, 500);
     }

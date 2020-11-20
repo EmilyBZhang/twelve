@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef, FunctionComponent } from 'react';
+import React, { FunctionComponent, memo, useState, useEffect, useMemo, useRef } from 'react';
 import { Animated, Easing } from 'react-native';
 import {
   State,
@@ -147,7 +147,7 @@ const AnchoredCoin: FunctionComponent<AnchoredCoinProps> = (props) => {
   );
 };
 
-const JigsawPiece: FunctionComponent<JigsawPieceProps> = (props) => {
+const JigsawPiece: FunctionComponent<JigsawPieceProps> = memo((props) => {
   const { directions, onPlace } = props;
 
   const [active, setActive] = useState(false);
@@ -216,7 +216,7 @@ const JigsawPiece: FunctionComponent<JigsawPieceProps> = (props) => {
       </JigsawPieceContainer>
     </PanGestureHandler>
   );
-};
+});
 
 const initPieces = Array.from(Array(cellDims * cellDims), () => -1);
 
@@ -239,15 +239,21 @@ const LevelHoleJigsaw: Level = (props) => {
     }).start();
   }, [isRevealed]);
 
-  const handlePlace = (pieceIndex: number, slotIndex: number) => {
+  // const handlePlace = (pieceIndex: number, slotIndex: number) => {
+  //   const wasMatched = pieces.current[pieceIndex] === pieceIndex;
+  //   const isMatched = pieceIndex === slotIndex;
+  //   pieces.current[pieceIndex] = slotIndex;
+  //   numCorrect.current += Number(isMatched) - Number(wasMatched);
+  //   if (numCorrect.current === pieces.current.length) setIsRevealed(true);
+  // };
+
+  const onPlaceCallbacks = useMemo(() => holes.map((_, pieceIndex) => (slotIndex: number) => {
     const wasMatched = pieces.current[pieceIndex] === pieceIndex;
     const isMatched = pieceIndex === slotIndex;
     pieces.current[pieceIndex] = slotIndex;
     numCorrect.current += Number(isMatched) - Number(wasMatched);
     if (numCorrect.current === pieces.current.length) setIsRevealed(true);
-    console.log(pieces.current);
-    console.log(numCorrect.current);
-  };
+  }), []);
 
   return (
     <LevelContainer>
@@ -260,7 +266,7 @@ const LevelHoleJigsaw: Level = (props) => {
           <JigsawPiece
             key={String(index)}
             directions={hole}
-            onPlace={(slotIndex) => handlePlace(index, slotIndex)}
+            onPlace={onPlaceCallbacks[index]}
           />
         ))}
       </JigsawContainer>
