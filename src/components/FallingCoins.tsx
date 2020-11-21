@@ -9,7 +9,7 @@ import { Animated, Easing } from 'react-native';
 
 import getDimensions, { getLevelDimensions } from 'utils/getDimensions';
 import { randInt } from 'utils/random';
-import styles from 'assets/styles';
+import styles from 'res/styles';
 import Coin from 'components/Coin';
 import ScreenContainer from './ScreenContainer';
 

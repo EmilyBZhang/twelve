@@ -9,7 +9,7 @@ import { calcPositions } from 'utils/coinPositions';
 import Coin from 'components/Coin';
 import LevelCounter from 'components/LevelCounter';
 import getDimensions from 'utils/getDimensions';
-import styles from 'assets/styles';
+import styles from 'res/styles';
 
 const { width: windowWidth, height: windowHeight } = getDimensions();
 const landscapeWidth = windowHeight;

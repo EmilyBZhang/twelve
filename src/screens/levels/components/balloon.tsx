@@ -3,7 +3,7 @@ import { Animated, View, Image } from 'react-native';
 import Matter from 'matter-js';
 import styled from 'styled-components';
 
-import styles from 'assets/styles';
+import styles from 'res/styles';
 import Coin from 'components/Coin';
 import { getLevelDimensions } from 'utils/getDimensions';
 

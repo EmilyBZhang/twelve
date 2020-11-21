@@ -8,7 +8,7 @@ import { Screen, Level as LevelType } from 'utils/interfaces';
 import useSelectedIndices from 'hooks/useSelectedIndices';
 import playAudio from 'utils/playAudio';
 import { playCoinSound } from 'utils/playPitch';
-import colors from 'assets/colors';
+import colors from 'res/colors';
 
 import LevelNav from 'components/LevelNav';
 import levels from './levels';

@@ -6,7 +6,7 @@ import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
 import { getLevelDimensions } from 'utils/getDimensions';
-import colors from 'assets/colors';
+import colors from 'res/colors';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';

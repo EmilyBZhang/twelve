@@ -5,8 +5,8 @@ import { observable, computed, autorun, IComputedValue } from 'mobx';
 import { observer } from 'mobx-react';
 
 import getDimensions from 'utils/getDimensions';
-import colors from 'assets/colors';
-import styles from 'assets/styles';
+import colors from 'res/colors';
+import styles from 'res/styles';
 
 const { width: windowWidth, height: windowHeight } = getDimensions();
 const particleSize = styles.coinSize / 3;

@@ -4,7 +4,7 @@ import styled from 'styled-components/native';
 
 import WirePart, { wirePartSize, WireType } from './components/WirePart';
 import { Level } from 'utils/interfaces';
-import styles from 'assets/styles';
+import styles from 'res/styles';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelCounter from 'components/LevelCounter';

@@ -4,8 +4,8 @@ import styled from 'styled-components/native';
 
 import useCongratsMessage from 'hooks/useCongratsMessage';
 import getDimensions from 'utils/getDimensions';
-import colors from 'assets/colors';
-import styles from 'assets/styles';
+import colors from 'res/colors';
+import styles from 'res/styles';
 import LevelText from './LevelText';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 

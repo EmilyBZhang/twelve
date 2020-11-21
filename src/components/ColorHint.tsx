@@ -2,8 +2,8 @@ import React, { FunctionComponent, memo } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import useSettings from 'hooks/useSettings';
-import colors, { CoinColor, colorIcons, darkCoinColors } from 'assets/colors';
-import styles from 'assets/styles';
+import colors, { CoinColor, colorIcons, darkCoinColors } from 'res/colors';
+import styles from 'res/styles';
 
 type IconColor = 'white' | 'black';
 

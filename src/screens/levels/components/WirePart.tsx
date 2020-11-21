@@ -3,7 +3,7 @@ import { Animated, Easing } from 'react-native';
 import styled from 'styled-components/native';
 
 import { getLevelDimensions } from 'utils/getDimensions';
-import colors from 'assets/colors';
+import colors from 'res/colors';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 export enum WireType {

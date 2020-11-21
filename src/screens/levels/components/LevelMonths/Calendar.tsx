@@ -4,7 +4,7 @@ import styled from 'styled-components/native';
 
 import { getLevelDimensions } from 'utils/getDimensions';
 import LevelText from 'components/LevelText';
-import colors from 'assets/colors';
+import colors from 'res/colors';
 
 interface CalendarProps {
   numCompleted: number;

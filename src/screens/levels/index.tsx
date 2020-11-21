@@ -67,9 +67,8 @@ import LevelScavengerHunt from './LevelScavengerHunt';
 import LevelWordSearch from './LevelWordSearch';
 import LevelSoda from './LevelSoda';
 import LevelPulley from './LevelPulley';
-
-
-
+import LevelSettingsWin from './LevelSettingsWin';
+import LevelThreeMagicButtons from './LevelThreeMagicButtons';
 
 
 
@@ -132,16 +131,16 @@ export default [
   LevelHoleJigsaw,
   Level69,
   LevelPulley,
+  LevelSettingsWin,
   LevelWarning,
+  LevelThreeMagicButtons,
   LevelSoda,
   LevelProduct,
   LevelD12,
   LevelRaceGE,
   LevelRace,
   LevelBalloon2,
-  LevelCompass,
   LevelRacecar,
-  LevelWarning,
   LevelWarning,
   LevelWarning,
   LevelWarning,

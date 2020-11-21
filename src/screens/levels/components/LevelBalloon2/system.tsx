@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react';
 import Matter from 'matter-js';
 import { System } from 'react-native-game-engine';
 
-import styles from 'assets/styles';
+import styles from 'res/styles';
 import { getLevelDimensions } from 'utils/getDimensions';
 
 const { width: levelWidth } = getLevelDimensions();

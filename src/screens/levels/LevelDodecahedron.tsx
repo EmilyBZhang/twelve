@@ -10,8 +10,8 @@ import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
 import { getLevelDimensions } from 'utils/getDimensions';
-import colors from 'assets/colors';
-import styles from 'assets/styles';
+import colors from 'res/colors';
+import styles from 'res/styles';
 import LevelCounter from 'components/LevelCounter';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();

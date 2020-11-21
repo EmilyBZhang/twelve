@@ -2,7 +2,7 @@ import React, { FunctionComponent, memo, useState, useRef } from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import styled from 'styled-components/native';
 
-import styles from 'assets/styles';
+import styles from 'res/styles';
 import Coin from 'components/Coin';
 
 interface NumberPickerProps {

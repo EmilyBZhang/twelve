@@ -22,13 +22,14 @@
         "components/*": ["./src/components/*"],
         "hooks/*": ["./src/hooks/*"],
         "reducers/*": ["./src/reducers/*"],
+        "res/*": ["./src/res/*"],
         "screens/*": ["./src/screens/*"],
         "utils/*": ["./src/utils/*"]
         // ,"*": ["./src/typings/*"]
       },
       "plugins": [
         {
-          "name": "typescript-styled-plugin",
+          "name": "ts-styled-plugin",
           "lint": {
             "validProperties": [
               "shadow-color",

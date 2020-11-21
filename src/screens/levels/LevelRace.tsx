@@ -12,7 +12,7 @@ import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
-import styles from 'assets/styles';
+import styles from 'res/styles';
 
 const { width: screenWidth, height: screenHeight } = getDimensions();
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();

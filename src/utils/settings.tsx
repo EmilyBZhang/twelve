@@ -6,7 +6,7 @@
 import React, { useState } from 'react';
 import { AsyncStorage } from 'react-native';
 
-import levels from 'screens/levels';
+import { NUM_LEVELS } from 'res/constants';
 
 type SettingsObject = {[setting: string]: any};
 
@@ -14,7 +14,7 @@ const defaultSettings = {
   musicMuted: false,
   sfxMuted: false,
   colorblind: false,
-  levelStatus: levels.slice(1).map((_, index) => ({
+  levelStatus: Array.from(Array(NUM_LEVELS), (_, index) => ({
     unlocked: index === 0,
     completed: false
   })),

@@ -10,8 +10,8 @@ import {
 import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
-import styles from 'assets/styles';
-import colors from 'assets/colors';
+import styles from 'res/styles';
+import colors from 'res/colors';
 import { getLevelDimensions } from 'utils/getDimensions';
 import { randCoinPosition } from 'utils/random';
 import LevelContainer from 'components/LevelContainer';

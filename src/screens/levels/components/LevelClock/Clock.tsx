@@ -2,7 +2,7 @@ import React, { FunctionComponent, memo, useState, useEffect, useMemo } from 're
 import { Animated, Easing } from 'react-native';
 import styled from 'styled-components/native';
 
-import colors from 'assets/colors';
+import colors from 'res/colors';
 import { getLevelDimensions } from 'utils/getDimensions';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();

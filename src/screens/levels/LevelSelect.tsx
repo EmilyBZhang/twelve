@@ -5,7 +5,7 @@ import styled from 'styled-components/native';
 
 import useSettings from 'hooks/useSettings';
 import { getLevelDimensions } from 'utils/getDimensions';
-import colors from 'assets/colors';
+import colors from 'res/colors';
 import ScreenContainer from 'components/ScreenContainer';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();

@@ -4,7 +4,7 @@ import React, { FunctionComponent, memo } from 'react';
 import styled from 'styled-components/native';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import colors from 'assets/colors';
+import colors from 'res/colors';
 
 export interface ScreenContainerProps {
   children?: any;

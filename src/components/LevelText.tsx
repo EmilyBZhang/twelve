@@ -2,8 +2,8 @@ import React, { FunctionComponent, memo } from 'react';
 import { Text, View } from 'react-native';
 import styled from 'styled-components/native';
 
-import colors from 'assets/colors';
-import styles from 'assets/styles';
+import colors from 'res/colors';
+import styles from 'res/styles';
 
 interface LevelTextProps {
   children: any;

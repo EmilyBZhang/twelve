@@ -10,8 +10,8 @@ import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
-import colors from 'assets/colors';
-import styles from 'assets/styles';
+import colors from 'res/colors';
+import styles from 'res/styles';
 import styled from 'styled-components/native';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();

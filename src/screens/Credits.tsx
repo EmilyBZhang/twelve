@@ -7,10 +7,10 @@ import { NavigationActions } from 'react-navigation';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
 
-import credits from 'assets/credits.json';
-import colors from 'assets/colors';
-import styles from 'assets/styles';
-import strings from 'assets/strings';
+import credits from 'res/credits.json';
+import colors from 'res/colors';
+import styles from 'res/styles';
+import strings from 'res/strings';
 import { Screen } from 'utils/interfaces';
 import getDimensions from 'utils/getDimensions';
 import ScreenContainer from 'components/ScreenContainer';

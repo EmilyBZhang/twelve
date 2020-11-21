@@ -7,7 +7,7 @@ import { GameEngine, GameEvent } from 'react-native-game-engine';
 import Matter from 'matter-js';
 
 import { Level } from 'utils/interfaces';
-import styles from 'assets/styles';
+import styles from 'res/styles';
 import Physics, { OtherPhysics } from '../systems/Physics';
 import getDimensions, { getLevelDimensions } from 'utils/getDimensions';
 import LevelContainer from 'components/LevelContainer';

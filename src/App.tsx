@@ -8,7 +8,7 @@ import store from 'reducers/store';
 import MainMenu from 'screens/MainMenu';
 import Level from 'screens/Level';
 import Credits from 'screens/Credits';
-import colors from 'assets/colors';
+import colors from 'res/colors';
 import InitSettings from 'components/InitSettings';
 import InitFonts from 'components/InitFonts';
 import TitleScreen from 'components/TitleScreen';

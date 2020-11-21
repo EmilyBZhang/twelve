@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 
-import styles from 'assets/styles';
+import styles from 'res/styles';
 import LevelText from 'components/LevelText';
 
 const { coinSize } = styles;

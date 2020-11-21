@@ -1,7 +1,7 @@
 import Matter from 'matter-js';
 import { System } from 'react-native-game-engine';
 
-import styles from 'assets/styles';
+import styles from 'res/styles';
 
 const system: System = (entities, update) => {
   

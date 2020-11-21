@@ -5,7 +5,7 @@ import styled from 'styled-components/native';
 
 import { getLevelDimensions } from 'utils/getDimensions';
 import { calcTriangularNumber, calcInverseTriangularNumber, toDeg } from 'utils/math';
-import colors from 'assets/colors';
+import colors from 'res/colors';
 
 export interface RevealedSquareProps {
   x: number;

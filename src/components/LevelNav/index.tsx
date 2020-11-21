@@ -7,8 +7,8 @@ import React, {
 import { BackHandler, Alert, NativeEventSubscription } from 'react-native';
 import { AntDesign, Octicons } from '@expo/vector-icons';
 
-import colors from 'assets/colors';
-import styles from 'assets/styles';
+import colors from 'res/colors';
+import styles from 'res/styles';
 import {
   TopText,
   NavButton,

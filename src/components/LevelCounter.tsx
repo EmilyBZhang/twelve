@@ -1,8 +1,8 @@
 import React, { FunctionComponent, memo } from 'react';
 import styled from 'styled-components/native';
 
-import colors from 'assets/colors';
-import styles from 'assets/styles';
+import colors from 'res/colors';
+import styles from 'res/styles';
 
 interface LevelCounterProps {
   count: number;

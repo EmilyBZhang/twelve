@@ -14,7 +14,7 @@ import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
-import colors from 'assets/colors';
+import colors from 'res/colors';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 const { width: windowWidth, height: windowHeight } = getDimensions();

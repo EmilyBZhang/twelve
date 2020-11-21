@@ -1,7 +1,7 @@
 import { Animated } from 'react-native';
 import styled from 'styled-components';
 
-import styles from 'assets/styles';
+import styles from 'res/styles';
 
 const coinSize = styles.coinSize;
 

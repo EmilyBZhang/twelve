@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from 'react';
 import { View } from 'react-native';
 
-import styles from 'assets/styles';
-import colors from 'assets/colors';
+import styles from 'res/styles';
+import colors from 'res/colors';
 import getDimensions, { getLevelDimensions } from 'utils/getDimensions';
 import Coin from 'components/Coin';
 

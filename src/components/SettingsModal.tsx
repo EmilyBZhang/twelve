@@ -2,12 +2,11 @@ import React, { FunctionComponent } from 'react';
 import { Text, Modal, View, TouchableOpacity, Button } from 'react-native';
 import styled from 'styled-components/native';
 
-import levels from 'screens/levels';
 import useSettings from 'hooks/useSettings';
 import { clearSettings } from 'utils/settings';
 import getDimensions from 'utils/getDimensions';
-import colors from 'assets/colors';
-import styles from 'assets/styles';
+import colors from 'res/colors';
+import styles from 'res/styles';
 import LevelText from 'components/LevelText';
 import MuteMusicIcon from 'components/icons/MuteMusicIcon';
 import MuteSfxIcon from 'components/icons/MuteSfxIcon';
@@ -52,7 +51,7 @@ const SettingsTitleContainer = styled.View`
   align-items: center;
 `;
 
-const SettingsText = styled.Text`
+export const SettingsText = styled.Text`
   color: white;
   text-align: center;
   font-size: 24px;
@@ -87,7 +86,7 @@ const SettingsModal: FunctionComponent<SettingsModalProps> = (props) => {
   if (!props.visible) return null;
 
   const handlePassAllLevels = () => {
-    levels.forEach((_, index) => index && completeLevel(index));
+    for (let i = 0; i < 72; i++) completeLevel(i);
   };
 
   return (
@@ -125,6 +124,7 @@ const SettingsModal: FunctionComponent<SettingsModalProps> = (props) => {
         )}
         <Button title={'Pass all levels'} onPress={handlePassAllLevels} />
         <Button title={'Clear settings'} onPress={clearSettings} />
+        {props.children}
       </CloseArea>
     </FullScreenModal>
   );

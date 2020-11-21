@@ -9,8 +9,8 @@ import { BackHandler, Alert, NativeEventSubscription } from 'react-native';
 import styled from 'styled-components/native';
 import { AntDesign, Octicons } from '@expo/vector-icons';
 
-import colors from 'assets/colors';
-import styles from 'assets/styles';
+import colors from 'res/colors';
+import styles from 'res/styles';
 import SettingsModal from 'components/SettingsModal';
 
 export const LeftContainer = styled.View`

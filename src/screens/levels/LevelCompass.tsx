@@ -3,8 +3,8 @@ import { Animated, View } from 'react-native';
 import { DeviceMotion } from 'expo-sensors';
 
 import { Level } from 'utils/interfaces';
-import colors from 'assets/colors';
-import styles from 'assets/styles';
+import colors from 'res/colors';
+import styles from 'res/styles';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';

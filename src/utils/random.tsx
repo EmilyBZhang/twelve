@@ -1,4 +1,4 @@
-import styles from 'assets/styles';
+import styles from 'res/styles';
 import { getLevelDimensions } from 'utils/getDimensions';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();

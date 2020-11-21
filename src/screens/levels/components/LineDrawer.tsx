@@ -4,8 +4,8 @@ import Svg, { Line } from 'react-native-svg';
 import styled from 'styled-components/native';
 
 import getDimensions from 'utils/getDimensions';
-import colors from 'assets/colors';
-import styles from 'assets/styles';
+import colors from 'res/colors';
+import styles from 'res/styles';
 
 const { width: windowWidth, height: windowHeight } = getDimensions();
 
