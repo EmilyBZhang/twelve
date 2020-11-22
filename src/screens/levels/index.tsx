@@ -69,8 +69,8 @@ import LevelSoda from './LevelSoda';
 import LevelPulley from './LevelPulley';
 import LevelSettingsWin from './LevelSettingsWin';
 import LevelThreeMagicButtons from './LevelThreeMagicButtons';
-
-
+import LevelFadeOut from './LevelFadeOut';
+import LevelSelfTimer from './LevelSelfTimer';
 
 
 
@@ -129,11 +129,12 @@ export default [
   LevelPermuteTwoTwelves,
   LevelWordSearch,
   LevelHoleJigsaw,
-  Level69,
   LevelPulley,
   LevelSettingsWin,
-  LevelWarning,
   LevelThreeMagicButtons,
+  LevelFadeOut,
+  LevelSelfTimer,
+  LevelWarning,
   LevelSoda,
   LevelProduct,
   LevelD12,
@@ -141,7 +142,6 @@ export default [
   LevelRace,
   LevelBalloon2,
   LevelRacecar,
-  LevelWarning,
   LevelWarning,
   LevelWarning,
   LevelWarning,
