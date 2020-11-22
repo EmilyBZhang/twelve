@@ -54,7 +54,7 @@ const LetterInputContainer = styled.View`
   padding-top: ${styles.coinSize}px;
 `;
 
-// TODO: Replace with actual 
+// TODO: Replace with actual level numbers
 const hints = [64, 3, 7, 18, 42, 12, 55, 39, 30, 26, 11, 61];
 const answer = 'thx4playing!';
 

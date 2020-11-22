@@ -58,12 +58,25 @@ export const bernoulli = (p: number = 0.5) => {
 };
 
 /**
+ * Generates a random variable with a Gaussian distribution.
+ * 
+ * @param mean The mean of the Gaussian distribution (default: 0)
+ * @param sd The standard deviation of the Gaussian distribution (default: 1)
+ */
+export const gaussian = (mean = 0, sd = 1) => {
+  let u = 0, v = 0;
+  while (!u) u = Math.random();
+  while (!v) v = Math.random();
+  const z = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+  return z * sd + mean;
+};
+
+/**
  * Randomly shuffles an array in place.
  * 
  * @param arr Array to shuffle.
  */
 export const shuffleArray = <T extends unknown>(arr: Array<T>) => {
-  let n = arr.length;
   for (let i = arr.length; i > 0; --i) {
     const index = randInt(i);
     const temp = arr[index];
