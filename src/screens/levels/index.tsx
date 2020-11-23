@@ -71,7 +71,8 @@ import LevelSettingsWin from './LevelSettingsWin';
 import LevelThreeMagicButtons from './LevelThreeMagicButtons';
 import LevelFadeOut from './LevelFadeOut';
 import LevelSelfTimer from './LevelSelfTimer';
-
+import LevelOctahedron from './LevelOctahedron';
+import LevelPrismDimensions from './LevelPrismDimensions';
 
 
 
@@ -135,6 +136,8 @@ export default [
   LevelFadeOut,
   LevelSelfTimer,
   LevelWarning,
+  LevelPrismDimensions,
+  LevelOctahedron,
   LevelRacecar,
   LevelSoda,
   LevelProduct,
@@ -142,8 +145,6 @@ export default [
   LevelRaceGE,
   LevelRace,
   LevelBalloon2,
-  LevelWarning,
-  LevelWarning,
   LevelWarning,
   LevelWarning,
   Level69,

@@ -31,7 +31,7 @@ const LevelContainer = styled.View`
   height: ${levelHeight}px;
 `;
 
-const LevelDodecahedron: Level = (props) => {
+const LevelOctahedron: Level = (props) => {
 
   const renderer = useRef<ExpoTHREE.Renderer>();
   const scene = useRef<THREE.Scene>(new THREE.Scene());
@@ -44,24 +44,34 @@ const LevelDodecahedron: Level = (props) => {
   const numCoinsFound = props.coinsFound.size;
 
   const handlePressIn = (e: GestureResponderEvent) => {
+    if (!mesh.current.children.length) return;
     const { locationX, locationY } = e.nativeEvent;
     const x = (locationX / levelWidth) * 2 - 1;
     const y = -(locationY / levelHeight) * 2 + 1;
     raycaster.current.setFromCamera(new THREE.Vector2(x, y), camera.current);
 
-    const intersects = raycaster.current.intersectObject(mesh.current);
+    const edges = mesh.current.children[0] as THREE.LineSegments;
+    const intersects = raycaster.current.intersectObject(edges);
+    console.log(intersects.length);
     if (intersects.length) {
+      edges.material = new THREE.LineBasicMaterial( { vertexColors: THREE.NoColors, color: 0xff0000, linewidth: 2 } );
+      console.log(edges.geometry.vertices);
+      return;
+      console.log(intersects.length);
+      console.log(intersects);
       const index = intersects[0].faceIndex!;
-      const hex = `#${geometry.current.faces[index].color.getHexString()}`;
-      if (hex === colors.badCoin) return reset();
+      // const hex = `#${geometry.current.faces[index].color.getHexString()}`;
+      // if (hex === colors.badCoin) return reset();
 
       props.onCoinPress(count.current);
       count.current++;
 
-      const firstIndex = index - (index % 3);
-      for (let i = 0; i < 3; i++) {
-        geometry.current.faces[firstIndex + i].color.setStyle(colors.badCoin);
-      }
+      // const firstIndex = index - (index % 3);
+      // for (let i = 0; i < 3; i++) {
+      //   geometry.current.faces[firstIndex + i].color.setStyle(colors.badCoin);
+      // }
+      // geometry.current.
+      geometry.current.faces[index].color.setStyle(colors.badCoin);
       geometry.current.colorsNeedUpdate = true;
     }
   };
@@ -92,7 +102,7 @@ const LevelDodecahedron: Level = (props) => {
     camera.current = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
     camera.current.position.z = 5;
 
-    geometry.current = new THREE.DodecahedronGeometry(1.5, 0);
+    geometry.current = new THREE.OctahedronGeometry(1.5, 0);
     const material = new THREE.MeshLambertMaterial({
       vertexColors: THREE.FaceColors
     });
@@ -100,6 +110,11 @@ const LevelDodecahedron: Level = (props) => {
 
     mesh.current = new THREE.Mesh(geometry.current, material);
     scene.current.add(mesh.current);
+    // var edgeGeometry = new THREE.EdgesGeometry( mesh.current.geometry ); // or WireframeGeometry
+    // var edgeMaterial = new THREE.LineBasicMaterial( { color: 0xffff00, linewidth: 2 } );
+    // var edges = new THREE.LineSegments( edgeGeometry, edgeMaterial );
+    
+    // mesh.current.add( edges );
 
     scene.current.add(new THREE.AmbientLight(0xffffff, 0.5));
     const light = new THREE.DirectionalLight(0xffffff, 0.5);
@@ -126,4 +141,4 @@ const LevelDodecahedron: Level = (props) => {
   );
 };
 
-export default LevelDodecahedron;
+export default LevelOctahedron;

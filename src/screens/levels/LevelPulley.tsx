@@ -85,14 +85,7 @@ const LevelPulley: Level = (props) => {
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
 
-  const coins = Array.from(Array(12), (_, index) => (
-    <CoinContainer key={String(index)}>
-      <Coin
-        found={props.coinsFound.has(index)}
-        onPress={() => props.onCoinPress(index)}
-      />
-    </CoinContainer>
-  ));
+  const coin = <Coin found={twelve} onPress={() => props.onCoinPress(numCoinsFound)} />;
 
   return (
     <LevelContainer>
@@ -105,7 +98,7 @@ const LevelPulley: Level = (props) => {
           <PulleyContainer style={{
             transform: [{ translateY: Animated.add(baseY, panY) }]
           }}>
-            <Pulley>{coins}</Pulley>
+            <Pulley>{coin}</Pulley>
           </PulleyContainer>
         </PanGestureHandler>
         <PanGestureHandler
@@ -115,7 +108,7 @@ const LevelPulley: Level = (props) => {
           <PulleyContainer style={{
             transform: [{ scaleY: -1 }, { translateY: Animated.add(Animated.add(baseY, panY), levelHeight + styles.levelNavHeight * 2 + styles.coinSize) }]
           }}>
-            <Pulley>{coins}</Pulley>
+            <Pulley>{coin}</Pulley>
           </PulleyContainer>
         </PanGestureHandler>
       </PulleysContainer>

@@ -35,7 +35,9 @@
         "backgroundColor": "#00ffff"
       }
     },
-    "androidNavigationBar": {},
+    "androidNavigationBar": {
+      "visible": "sticky-immersive"
+    },
     "description": "A puzzle game about collecting twelve dots... with a special twist in each level!",
     "githubUrl": "https://github.com/BradonZhang/twelve"
   }

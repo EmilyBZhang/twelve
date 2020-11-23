@@ -1,4 +1,5 @@
 // TODO: Make credits screen scroll slowly to the bottom
+// TODO: Get rid of hard-coded pixel values
 // IDEA: Make the links at the bottom of the credits each contained inside of a Coin
 
 import React, { FunctionComponent, useCallback, useRef, useState, useEffect } from 'react';

@@ -67,14 +67,10 @@ const LevelPressLevelDisplay: Level = (props) => {
         </CenterContainer>
         {coinsRevealed && (
           <CoinsContainer style={{ opacity: coinOpacity }}>
-            {Array.from(Array(12), (_, index) => (
-              <CoinContainer key={String(index)}>
-                <Coin
-                  found={props.coinsFound.has(index)}
-                  onPress={() => props.onCoinPress(index)}
-                />
-              </CoinContainer>
-            ))}
+            <Coin
+              found={twelve}
+              onPress={() => props.onCoinPress(numCoinsFound)}
+            />
           </CoinsContainer>
         )}
       </TransformedContainer>
