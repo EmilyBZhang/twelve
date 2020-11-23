@@ -29,6 +29,7 @@ const LevelContainer = styled.View`
   top: ${styles.levelNavHeight}px;
   width: ${levelWidth}px;
   height: ${levelHeight}px;
+  background-color: ${colors.background};
 `;
 
 const LevelOctahedron: Level = (props) => {

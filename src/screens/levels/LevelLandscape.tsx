@@ -5,7 +5,7 @@ import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
 import { calcPositions } from 'utils/coinPositions';
-// import LevelContainer from 'components/LevelContainer';
+import colors from 'res/colors';
 import Coin from 'components/Coin';
 import LevelCounter from 'components/LevelCounter';
 import getDimensions from 'utils/getDimensions';
@@ -24,6 +24,7 @@ const LevelContainer = styled.View`
   width: 100%;
   height: 100%;
   padding-top: ${styles.levelNavHeight}px;
+  background-color: ${colors.background};
 `;
 
 const Map = styled.Image.attrs({

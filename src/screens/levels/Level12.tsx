@@ -28,10 +28,6 @@ const CoinsContainer = styled(Animated.View)`
   height: ${styles.coinSize}px;
 `;
 
-const CoinContainer = styled(Animated.View)`
-  position: absolute;
-`;
-
 const LevelPressLevelDisplay: Level = (props) => {
 
   const [coinOpacity] = useState(new Animated.Value(0));
