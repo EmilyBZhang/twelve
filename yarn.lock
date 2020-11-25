@@ -2019,7 +2019,7 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@unimodules/core@~5.5.1":
+"@unimodules/core@~5.5.0", "@unimodules/core@~5.5.1":
   version "5.5.1"
   resolved "https://registry.yarnpkg.com/@unimodules/core/-/core-5.5.1.tgz#82afe960568c58da62c76ea45ca77aa43a31ce13"
   integrity sha512-4OADQJqQ52TsCzfK+xUGWjt3zZADYxRvBZe8JXrnx2qGMXhFFUUn2JMEZT3nDt4QwtM+rIp9BsrQCMIPlXCOHg==
@@ -3557,6 +3557,13 @@ expo-permissions@~9.3.0:
   version "9.3.0"
   resolved "https://registry.yarnpkg.com/expo-permissions/-/expo-permissions-9.3.0.tgz#b90c7e9e411d306c1c7ba2bae18d5c53c201affd"
   integrity sha512-ylSJZVvEGJVFTKsFrUL2S6gCvFt+/o8TJ3xT4WaMjHe2/2Z7R8ng6NR47Kt54t7XBIV/SZ7DIY9uRiR7TPuNYA==
+
+expo-screen-capture@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/expo-screen-capture/-/expo-screen-capture-1.1.1.tgz#e5e946ae8b9ad809ff5a4617b702266661fb8087"
+  integrity sha512-PUeaeOcrfR7tFlLY0PqumRHMawYbIpltNV7NnehaenOGszAaHA2GLYQ89I4u9LQnzB23+CM/GFVluAS8vF2aKA==
+  dependencies:
+    "@unimodules/core" "~5.5.0"
 
 expo-screen-orientation@~2.0.0:
   version "2.0.0"

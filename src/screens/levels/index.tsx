@@ -73,8 +73,8 @@ import LevelFadeOut from './LevelFadeOut';
 import LevelSelfTimer from './LevelSelfTimer';
 import LevelOctahedron from './LevelOctahedron';
 import LevelPrismDimensions from './LevelPrismDimensions';
-
-
+import LevelSettingsToggle from './LevelSettingsToggle';
+import LevelScreenshot from './LevelScreenshot';
 
 
 export default [
@@ -136,21 +136,33 @@ export default [
   LevelFadeOut,
   LevelSelfTimer,
   LevelWarning,
+  LevelSettingsToggle,
   LevelPrismDimensions,
   LevelOctahedron,
   LevelRacecar,
   LevelSoda,
-  LevelProduct,
-  LevelD12,
-  LevelRaceGE,
-  LevelRace,
-  LevelBalloon2,
+  LevelWarning,
+  LevelWarning,
+  LevelWarning,
+  LevelWarning,
   LevelWarning,
   LevelWarning,
   Level69,
   LevelWarning,
   LevelWarning,
   LevelScavengerHunt,
+  // bowling
+  // 12 in picture
+  // ad
+  // light bulb
+  // gear
+
+  // LevelScreenshot,
+  // LevelProduct,
+  // LevelD12,
+  // LevelRaceGE,
+  // LevelRace,
+  // LevelBalloon2,
   // LevelPolygons,
   // LevelThreeCardMonte,
   // LevelExpandingCoin,

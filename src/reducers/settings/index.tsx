@@ -78,7 +78,7 @@ const settings = (state = initialState, action: Action) => {
     }
     case Actions.COMPLETE_LEVEL: {
       const index = action.payload.levelNum - 1;
-      if (index >= state.levelStatus.length) return state;
+      if (index >= state.levelStatus.length || index < 0) return state;
       const newLevelStatus = state.levelStatus.slice();
       newLevelStatus[index].unlocked = true;
       newLevelStatus[index].completed = true;

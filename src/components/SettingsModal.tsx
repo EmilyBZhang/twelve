@@ -11,6 +11,7 @@ import LevelText from 'components/LevelText';
 import MuteMusicIcon from 'components/icons/MuteMusicIcon';
 import MuteSfxIcon from 'components/icons/MuteSfxIcon';
 import ColorblindIcon from 'components/icons/ColorblindIcon';
+import { NUM_LEVELS } from 'res/constants';
 
 const { width: windowWidth, height: windowHeight } = getDimensions();
 
@@ -86,7 +87,7 @@ const SettingsModal: FunctionComponent<SettingsModalProps> = (props) => {
   if (!props.visible) return null;
 
   const handlePassAllLevels = () => {
-    for (let i = 0; i < 72; i++) completeLevel(i);
+    for (let i = 1; i <= NUM_LEVELS; i++) completeLevel(i);
   };
 
   return (
