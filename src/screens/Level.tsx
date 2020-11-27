@@ -1,6 +1,7 @@
 // TODO: See if other things could useCallback/useMemo to optimize renders of memo components
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Alert } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 
 import useSettings from 'hooks/useSettings';
@@ -104,7 +105,7 @@ const Level: Screen = (props) => {
     [levelNum]
   );
 
-  const handleRestartLevel = useCallback(
+  const handleRestart = useCallback(
     restartLevel,
     [levelNum]
   );
@@ -114,6 +115,15 @@ const Level: Screen = (props) => {
     []
   );
 
+  const handleGoToLevelSelect = useCallback(() => {
+    goToLevel(0);
+    handleToggleSettings();
+  }, []);
+
+  const handleHint = useCallback(() => {
+    Alert.alert('no hints yet');
+  }, [levelNum]);
+
   if (levelNum === levels.length) {
     goToCredits();
     return null;
@@ -122,14 +132,16 @@ const Level: Screen = (props) => {
   const levelNavProps = {
     settingsOpen,
     // TODO: Look into NavigationActions.back or props.navigation.goBack
-    onBack: (levelNum === 0) ? goToMainMenu : goToLevelSelect,
-    onToggleSettings: handleToggleSettings,
+    onBack: levelNum ? goToLevelSelect : goToMainMenu,
+    onToggleSettings: levelNum ? handleToggleSettings : undefined,
     onPrevLevel: handlePrevLevel,
     onNextLevel: handleNextLevel,
-    onRestartLevel: handleRestartLevel,
+    onGoToLevelSelect: levelNum ? handleGoToLevelSelect : undefined,
+    onRestart: levelNum ? handleRestart : undefined,
     level: levelNum,
     // TODO: Consider removing this from LevelNav
-    ...levelNum && {settingsTitle: `Level ${levelNum}`}
+    settingsTitle: levelNum ? `Level ${levelNum}` : 'Select Level',
+    onHint: levelNum ? handleHint : undefined,
   };
 
   if (levelNum === 0) return (
@@ -153,6 +165,7 @@ const Level: Screen = (props) => {
         visible={twelve}
       />
       <LevelX
+        levelNum={levelNum}
         coinsFound={selectedIndices}
         onCoinPress={handleCoinPress}
         setCoinsFound={handleSetCoinsFound}

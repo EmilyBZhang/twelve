@@ -6,6 +6,7 @@ export interface ScreenProps {
 };
 
 export interface LevelProps {
+  levelNum: number;
   coinsFound: Set<number>;
   onCoinPress: (index?: number) => void;
   setCoinsFound: (indices?: Set<number>) => void;
@@ -15,3 +16,7 @@ export interface LevelProps {
 
 export type Screen = FunctionComponent<ScreenProps>;
 export type Level = FunctionComponent<LevelProps>;
+
+export type Subscription = {
+  remove: () => void;
+};

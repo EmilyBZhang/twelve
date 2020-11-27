@@ -13,15 +13,16 @@ import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
-import SettingsModal, { SettingsText } from 'components/SettingsModal';
-import { NavButton } from 'components/LevelNav/components'
+import SettingsModal from 'components/SettingsModal';
+import { SettingsText, SwitchableSetting } from 'components/SettingsModal/components';
+import { NavButton, SettingsIcon } from 'components/LevelNav/components'
 
 const SettingsButton = styled.TouchableOpacity.attrs({
   activeOpacity: 0.5,
 })`
   position: absolute;
   top: 0px;
-  right: 0px;
+  left: 0px;
   width: ${styles.levelNavHeight}px;
   height: ${styles.levelNavHeight}px;
   justify-content: center;
@@ -45,24 +46,17 @@ const LevelSettingsWin: Level = (props) => {
   return (
     <>
       <SettingsButton onPress={() => setModalOpened(true)}>
-        <Octicons
-          name={'gear'}
-          size={styles.levelNavHeight * 7/12}
-          color={colors.foreground}
-        />
+        <SettingsIcon />
       </SettingsButton>
       <SettingsModal
-        title={'Level 55'}
+        title={`Level ${props.levelNum}`}
         visible={modalOpened}
         onClose={() => setModalOpened(false)}
       >
-        <SettingsText>Show coins</SettingsText>
-        <Switch
-          thumbColor={colors.plainSurface}
-          trackColor={{ true: colors.coin, false: colors.badCoin }}
+        <SwitchableSetting
           value={isRevealed}
+          label={'Show coins'}
           onValueChange={toggleIsRevealed}
-          style={{ transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }] }}
         />
       </SettingsModal>
       <LevelContainer>

@@ -1,6 +1,4 @@
-// TODO: Change from color to opacity
-
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View } from 'react-native';
 import styled from 'styled-components/native';
 
@@ -33,11 +31,11 @@ const ColorSlider = styled.Slider.attrs({
   z-index: 1;
   position: absolute;
   transform:
-    scaleX(2)
-    scaleY(2)
     rotate(90deg)
-    translateX(${(levelWidth - sliderWidth - coinSize) / 2}px)
-    translateY(-${(levelHeight - sliderHeight) / 2 - coinSize}px);
+    translateY(${sliderHeight / 2 - levelHeight / 4}px)
+    translateX(${levelWidth / 4 - sliderWidth * 3/4}px)
+    scale(2, 2)
+    ;
 `;
 
 interface CoverProps {
@@ -59,14 +57,23 @@ const Cover = styled.View.attrs({
 `;
 
 const LevelSlider: Level = (props) => {
+  const [rendered, setRendered] = useState(false);
   const [sliderVal, setSliderVal] = useState<number>(0);
+
+  const handleValueChange = useCallback((value) => {
+    setRendered(true);
+    setSliderVal(value);
+  }, []);
 
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
 
   return (
     <LevelContainer>
-      <ColorSlider onValueChange={setSliderVal} />
+      <ColorSlider
+        value={rendered ? undefined : 0}
+        onValueChange={handleValueChange}
+      />
       <LevelCounter count={numCoinsFound} />
       <LevelText hidden={twelve}>There they are!</LevelText>
       {coinPositions.map((coinPosition, index) => (

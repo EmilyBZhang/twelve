@@ -12,6 +12,14 @@ import MuteMusicIcon from 'components/icons/MuteMusicIcon';
 import MuteSfxIcon from 'components/icons/MuteSfxIcon';
 import ColorblindIcon from 'components/icons/ColorblindIcon';
 import { NUM_LEVELS } from 'res/constants';
+import {
+  settingsButtonSize,
+  SettingsText,
+  SwitchableSetting,
+  ResumeIcon,
+  ReplayIcon,
+  LevelSelectIcon,
+} from './components';
 
 const { width: windowWidth, height: windowHeight } = getDimensions();
 
@@ -19,15 +27,15 @@ interface SettingsModalProps {
   onClose: () => any;
   title?: string;
   visible?: boolean;
-  onNextLevel?: () => any;
-  onRestartLevel?: () => any;
+  onRestart?: () => any;
+  onGoToLevelSelect?: () => any;
 }
 
 const FullScreenModal = styled.View`
   position: absolute;
   top: 0px;
   left: 0px;
-  background-color: #000000bf;
+  background-color: #000000e0;
   width: 100%;
   /* ${windowWidth}px; */
   height: 100%;
@@ -47,26 +55,18 @@ const CloseArea = styled.TouchableOpacity`
 
 const SettingsTitleContainer = styled.View`
   width: 100%;
-  padding-top: 64px;
-  padding-bottom: 64px;
+  padding-top: ${styles.levelNavHeight}px;
   align-items: center;
-`;
-
-export const SettingsText = styled.Text`
-  color: white;
-  text-align: center;
-  font-size: 24px;
-  font-family: montserrat;
-  width: 100%;
 `;
 
 const SettingsButtonsContainer = styled.View`
   width: 100%;
   flex-direction: row;
   justify-content: space-evenly;
+  padding: ${styles.coinSize / 2}px 0px;
 `;
 
-const SettingsButton = styled.TouchableHighlight.attrs({
+const SettingsSquareButton = styled.TouchableHighlight.attrs({
   underlayColor: colors.foregroundPressed
 })`
   background-color: ${colors.foreground};
@@ -77,14 +77,40 @@ const SettingsButton = styled.TouchableHighlight.attrs({
   align-items: center;
 `;
 
+const subtitleTextSize = styles.coinSize / 3;
+
+const SubtitleText = styled.Text`
+  color: ${colors.lightText};
+  font-size: ${subtitleTextSize}px;
+  transform: translateY(${(settingsButtonSize + subtitleTextSize) / 2}px);
+  position: absolute;
+  opacity: 0.75;
+  text-align: center;
+  width: 100%;
+`;
+
+const SettingsButton = styled.TouchableHighlight.attrs({
+  underlayColor: colors.foregroundPressed
+})`
+  width: ${settingsButtonSize}px;
+  height: ${settingsButtonSize}px;
+  border-radius: ${settingsButtonSize / 2}px;
+  background-color: ${colors.foreground};
+  justify-content: center;
+  align-items: center;
+  opacity: ${props => props.onPress ? 1 : 0.5};
+  margin-bottom: ${subtitleTextSize}px;
+`;
+
 // TODO: Add ScrollView to modal
 const SettingsModal: FunctionComponent<SettingsModalProps> = (props) => {
+  const { onClose, title, visible, onGoToLevelSelect, onRestart, children } = props;
   const [
     { musicMuted, sfxMuted, colorblind },
     { toggleMusic, toggleSfx, toggleColorblind, completeLevel }
   ] = useSettings();
 
-  if (!props.visible) return null;
+  if (!visible) return null;
 
   const handlePassAllLevels = () => {
     for (let i = 1; i <= NUM_LEVELS; i++) completeLevel(i);
@@ -92,41 +118,50 @@ const SettingsModal: FunctionComponent<SettingsModalProps> = (props) => {
 
   return (
     <FullScreenModal>
-      <CloseArea onPress={props.onClose}>
+      {/* <CloseArea> */}
         <SettingsTitleContainer>
-          {props.title && <LevelText color={'white'}>{props.title}</LevelText>}
+          {title && <LevelText color={colors.lightText}>{title}</LevelText>}
           <SettingsText>Settings</SettingsText>
         </SettingsTitleContainer>
         <SettingsButtonsContainer>
-          <SettingsButton onPress={toggleMusic}>
-            <MuteMusicIcon muted={musicMuted} />
+          <SettingsButton onPress={onClose}>
+            <>
+              <ResumeIcon />
+              <SubtitleText>Resume</SubtitleText>
+            </>
           </SettingsButton>
-          <SettingsButton onPress={toggleSfx}>
-            <MuteSfxIcon muted={sfxMuted} />
+          <SettingsButton onPress={onRestart}>
+            <>
+              <ReplayIcon />
+              <SubtitleText>Restart</SubtitleText>
+            </>
           </SettingsButton>
-          <SettingsButton onPress={toggleColorblind}>
-            <ColorblindIcon colorblind={colorblind} />
+          <SettingsButton onPress={onGoToLevelSelect}>
+            <>
+              <LevelSelectIcon />
+              <SubtitleText>Levels</SubtitleText>
+            </>
           </SettingsButton>
         </SettingsButtonsContainer>
-        <SettingsText>
-          {'\n'}Press anywhere to close{'\n'}
-        </SettingsText>
-        {props.onRestartLevel && (
-          <>
-            <Button title={'Restart level'} onPress={props.onRestartLevel} />
-            <Text>{'\n'}</Text>
-          </>
-        )}
-        {props.onNextLevel && (
-          <>
-            <Button title={'Skip level'} onPress={props.onNextLevel} />
-            <Text>{'\n'}</Text>
-          </>
-        )}
-        <Button title={'Pass all levels'} onPress={handlePassAllLevels} />
+        <SwitchableSetting
+          label={'Music'}
+          value={!musicMuted}
+          onValueChange={toggleMusic}
+        />
+        <SwitchableSetting
+          label={'Sound effects'}
+          value={!sfxMuted}
+          onValueChange={toggleSfx}
+        />
+        <SwitchableSetting
+          label={'Colorblind mode'}
+          value={colorblind}
+          onValueChange={toggleColorblind}
+        />
+        {children}
         <Button title={'Clear settings'} onPress={clearSettings} />
-        {props.children}
-      </CloseArea>
+        <Button title={'Pass all levels'} onPress={handlePassAllLevels} />
+      {/* </CloseArea> */}
     </FullScreenModal>
   );
 };

@@ -24,7 +24,7 @@ const LevelRedLight: Level = (props) => {
       blinkCoins.current = null;
     } else if (!blinkCoins.current) {
       blinkCoins.current = setInterval(() => {
-        hintMessage.current = 'Oh wait...';
+        hintMessage.current = 'Easy as pie?';
         setRedLight(state => !state);
       }, 1000);
     }

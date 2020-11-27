@@ -9,7 +9,7 @@
 // TODO: Show coins upon unlocking the message
 // 
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
@@ -29,6 +29,7 @@ const LetterInput = styled.TextInput.attrs({
   autoCorrect: false,
   caretHidden: false,
   maxLength: 1,
+  blurOnSubmit: false,
 })`
   font-family: montserrat-black;
   font-size: ${styles.coinSize * 3/4}px;
@@ -36,7 +37,6 @@ const LetterInput = styled.TextInput.attrs({
   width: ${styles.coinSize * 3/2}px;
   padding: ${styles.coinSize / 4}px;
   text-align: center;
-  text-transform: lowercase;
   color: ${colors.darkText};
   background-color: ${colors.lightText};
 `;
@@ -61,6 +61,7 @@ const answer = 'thx4playing!';
 const LevelScavengerHunt: Level = (props) => {
 
   const [messageChars, setMessageChars] = useState(() => hints.map(() => ''));
+  const inputs = useRef<Array<typeof LetterInput | null>>(messageChars.map(() => null));
 
   const message = messageChars.join('');
   const messageFound = message === answer;
@@ -78,21 +79,28 @@ const LevelScavengerHunt: Level = (props) => {
     ]);
   };
 
+  const handleSubmitEditing = (index: number) => {
+
+  };
+
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
 
   return (
     <LevelContainer>
+    <LevelText>{message}</LevelText>
       <LetterInputsContainer>
         {messageChars.map((messageChar, index) => (
           <LetterInput
-            value={messageChar}
+            key={String(index)}
+            // value={messageChar}
+            // ref={ref => { inputs.current[index] = ref; }}
             onChangeText={handleTextChange(index)}
             placeholder={String(hints[index])}
+            // onSubmitEditing={() => inputs.current[index + 1]?.focus()}
           />
         ))}
       </LetterInputsContainer>
-      <LevelText>{message}</LevelText>
     </LevelContainer>
   );
 };

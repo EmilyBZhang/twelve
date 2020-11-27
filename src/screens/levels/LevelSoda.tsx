@@ -40,7 +40,7 @@ const LevelSoda: Level = (props) => {
 
   const [baseY] = useState(new Animated.Value(0));
   const [panY] = useState(new Animated.Value(0));
-  const [shake] = useState(new Animated.Value(0));
+  const [shake] = useState(new Animated.Value(-1));
   const [shakeFactor] = useState(new Animated.Value(0));
   const [coinsRevealed, setCoinsRevealed] = useState(false);
   const numShakes = useRef(0);

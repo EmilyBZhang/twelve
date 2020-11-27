@@ -5,13 +5,15 @@ import React, {
   useRef,
   useState
 } from 'react';
-import { BackHandler, Alert, NativeEventSubscription } from 'react-native';
+import { BackHandler, Alert, NativeEventSubscription, View } from 'react-native';
 import styled from 'styled-components/native';
-import { AntDesign, Octicons } from '@expo/vector-icons';
+import { AntDesign, Octicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import colors from 'res/colors';
 import styles from 'res/styles';
 import SettingsModal from 'components/SettingsModal';
+
+export const navIconSize = styles.levelNavHeight * 7/12;
 
 export const LeftContainer = styled.View`
   position: absolute;
@@ -75,4 +77,18 @@ export const NavButton = styled.TouchableOpacity.attrs({
   border-radius: ${styles.levelNavHeight}px;
   opacity: ${props => props.disabled ? 0.5 : 1};
   ${props => props.outlined ? `background-color: ${colors.background}66` : ''};
+`;
+
+export const SettingsIcon = styled(MaterialCommunityIcons).attrs({
+  name: 'settings',
+  size: navIconSize,
+  color: colors.foreground,
+})``;
+
+export const HintIcon = styled(MaterialCommunityIcons).attrs({
+  name: 'lightbulb-on',
+  size: navIconSize,
+  color: colors.foreground,
+})`
+  transform: translateY(-${navIconSize / 24}px);
 `;

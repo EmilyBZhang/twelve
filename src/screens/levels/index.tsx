@@ -75,6 +75,15 @@ import LevelOctahedron from './LevelOctahedron';
 import LevelPrismDimensions from './LevelPrismDimensions';
 import LevelSettingsToggle from './LevelSettingsToggle';
 import LevelScreenshot from './LevelScreenshot';
+import LevelShake from './LevelShake';
+
+
+
+
+
+
+
+
 
 
 export default [
@@ -138,10 +147,10 @@ export default [
   LevelWarning,
   LevelSettingsToggle,
   LevelPrismDimensions,
+  LevelShake,
   LevelOctahedron,
   LevelRacecar,
   LevelSoda,
-  LevelWarning,
   LevelWarning,
   LevelWarning,
   LevelWarning,

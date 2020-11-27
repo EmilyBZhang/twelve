@@ -5,7 +5,8 @@ import React, {
   useRef,
 } from 'react';
 import { BackHandler, Alert, NativeEventSubscription } from 'react-native';
-import { AntDesign, Octicons } from '@expo/vector-icons';
+import { AntDesign, Octicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import styled from 'styled-components/native';
 
 import colors from 'res/colors';
 import styles from 'res/styles';
@@ -15,16 +16,20 @@ import {
   LeftContainer,
   RightContainer,
   CenterContainer,
+  SettingsIcon,
+  HintIcon,
 } from './components';
 import SettingsModal from 'components/SettingsModal';
 
 interface LevelNavProps {
   settingsOpen: boolean;
-  onToggleSettings: () => any;
   onBack: () => any;
+  onToggleSettings?: () => any;
   onPrevLevel?: () => any;
   onNextLevel?: () => any;
-  onRestartLevel?: () => any;
+  onRestart?: () => any;
+  onGoToLevelSelect?: () => any;
+  onHint?: () => any;
   level?: number;
   // TODO: Consider removing settingsTitle
   settingsTitle?: string;
@@ -37,10 +42,12 @@ const LevelNav: FunctionComponent<LevelNavProps> = (props) => {
     level,
     onPrevLevel,
     onNextLevel,
-    onRestartLevel,
+    onRestart,
+    onGoToLevelSelect,
     settingsOpen,
     onToggleSettings,
-    onBack
+    onBack,
+    onHint,
   } = props;
 
   const backHandler = useRef<NativeEventSubscription | null>(null);
@@ -49,7 +56,7 @@ const LevelNav: FunctionComponent<LevelNavProps> = (props) => {
     backHandler.current = BackHandler.addEventListener(
       'hardwareBackPress',
       () => {
-        settingsOpen ? onToggleSettings() : onBack();
+        onToggleSettings ? onToggleSettings() : onBack();
         return true;
       }
     );
@@ -60,13 +67,15 @@ const LevelNav: FunctionComponent<LevelNavProps> = (props) => {
 
   return (
     <>
-      <SettingsModal
-        visible={settingsOpen}
-        title={settingsTitle}
-        onClose={onToggleSettings}
-        onNextLevel={onNextLevel}
-        onRestartLevel={onRestartLevel}
-      />
+      {onToggleSettings && (
+        <SettingsModal
+          visible={settingsOpen}
+          title={settingsTitle}
+          onClose={onToggleSettings}
+          onRestart={onRestart}
+          onGoToLevelSelect={onGoToLevelSelect}
+        />
+      )}
       <CenterContainer>
         {!!level && (
           <>
@@ -89,6 +98,29 @@ const LevelNav: FunctionComponent<LevelNavProps> = (props) => {
         )}
       </CenterContainer>
       <LeftContainer>
+        {onToggleSettings ? (
+          <NavButton onPress={onToggleSettings} outlined>
+            <SettingsIcon />
+          </NavButton>
+        ) : (
+          <NavButton onPress={onBack} outlined>
+            <AntDesign
+              name={'caretleft'}
+              // TODO: import size from somewhere
+              size={styles.levelNavHeight * 7/12}
+              color={colors.foreground}
+            />
+          </NavButton>
+        )}
+      </LeftContainer>
+      <RightContainer>
+        {onHint && (
+          <NavButton onPress={onHint} outlined>
+            <HintIcon />
+          </NavButton>
+        )}
+      </RightContainer>
+      {/* <LeftContainer>
         <NavButton onPress={onBack} outlined>
           <AntDesign
             name={'caretleft'}
@@ -99,13 +131,9 @@ const LevelNav: FunctionComponent<LevelNavProps> = (props) => {
       </LeftContainer>
       <RightContainer>
         <NavButton onPress={onToggleSettings} outlined>
-          <Octicons
-            name={'gear'}
-            size={styles.levelNavHeight * 7/12}
-            color={colors.foreground}
-          />
+          <SettingsIcon />
         </NavButton>
-      </RightContainer>
+      </RightContainer> */}
     </>
   );
 };

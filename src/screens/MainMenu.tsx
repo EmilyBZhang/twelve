@@ -136,6 +136,7 @@ const MainMenu: Screen = (props) => {
       Animated.timing(titleHeightAnim, {
         toValue: titleHeightEnd,
         duration: 2000,
+        useNativeDriver: false,
       }),
       // TODO: Make corner buttons respond to cornerOpacityAnim
       // Then change menuOpacityAnim duration to 1000
@@ -143,7 +144,8 @@ const MainMenu: Screen = (props) => {
         Animated.timing(menuOpacityAnim, {
           toValue: 1,
           duration: 2000,
-          // useNativeDriver: true
+          useNativeDriver: false,
+          // useNativeDriver: true,
         }),
         Animated.timing(cornerOpacityAnim, {
           toValue: 1,
@@ -221,6 +223,7 @@ const MainMenu: Screen = (props) => {
   return (
     <ScreenContainer style={{justifyContent: 'flex-start'}}>
       <SettingsModal
+        title={'Main Menu'}
         visible={settingsOpen}
         onClose={handleToggleSettings}
       />

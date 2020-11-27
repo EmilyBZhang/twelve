@@ -1,5 +1,5 @@
 import React, { FunctionComponent, memo, useState } from 'react';
-import { Slider } from 'react-native';
+import { View } from 'react-native';
 import Svg, { Polygon } from 'react-native-svg';
 import styled from 'styled-components/native';
 
@@ -7,13 +7,14 @@ import { Level } from 'utils/interfaces';
 import { getLevelDimensions } from 'utils/getDimensions';
 import styles from 'res/styles';
 import colors from 'res/colors';
-import coinPositions from 'utils/coinPositions';
+import { calcPositions } from 'utils/coinPositions';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
+const { coinSize } = styles;
 
 const containerWidth = Math.floor(levelWidth / 2);
 const containerHeight = levelHeight / 2;
@@ -23,15 +24,25 @@ const maxLength = 3;
 const maxWidth = 5;
 const maxHeight = 8;
 
+const angle = Math.PI / 6;
+
 const maxSliderHeight = (levelHeight - styles.levelNavHeight - containerHeight) / 3;
 const sliderTextWidth = styles.coinSize * 2;
 const sliderWidth = levelWidth - 2 * sliderTextWidth;
 
 const RowContainer = styled.View`
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
   width: 100%;
+`;
+
+const CoinsContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  position: absolute;
 `;
 
 const PrismContainer = styled.View`
@@ -62,8 +73,6 @@ const SliderText = styled.Text`
   width: ${sliderTextWidth}px;
   max-height: ${maxSliderHeight}px;
 `;
-
-const angle = Math.PI / 6;
 
 interface PrismProps {
   length: number;
@@ -142,39 +151,64 @@ const LevelPrismDimensions: Level = (props) => {
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
 
+  const renderCoins = (row: number) => isRevealed && (
+    <CoinsContainer>
+      <Coin />
+      <Coin />
+      <Coin />
+      <Coin />
+    </CoinsContainer>
+  );
+
   return (
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
-      {/* <LevelText hidden={twelve}>twelve</LevelText> */}
-      {/* {coinPositions.map((coinPosition, index) => (
-        <View
-          key={String(index)}
-          style={{position: 'absolute', ...coinPosition}}
-        >
-          <Coin
-            found={props.coinsFound.has(index)}
-            onPress={() => props.onCoinPress(index)}
-          />
-        </View>
-      ))} */}
       <RowContainer>
         <Prism length={length} width={width} height={height} />
         <Prism length={maxLength - length} width={maxWidth - width} height={maxHeight - height} />
       </RowContainer>
       <RowContainer>
         <SliderText>{length}</SliderText>
-        <DimSlider maximumValue={maxLength} value={length} onValueChange={setLength} />
+        <DimSlider
+          value={length}
+          disabled={isRevealed}
+          maximumValue={maxLength}
+          onValueChange={setLength}
+        />
         <SliderText>{maxLength - length}</SliderText>
+        {renderCoins(0)}
       </RowContainer>
       <RowContainer>
         <SliderText>{width}</SliderText>
-        <DimSlider maximumValue={maxWidth} value={width} onValueChange={setWidth} />
+        <DimSlider
+          value={width}
+          disabled={isRevealed}
+          maximumValue={maxWidth}
+          onValueChange={setWidth}
+        />
         <SliderText>{maxWidth - width}</SliderText>
+        <CoinsContainer>
+          <Coin />
+          <Coin />
+          <Coin />
+          <Coin />
+        </CoinsContainer>
       </RowContainer>
       <RowContainer>
         <SliderText>{height}</SliderText>
-        <DimSlider maximumValue={maxHeight} value={height} onValueChange={setHeight} />
+        <DimSlider
+          value={height}
+          disabled={isRevealed}
+          maximumValue={maxHeight}
+          onValueChange={setHeight}
+        />
         <SliderText>{maxHeight - height}</SliderText>
+        <CoinsContainer>
+          <Coin />
+          <Coin />
+          <Coin />
+          <Coin />
+        </CoinsContainer>
       </RowContainer>
     </LevelContainer>
   );

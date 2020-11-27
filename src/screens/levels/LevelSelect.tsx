@@ -6,6 +6,7 @@ import styled from 'styled-components/native';
 import useSettings from 'hooks/useSettings';
 import { getLevelDimensions } from 'utils/getDimensions';
 import colors from 'res/colors';
+import styles from 'res/styles';
 import ScreenContainer from 'components/ScreenContainer';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
@@ -26,11 +27,10 @@ const levelBubbleColors = [
 ];
 
 const TitleText = styled.Text`
-  font-size: 36px;
+  font-size: ${styles.coinSize}px;
   font-family: montserrat-extra-bold;
   text-align: center;
-  padding-top: 64px;
-  padding-bottom: 64px;
+  padding: ${styles.coinSize * 1.5}px 0px;
   color: ${colors.foreground};
   width: 100%;
 `;

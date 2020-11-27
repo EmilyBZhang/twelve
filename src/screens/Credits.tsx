@@ -119,7 +119,7 @@ const Credits: Screen = (props) => {
   const levelNavProps = {
     settingsOpen,
     onBack: goToMainMenu,
-    onToggleSettings: handleToggleSettings
+    // onToggleSettings: handleToggleSettings
   };
 
   // useEffect(() => {
