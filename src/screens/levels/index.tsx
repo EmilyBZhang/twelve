@@ -76,6 +76,7 @@ import LevelPrismDimensions from './LevelPrismDimensions';
 import LevelSettingsToggle from './LevelSettingsToggle';
 import LevelScreenshot from './LevelScreenshot';
 import LevelShake from './LevelShake';
+import LevelConveyerBelt from './LevelConveyerBelt';
 
 
 
@@ -144,14 +145,14 @@ export default [
   LevelThreeMagicButtons,
   LevelFadeOut,
   LevelSelfTimer,
-  LevelWarning,
   LevelSettingsToggle,
+  LevelWarning,
+  LevelConveyerBelt,
   LevelPrismDimensions,
   LevelShake,
   LevelOctahedron,
   LevelRacecar,
   LevelSoda,
-  LevelWarning,
   LevelWarning,
   LevelWarning,
   LevelWarning,

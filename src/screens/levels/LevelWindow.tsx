@@ -85,7 +85,7 @@ const LevelWindow: Level = (props) => {
     },
     onPanResponderMove: (e, gestureState) => {
       const dy = calcDy(windowOffset + gestureState.dy);
-      Animated.event([{dy: translateYAnim}])({dy});
+      Animated.event([{dy: translateYAnim}], { useNativeDriver: false })({dy});
     },
     onPanResponderRelease: (e, gestureState) => {
       setWindowsillActive(false);

@@ -9,14 +9,12 @@ import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelCounter from 'components/LevelCounter';
 import useSettings from 'hooks/useSettings';
-import MuteMusicIcon from 'components/icons/MuteMusicIcon';
-import MuteSfxIcon from 'components/icons/MuteSfxIcon';
-import ColorblindIcon from 'components/icons/ColorblindIcon';
+import { MusicIcon, SfxIcon, ColorblindIcon } from 'components/SettingsModal/components';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 
-type Category = 'musicMuted' | 'sfxMuted' | 'colorblind';
-const categories = ['musicMuted', 'sfxMuted', 'colorblind'] as Array<Category>;
+type Category = 'music' | 'sfx' | 'colorblind';
+const categories = ['music', 'sfx', 'colorblind'] as Array<Category>;
 
 const panelWidth = levelWidth / 2;
 const panelHeight = levelHeight / 4;
@@ -46,32 +44,32 @@ const CoinsContainer = styled.View`
 
 const LevelSettingsToggle: Level = (props) => {
 
-  const { musicMuted, sfxMuted, colorblind } = useSettings(categories)[0];
+  const { music, sfx, colorblind } = useSettings(categories)[0];
 
   const combinations = [
     {
-      icons: [MuteMusicIcon],
-      conditions: [musicMuted],
+      icons: [MusicIcon],
+      conditions: [music],
     },
     {
-      icons: [MuteSfxIcon, ColorblindIcon],
-      conditions: [sfxMuted, colorblind],
+      icons: [SfxIcon, ColorblindIcon],
+      conditions: [sfx, colorblind],
     },
     {
-      icons: [MuteSfxIcon],
-      conditions: [sfxMuted],
+      icons: [SfxIcon],
+      conditions: [sfx],
     },
     {
-      icons: [MuteMusicIcon, ColorblindIcon],
-      conditions: [musicMuted, colorblind],
+      icons: [MusicIcon, ColorblindIcon],
+      conditions: [music, colorblind],
     },
     {
       icons: [ColorblindIcon],
       conditions: [colorblind],
     },
     {
-      icons: [MuteMusicIcon, MuteSfxIcon],
-      conditions: [musicMuted, sfxMuted],
+      icons: [MusicIcon, SfxIcon],
+      conditions: [music, sfx],
     },
   ];
 

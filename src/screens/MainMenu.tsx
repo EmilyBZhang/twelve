@@ -2,7 +2,7 @@
 // This should be done after user settings are stored and the useSettings hook is made
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Animated, Share, View } from 'react-native';
+import { Animated, BackHandler, Share, View } from 'react-native';
 import { MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
 import { NavigationActions } from 'react-navigation';
@@ -57,7 +57,7 @@ const MenuButtons = styled(Animated.View)`
 const MenuButton = styled.TouchableHighlight.attrs({
   underlayColor: colors.foregroundPressed
 })`
-  width: ${windowWidth / 2};
+  width: ${windowWidth / 2}px;
   height: ${(props: MenuButtonProps) => props.playButton ? 60 : 40}px;
   padding: 8px;
   background-color: ${colors.foreground};
@@ -127,9 +127,23 @@ const MainMenu: Screen = (props) => {
   const musicPlayback = useRef<any>(null);
 
   const [
-    { musicMuted, sfxMuted, settingsReady, levelStatus },
+    { music, sfx, settingsReady, levelStatus },
     { toggleMusic, toggleSfx }
   ] = useSettings();
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        if (settingsOpen) {
+          setSettingsOpen(false);
+          return true;
+        }
+        return false;
+      }
+    );
+    return backHandler.remove;
+  }, [settingsOpen]);
 
   useEffect(() => {
     Animated.parallel([
@@ -159,19 +173,19 @@ const MainMenu: Screen = (props) => {
   useEffect(() => {
     if (!settingsReady) return;
     if (musicPlayback.current) {
-      musicPlayback.current.sound.setIsMutedAsync(musicMuted)
+      musicPlayback.current.sound.setIsMutedAsync(!music)
         .catch((err: any) => console.warn(err));
     } else if (musicPlayback.current === null) {
       const options = {
         shouldPlay: true,
         isLooping: true,
-        isMuted: musicMuted
+        isMuted: !music
       };
       musicPlayback.current = 0;
       const setMusicPlayback = (playback: any) => musicPlayback.current = playback;
       playAudio(bgMusic, setMusicPlayback, options);
     }
-  }, [musicMuted, settingsReady]);
+  }, [music, settingsReady]);
 
   const handlePlayPress = useCallback(() => {
     setScreenActive(false);
@@ -269,13 +283,13 @@ const MainMenu: Screen = (props) => {
           onPress={handleMuteMusicPress}
           disabled={!settingsReady}
         >
-          <MuteMusicIcon muted={musicMuted} />
+          <MuteMusicIcon muted={!music} />
         </CornerButton>
         <CornerButton
           right={0}
           onPress={handleMuteSfxPress}
         >
-          <MuteSfxIcon muted={sfxMuted} />
+          <MuteSfxIcon muted={!sfx} />
         </CornerButton>
       </MenuButtons>
     </ScreenContainer>

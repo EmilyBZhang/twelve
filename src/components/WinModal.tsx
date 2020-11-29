@@ -46,7 +46,7 @@ const NextLevelButton = styled.TouchableHighlight.attrs({
 `;
 
 const NextLevelText = styled.Text`
-  font-size: ${styles.coinSize / 2};
+  font-size: ${styles.coinSize / 2}px;
   font-family: montserrat-bold;
   color: ${colors.lightText};
   text-align: center;

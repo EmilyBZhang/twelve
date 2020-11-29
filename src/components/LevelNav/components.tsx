@@ -58,7 +58,7 @@ export const TopText = styled.Text`
   font-size: ${styles.levelNavHeight * 2/3}px;
   text-align: center;
   padding: ${styles.levelNavHeight / 6}px;
-  width: ${styles.levelNavHeight * 4/3};
+  width: ${styles.levelNavHeight * 4/3}px;
 `;
 
 export interface NavButtonProps {

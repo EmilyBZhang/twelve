@@ -4,15 +4,15 @@
 // TODO: Look into making the errors print out individually instead of in catch statements.
 
 import React, { useState } from 'react';
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { NUM_LEVELS } from 'res/constants';
 
 type SettingsObject = {[setting: string]: any};
 
 const defaultSettings = {
-  musicMuted: false,
-  sfxMuted: false,
+  music: true,
+  sfx: true,
   colorblind: false,
   levelStatus: Array.from(Array(NUM_LEVELS), (_, index) => ({
     unlocked: index === 0,

@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useState, useCallback } from 'react';
-import { StatusBar } from 'react-native';
+import { LogBox, StatusBar } from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { Provider } from 'react-redux';
@@ -14,27 +14,27 @@ import InitFonts from 'components/InitFonts';
 import TitleScreen from 'components/TitleScreen';
 import ScreenContainer from 'components/ScreenContainer';
 
-console.disableYellowBox = true;
+LogBox.ignoreAllLogs(true);
 
 const AppNavigator = createStackNavigator({
     MainMenu: {
       screen: MainMenu,
     },
     Level: {
-      screen: Level
+      screen: Level,
     },
     Credits: {
-      screen: Credits
-    }
+      screen: Credits,
+    },
   }, {
     initialRouteName: 'MainMenu',
     defaultNavigationOptions: {
-      header: null,
-      gesturesEnabled: false
+      headerShown: false,
+      gestureEnabled: false,
+      cardStyle: {
+        backgroundColor: colors.background,
+      },
     },
-    cardStyle: {
-      backgroundColor: colors.background
-    }
 });
 const AppContainer = createAppContainer(AppNavigator);
 

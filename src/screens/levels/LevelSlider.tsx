@@ -50,8 +50,8 @@ const Cover = styled.View.attrs({
   position: absolute;
   top: -${styles.levelNavHeight}px;
   padding-top: ${styles.levelNavHeight}px;
-  width: ${levelWidth};
-  height: ${levelHeight + styles.levelNavHeight};
+  width: ${levelWidth}px;
+  height: ${levelHeight + styles.levelNavHeight}px;
   justify-content: center;
   align-items: center;
 `;

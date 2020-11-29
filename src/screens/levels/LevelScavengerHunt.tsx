@@ -42,7 +42,7 @@ const LetterInput = styled.TextInput.attrs({
 `;
 
 const LetterInputsContainer = styled.View`
-  width: ${levelWidth};
+  width: ${levelWidth}px;
   flex-direction: row;
   flex-wrap: wrap;
 `;

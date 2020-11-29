@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Language } from 'utils/types';
 import Actions from './actionTypes';
@@ -7,8 +7,8 @@ import levels from 'screens/levels';
 import { setSetting } from 'utils/settings';
 
 export type SettingsState = {
-  musicMuted: boolean;
-  sfxMuted: boolean;
+  music: boolean;
+  sfx: boolean;
   colorblind: boolean;
   levelStatus: Array<{
     unlocked: boolean;
@@ -19,8 +19,8 @@ export type SettingsState = {
 };
 
 export type SettingsPartialState = {
-  musicMuted?: boolean;
-  sfxMuted?: boolean;
+  music?: boolean;
+  sfx?: boolean;
   colorblind?: boolean;
   levelStatus?: Array<{
     unlocked: boolean;
@@ -30,8 +30,8 @@ export type SettingsPartialState = {
 };
 
 const initialState = {
-  musicMuted: false,
-  sfxMuted: false,
+  music: true,
+  sfx: true,
   colorblind: false,
   levelStatus: levels.slice(1).map((_, index) => ({
     unlocked: index === 0,
@@ -56,17 +56,17 @@ const settings = (state = initialState, action: Action) => {
       });
     }
     case Actions.TOGGLE_MUSIC: {
-      setSetting('musicMuted', !state.musicMuted);
+      setSetting('music', !state.music);
       return ({
         ...state,
-        musicMuted: !state.musicMuted
+        music: !state.music
       });
     }
     case Actions.TOGGLE_SFX: {
-      setSetting('sfxMuted', !state.sfxMuted);
+      setSetting('sfx', !state.sfx);
       return ({
         ...state,
-        sfxMuted: !state.sfxMuted
+        sfx: !state.sfx
       });
     }
     case Actions.TOGGLE_COLORBLIND: {

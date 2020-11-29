@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useEffect, memo } from 'react';
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import useSettings from 'hooks/useSettings';
 import { SettingsPartialState } from 'reducers/settings';
@@ -21,7 +21,7 @@ const InitSettings: FunctionComponent = (props) => {
 
         stores.forEach((store) => {
           const [key, value] = store;
-          settings[key] = JSON.parse(value);
+          settings[key] = JSON.parse(String(value));
         });
 
         // Prevent issues if new levels are added or old ones removed

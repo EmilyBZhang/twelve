@@ -20,9 +20,9 @@ type Next = (action: Action) => any;
 export const changePlaybackOptions = ({ getState }: MiddlewareArg) => (
   (next: Next) => (action: Action) => {
     if (action.type === Actions.TOGGLE_SFX) {
-      defaultOptions.isMuted = !getState().settings.sfxMuted;
+      defaultOptions.isMuted = getState().settings.sfx;
     } else if (action.type === Actions.INIT_SETTINGS) {
-      defaultOptions.isMuted = action.payload.sfxMuted || getState().settings.sfxMuted;
+      defaultOptions.isMuted = action.payload.sfx || getState().settings.sfx;
     }
     return next(action);
   }

@@ -10,10 +10,32 @@ const { width: windowWidth, height: windowHeight } = getDimensions();
 
 export const settingsButtonSize = windowWidth / 6;
 
+export const circleIconSize = settingsButtonSize / 2;
+
+export const ResumeIcon = styled(MaterialCommunityIcons).attrs({
+  name: 'play',
+  size: circleIconSize,
+  color: colors.lightText,
+})``;
+
+export const ReplayIcon = styled(MaterialCommunityIcons).attrs({
+  name: 'replay',
+  size: circleIconSize,
+  color: colors.lightText,
+})``;
+
+export const LevelSelectIcon = styled(MaterialCommunityIcons).attrs({
+  name: 'view-grid',
+  size: circleIconSize,
+  color: colors.lightText,
+})``;
+
+export const settingsTextSize = styles.coinSize * 2/3;
+
 export const SettingsText = styled.Text`
   color: white;
   text-align: center;
-  font-size: ${styles.coinSize * 2/3}px;
+  font-size: ${settingsTextSize}px;
   font-family: montserrat;
   text-align: left;
 `;
@@ -44,34 +66,47 @@ const SwitchableSettingSwitch = styled.Switch.attrs({
   transform: scale(1.5, 1.5);
 `;
 
+export const switchableIconSize = settingsTextSize;
+
+// TODO: Find a proper way to extend these props from MaterialCommunityIcons
+interface SwitchableSettingIconProps {
+  disabled?: boolean;
+  size?: number;
+  color?: string;
+}
+
+export const MusicIcon = styled(MaterialCommunityIcons).attrs<SwitchableSettingIconProps>((props) => ({
+  name: props.disabled ? 'music-off' : 'music',
+  size: props.size || switchableIconSize,
+  color: props.color || colors.lightText,
+}))<SwitchableSettingIconProps>``;
+
+export const SfxIcon = styled(MaterialCommunityIcons).attrs<SwitchableSettingIconProps>((props) => ({
+  name: props.disabled ? 'volume-off' : 'volume-high',
+  size: props.size || switchableIconSize,
+  color: props.color || colors.lightText,
+}))<SwitchableSettingIconProps>``;
+
+export const ColorblindIcon = styled(MaterialCommunityIcons).attrs<SwitchableSettingIconProps>((props) => ({
+  name: props.disabled ? 'circle' : 'plus-circle',
+  size: props.size || switchableIconSize,
+  color: props.color || colors.lightText,
+}))<SwitchableSettingIconProps>``;
+
+type SwitchableSettingIcon = typeof MusicIcon | typeof SfxIcon | typeof ColorblindIcon;
+
 interface SwitchableSettingProps extends ComponentProps<typeof SwitchableSettingSwitch> {
   label: string;
+  icon?: SwitchableSettingIcon;
 }
 
 export const SwitchableSetting: FunctionComponent<SwitchableSettingProps> = memo((props) => {
-  const { label, ...switchProps } = props;
+  const { label, icon: Icon, ...switchProps } = props;
   return (
     <SwitchableSettingContainer>
-      <SwitchableSettingText>{label}</SwitchableSettingText>
+      {Icon && <Icon disabled={!switchProps.value} />}
+      <SwitchableSettingText> {label}</SwitchableSettingText>
       <SwitchableSettingSwitch {...switchProps} />
     </SwitchableSettingContainer>
   );
 });
-
-export const ResumeIcon = styled(MaterialCommunityIcons).attrs({
-  name: 'play',
-  size: settingsButtonSize / 2,
-  color: colors.lightText,
-})``;
-
-export const ReplayIcon = styled(MaterialCommunityIcons).attrs({
-  name: 'replay',
-  size: settingsButtonSize / 2,
-  color: colors.lightText,
-})``;
-
-export const LevelSelectIcon = styled(MaterialCommunityIcons).attrs({
-  name: 'view-grid',
-  size: settingsButtonSize / 2,
-  color: colors.lightText,
-})``;

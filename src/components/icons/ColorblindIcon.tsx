@@ -15,7 +15,7 @@ const ColorblindIcon: FunctionComponent<ColorblindIconProps> = (props) => {
   } = props;
   return (
     <MaterialCommunityIcons
-      name={colorblind ? 'eye' : 'eye-off'}
+      name={colorblind ? 'plus-circle' : 'circle'}
       size={size}
       color={color}
     />

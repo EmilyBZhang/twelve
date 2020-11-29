@@ -12,7 +12,7 @@ interface TwelveWordPickerProps {
 }
 
 const TwelveWordPickerContainer = styled.View`
-  width: ${levelWidth};
+  width: ${levelWidth}px;
   flex-direction: row;
   justify-content: space-evenly;
 `;

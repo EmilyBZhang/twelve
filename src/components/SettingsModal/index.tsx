@@ -8,9 +8,6 @@ import getDimensions from 'utils/getDimensions';
 import colors from 'res/colors';
 import styles from 'res/styles';
 import LevelText from 'components/LevelText';
-import MuteMusicIcon from 'components/icons/MuteMusicIcon';
-import MuteSfxIcon from 'components/icons/MuteSfxIcon';
-import ColorblindIcon from 'components/icons/ColorblindIcon';
 import { NUM_LEVELS } from 'res/constants';
 import {
   settingsButtonSize,
@@ -19,6 +16,9 @@ import {
   ResumeIcon,
   ReplayIcon,
   LevelSelectIcon,
+  MusicIcon,
+  SfxIcon,
+  ColorblindIcon,
 } from './components';
 
 const { width: windowWidth, height: windowHeight } = getDimensions();
@@ -106,7 +106,7 @@ const SettingsButton = styled.TouchableHighlight.attrs({
 const SettingsModal: FunctionComponent<SettingsModalProps> = (props) => {
   const { onClose, title, visible, onGoToLevelSelect, onRestart, children } = props;
   const [
-    { musicMuted, sfxMuted, colorblind },
+    { music, sfx, colorblind },
     { toggleMusic, toggleSfx, toggleColorblind, completeLevel }
   ] = useSettings();
 
@@ -144,18 +144,21 @@ const SettingsModal: FunctionComponent<SettingsModalProps> = (props) => {
           </SettingsButton>
         </SettingsButtonsContainer>
         <SwitchableSetting
+          value={music}
           label={'Music'}
-          value={!musicMuted}
+          icon={MusicIcon}
           onValueChange={toggleMusic}
         />
         <SwitchableSetting
+          value={sfx}
+          icon={SfxIcon}
           label={'Sound effects'}
-          value={!sfxMuted}
           onValueChange={toggleSfx}
         />
         <SwitchableSetting
-          label={'Colorblind mode'}
           value={colorblind}
+          icon={ColorblindIcon}
+          label={'Colorblind mode'}
           onValueChange={toggleColorblind}
         />
         {children}

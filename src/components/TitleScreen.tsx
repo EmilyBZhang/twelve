@@ -14,8 +14,8 @@ const TitleImage = styled.Image.attrs({
   source: require('assets/images/twelve-padded-title.png'),
   resizeMode: 'contain'
 })`
-  width: ${windowWidth};
-  height: ${imageHeight};
+  width: ${windowWidth}px;
+  height: ${imageHeight}px;
 `;
 
 const TitleScreen: FunctionComponent = () => (
