@@ -18,6 +18,8 @@ const mapStateToProps = (state: ReduxState, settingsProps: SettingsProps) => {
 };
 
 const useSettings = (settingsProps = null as SettingsProps) => {
+  const t = new Date();
+
   const settings: SettingsPartialState = useSelector(
     (state: ReduxState) => mapStateToProps(state, settingsProps),
     shallowEqual

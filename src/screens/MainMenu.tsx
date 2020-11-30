@@ -10,7 +10,7 @@ import { NavigationActions } from 'react-navigation';
 import useSettings from 'hooks/useSettings';
 import { Screen } from 'utils/interfaces';
 import getDimensions from 'utils/getDimensions';
-import playAudio from 'utils/playAudio';
+import playAudio, { CreateAudioResult } from 'utils/playAudio';
 import colors from 'res/colors';
 import strings from 'res/strings';
 import ScreenContainer from 'components/ScreenContainer';
@@ -124,7 +124,7 @@ const MainMenu: Screen = (props) => {
   // TODO: Fix the corner buttons
   const [cornerOpacityAnim] = useState(new Animated.Value(0));
 
-  const musicPlayback = useRef<any>(null);
+  const musicPlayback = useRef<CreateAudioResult | null>(null);
 
   const [
     { music, sfx, settingsReady, levelStatus },
@@ -181,7 +181,6 @@ const MainMenu: Screen = (props) => {
         isLooping: true,
         isMuted: !music
       };
-      musicPlayback.current = 0;
       const setMusicPlayback = (playback: any) => musicPlayback.current = playback;
       playAudio(bgMusic, setMusicPlayback, options);
     }

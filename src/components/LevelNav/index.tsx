@@ -20,6 +20,7 @@ import {
   HintIcon,
 } from './components';
 import SettingsModal from 'components/SettingsModal';
+import useSettings from 'hooks/useSettings';
 
 interface LevelNavProps {
   settingsOpen: boolean;
@@ -50,6 +51,8 @@ const LevelNav: FunctionComponent<LevelNavProps> = (props) => {
     onHint,
   } = props;
 
+  const { levelStatus } = useSettings(['levelStatus'])[0];
+
   const backHandler = useRef<NativeEventSubscription | null>(null);
 
   useEffect(() => {
@@ -79,7 +82,7 @@ const LevelNav: FunctionComponent<LevelNavProps> = (props) => {
       <CenterContainer>
         {!!level && (
           <>
-            <NavButton onPress={onPrevLevel}>
+            <NavButton onPress={onPrevLevel} disabled={!levelStatus[level - 2]?.unlocked}>
               <Octicons
                 name={'chevron-left'}
                 size={styles.levelNavHeight * 7/12}
@@ -87,7 +90,7 @@ const LevelNav: FunctionComponent<LevelNavProps> = (props) => {
               />
             </NavButton>
             <TopText>{level}</TopText>
-            <NavButton onPress={onNextLevel}>
+            <NavButton onPress={onNextLevel} disabled={!levelStatus[level]?.unlocked}>
               <Octicons
                 name={'chevron-right'}
                 size={styles.levelNavHeight * 7/12}

@@ -187,12 +187,12 @@ const LevelPrismDimensions: Level = (props) => {
           onValueChange={setWidth}
         />
         <SliderText>{maxWidth - width}</SliderText>
-        <CoinsContainer>
+        {/* <CoinsContainer>
           <Coin />
           <Coin />
           <Coin />
           <Coin />
-        </CoinsContainer>
+        </CoinsContainer> */}
       </RowContainer>
       <RowContainer>
         <SliderText>{height}</SliderText>
@@ -203,12 +203,12 @@ const LevelPrismDimensions: Level = (props) => {
           onValueChange={setHeight}
         />
         <SliderText>{maxHeight - height}</SliderText>
-        <CoinsContainer>
+        {/* <CoinsContainer>
           <Coin />
           <Coin />
           <Coin />
           <Coin />
-        </CoinsContainer>
+        </CoinsContainer> */}
       </RowContainer>
     </LevelContainer>
   );

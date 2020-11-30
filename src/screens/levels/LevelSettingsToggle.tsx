@@ -95,11 +95,13 @@ const LevelSettingsToggle: Level = (props) => {
               <CoinsContainer>
                 <Coin
                   color={colors[enabled1 ? 'coin' : 'badCoin']}
+                  disabled={props.coinsFound.has(2 * index)}
                   hidden={props.coinsFound.has(2 * index)}
                   onPress={() => enabled1 ? props.onCoinPress(2 * index) : reset()}
                 />
                 <Coin
                   color={colors[enabled2 ? 'coin' : 'badCoin']}
+                  disabled={props.coinsFound.has(2 * index + 1)}
                   hidden={props.coinsFound.has(2 * index + 1)}
                   onPress={() => enabled2 ? props.onCoinPress(2 * index + 1) : reset()}
                 />

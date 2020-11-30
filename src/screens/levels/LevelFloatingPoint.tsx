@@ -1,6 +1,6 @@
 // TODO: Add colorblind option for this level
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Animated, Button, Easing, View } from 'react-native';
 import styled from 'styled-components/native';
 
@@ -48,25 +48,27 @@ const CoinColoring = styled(Animated.View)`
 
 const LevelFloatingPoint: Level = (props) => {
   const [numCoinsFound, setNumCoinsFound] = useState(0);
-  const [redOpacity, setRedOpacity] = useState(0);
-  const [redOpacityAnim] = useState(new Animated.Value(redOpacity));
+  const redOpacity = useRef(0);
+  const [redOpacityAnim] = useState(new Animated.Value(redOpacity.current));
   
   
   useEffect(() => {
-    const listener = redOpacityAnim.addListener(
-      ({ value }) => setRedOpacity(value)
-    );
+    const listener = redOpacityAnim.addListener(({ value }) => {
+      redOpacity.current = value;
+    });
     Animated.loop(
       Animated.sequence([
         Animated.timing(redOpacityAnim, {
           toValue: 1,
           duration: 2000,
-          easing: Easing.linear
+          easing: Easing.linear,
+          useNativeDriver: true,
         }),
         Animated.timing(redOpacityAnim, {
           toValue: 0,
           duration: 2000,
-          easing: Easing.linear
+          easing: Easing.linear,
+          useNativeDriver: true,
         })
       ])
     ).start();
@@ -78,13 +80,13 @@ const LevelFloatingPoint: Level = (props) => {
   const handleCoinPress = () => {
     const newNumCoinsFound = Math.min(
       12,
-      Math.max(0, numCoinsFound + (0.5 - redOpacity) * 2)
+      Math.max(0, numCoinsFound + (0.5 - redOpacity.current) * 2)
     );
-    if (redOpacity >= 0.5 && Math.floor(numCoinsFound) > newNumCoinsFound) {
+    if (redOpacity.current >= 0.5 && Math.floor(numCoinsFound) > newNumCoinsFound) {
       const newCoinsFound = props.coinsFound;
       newCoinsFound.delete(Math.floor(newNumCoinsFound));
       props.setCoinsFound(newCoinsFound);
-    } else if (redOpacity < 0.5 && Math.floor(newNumCoinsFound) > numCoinsFound) {
+    } else if (redOpacity.current < 0.5 && Math.floor(newNumCoinsFound) > numCoinsFound) {
       props.onCoinPress(Math.floor(numCoinsFound));
     }
     setNumCoinsFound(newNumCoinsFound);

@@ -75,7 +75,7 @@ export const NavButton = styled.TouchableOpacity.attrs({
   justify-content: center;
   align-items: center;
   border-radius: ${styles.levelNavHeight}px;
-  opacity: ${props => props.disabled ? 0.5 : 1};
+  opacity: ${props => props.disabled ? 1/12 : 1};
   ${props => props.outlined ? `background-color: ${colors.background}66` : ''};
 `;
 

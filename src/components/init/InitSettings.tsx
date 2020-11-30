@@ -1,12 +1,16 @@
-import React, { FunctionComponent, useEffect, memo } from 'react';
+import { FunctionComponent, useEffect, memo } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import useSettings from 'hooks/useSettings';
 import { SettingsPartialState } from 'reducers/settings';
 import levels from 'screens/levels';
 
-const InitSettings: FunctionComponent = (props) => {
-  const { initSettings } = useSettings()[1];
+interface InitSettingsProps {
+  onLoad: () => any;
+}
+
+const InitSettings: FunctionComponent<InitSettingsProps> = (props) => {
+  const [{ settingsReady }, { initSettings }] = useSettings(['settingsReady']);
 
   useEffect(() => {
     AsyncStorage.getAllKeys((err, keys) => {
@@ -51,6 +55,10 @@ const InitSettings: FunctionComponent = (props) => {
       });
     });
   }, []);
+
+  useEffect(() => {
+    if (settingsReady) props.onLoad();
+  }, [settingsReady]);
   
   return null;
 };

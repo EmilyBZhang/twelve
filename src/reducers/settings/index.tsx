@@ -38,7 +38,7 @@ const initialState = {
     completed: false
   })),
   language: 'en',
-  settingsReady: false
+  settingsReady: false,
 } as SettingsState;
 
 interface Action {

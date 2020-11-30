@@ -2,7 +2,7 @@
 // Also consider preloading all the audio and then resetting their positions back to 0, as per https://forums.expo.io/t/laggy-audio-on-multiple-plays/3169
 
 import { Audio } from 'expo-av';
-import { AVPlaybackSource, AVPlaybackStatusToSet } from 'expo-av/build/AV';
+import { AVPlaybackSource, AVPlaybackStatus, AVPlaybackStatusToSet } from 'expo-av/build/AV';
 
 import Actions from 'reducers/settings/actionTypes';
 import { ReduxState } from 'reducers/store';
@@ -22,43 +22,49 @@ export const changePlaybackOptions = ({ getState }: MiddlewareArg) => (
     if (action.type === Actions.TOGGLE_SFX) {
       defaultOptions.isMuted = getState().settings.sfx;
     } else if (action.type === Actions.INIT_SETTINGS) {
-      defaultOptions.isMuted = action.payload.sfx || getState().settings.sfx;
+      defaultOptions.isMuted = !action.payload.sfx || !getState().settings.sfx;
     }
     return next(action);
   }
 );
 
-export const playAudioWithPreload = async (name: string, sound: AVPlaybackSource, setSoundPlayback?: (res: any) => any, options?: AVPlaybackStatusToSet) => {
+export const playAudioWithPreload = async (name: string, source: AVPlaybackSource, setSoundPlayback?: (res: any) => any, options?: AVPlaybackStatusToSet) => {
   // TODO: Make this function
 };
+
+export interface CreateAudioResult {
+  sound: Audio.Sound;
+  status: AVPlaybackStatus;
+}
 
 /**
  * Play an audio file asynchronously.
  * 
- * @param sound Audio file to play
+ * @param source Audio file to play
  * @param setSoundPlayback Optional callback to save a reference to the sound playback
  * @param options Options for playing the sound, as specified in the initialStatus param for Audio.Sound.createAsync()
  */
-export const playAudio = async (sound: AVPlaybackSource, setSoundPlayback?: (res: any) => any, options?: AVPlaybackStatusToSet) => {
+export const playAudio = async (source: AVPlaybackSource, setSoundPlayback?: (res: CreateAudioResult) => any, options?: AVPlaybackStatusToSet) => {
   const initialStatus = {
     ...defaultOptions,
     ...options
   };
-  Audio.Sound.createAsync(
-    sound,
-    initialStatus
-  ).then(res => {
-    res.sound.setOnPlaybackStatusUpdate(status => {
-      // @ts-ignore
-      if (!status.didJustFinish) {
-        if (setSoundPlayback) setSoundPlayback(res);
-        return;
-      };
-      if (!initialStatus.isLooping) {
-        res.sound.unloadAsync().catch((err: any) => console.warn(err + ' CTRL-SHIFT-F UNLOADASYNCERROR'));
+  try { 
+    const audioObject = await Audio.Sound.createAsync(source, initialStatus);
+    if (setSoundPlayback) setSoundPlayback(audioObject);
+    const { sound, status } = audioObject;
+    sound.setOnPlaybackStatusUpdate(async (status) => {
+      if (status.didJustFinish && !initialStatus.isLooping) {
+        try {
+          await sound.unloadAsync();
+        } catch (err) {
+          console.warn(err + ' playAudio.tsx possible error #2');
+        }
       }
     });
-  }).catch(err => console.warn(err + ' CTRL-SHIFT-F AUDIOCREATEASYNCERROR'));
+  } catch (err) {
+    console.warn(err + ' playAudio.tsx possible error #1');
+  }
 };
 
 export default playAudio;

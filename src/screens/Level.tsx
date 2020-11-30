@@ -7,13 +7,14 @@ import { NavigationActions } from 'react-navigation';
 import useSettings from 'hooks/useSettings';
 import { Screen, Level as LevelType } from 'utils/interfaces';
 import useSelectedIndices from 'hooks/useSelectedIndices';
-import playAudio from 'utils/playAudio';
+import playAudio, { CreateAudioResult } from 'utils/playAudio';
 import { playCoinSound } from 'utils/playPitch';
 import colors from 'res/colors';
 
 import LevelNav from 'components/LevelNav';
 import levels from './levels';
 import WinModal from 'components/WinModal';
+import { Audio } from 'expo-av';
 
 const LevelSelect = levels[0];
 
@@ -23,12 +24,12 @@ const Level: Screen = (props) => {
   
   const [selectedIndices, toggleIndex, setSelectedIndices] = useSelectedIndices();
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const musicPlayback = useRef<any>(null);
+  const musicPlayback = useRef<CreateAudioResult | null>(null);
   
   let levelNum = props.navigation.getParam('level') || 0;
   if (levelNum > levels.length) levelNum = 0;
   
-  const { completeLevel } = useSettings()[1];
+  const [{ levelStatus }, { completeLevel }] = useSettings();
 
   const coinsFound = selectedIndices.size;
   const twelve = coinsFound === 12;
@@ -37,7 +38,7 @@ const Level: Screen = (props) => {
     if (twelve) {
       playAudio(heaven, (playback) => musicPlayback.current = playback);
       return () => {
-        if (musicPlayback.current) {
+        if (musicPlayback.current?.sound) {
           musicPlayback.current.sound.stopAsync()
             .catch((err: any) => console.warn(err));
         }
@@ -134,8 +135,10 @@ const Level: Screen = (props) => {
     // TODO: Look into NavigationActions.back or props.navigation.goBack
     onBack: levelNum ? goToLevelSelect : goToMainMenu,
     onToggleSettings: levelNum ? handleToggleSettings : undefined,
-    onPrevLevel: handlePrevLevel,
-    onNextLevel: handleNextLevel,
+    onPrevLevel: levelStatus[levelNum - 2]?.unlocked ? handlePrevLevel : undefined,
+    onNextLevel: levelStatus[levelNum]?.unlocked ? handleNextLevel : undefined,
+    // onPrevLevel: levelStatus[levelNum - 2]?.unlocked ? handlePrevLevel : undefined,
+    // onNextLevel: levelStatus[levelNum]?.unlocked ? handleNextLevel : undefined,
     onGoToLevelSelect: levelNum ? handleGoToLevelSelect : undefined,
     onRestart: levelNum ? handleRestart : undefined,
     level: levelNum,

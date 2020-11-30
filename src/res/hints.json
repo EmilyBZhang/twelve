@@ -1,10 +1,362 @@
 [
-    [],
     [
-        "Hint 1",
-        "Hint 2"
+        "Level 1: Hint 1",
+        "Level 1: Hint 2",
+        "Level 1: Hint 3"
     ],
     [
-
+        "Level 2: Hint 1",
+        "Level 2: Hint 2",
+        "Level 2: Hint 3"
+    ],
+    [
+        "Level 3: Hint 1",
+        "Level 3: Hint 2",
+        "Level 3: Hint 3"
+    ],
+    [
+        "Level 4: Hint 1",
+        "Level 4: Hint 2",
+        "Level 4: Hint 3"
+    ],
+    [
+        "Level 5: Hint 1",
+        "Level 5: Hint 2",
+        "Level 5: Hint 3"
+    ],
+    [
+        "Level 6: Hint 1",
+        "Level 6: Hint 2",
+        "Level 6: Hint 3"
+    ],
+    [
+        "Level 7: Hint 1",
+        "Level 7: Hint 2",
+        "Level 7: Hint 3"
+    ],
+    [
+        "Level 8: Hint 1",
+        "Level 8: Hint 2",
+        "Level 8: Hint 3"
+    ],
+    [
+        "Level 9: Hint 1",
+        "Level 9: Hint 2",
+        "Level 9: Hint 3"
+    ],
+    [
+        "Level 10: Hint 1",
+        "Level 10: Hint 2",
+        "Level 10: Hint 3"
+    ],
+    [
+        "Level 11: Hint 1",
+        "Level 11: Hint 2",
+        "Level 11: Hint 3"
+    ],
+    [
+        "Level 12: Hint 1",
+        "Level 12: Hint 2",
+        "Level 12: Hint 3"
+    ],
+    [
+        "Level 13: Hint 1",
+        "Level 13: Hint 2",
+        "Level 13: Hint 3"
+    ],
+    [
+        "Level 14: Hint 1",
+        "Level 14: Hint 2",
+        "Level 14: Hint 3"
+    ],
+    [
+        "Level 15: Hint 1",
+        "Level 15: Hint 2",
+        "Level 15: Hint 3"
+    ],
+    [
+        "Level 16: Hint 1",
+        "Level 16: Hint 2",
+        "Level 16: Hint 3"
+    ],
+    [
+        "Level 17: Hint 1",
+        "Level 17: Hint 2",
+        "Level 17: Hint 3"
+    ],
+    [
+        "Level 18: Hint 1",
+        "Level 18: Hint 2",
+        "Level 18: Hint 3"
+    ],
+    [
+        "Level 19: Hint 1",
+        "Level 19: Hint 2",
+        "Level 19: Hint 3"
+    ],
+    [
+        "Level 20: Hint 1",
+        "Level 20: Hint 2",
+        "Level 20: Hint 3"
+    ],
+    [
+        "Level 21: Hint 1",
+        "Level 21: Hint 2",
+        "Level 21: Hint 3"
+    ],
+    [
+        "Level 22: Hint 1",
+        "Level 22: Hint 2",
+        "Level 22: Hint 3"
+    ],
+    [
+        "Level 23: Hint 1",
+        "Level 23: Hint 2",
+        "Level 23: Hint 3"
+    ],
+    [
+        "Level 24: Hint 1",
+        "Level 24: Hint 2",
+        "Level 24: Hint 3"
+    ],
+    [
+        "Level 25: Hint 1",
+        "Level 25: Hint 2",
+        "Level 25: Hint 3"
+    ],
+    [
+        "Level 26: Hint 1",
+        "Level 26: Hint 2",
+        "Level 26: Hint 3"
+    ],
+    [
+        "Level 27: Hint 1",
+        "Level 27: Hint 2",
+        "Level 27: Hint 3"
+    ],
+    [
+        "Level 28: Hint 1",
+        "Level 28: Hint 2",
+        "Level 28: Hint 3"
+    ],
+    [
+        "Level 29: Hint 1",
+        "Level 29: Hint 2",
+        "Level 29: Hint 3"
+    ],
+    [
+        "Level 30: Hint 1",
+        "Level 30: Hint 2",
+        "Level 30: Hint 3"
+    ],
+    [
+        "Level 31: Hint 1",
+        "Level 31: Hint 2",
+        "Level 31: Hint 3"
+    ],
+    [
+        "Level 32: Hint 1",
+        "Level 32: Hint 2",
+        "Level 32: Hint 3"
+    ],
+    [
+        "Level 33: Hint 1",
+        "Level 33: Hint 2",
+        "Level 33: Hint 3"
+    ],
+    [
+        "Level 34: Hint 1",
+        "Level 34: Hint 2",
+        "Level 34: Hint 3"
+    ],
+    [
+        "Level 35: Hint 1",
+        "Level 35: Hint 2",
+        "Level 35: Hint 3"
+    ],
+    [
+        "Level 36: Hint 1",
+        "Level 36: Hint 2",
+        "Level 36: Hint 3"
+    ],
+    [
+        "Level 37: Hint 1",
+        "Level 37: Hint 2",
+        "Level 37: Hint 3"
+    ],
+    [
+        "Level 38: Hint 1",
+        "Level 38: Hint 2",
+        "Level 38: Hint 3"
+    ],
+    [
+        "Level 39: Hint 1",
+        "Level 39: Hint 2",
+        "Level 39: Hint 3"
+    ],
+    [
+        "Level 40: Hint 1",
+        "Level 40: Hint 2",
+        "Level 40: Hint 3"
+    ],
+    [
+        "Level 41: Hint 1",
+        "Level 41: Hint 2",
+        "Level 41: Hint 3"
+    ],
+    [
+        "Level 42: Hint 1",
+        "Level 42: Hint 2",
+        "Level 42: Hint 3"
+    ],
+    [
+        "Level 43: Hint 1",
+        "Level 43: Hint 2",
+        "Level 43: Hint 3"
+    ],
+    [
+        "Level 44: Hint 1",
+        "Level 44: Hint 2",
+        "Level 44: Hint 3"
+    ],
+    [
+        "Level 45: Hint 1",
+        "Level 45: Hint 2",
+        "Level 45: Hint 3"
+    ],
+    [
+        "Level 46: Hint 1",
+        "Level 46: Hint 2",
+        "Level 46: Hint 3"
+    ],
+    [
+        "Level 47: Hint 1",
+        "Level 47: Hint 2",
+        "Level 47: Hint 3"
+    ],
+    [
+        "Level 48: Hint 1",
+        "Level 48: Hint 2",
+        "Level 48: Hint 3"
+    ],
+    [
+        "Level 49: Hint 1",
+        "Level 49: Hint 2",
+        "Level 49: Hint 3"
+    ],
+    [
+        "Level 50: Hint 1",
+        "Level 50: Hint 2",
+        "Level 50: Hint 3"
+    ],
+    [
+        "Level 51: Hint 1",
+        "Level 51: Hint 2",
+        "Level 51: Hint 3"
+    ],
+    [
+        "Level 52: Hint 1",
+        "Level 52: Hint 2",
+        "Level 52: Hint 3"
+    ],
+    [
+        "Level 53: Hint 1",
+        "Level 53: Hint 2",
+        "Level 53: Hint 3"
+    ],
+    [
+        "Level 54: Hint 1",
+        "Level 54: Hint 2",
+        "Level 54: Hint 3"
+    ],
+    [
+        "Level 55: Hint 1",
+        "Level 55: Hint 2",
+        "Level 55: Hint 3"
+    ],
+    [
+        "Level 56: Hint 1",
+        "Level 56: Hint 2",
+        "Level 56: Hint 3"
+    ],
+    [
+        "Level 57: Hint 1",
+        "Level 57: Hint 2",
+        "Level 57: Hint 3"
+    ],
+    [
+        "Level 58: Hint 1",
+        "Level 58: Hint 2",
+        "Level 58: Hint 3"
+    ],
+    [
+        "Level 59: Hint 1",
+        "Level 59: Hint 2",
+        "Level 59: Hint 3"
+    ],
+    [
+        "Level 60: Hint 1",
+        "Level 60: Hint 2",
+        "Level 60: Hint 3"
+    ],
+    [
+        "Level 61: Hint 1",
+        "Level 61: Hint 2",
+        "Level 61: Hint 3"
+    ],
+    [
+        "Level 62: Hint 1",
+        "Level 62: Hint 2",
+        "Level 62: Hint 3"
+    ],
+    [
+        "Level 63: Hint 1",
+        "Level 63: Hint 2",
+        "Level 63: Hint 3"
+    ],
+    [
+        "Level 64: Hint 1",
+        "Level 64: Hint 2",
+        "Level 64: Hint 3"
+    ],
+    [
+        "Level 65: Hint 1",
+        "Level 65: Hint 2",
+        "Level 65: Hint 3"
+    ],
+    [
+        "Level 66: Hint 1",
+        "Level 66: Hint 2",
+        "Level 66: Hint 3"
+    ],
+    [
+        "Level 67: Hint 1",
+        "Level 67: Hint 2",
+        "Level 67: Hint 3"
+    ],
+    [
+        "Level 68: Hint 1",
+        "Level 68: Hint 2",
+        "Level 68: Hint 3"
+    ],
+    [
+        "Level 69: Hint 1",
+        "Level 69: Hint 2",
+        "Level 69: Hint 3"
+    ],
+    [
+        "Level 70: Hint 1",
+        "Level 70: Hint 2",
+        "Level 70: Hint 3"
+    ],
+    [
+        "Level 71: Hint 1",
+        "Level 71: Hint 2",
+        "Level 71: Hint 3"
+    ],
+    [
+        "Level 72: Hint 1",
+        "Level 72: Hint 2",
+        "Level 72: Hint 3"
     ]
 ]

@@ -25,7 +25,10 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.bradonzhang.twelve",
-      "icon": "./src/assets/images/12.png"
+      "icon": "./src/assets/images/12.png",
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-5600114350279556/6182482355"
+      }
     },
     "android": {
       "package": "com.bradonzhang.twelve",
@@ -33,6 +36,9 @@
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/12-circle.png",
         "backgroundColor": "#00ffff"
+      },
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-5600114350279556/4329155269"
       }
     },
     "androidNavigationBar": {},
