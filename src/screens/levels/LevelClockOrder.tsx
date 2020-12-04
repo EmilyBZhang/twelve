@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useMemo } from 'react';
+import React, { FunctionComponent, memo, useMemo } from 'react';
 import { View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
@@ -105,7 +105,7 @@ interface ClockHandProps {
   index: number;
 }
 
-const ClockHand: FunctionComponent<ClockHandProps> = (props) => {
+const ClockHand: FunctionComponent<ClockHandProps> = memo((props) => {
   const { index } = props;
 
   return (
@@ -124,7 +124,7 @@ const ClockHand: FunctionComponent<ClockHandProps> = (props) => {
       }} />
     </View>
   )
-};
+});
 
 const LevelClockOrder: Level = (props) => {
 

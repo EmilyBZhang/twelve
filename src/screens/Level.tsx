@@ -175,6 +175,7 @@ const Level: Screen = (props) => {
         onCoinPress={handleCoinPress}
         setCoinsFound={handleSetCoinsFound}
         onNextLevel={handleNextLevel}
+        setSettingsOpen={setSettingsOpen}
       />
     </>
   );

@@ -44,6 +44,7 @@ import LevelPolygons from './LevelPolygons';
 import LevelClockOrder from './LevelClockOrder';
 import LevelCompass from './LevelCompass';
 import LevelHoleJigsaw from './LevelHoleJigsaw';
+// import LevelDodecahedronGraphicsView from './LevelDodecahedronGraphicsView';
 import LevelDodecahedron from './LevelDodecahedron';
 import LevelLandscape from './LevelLandscape';
 import LevelWarning from './LevelWarning';
@@ -71,7 +72,7 @@ import LevelSettingsWin from './LevelSettingsWin';
 import LevelThreeMagicButtons from './LevelThreeMagicButtons';
 import LevelFadeOut from './LevelFadeOut';
 import LevelSelfTimer from './LevelSelfTimer';
-import LevelOctahedron from './LevelOctahedron';
+// import LevelOctahedron from './LevelOctahedron';
 import LevelPrismDimensions from './LevelPrismDimensions';
 import LevelSettingsToggle from './LevelSettingsToggle';
 import LevelScreenshot from './LevelScreenshot';
@@ -127,7 +128,7 @@ export default [
   LevelA1Z26, // IMPROVE: fix 'overflow' issue for last ticker
   LevelClockOrder,
   LevelLandscape, // IMPROVE: update asset
-  // LevelDodecahedron,
+  LevelDodecahedron,
   LevelBalloon, // IMPROVE: update assets
   LevelThreeStacks, // IMPROVE: change to single-press
   LevelStackQueue,

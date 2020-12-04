@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useRef } from 'react';
 import {
+  View,
   TouchableWithoutFeedback,
   GestureResponderEvent,
-  PixelRatio,
 } from 'react-native';
-import { THREE, Renderer } from 'expo-three';
-import { ExpoWebGLRenderingContext, GLView } from 'expo-gl';
+import ExpoTHREE, { THREE } from 'expo-three';
+import { View as GraphicsView, ContextCreateProps } from 'expo-graphics';
 import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
@@ -15,7 +15,6 @@ import styles from 'res/styles';
 import LevelCounter from 'components/LevelCounter';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
-const getNow = global.nativePeformanceNow || Date.now;
 
 const axes = [
   new THREE.Vector3(1, 0, 0),
@@ -34,10 +33,9 @@ const LevelContainer = styled.View`
 `;
 
 const LevelDodecahedron: Level = (props) => {
-  let timeout = -1;
 
-  useEffect(() => () => clearTimeout(timeout), []);
-
+  const renderer = useRef<ExpoTHREE.Renderer>();
+  const scene = useRef<THREE.Scene>(new THREE.Scene());
   const raycaster = useRef<THREE.Raycaster>(new THREE.Raycaster());
   const camera = useRef<THREE.Camera>(new THREE.Camera());
   const geometry = useRef<THREE.Geometry>(new THREE.Geometry());
@@ -85,61 +83,45 @@ const LevelDodecahedron: Level = (props) => {
     );
   };
 
-  const handleGLContextCreate = useCallback((gl: ExpoWebGLRenderingContext) => {
+  const handleContextCreate = (props: ContextCreateProps) => {
+    const { gl, scale: pixelRatio } = props;
     const width = levelWidth;
     const height = levelHeight;
-    const scale = PixelRatio.get();
 
-    const renderer = new Renderer({ gl, pixelRatio: scale, width, height });
-    renderer.setSize(width, height);
-    renderer.setClearColor(colors.background);
-
+    renderer.current = new ExpoTHREE.Renderer({ gl, pixelRatio, width, height });
+    scene.current = new THREE.Scene();
     camera.current = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
     camera.current.position.z = 5;
-
-    const scene = new THREE.Scene();
-    scene.add(new THREE.AmbientLight(0xffffff, 0.5));
-    
-    const light = new THREE.DirectionalLight(0xffffff, 0.5);
-    light.position.set(3, 3, 3);
-    scene.add(light);
 
     geometry.current = new THREE.DodecahedronGeometry(1.5, 0);
     const material = new THREE.MeshLambertMaterial({
       vertexColors: THREE.FaceColors
     });
     reset();
+
     mesh.current = new THREE.Mesh(geometry.current, material);
-    scene.add(mesh.current);
+    scene.current.add(mesh.current);
 
-    const update = (delta: number) => {
-      rotate(rotateUnit * delta * 60);
-      renderer.render(scene, camera.current);
-    };
+    scene.current.add(new THREE.AmbientLight(0xffffff, 0.5));
+    const light = new THREE.DirectionalLight(0xffffff, 0.5);
+    light.position.set(3, 3, 3);
+    scene.current.add(light);
+  };
 
-    let lastFrameTime = -1;
-    const render = () => {
-      const now = 0.001 * getNow();
-      const delta = (now !== -1) ? (now - lastFrameTime) : 1/60;
-
-      timeout = requestAnimationFrame(render);
-      update(delta);
-      renderer.render(scene, camera.current);
-      gl.endFrameEXP();
-
-      lastFrameTime = now;
-    };
-    render();
-  }, []);
+  const handleGLRender = (delta: number) => {
+    if (!renderer.current) return;
+    rotate(rotateUnit * delta * 60);
+    renderer.current.render(scene.current, camera.current);
+  };
 
   return (
     <TouchableWithoutFeedback onPressIn={handlePressIn}>
       <LevelContainer>
-        <GLView
-          style={{ width: levelWidth, height: levelHeight }}
-          onContextCreate={handleGLContextCreate}
-        />
         <LevelCounter count={numCoinsFound} />
+        <GraphicsView
+          onContextCreate={handleContextCreate}
+          onRender={handleGLRender}
+        />
       </LevelContainer>
     </TouchableWithoutFeedback>
   );

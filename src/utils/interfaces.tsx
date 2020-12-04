@@ -11,6 +11,7 @@ export interface LevelProps {
   onCoinPress: (index?: number) => void;
   setCoinsFound: (indices?: Set<number>) => void;
   onNextLevel: () => any;
+  setSettingsOpen: (settingsOpen: boolean) => any;
   noSound?: boolean;
 }
 

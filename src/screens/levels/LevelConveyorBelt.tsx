@@ -1,9 +1,11 @@
-import React, { FunctionComponent, memo, useState, useEffect } from 'react';
-import { Animated, Easing, View } from 'react-native';
+import React, { FunctionComponent, memo, useState, useEffect, useRef, useCallback } from 'react';
+import { Animated, Easing } from 'react-native';
 import {
   State,
   PanGestureHandler,
   PanGestureHandlerStateChangeEvent,
+  TapGestureHandler,
+  TapGestureHandlerStateChangeEvent,
 } from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
 
@@ -175,10 +177,11 @@ interface SettingsGearProps {
   anim: Animated.Value;
   locked: boolean;
   onPlace: () => any;
+  onPress: () => any;
 }
 
 const SettingsGear: FunctionComponent<SettingsGearProps> = memo((props) => {
-  const { onPlace, locked, anim } = props;
+  const { onPlace, onPress, locked, anim } = props;
 
   const [active, setActive] = useState(false);
   const [baseX] = useState(new Animated.Value(0));
@@ -186,12 +189,15 @@ const SettingsGear: FunctionComponent<SettingsGearProps> = memo((props) => {
   const [panX] = useState(new Animated.Value(0));
   const [panY] = useState(new Animated.Value(0));
 
+  const panRef = useRef();
+  const tapRef = useRef();
+
   const handleGestureEvent = Animated.event(
     [{ nativeEvent: { translationX: panX, translationY: panY }}],
-    { useNativeDriver: true }
+    { useNativeDriver: false }
   );
 
-  const handleStateChange = (e: PanGestureHandlerStateChangeEvent) => {
+  const handleStateChange = useCallback((e: PanGestureHandlerStateChangeEvent) => {
     if (e.nativeEvent.state === State.END) {
       const { absoluteX, absoluteY, translationX, translationY } = e.nativeEvent;
       panX.setValue(0);
@@ -211,28 +217,38 @@ const SettingsGear: FunctionComponent<SettingsGearProps> = memo((props) => {
     } else if (e.nativeEvent.state === State.BEGAN) {
       setActive(true);
     }
-  };
+  }, []);
+
+  const handleTap = useCallback((e: TapGestureHandlerStateChangeEvent) => {
+    if (e.nativeEvent.state === State.END) onPress();
+  }, []);
 
   return (
     <PanGestureHandler
       enabled={!locked}
       onGestureEvent={handleGestureEvent}
       onHandlerStateChange={handleStateChange}
+      simultaneousHandlers={[tapRef]}
     >
-      <SettingsGearContainer style={{
-        transform: [
-          { translateX: Animated.add(baseX, panX) },
-          { translateY: Animated.add(baseY, panY) },
-          { scale: active ? 13/12 : 1 },
-          { rotate: anim.interpolate({
-            inputRange: [0, 1],
-            outputRange: ['0deg', '360deg'],
-          }) }
-        ],
-        ...(locked && { zIndex: 1 })
-      }}>
-        <Gear />
-      </SettingsGearContainer>
+      <TapGestureHandler
+        onHandlerStateChange={handleTap}
+        simultaneousHandlers={[panRef]}
+      >
+        <SettingsGearContainer style={{
+          transform: [
+            { translateX: Animated.add(baseX, panX) },
+            { translateY: Animated.add(baseY, panY) },
+            { scale: active ? 13/12 : 1 },
+            { rotate: anim.interpolate({
+              inputRange: [0, 1],
+              outputRange: ['0deg', '360deg'],
+            }) }
+          ],
+          ...(locked && { zIndex: 1 })
+        }}>
+          <Gear />
+        </SettingsGearContainer>
+      </TapGestureHandler>
     </PanGestureHandler>
   );
 });
@@ -253,7 +269,8 @@ const LevelConveyorBelt: Level = (props) => {
     ).start();
   }, [beltActive]);
 
-  const handleSettingsGearPlace = () => setBeltActive(true);
+  const handleSettingsGearPress = useCallback(() => props.setSettingsOpen(true), []);
+  const handleSettingsGearPlace = useCallback(() => setBeltActive(true), []);
 
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
@@ -278,10 +295,12 @@ const LevelConveyorBelt: Level = (props) => {
 
   return (
     <>
+      <SettingsGearContainer style={{ backgroundColor: colors.background }} />
       <SettingsGear
         onPlace={handleSettingsGearPlace}
         locked={beltActive}
         anim={gearAnim}
+        onPress={handleSettingsGearPress}
       />
       <LevelContainer>
         <LevelCounter count={numCoinsFound} />

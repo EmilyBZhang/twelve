@@ -1,9 +1,9 @@
-// IDEA: Drag away 'twelve' LevelTexts to reveal coins underneath
-
 import React, { FunctionComponent, memo, useState, useRef, useCallback } from 'react';
 import { Animated, View } from 'react-native';
 import {
-  PanGestureHandler, PanGestureHandlerStateChangeEvent, State,
+  State,
+  PanGestureHandler,
+  PanGestureHandlerStateChangeEvent,
 } from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
 
