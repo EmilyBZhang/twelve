@@ -22,7 +22,7 @@ export const changePlaybackOptions = ({ getState }: MiddlewareArg) => (
     if (action.type === Actions.TOGGLE_SFX) {
       defaultOptions.isMuted = getState().settings.sfx;
     } else if (action.type === Actions.INIT_SETTINGS) {
-      defaultOptions.isMuted = !action.payload.sfx || !getState().settings.sfx;
+      defaultOptions.isMuted = (action.payload.sfx === false) || !getState().settings.sfx;
     }
     return next(action);
   }

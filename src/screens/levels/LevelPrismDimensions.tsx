@@ -1,5 +1,5 @@
-import React, { FunctionComponent, memo, useState } from 'react';
-import { View } from 'react-native';
+import React, { FunctionComponent, memo, useState, useEffect } from 'react';
+import { Animated, Easing } from 'react-native';
 import Svg, { Polygon } from 'react-native-svg';
 import styled from 'styled-components/native';
 
@@ -7,14 +7,12 @@ import { Level } from 'utils/interfaces';
 import { getLevelDimensions } from 'utils/getDimensions';
 import styles from 'res/styles';
 import colors from 'res/colors';
-import { calcPositions } from 'utils/coinPositions';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
-const { coinSize } = styles;
 
 const containerWidth = Math.floor(levelWidth / 2);
 const containerHeight = levelHeight / 2;
@@ -30,6 +28,9 @@ const maxSliderHeight = (levelHeight - styles.levelNavHeight - containerHeight) 
 const sliderTextWidth = styles.coinSize * 2;
 const sliderWidth = levelWidth - 2 * sliderTextWidth;
 
+const numCoinRows = 3;
+const numCoinCols = 4;
+
 const RowContainer = styled.View`
   flex-direction: row;
   justify-content: space-evenly;
@@ -37,12 +38,22 @@ const RowContainer = styled.View`
   width: 100%;
 `;
 
-const CoinsContainer = styled.View`
+const CoinsContainer = styled(Animated.View)`
+  position: absolute;
+  left: 0px;
+  top: ${containerHeight}px;
+  background-color: ${colors.background};
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: ${levelWidth};
+  height: ${maxSliderHeight * 3}px;
+`;
+
+const CoinRow = styled.View`
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  width: 100%;
-  position: absolute;
 `;
 
 const PrismContainer = styled.View`
@@ -71,7 +82,7 @@ const SliderText = styled.Text`
   font-size: ${styles.coinSize}px;
   text-align: center;
   width: ${sliderTextWidth}px;
-  max-height: ${maxSliderHeight}px;
+  height: ${maxSliderHeight}px;
 `;
 
 interface PrismProps {
@@ -140,6 +151,8 @@ const Prism: FunctionComponent<PrismProps> = memo((props) => {
 
 const LevelPrismDimensions: Level = (props) => {
 
+  const [coinOpacity] = useState(new Animated.Value(0));
+
   const [length, setLength] = useState(3);
   const [width, setWidth] = useState(5);
   const [height, setHeight] = useState(8);
@@ -148,20 +161,21 @@ const LevelPrismDimensions: Level = (props) => {
   const volume2 = (maxLength - length) * (maxWidth - width) * (maxHeight - height);
   const isRevealed = (volume1 === 12) && (volume2 === 12);
 
+  useEffect(() => {
+    if (!isRevealed) return;
+    Animated.timing(coinOpacity, {
+      toValue: 1,
+      duration: 500,
+      easing: Easing.linear,
+      useNativeDriver: true,
+    }).start();
+  }, [isRevealed]);
+
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
 
-  const renderCoins = (row: number) => isRevealed && (
-    <CoinsContainer>
-      <Coin />
-      <Coin />
-      <Coin />
-      <Coin />
-    </CoinsContainer>
-  );
-
   return (
-    <LevelContainer>
+    <LevelContainer style={{ justifyContent: 'flex-start' }}>
       <LevelCounter count={numCoinsFound} />
       <RowContainer>
         <Prism length={length} width={width} height={height} />
@@ -176,7 +190,6 @@ const LevelPrismDimensions: Level = (props) => {
           onValueChange={setLength}
         />
         <SliderText>{maxLength - length}</SliderText>
-        {renderCoins(0)}
       </RowContainer>
       <RowContainer>
         <SliderText>{width}</SliderText>
@@ -187,12 +200,6 @@ const LevelPrismDimensions: Level = (props) => {
           onValueChange={setWidth}
         />
         <SliderText>{maxWidth - width}</SliderText>
-        {/* <CoinsContainer>
-          <Coin />
-          <Coin />
-          <Coin />
-          <Coin />
-        </CoinsContainer> */}
       </RowContainer>
       <RowContainer>
         <SliderText>{height}</SliderText>
@@ -203,13 +210,27 @@ const LevelPrismDimensions: Level = (props) => {
           onValueChange={setHeight}
         />
         <SliderText>{maxHeight - height}</SliderText>
-        {/* <CoinsContainer>
-          <Coin />
-          <Coin />
-          <Coin />
-          <Coin />
-        </CoinsContainer> */}
       </RowContainer>
+      {isRevealed && (
+        <CoinsContainer style={{ opacity: coinOpacity }}>
+          {Array.from(Array(numCoinRows), (_, row) => (
+            <RowContainer key={String(row)}>
+              {Array.from(Array(numCoinCols), (_, col) => {
+                const index = row * numCoinCols + col;
+                const found = props.coinsFound.has(index);
+                return (
+                  <Coin
+                    key={String(index)}
+                    hidden={found}
+                    disabled={found}
+                    onPress={() => props.onCoinPress(index)}
+                  />
+                );
+              })}
+            </RowContainer>
+          ))}
+        </CoinsContainer>
+      )}
     </LevelContainer>
   );
 };

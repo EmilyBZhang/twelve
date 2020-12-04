@@ -20,10 +20,12 @@ import {
   HintIcon,
 } from './components';
 import SettingsModal from 'components/SettingsModal';
+import HintModal from 'components/HintModal';
 import useSettings from 'hooks/useSettings';
 
 interface LevelNavProps {
   settingsOpen: boolean;
+  hintOpen: boolean;
   onBack: () => any;
   onToggleSettings?: () => any;
   onPrevLevel?: () => any;
@@ -49,6 +51,7 @@ const LevelNav: FunctionComponent<LevelNavProps> = (props) => {
     onToggleSettings,
     onBack,
     onHint,
+    hintOpen,
   } = props;
 
   const { levelStatus } = useSettings(['levelStatus'])[0];
@@ -70,6 +73,14 @@ const LevelNav: FunctionComponent<LevelNavProps> = (props) => {
 
   return (
     <>
+      {onHint && (level !== undefined) && (
+        <HintModal
+          visible={hintOpen}
+          level={level}
+          hintNum={0}
+          onClose={onHint}
+        />
+      )}
       {onToggleSettings && (
         <SettingsModal
           visible={settingsOpen}

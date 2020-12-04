@@ -24,6 +24,7 @@ const Level: Screen = (props) => {
   
   const [selectedIndices, toggleIndex, setSelectedIndices] = useSelectedIndices();
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [hintOpen, setHintOpen] = useState(false);
   const musicPlayback = useRef<CreateAudioResult | null>(null);
   
   let levelNum = props.navigation.getParam('level') || 0;
@@ -122,7 +123,7 @@ const Level: Screen = (props) => {
   }, []);
 
   const handleHint = useCallback(() => {
-    Alert.alert('no hints yet');
+    setHintOpen(state => !state);
   }, [levelNum]);
 
   if (levelNum === levels.length) {
@@ -132,6 +133,7 @@ const Level: Screen = (props) => {
 
   const levelNavProps = {
     settingsOpen,
+    hintOpen,
     // TODO: Look into NavigationActions.back or props.navigation.goBack
     onBack: levelNum ? goToLevelSelect : goToMainMenu,
     onToggleSettings: levelNum ? handleToggleSettings : undefined,

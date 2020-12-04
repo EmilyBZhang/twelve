@@ -48,9 +48,6 @@ const InitSettings: FunctionComponent<InitSettingsProps> = (props) => {
           }
         }
 
-        console.log('LOADED THESE SETTINGS:');
-        console.log(settings);
-
         initSettings(settings as SettingsPartialState);
       });
     });

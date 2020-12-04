@@ -1,9 +1,14 @@
 import React, { FunctionComponent, memo, useState, useEffect } from 'react';
 import { Animated, Easing, View } from 'react-native';
+import {
+  State,
+  PanGestureHandler,
+  PanGestureHandlerStateChangeEvent,
+} from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
-import { getLevelDimensions } from 'utils/getDimensions';
+import getDimensions, { getLevelDimensions } from 'utils/getDimensions';
 import styles from 'res/styles';
 import colors from 'res/colors';
 import coinPositions from 'utils/coinPositions';
@@ -14,15 +19,42 @@ import LevelCounter from 'components/LevelCounter';
 import { navIconSize, SettingsIcon } from 'components/LevelNav/components'
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
+const { width: windowWidth, height: windowHeight } = getDimensions();
+const { coinSize } = styles;
 
 // const trueGearWidth = navIconSize * 5/6;
 const gearSize = navIconSize;
 const numGears = 12;
 
-const gearPeriod = 3000;
+const missingGearIndex = 8;
+const margin = coinSize / 2;
+const midX = windowWidth * missingGearIndex / numGears + levelWidth / numGears / 2;
+const midY = (windowHeight + coinSize + styles.levelNavHeight) / 2;
+const bounds = {
+  minX: midX - margin,
+  maxX: midX + margin,
+  minY: midY - margin,
+  maxY: midY + margin,
+};
+
+const withinBounds = (x: number, y: number) => (
+  x >= bounds.minX && x <= bounds.maxX && y >= bounds.minY && y <= bounds.maxY
+);
+
+const Square = styled.View`
+  background-color: red;
+  position: absolute;
+  top: ${bounds.minY}px;
+  height: ${bounds.maxY - bounds.minY}px;
+  /* left: ${levelWidth * missingGearIndex / 12 + (levelWidth / 12 - coinSize) / 2}px; */
+  left: ${bounds.minX}px;
+  width: ${bounds.maxX - bounds.minX}px;
+`;
+
+const gearPeriod = 1000;
 const gearCircumference = gearSize * Math.PI;
 const beltLength = levelWidth * 3;
-const beltCycle = gearPeriod * beltLength / gearCircumference;
+const beltPeriod = gearPeriod * beltLength / gearCircumference;
 
 const GearRow = styled.View`
   flex-direction: row;
@@ -31,45 +63,42 @@ const GearRow = styled.View`
   justify-content: space-around;
 `;
 
-const SettingsContainer = styled.View`
-  width: ${navIconSize * 2}px;
-  height: ${navIconSize}px;
-  flex: 1;
+const SettingsGearContainer = styled(Animated.View)`
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: ${styles.levelNavZIndex};
+  width: ${styles.levelNavHeight}px;
+  height: ${styles.levelNavHeight}px;
   justify-content: center;
   align-items: center;
-  background-color: red;
-  overflow: visible;
 `;
 
-interface GearProps {
-  index: number;
-}
+const GearContainer = styled(Animated.View)``;
 
-const GearContainer = styled(Animated.View)<GearProps>`
-  position: absolute;
-  /* ${props => (props.index % 2) ? '' : 'transform: rotate(30deg);'} */
-`;
+const Gear = SettingsIcon;
 
-// TODO: See if there is a fix to this bug with styled-components
-// @ts-ignore
-const Gear = styled(SettingsIcon)`
-`;
-
-const numBelts = 12;
+const beltsPerChunk = 4;
 const beltWidth = levelWidth * 3;
 
 const BeltSegment = styled.View`
-  width: ${levelWidth / 4}px;
+  width: ${levelWidth / beltsPerChunk}px;
   height: ${navIconSize / 2}px;
   background-color: darkslateblue;
   border: ${navIconSize / 12}px solid steelblue;
 `;
 
-const BeltRow = styled.View`
+const ChunkRow = styled.View`
   width: ${levelWidth}px;
   flex-direction: row;
   justify-content: space-around;
 `;
+
+const SegmentRow = memo(() => (
+  <ChunkRow>
+    {Array.from(Array(beltsPerChunk), (_, index) => <BeltSegment key={String(index)} />)}
+  </ChunkRow>
+));
 
 const BeltChunk = styled(Animated.View)`
   flex-direction: column-reverse;
@@ -79,40 +108,152 @@ const BeltChunk = styled(Animated.View)`
 const BeltContainer = styled.View`
   flex-direction: row;
   justify-content: space-around;
+  width: ${beltWidth}px;
 `;
 
-const Belt: FunctionComponent = (props) => {
-  // TODO
-  const numBelts = levelWidth * 2
+interface BeltProps {
+  active?: boolean;
+  children1?: React.ReactNode;
+  children2?: React.ReactNode;
+  children3?: React.ReactNode;
+}
+
+const ReverseContainer = styled.View`
+  transform: rotate(180deg);
+`;
+
+const Belt: FunctionComponent<BeltProps> = memo((props) => {
+  const { active } = props;
+
+  const [anim] = useState(new Animated.Value(0));
+  const { children1, children2, children3 } = props;
+
+  useEffect(() => {
+    if (!active) return;
+    Animated.loop(
+      Animated.timing(anim, {
+        toValue: 1,
+        duration: beltPeriod,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      })
+    ).start();
+  }, [active]);
+
+  const baseTranslate = Animated.multiply(anim, beltWidth);
+  const translates = [
+    baseTranslate,
+    Animated.subtract(Animated.modulo(Animated.add(baseTranslate, levelWidth), beltWidth), levelWidth),
+    Animated.subtract(Animated.modulo(Animated.add(baseTranslate, levelWidth * 2), beltWidth), levelWidth * 2),
+  ];
+
   return (
-    <BeltSegment />
+    <BeltContainer>
+      <BeltChunk style={{ transform: [{ translateX: translates[0] }] }}>
+        <SegmentRow />
+        <ChunkRow>
+          {children1}
+        </ChunkRow>
+      </BeltChunk>
+      <BeltChunk style={{ transform: [{ translateX: translates[1] }] }}>
+        <SegmentRow />
+        <ChunkRow>
+          {children2}
+        </ChunkRow>
+      </BeltChunk>
+      <BeltChunk style={{ transform: [{ translateX: translates[2] }] }}>
+        <SegmentRow />
+        <ChunkRow>
+          {children3}
+        </ChunkRow>
+      </BeltChunk>
+    </BeltContainer>
   );
-};
+});
+
+interface SettingsGearProps {
+  anim: Animated.Value;
+  locked: boolean;
+  onPlace: () => any;
+}
+
+const SettingsGear: FunctionComponent<SettingsGearProps> = memo((props) => {
+  const { onPlace, locked, anim } = props;
+
+  const [active, setActive] = useState(false);
+  const [baseX] = useState(new Animated.Value(0));
+  const [baseY] = useState(new Animated.Value(0));
+  const [panX] = useState(new Animated.Value(0));
+  const [panY] = useState(new Animated.Value(0));
+
+  const handleGestureEvent = Animated.event(
+    [{ nativeEvent: { translationX: panX, translationY: panY }}],
+    { useNativeDriver: true }
+  );
+
+  const handleStateChange = (e: PanGestureHandlerStateChangeEvent) => {
+    if (e.nativeEvent.state === State.END) {
+      const { absoluteX, absoluteY, translationX, translationY } = e.nativeEvent;
+      panX.setValue(0);
+      panY.setValue(0);
+      console.log(absoluteX, absoluteY);
+      if (withinBounds(absoluteX, absoluteY)) {
+        baseX.setValue(midX - styles.levelNavHeight / 2);
+        baseY.setValue(midY - styles.levelNavHeight / 2);
+        onPlace();
+      } else {
+        baseX.setOffset(translationX);
+        baseX.flattenOffset();
+        baseY.setOffset(translationY);
+        baseY.flattenOffset();
+      }
+      setActive(false);
+    } else if (e.nativeEvent.state === State.BEGAN) {
+      setActive(true);
+    }
+  };
+
+  return (
+    <PanGestureHandler
+      enabled={!locked}
+      onGestureEvent={handleGestureEvent}
+      onHandlerStateChange={handleStateChange}
+    >
+      <SettingsGearContainer style={{
+        transform: [
+          { translateX: Animated.add(baseX, panX) },
+          { translateY: Animated.add(baseY, panY) },
+          { scale: active ? 13/12 : 1 },
+          { rotate: anim.interpolate({
+            inputRange: [0, 1],
+            outputRange: ['0deg', '360deg'],
+          }) }
+        ],
+        ...(locked && { zIndex: 1 })
+      }}>
+        <Gear />
+      </SettingsGearContainer>
+    </PanGestureHandler>
+  );
+});
 
 const LevelConveyorBelt: Level = (props) => {
   const [gearAnim] = useState(new Animated.Value(0));
-  // const [beltAnim] = useState(new Animated.Value(0));
+  const [beltActive, setBeltActive] = useState(false);
 
   useEffect(() => {
-    Animated.parallel([
-      Animated.loop(
-        Animated.timing(gearAnim, {
-          toValue: 1,
-          duration: 3000,
-          easing: Easing.linear,
-          useNativeDriver: true,
-        })
-      ),
-      // Animated.loop(
-      //   Animated.timing(gearAnim, {
-      //     toValue: 1,
-      //     duration: 3000,
-      //     easing: Easing.linear,
-      //     useNativeDriver: true,
-      //   })
-      // ),
-    ]).start();
-  });
+    if (!beltActive) return;
+    Animated.loop(
+      Animated.timing(gearAnim, {
+        toValue: 1,
+        duration: 3000,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      })
+    ).start();
+  }, [beltActive]);
+
+  const handleSettingsGearPlace = () => setBeltActive(true);
 
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
@@ -122,80 +263,52 @@ const LevelConveyorBelt: Level = (props) => {
     outputRange: ['0deg', '360deg'],
   });
 
+  const renderRow = (row: number) => Array.from(Array(4), (_, col) => {
+    const index = row * 4 + col;
+    const found = props.coinsFound.has(index);
+    return (
+      <Coin
+        key={String(index)}
+        hidden={found}
+        disabled={found}
+        onPress={() => props.onCoinPress(index)}
+      />
+    );
+  });
+
   return (
-    <LevelContainer>
-      <LevelCounter count={numCoinsFound} />
-      {/* <Row>
-        {gearPositions.map((gearPosition, index) => (
-          <GearContainer
-            key={String(index)}
-            index={index}
-            style={{ ...gearPosition, transform: [{
-              rotate: Animated.multiply(Animated.add(gearAnim, (index % 2) ? 0 : 1/12), index % 2 ? 1 : -1).interpolate({
-                inputRange: [0, 1],
-                outputRange: ['0deg', '360deg'],
-              })
-            }]}}
-          >
-            <Gear />
-          </GearContainer>
-        ))}
-      </Row> */}
-      <BeltContainer>
-        <BeltChunk >
-          <BeltRow>
-            <BeltSegment />
-            <BeltSegment />
-            <BeltSegment />
-            <BeltSegment />
-          </BeltRow>
-        </BeltChunk>
-        <BeltChunk>
-          <BeltRow>
-            <BeltSegment />
-            <BeltSegment />
-            <BeltSegment />
-            <BeltSegment />
-          </BeltRow>
-        </BeltChunk>
-        <BeltChunk>
-          <BeltRow>
-            <BeltSegment />
-            <BeltSegment />
-            <BeltSegment />
-            <BeltSegment />
-          </BeltRow>
-        </BeltChunk>
-        {/* <BeltRow>
-          <Coin />
-          <Coin />
-          <Coin />
-          <Coin />
-          <Coin />
-          <Coin />
-          <Coin />
-          <Coin />
-          <Coin />
-          <Coin />
-          <Coin />
-          <Coin />
-        </BeltRow> */}
-      </BeltContainer>
-      <GearRow>
-        {Array.from(Array(12), (_, index) => <Gear key={String(index)} />)}
-      </GearRow>
-      {/* {coinPositions.map((coinPosition, index) => (
-        <View
-          key={String(index)}
-          style={{position: 'absolute', ...coinPosition}}
-        >
-          <Coin
-            found={props.coinsFound.has(index)}
-            onPress={() => props.onCoinPress(index)}
-          />
-        </View>
-      ))} */}
-    </LevelContainer>
+    <>
+      <SettingsGear
+        onPlace={handleSettingsGearPlace}
+        locked={beltActive}
+        anim={gearAnim}
+      />
+      <LevelContainer>
+        <LevelCounter count={numCoinsFound} />
+        <Belt
+          active={beltActive}
+          children1={renderRow(0)}
+          children2={renderRow(1)}
+          children3={renderRow(2)}
+        />
+        <GearRow>
+          {Array.from(Array(numGears), (_, index) => (
+            <GearContainer
+              key={String(index)}
+              style={{
+                transform: [{ rotate }],
+                opacity: (index === missingGearIndex) ? 0 : 1
+              }}
+            >
+              <Gear />
+            </GearContainer>
+          ))}
+        </GearRow>
+        <ReverseContainer>
+          <Belt active={beltActive} />
+        </ReverseContainer>
+      </LevelContainer>
+    </>
   );
 };
 

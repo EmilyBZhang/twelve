@@ -78,9 +78,10 @@ import LevelScreenshot from './LevelScreenshot';
 import LevelShake from './LevelShake';
 import LevelConveyorBelt from './LevelConveyorBelt';
 import LevelTest from './LevelTest';
-
-
-
+import LevelClockPointer from './LevelClockPointer';
+import LevelDialpad from './LevelDialpad';
+import LevelSeaOfTwelves from './LevelSeaOfTwelves';
+import LevelCircuit from './LevelCircuit';
 
 
 
@@ -89,46 +90,46 @@ import LevelTest from './LevelTest';
 export default [
   LevelSelect,
   Level1,
-  LevelSlider,
+  LevelSlider, // IMPROVE: always start at 0
   LevelCatchCoins,
   LevelRedLight,
   LevelWindow,
-  LevelScratchOff,
+  LevelScratchOff, // IMPROVE: eliminate loading time if possible
   LevelShrinkingCoin,
   LevelBinary0,
-  LevelSimonSays,
-  LevelArrows,
+  LevelSimonSays, // IMPROVE: keep pattern consistent after failing
+  LevelArrows, // IMPROVE: consider randomizing arrows
   LevelFloatingPoint,
   Level12,
-  LevelSlideDown,
-  LevelRGBSliders,
+  LevelSlideDown, // IMPROVE: change level text to be 'twelve' but slanted
+  LevelRGBSliders, // IMPROVE: possibly remove level
   LevelNewcomerCoin,
-  LevelBipartiteCircuit,
-  LevelMouseMaze,
+  LevelBipartiteCircuit, // IMPROVE: add bit labels
+  LevelMouseMaze, // IMPROVE: move counter to mouse
   LevelRabbitHole,
   LevelClock,
   Level12Wire,
   LevelTeleportingCoin,
-  LevelSimonDoesNotSay,
-  LevelBinary1,
-  LevelElevenPlusTwo,
+  LevelSimonDoesNotSay, // IMPROVE: guarantee "not says" is half (via shuffling)
+  LevelBinary1, // IMPROVE: add bit labels
+  LevelElevenPlusTwo, // IMPROVE: allow twelve + one
   LevelZoomInCoin,
   LevelUpsideDown,
   LevelCMYSliders,
-  LevelVolcano,
-  LevelMonths,
-  LevelPiano,
-  LevelBinary2,
+  LevelVolcano, // IMPROVE: update asset
+  LevelMonths, // IMPROVE: consider adding leap year (29) and adding current year label
+  LevelPiano, // IMPROVE: update asset
+  LevelBinary2, // IMPROVE: add bit labels
   LevelDraw12,
-  LevelFitSquares,
-  LevelMatchCards,
+  LevelFitSquares, // IMPROVE: eliminate race condition
+  LevelMatchCards, // IMPROVE: improve look
   LevelMultiplyTo12,
-  LevelA1Z26,
+  LevelA1Z26, // IMPROVE: fix 'overflow' issue for last ticker
   LevelClockOrder,
-  LevelLandscape,
-  LevelDodecahedron,
-  LevelBalloon,
-  LevelThreeStacks,
+  LevelLandscape, // IMPROVE: update asset
+  // LevelDodecahedron,
+  LevelBalloon, // IMPROVE: update assets
+  LevelThreeStacks, // IMPROVE: change to single-press
   LevelStackQueue,
   LevelBallMaze,
   LevelAcyclicAddition,
@@ -138,25 +139,27 @@ export default [
   LevelPlusFlip,
   LevelPermuteTwoTwelves,
   LevelWordSearch,
-  LevelHoleJigsaw,
+  LevelHoleJigsaw, // IMPROVE: add assets to jigsaw pieces
   LevelPulley,
-  LevelSettingsWin,
+  LevelSettingsWin, // IMPROVE: add icon to switch
   LevelThreeMagicButtons,
   LevelFadeOut,
   LevelSelfTimer,
-  LevelSettingsToggle,
+  LevelSettingsToggle, // IMPROVE: put settings icons on coins
+  LevelClockPointer,
+  LevelDialpad, // IMPROVE: Give progress meter
+  LevelSeaOfTwelves,
+  LevelPrismDimensions,
   LevelWarning,
   LevelConveyorBelt,
-  LevelPrismDimensions,
   LevelShake,
-  LevelOctahedron,
+  // LevelOctahedron,
   LevelRacecar,
   LevelSoda,
   LevelTest,
+  LevelCircuit,
   LevelWarning,
-  LevelWarning,
-  LevelWarning,
-  Level69,
+  Level69, // IMPROVE: fix position
   LevelWarning,
   LevelWarning,
   LevelScavengerHunt,
@@ -164,7 +167,17 @@ export default [
   // 12 in picture
   // ad
   // light bulb
-  // gear
+  // neighbor coins fade away
+  // 12:12
+  // Falling letters twelve
+  // Circular formation: number on each coin denotes distance from next coin
+  // Square formation of coins
+  /*
+  OOOO
+  O  O
+  O  O
+  OOOO
+  */
 
   // LevelScreenshot,
   // LevelProduct,
@@ -188,3 +201,12 @@ export default [
 // binary levels should be on powers of two
 // last 12 levels are "challenge" levels or meta levels
 //   should include piano, binary2, settings-to-win, and "scavenger hunt" level
+
+// GENERAL TODO:
+// Add hints
+// Fix screen for iPhones with notches
+// Redesign main menu
+// Figure out in-app purchases
+// Possibly fix audio for Android by preloading assets
+// Look into preloading image assets
+// Add speedrun timers

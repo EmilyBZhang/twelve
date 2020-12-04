@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Alert, Button, View } from 'react-native';
 import { AdMobRewarded } from 'expo-ads-admob';
 import styled from 'styled-components/native';
@@ -12,23 +12,23 @@ import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
+import useRewardedAd, { EventMap } from 'hooks/useRewardedAd';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 
 const LevelTest: Level = (props) => {
 
-  useEffect(() => {
-    AdMobRewarded.addEventListener('rewardedVideoDidRewardUser', () => {
+  const callbacks = useMemo<EventMap>(() => ({
+    rewardedVideoDidRewardUser: () => {
       console.log(new Date(), 'Ad finished');
       props.setCoinsFound(new Set([0,1,2,3,4,5,6,7,8,9,10,11]));
-    });
-    return AdMobRewarded.removeAllListeners;
-  }, []);
+    },
+    rewardedVideoDidFailToLoad: () => {
+      Alert.alert('Could not load hint :(', 'Check your internet connection.');
+    },
+  }), []);
 
-  const handlePress = async () => {
-    await AdMobRewarded.requestAdAsync({ servePersonalizedAds: true });
-    await AdMobRewarded.showAdAsync();
-  };
+  const requestAd = useRewardedAd(callbacks);
 
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
@@ -48,7 +48,7 @@ const LevelTest: Level = (props) => {
           />
         </View>
       ))}
-      <Button title={'Show ad'} onPress={handlePress} />
+      <Button title={'Show ad'} onPress={requestAd} />
     </LevelContainer>
   );
 };

@@ -14,7 +14,7 @@ export interface ScreenContainerProps {
 }
 
 // TODO: See if SafeAreaView works on devices with notches
-const Container = styled.View<ScreenContainerProps>`
+const Container = styled.SafeAreaView<ScreenContainerProps>`
   flex: 1;
   background-color: ${props => props.color};
   justify-content: center;

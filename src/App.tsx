@@ -5,6 +5,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { Provider } from 'react-redux';
 
 import store from 'reducers/store';
+import useSettings from 'hooks/useSettings';
 import MainMenu from 'screens/MainMenu';
 import Level from 'screens/Level';
 import Credits from 'screens/Credits';
@@ -14,6 +15,7 @@ import InitFonts from 'components/init/InitFonts';
 import InitAdMob from 'components/init/InitAdMob';
 import TitleScreen from 'components/TitleScreen';
 import ScreenContainer from 'components/ScreenContainer';
+import MeasureScreen from 'components/init/MeasureScreen';
 
 LogBox.ignoreAllLogs(true);
 
@@ -56,6 +58,7 @@ const App: FunctionComponent = () => {
       <InitSettings onLoad={initSettings} />
       <InitFonts onLoad={initFonts} />
       <InitAdMob onLoad={initAdMod} />
+      {/* <MeasureScreen onLoad={} /> */}
       <StatusBar hidden />
       {ready ? <AppContainer /> : <ScreenContainer />}
     </Provider>
