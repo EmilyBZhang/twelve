@@ -1,7 +1,7 @@
 import { useEffect, useCallback } from 'react';
 import { AdMobRewarded } from 'expo-ads-admob';
 
-type EventNameType = 'rewardedVideoDidRewardUser'
+export type EventNameType = 'rewardedVideoDidRewardUser'
   | 'rewardedVideoDidLoad'
   | 'rewardedVideoDidFailToLoad'
   | 'rewardedVideoDidOpen'
@@ -9,7 +9,7 @@ type EventNameType = 'rewardedVideoDidRewardUser'
   | 'rewardedVideoDidClose'
   | 'rewardedVideoWillLeaveApplication';
 
-type EventMap = { [eventName in EventNameType]?: () => any; };
+export type EventMap = { [eventName in EventNameType]?: () => any; };
 
 const useRewardedAd = (callbacks: EventMap) => {
   useEffect(() => {

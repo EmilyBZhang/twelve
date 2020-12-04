@@ -159,7 +159,6 @@ export default [
   LevelSoda,
   LevelTest,
   LevelCircuit,
-  LevelWarning,
   Level69, // IMPROVE: fix position
   LevelWarning,
   LevelWarning,
