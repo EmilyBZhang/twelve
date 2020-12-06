@@ -13,10 +13,8 @@ import { Level } from 'utils/interfaces';
 import getDimensions, { getLevelDimensions } from 'utils/getDimensions';
 import styles from 'res/styles';
 import colors from 'res/colors';
-import coinPositions from 'utils/coinPositions';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
-import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
 import { navIconSize, SettingsIcon } from 'components/LevelNav/components'
 
@@ -42,16 +40,6 @@ const bounds = {
 const withinBounds = (x: number, y: number) => (
   x >= bounds.minX && x <= bounds.maxX && y >= bounds.minY && y <= bounds.maxY
 );
-
-const Square = styled.View`
-  background-color: red;
-  position: absolute;
-  top: ${bounds.minY}px;
-  height: ${bounds.maxY - bounds.minY}px;
-  /* left: ${levelWidth * missingGearIndex / 12 + (levelWidth / 12 - coinSize) / 2}px; */
-  left: ${bounds.minX}px;
-  width: ${bounds.maxX - bounds.minX}px;
-`;
 
 const gearPeriod = 1000;
 const gearCircumference = gearSize * Math.PI;
@@ -202,7 +190,6 @@ const SettingsGear: FunctionComponent<SettingsGearProps> = memo((props) => {
       const { absoluteX, absoluteY, translationX, translationY } = e.nativeEvent;
       panX.setValue(0);
       panY.setValue(0);
-      console.log(absoluteX, absoluteY);
       if (withinBounds(absoluteX, absoluteY)) {
         baseX.setValue(midX - styles.levelNavHeight / 2);
         baseY.setValue(midY - styles.levelNavHeight / 2);

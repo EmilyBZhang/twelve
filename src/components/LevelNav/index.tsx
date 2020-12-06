@@ -77,7 +77,6 @@ const LevelNav: FunctionComponent<LevelNavProps> = (props) => {
         <HintModal
           visible={hintOpen}
           level={level}
-          hintNum={0}
           onClose={onHint}
         />
       )}

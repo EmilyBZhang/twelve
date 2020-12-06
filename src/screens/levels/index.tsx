@@ -83,6 +83,15 @@ import LevelClockPointer from './LevelClockPointer';
 import LevelDialpad from './LevelDialpad';
 import LevelSeaOfTwelves from './LevelSeaOfTwelves';
 import LevelCircuit from './LevelCircuit';
+import LevelSpellTwelveBalls from './LevelSpellTwelveBalls';
+import LevelHamiltonianPath from './LevelHamiltonianPath';
+import LevelHamiltonianGrid from './LevelHamiltonianGrid';
+import LevelEulerPath from './LevelEulerPath';
+
+
+
+
+
 
 
 
@@ -103,7 +112,6 @@ export default [
   LevelFloatingPoint,
   Level12,
   LevelSlideDown, // IMPROVE: change level text to be 'twelve' but slanted
-  LevelRGBSliders, // IMPROVE: possibly remove level
   LevelNewcomerCoin,
   LevelBipartiteCircuit, // IMPROVE: add bit labels
   LevelMouseMaze, // IMPROVE: move counter to mouse
@@ -116,7 +124,6 @@ export default [
   LevelElevenPlusTwo, // IMPROVE: allow twelve + one
   LevelZoomInCoin,
   LevelUpsideDown,
-  LevelCMYSliders,
   LevelVolcano, // IMPROVE: update asset
   LevelMonths, // IMPROVE: consider adding leap year (29) and adding current year label
   LevelPiano, // IMPROVE: update asset
@@ -143,42 +150,40 @@ export default [
   LevelHoleJigsaw, // IMPROVE: add assets to jigsaw pieces
   LevelPulley,
   LevelSettingsWin, // IMPROVE: add icon to switch
-  LevelThreeMagicButtons,
+  LevelThreeMagicButtons, // IMPROVE: limit number text to one line
   LevelFadeOut,
   LevelSelfTimer,
   LevelSettingsToggle, // IMPROVE: put settings icons on coins
   LevelClockPointer,
   LevelDialpad, // IMPROVE: Give progress meter
   LevelSeaOfTwelves,
+  LevelHamiltonianGrid,
   LevelPrismDimensions,
-  LevelWarning,
   LevelConveyorBelt,
-  LevelShake,
-  // LevelOctahedron,
-  LevelRacecar,
+  LevelHamiltonianPath,
+  LevelEulerPath,
+  LevelWarning,
   LevelSoda,
-  LevelTest,
+  LevelShake,
+  LevelRacecar,
   LevelCircuit,
   Level69, // IMPROVE: fix position
-  LevelWarning,
-  LevelWarning,
+  LevelSpellTwelveBalls,
+  LevelTest,
   LevelScavengerHunt,
+  // 12:12
+  // Euler path
+  // credits/main menu level
+  // LevelOctahedron,
   // bowling
   // 12 in picture
   // ad
   // light bulb
   // neighbor coins fade away
-  // 12:12
-  // Falling letters twelve
-  // Circular formation: number on each coin denotes distance from next coin
-  // Square formation of coins
-  /*
-  OOOO
-  O  O
-  O  O
-  OOOO
-  */
-
+  // Ice-sliding puzzle
+  
+  // LevelRGBSliders,
+  // LevelCMYSliders,
   // LevelScreenshot,
   // LevelProduct,
   // LevelD12,

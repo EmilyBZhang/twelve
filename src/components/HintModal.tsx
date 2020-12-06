@@ -1,52 +1,112 @@
-import React, { FunctionComponent, memo, useState } from 'react';
-import { Button } from 'react-native';
+import React, { FunctionComponent, memo, useState, useMemo, useEffect, useCallback, useRef } from 'react';
+import { Alert, Button } from 'react-native';
 import hints from 'res/hints.json';
 import styled from 'styled-components/native';
 
 import colors from 'res/colors';
 import styles from 'res/styles';
+import useRewardedAd, { EventMap } from 'hooks/useRewardedAd';
+import { LargeVictoryButton, LargeVictoryButtonText } from './LargeVictoryButton';
 
 interface HintModalProps {
   level: number;
-  hintNum: number;
   visible: boolean;
   onClose: () => any;
 }
+
+const waitingText = 'Your hint will come after this ad...';
+const noHintText = 'No hint available';
 
 const FullScreenModal = styled.View`
   position: absolute;
   top: 0px;
   left: 0px;
-  background-color: #ffffffe0;
+  background-color: ${colors.background}e0;
   width: 100%;
   height: 100%;
   margin: 0px;
   z-index: ${styles.levelNavZIndex + 1};
   justify-content: center;
   align-items: center;
+  padding: ${100/12}%;
+`;
+
+const HintTitle = styled.Text`
+  font-family: montserrat-bold;
+  font-size: ${styles.coinSize}px;
+  color: ${colors.foreground};
+  text-align: center;
+  width: 100%;
+  margin: ${styles.coinSize / 2}px;
 `;
 
 const HintText = styled.Text`
   font-family: montserrat;
-  font-size: ${styles.coinSize}px;
+  font-size: ${styles.coinSize * 2 / 3}px;
   color: ${colors.darkText};
+  text-align: center;
+  width: 100%;
 `;
 
 // TODO: IDEA: Light modal on black background
-const HintModal: FunctionComponent<HintModalProps> = (props) => {
-  const { level, hintNum, visible, onClose } = props;
-  
-  if (!visible) return null;
+const HintModal: FunctionComponent<HintModalProps> = memo((props) => {
+  const { level, visible, onClose } = props;
+  const [hint, setHint] = useState(waitingText);
 
+  const adRewarded = useRef(false);
+  const closable = useRef(false);
+  const hintNum = useRef(0);
   const levelHints = hints[level - 1];
-  const hint = levelHints ? levelHints[hintNum % levelHints.length] : undefined;
+  
+  const callbacks = useMemo<EventMap>(() => ({
+    rewardedVideoDidClose: () => {
+      if (adRewarded.current) return;
+      onClose();
+    },
+    rewardedVideoDidRewardUser: () => {
+      adRewarded.current = true;
+      closable.current = true;
+      setHint(levelHints ? levelHints[hintNum.current] : noHintText);
+    },
+    rewardedVideoDidFailToLoad: () => {
+      closable.current = true;
+      setHint(`Couldn't load hint :(\n\nCheck your internet connection.`);
+    },
+  }), [level]);
+
+  const requestAd = useRewardedAd(callbacks);
+
+  useEffect(() => {
+    hintNum.current = 0;
+  }, [level]);
+
+  useEffect(() => {
+    if (!visible) return;
+    requestAd();
+  }, [visible]);
+
+  const handleClose = useCallback(() => {
+    closable.current = false;
+    if (adRewarded.current) {
+      hintNum.current++;
+      hintNum.current %= levelHints.length;
+    }
+    adRewarded.current = false;
+    onClose();
+    setHint(waitingText);
+  }, [onClose]);
+
+  if (!visible) return null;
 
   return (
     <FullScreenModal>
+      <HintTitle>Hint {hintNum.current + 1}/{levelHints.length}</HintTitle>
       <HintText>{hint}</HintText>
-      <Button title={'Close'} onPress={onClose} />
+      <LargeVictoryButton onPress={handleClose} disabled={!closable.current}>
+        <LargeVictoryButtonText>Return to game</LargeVictoryButtonText>
+      </LargeVictoryButton>
     </FullScreenModal>
   );
-};
+});
 
 export default HintModal;

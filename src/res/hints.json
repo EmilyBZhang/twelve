@@ -1,13 +1,13 @@
 [
     [
-        "Level 1: Hint 1",
-        "Level 1: Hint 2",
-        "Level 1: Hint 3"
+        "There are twelve dots (coins) on the screen.",
+        "Have you tried interacting with the coins?",
+        "Press the twelve coins to beat the level!"
     ],
     [
-        "Level 2: Hint 1",
-        "Level 2: Hint 2",
-        "Level 2: Hint 3"
+        "The coins are there. I wish there was a way to show where...",
+        "Notice anything that might help you reveal the coins?",
+        "Drag the slider to reveal the coins."
     ],
     [
         "Level 3: Hint 1",

@@ -7,7 +7,7 @@ import getDimensions from 'utils/getDimensions';
 import colors from 'res/colors';
 import styles from 'res/styles';
 import LevelText from './LevelText';
-import { TouchableHighlight } from 'react-native-gesture-handler';
+import { LargeVictoryButton, LargeVictoryButtonText } from './LargeVictoryButton';
 
 const { width: windowWidth, height: windowHeight } = getDimensions();
 
@@ -33,23 +33,6 @@ const FullScreenModal = styled.View`
   z-index: ${styles.levelNavZIndex - 1};
   justify-content: center;
   align-items: center;
-`;
-
-const NextLevelButton = styled.TouchableHighlight.attrs({
-  underlayColor: colors.foregroundPressed
-})`
-  background-color: ${colors.foreground};
-  padding: ${styles.coinSize / 2}px;
-  border-radius: ${styles.coinSize}px;
-  margin: ${styles.coinSize}px;
-  /* padding:  */
-`;
-
-const NextLevelText = styled.Text`
-  font-size: ${styles.coinSize / 2}px;
-  font-family: montserrat-bold;
-  color: ${colors.lightText};
-  text-align: center;
 `;
 
 interface BubbleTouchableProps {
@@ -95,9 +78,9 @@ const WinModal: FunctionComponent<WinModalProps> = (props) => {
     <FullScreenModal>
       <LevelText>{congratsMessage}</LevelText>
       {/* <Bubble title={congratsMessage}>{congratsMessage}</Bubble> */}
-      <NextLevelButton onPress={props.onNextLevel}>
-        <NextLevelText>Next level!</NextLevelText>
-      </NextLevelButton>
+      <LargeVictoryButton onPress={props.onNextLevel}>
+        <LargeVictoryButtonText>Next level!</LargeVictoryButtonText>
+      </LargeVictoryButton>
     </FullScreenModal>
   );
 };
