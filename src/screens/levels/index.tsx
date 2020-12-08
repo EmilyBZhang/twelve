@@ -78,7 +78,7 @@ import LevelSettingsToggle from './LevelSettingsToggle';
 import LevelScreenshot from './LevelScreenshot';
 import LevelShake from './LevelShake';
 import LevelConveyorBelt from './LevelConveyorBelt';
-import LevelTest from './LevelTest';
+import LevelCredits from './LevelCredits';
 import LevelClockPointer from './LevelClockPointer';
 import LevelDialpad from './LevelDialpad';
 import LevelSeaOfTwelves from './LevelSeaOfTwelves';
@@ -87,8 +87,7 @@ import LevelSpellTwelveBalls from './LevelSpellTwelveBalls';
 import LevelHamiltonianPath from './LevelHamiltonianPath';
 import LevelHamiltonianGrid from './LevelHamiltonianGrid';
 import LevelEulerPath from './LevelEulerPath';
-
-
+import LevelAd from './LevelAd';
 
 
 
@@ -111,7 +110,7 @@ export default [
   LevelArrows, // IMPROVE: consider randomizing arrows
   LevelFloatingPoint,
   Level12,
-  LevelSlideDown, // IMPROVE: change level text to be 'twelve' but slanted
+  LevelSlideDown,
   LevelNewcomerCoin,
   LevelBipartiteCircuit, // IMPROVE: add bit labels
   LevelMouseMaze, // IMPROVE: move counter to mouse
@@ -123,7 +122,7 @@ export default [
   LevelBinary1, // IMPROVE: add bit labels
   LevelElevenPlusTwo, // IMPROVE: allow twelve + one
   LevelZoomInCoin,
-  LevelUpsideDown,
+  LevelUpsideDown, // IMPROVE: check if sensor is working
   LevelVolcano, // IMPROVE: update asset
   LevelMonths, // IMPROVE: consider adding leap year (29) and adding current year label
   LevelPiano, // IMPROVE: update asset
@@ -137,7 +136,7 @@ export default [
   LevelLandscape, // IMPROVE: update asset
   LevelDodecahedron,
   LevelBalloon, // IMPROVE: update assets
-  LevelThreeStacks, // IMPROVE: change to single-press
+  LevelThreeStacks,
   LevelStackQueue,
   LevelBallMaze,
   LevelAcyclicAddition,
@@ -168,11 +167,11 @@ export default [
   LevelRacecar,
   LevelCircuit,
   Level69, // IMPROVE: fix position
-  LevelSpellTwelveBalls,
-  LevelTest,
+  // LevelSpellTwelveBalls,
+  LevelAd,
+  LevelCredits,
   LevelScavengerHunt,
   // 12:12
-  // Euler path
   // credits/main menu level
   // LevelOctahedron,
   // bowling

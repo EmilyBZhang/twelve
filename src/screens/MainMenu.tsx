@@ -113,7 +113,7 @@ const goToCredits = () => NavigationActions.navigate({
   routeName: 'Credits'
 });
 
-const bgMusic = require('assets/sounds/twelvebars.mp3');
+const bgMusic = require('assets/sounds/groovy.mp3');
 
 // TODO: fix props
 const MainMenu: Screen = (props) => {

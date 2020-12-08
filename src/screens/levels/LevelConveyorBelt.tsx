@@ -27,7 +27,7 @@ const gearSize = navIconSize;
 const numGears = 12;
 
 const missingGearIndex = 8;
-const margin = coinSize / 2;
+const margin = coinSize;
 const midX = windowWidth * missingGearIndex / numGears + levelWidth / numGears / 2;
 const midY = (windowHeight + coinSize + styles.levelNavHeight) / 2;
 const bounds = {
@@ -282,7 +282,7 @@ const LevelConveyorBelt: Level = (props) => {
 
   return (
     <>
-      <SettingsGearContainer style={{ backgroundColor: colors.background }} />
+      {!twelve && <SettingsGearContainer style={{ backgroundColor: colors.background }} />}
       <SettingsGear
         onPlace={handleSettingsGearPlace}
         locked={beltActive}

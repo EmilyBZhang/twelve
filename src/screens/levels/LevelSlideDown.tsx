@@ -32,6 +32,10 @@ const CoinContainer = styled.View`
   align-items: center;
 `;
 
+const RotatedContainer = styled.View`
+  transform: rotate(30deg);
+`;
+
 const LevelSlideDown: Level = (props) => {
 
   const numCoinsFound = props.coinsFound.size;
@@ -55,7 +59,9 @@ const LevelSlideDown: Level = (props) => {
       <LevelCounter count={numCoinsFound} />
       <Buffer shifted={numCoinsFound} />
       <CoinContainer>
-        <LevelText hidden={twelve}>The sky is falling!</LevelText>
+        <RotatedContainer>
+          <LevelText hidden={twelve}>twelve</LevelText>
+        </RotatedContainer>
         {coinPositions.map((coinPosition, index) => (
           <View
             key={String(index)}

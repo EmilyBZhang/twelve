@@ -10,11 +10,14 @@ import { LargeVictoryButton, LargeVictoryButtonText } from './LargeVictoryButton
 
 interface HintModalProps {
   level: number;
-  visible: boolean;
+  visible?: boolean;
   onClose: () => any;
+  noAutoStart?: boolean;
+  showHint?: boolean;
 }
 
 const waitingText = 'Your hint will come after this ad...';
+const nudgeText = `Psst... don't like ads? Please consider buying the No Ads bundle to remove all ads and support the developers. It really would mean a lot to us. ♥`
 const noHintText = 'No hint available';
 
 const FullScreenModal = styled.View`
@@ -48,9 +51,19 @@ const HintText = styled.Text`
   width: 100%;
 `;
 
+const NudgeText = styled.Text`
+  font-family: montserrat;
+  font-size: ${styles.coinSize / 3}px;
+  color: ${colors.darkText};
+  text-align: center;
+  width: 100%;
+  position: absolute;
+  bottom: ${styles.coinSize}px;
+`;
+
 // TODO: IDEA: Light modal on black background
 const HintModal: FunctionComponent<HintModalProps> = memo((props) => {
-  const { level, visible, onClose } = props;
+  const { level, visible, onClose, noAutoStart, showHint } = props;
   const [hint, setHint] = useState(waitingText);
 
   const adRewarded = useRef(false);
@@ -81,9 +94,16 @@ const HintModal: FunctionComponent<HintModalProps> = memo((props) => {
   }, [level]);
 
   useEffect(() => {
-    if (!visible) return;
+    if (!visible || noAutoStart) return;
     requestAd();
-  }, [visible]);
+  }, [visible, noAutoStart]);
+
+  useEffect(() => {
+    if (!showHint) return;
+    adRewarded.current = true;
+    closable.current = true;
+    setHint(levelHints ? levelHints[hintNum.current] : noHintText);
+  }, [showHint]);
 
   const handleClose = useCallback(() => {
     closable.current = false;
@@ -102,6 +122,7 @@ const HintModal: FunctionComponent<HintModalProps> = memo((props) => {
     <FullScreenModal>
       <HintTitle>Hint {hintNum.current + 1}/{levelHints.length}</HintTitle>
       <HintText>{hint}</HintText>
+      <NudgeText>{nudgeText}</NudgeText>
       <LargeVictoryButton onPress={handleClose} disabled={!closable.current}>
         <LargeVictoryButtonText>Return to game</LargeVictoryButtonText>
       </LargeVictoryButton>

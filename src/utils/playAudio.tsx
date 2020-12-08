@@ -54,6 +54,7 @@ export const playAudio = async (source: AVPlaybackSource, setSoundPlayback?: (re
     if (setSoundPlayback) setSoundPlayback(audioObject);
     const { sound, status } = audioObject;
     sound.setOnPlaybackStatusUpdate(async (status) => {
+      // @ts-ignore
       if (status.didJustFinish && !initialStatus.isLooping) {
         try {
           await sound.unloadAsync();

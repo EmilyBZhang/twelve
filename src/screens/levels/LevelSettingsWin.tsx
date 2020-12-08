@@ -1,9 +1,9 @@
 // TODO: Add "Restart Level" and possibly "Next Level" to settings modal
 
-import React, { useState } from 'react';
-import { View, Switch } from 'react-native';
+import React, { FunctionComponent, memo, useState, useCallback } from 'react';
+import { View } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 import styled from 'styled-components/native';
-import { Octicons } from '@expo/vector-icons'
 
 import { Level } from 'utils/interfaces';
 import styles from 'res/styles';
@@ -14,8 +14,12 @@ import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
 import SettingsModal from 'components/SettingsModal';
-import { SettingsText, SwitchableSetting } from 'components/SettingsModal/components';
-import { NavButton, SettingsIcon } from 'components/LevelNav/components'
+import {
+  SwitchableSetting,
+  SwitchableSettingIconProps,
+  switchableIconSize,
+} from 'components/SettingsModal/components';
+import { SettingsIcon } from 'components/LevelNav/components'
 
 const SettingsButton = styled.TouchableOpacity.attrs({
   activeOpacity: 0.5,
@@ -31,6 +35,17 @@ const SettingsButton = styled.TouchableOpacity.attrs({
   background-color: ${colors.background};
 `;
 
+const RevealIcon: FunctionComponent<SwitchableSettingIconProps> = memo((props) => {
+  const { disabled, size, color } = props;
+  return (
+    <MaterialCommunityIcons
+      name={disabled ? 'eye-off' : 'eye'}
+      size={size || switchableIconSize}
+      color={color || colors.lightText}
+    />
+  );
+});
+
 const LevelSettingsWin: Level = (props) => {
 
   const [isRevealed, setIsRevealed] = useState(false);
@@ -41,7 +56,15 @@ const LevelSettingsWin: Level = (props) => {
 
   const hintText = isRevealed ? 'twelve' : '[OUT OF ORDER]';
 
-  const toggleIsRevealed = () => setIsRevealed(isRevealed => !isRevealed);
+  const toggleIsRevealed = useCallback(() => setIsRevealed(isRevealed => !isRevealed), []);
+  const handleSettingsClose = useCallback(() => setModalOpened(false), []);
+  const handleGoToLevelSelect = useCallback(() => {
+    props.navigation.navigate('Level', { level: 0 });
+  }, []);
+  const handleRestart = useCallback(() => {
+    props.navigation.goBack();
+    props.navigation.navigate('Level', { level: 51 });
+  }, []);
 
   return (
     <>
@@ -51,10 +74,13 @@ const LevelSettingsWin: Level = (props) => {
       <SettingsModal
         title={`Level ${props.levelNum}`}
         visible={modalOpened}
-        onClose={() => setModalOpened(false)}
+        onClose={handleSettingsClose}
+        onGoToLevelSelect={handleGoToLevelSelect}
+        onRestart={handleRestart}
       >
         <SwitchableSetting
           value={isRevealed}
+          icon={RevealIcon}
           label={'Show coins'}
           onValueChange={toggleIsRevealed}
         />

@@ -10,19 +10,20 @@
         "Drag the slider to reveal the coins."
     ],
     [
-        "Level 3: Hint 1",
-        "Level 3: Hint 2",
-        "Level 3: Hint 3"
+        "It's the same, but it moves.",
+        "They come back with time.",
+        "Collect the coins as you normally would."
     ],
     [
-        "Level 4: Hint 1",
-        "Level 4: Hint 2",
-        "Level 4: Hint 3"
+        "Is something resetting your progress?",
+        "What happens when you press red coins?",
+        "Only press coins when they are blue."
     ],
     [
-        "Level 5: Hint 1",
-        "Level 5: Hint 2",
-        "Level 5: Hint 3"
+        "Does the image look like anything?",
+        "Don't you want to let some fresh air in?",
+        "It's a window.",
+        "Try to open the window."
     ],
     [
         "Level 6: Hint 1",
@@ -35,9 +36,10 @@
         "Level 7: Hint 3"
     ],
     [
-        "Level 8: Hint 1",
-        "Level 8: Hint 2",
-        "Level 8: Hint 3"
+        "What's the name of the game?",
+        "+",
+        "How could you make 12 from the numbers?",
+        "Add two numbers."
     ],
     [
         "Level 9: Hint 1",
@@ -55,9 +57,10 @@
         "Level 11: Hint 3"
     ],
     [
-        "Level 12: Hint 1",
-        "Level 12: Hint 2",
-        "Level 12: Hint 3"
+        "What's the name of the game?",
+        "Do you see twelve anywhere?",
+        "Do you see 12 anywhere?",
+        "Welcome to Level 12."
     ],
     [
         "Level 13: Hint 1",
@@ -340,9 +343,11 @@
         "Level 68: Hint 3"
     ],
     [
-        "Level 69: Hint 1",
-        "Level 69: Hint 2",
-        "Level 69: Hint 3"
+        "Where could the coins be?",
+        "i.",
+        "Dots.",
+        "Do you see the dots?",
+        "The i's dot and the period look like something."
     ],
     [
         "Level 70: Hint 1",
@@ -355,8 +360,12 @@
         "Level 71: Hint 3"
     ],
     [
-        "Level 72: Hint 1",
-        "Level 72: Hint 2",
-        "Level 72: Hint 3"
+        "The hints are all in plain sight.",
+        "You might feel a bit nostalgic after this level.",
+        "It's a scavenger hunt!",
+        "The clues are contained in the past.",
+        "Previous levels contain the components needed for the level.",
+        "There's an pattern underlining it all...",
+        "Combine the underlined characters in the levels listed."
     ]
 ]

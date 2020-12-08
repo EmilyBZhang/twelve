@@ -9,6 +9,7 @@ import useSettings from 'hooks/useSettings';
 import MainMenu from 'screens/MainMenu';
 import Level from 'screens/Level';
 import Credits from 'screens/Credits';
+import FakeAd from 'screens/FakeAd';
 import colors from 'res/colors';
 import InitSettings from 'components/init/InitSettings';
 import InitFonts from 'components/init/InitFonts';
@@ -28,6 +29,9 @@ const AppNavigator = createStackNavigator({
     },
     Credits: {
       screen: Credits,
+    },
+    FakeAd: {
+      screen: FakeAd,
     },
   }, {
     initialRouteName: 'MainMenu',

@@ -11,6 +11,7 @@ export interface ScreenContainerProps {
   color?: string;
   style?: any;
   gradientColors?: Array<string>;
+  pointerEvents?: 'box-none' | 'none' | 'box-only' | 'auto';
 }
 
 // TODO: See if SafeAreaView works on devices with notches
@@ -29,6 +30,7 @@ const GradientContainer = styled(LinearGradient)`
 `;
 
 const ScreenContainer: FunctionComponent<ScreenContainerProps> = (props) => {
+  const { pointerEvents } = props;
   let color = props.color || colors.background;
   let children = props.children;
   if (props.gradientColors) {
@@ -46,6 +48,7 @@ const ScreenContainer: FunctionComponent<ScreenContainerProps> = (props) => {
     <Container
       color={color}
       style={props.style}
+      pointerEvents={pointerEvents}
     >
       {children}
     </Container>

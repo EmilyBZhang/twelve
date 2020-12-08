@@ -31,9 +31,16 @@ const CoinsContainer = styled(Animated.View)`
   position: absolute;
   width: ${coinsContainerSize}px;
   height: ${coinsContainerSize}px;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+`;
+
+const Row = styled.View`
   flex-direction: row;
-  flex-wrap: wrap;
-  padding: ${coinContainerSize / 4}px;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
 `;
 
 const CoinContainer = styled.View`
@@ -109,7 +116,24 @@ const LevelPlusFlip: Level = (props) => {
       <CoinsContainer style={{
         opacity: Animated.subtract(1, coinOpacity),
       }}>
-        {bits.map((bit, index) => (
+        {Array.from(Array(gridN), (_, row) => (
+          <Row key={String(row)}>
+            {Array.from(Array(gridN), (_, col) => {
+              const index = row * gridN + col;
+              const found = coinIndices[index] < 0;
+              return (
+                <Coin
+                  noShimmer
+                  color={bits[index] ? colors.onCoin : colors.offCoin}
+                  hidden={found}
+                  disabled={found}
+                  onPress={() => handleBitPress(index)}
+                />
+              );
+            })}
+          </Row>
+        ))}
+        {/* {bits.map((bit, index) => (
           <CoinContainer key={String(index)}>
             {(coinIndices[index] >= 0) && (
               <Coin
@@ -119,11 +143,11 @@ const LevelPlusFlip: Level = (props) => {
               />
             )}
           </CoinContainer>
-        ))}
+        ))} */}
       </CoinsContainer>
       {isSolved && (
         <CoinsContainer style={{ opacity: coinOpacity }}>
-          {coinIndices.map((coinIndex, index) => (
+          {/* {coinIndices.map((coinIndex, index) => (
             <CoinContainer key={String(index)}>
               {(coinIndex >= 0) && (
                 <Coin
@@ -132,6 +156,23 @@ const LevelPlusFlip: Level = (props) => {
                 />
               )}
             </CoinContainer>
+          ))} */}
+          {Array.from(Array(gridN), (_, row) => (
+            <Row key={String(row)}>
+              {Array.from(Array(gridN), (_, col) => {
+                const index = row * gridN + col;
+                const coinIndex = coinIndices[index];
+                const found = (coinIndex < 0) || props.coinsFound.has(coinIndex);
+                return (
+                  <Coin
+                    noShimmer
+                    hidden={found}
+                    disabled={found}
+                    onPress={() => props.onCoinPress(coinIndex)}
+                  />
+                );
+              })}
+            </Row>
           ))}
         </CoinsContainer>
       )}

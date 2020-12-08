@@ -15,6 +15,8 @@ import ScreenContainer from './ScreenContainer';
 
 interface FallingCoinsProps {
   active?: boolean;
+  onCoinPress?: (index: number) => any;
+  coinsFound?: Set<number>;
 }
 
 const { width: windowWidth, height: windowHeight } = getDimensions();
@@ -34,13 +36,13 @@ const getRandEnd = () => ({
 });
 
 const initPosition = {
-  position: 'absolute',
+  position: 'absolute' as 'absolute',
   top: 0,
   left: 0,
 };
 
 const FallingCoins: FunctionComponent<FallingCoinsProps> = (props) => {
-  const { active = true } = props;
+  const { active = true, onCoinPress, coinsFound } = props;
 
   const [coinPositions] = useState(() => (
     Array.from(Array(12), () => new Animated.ValueXY(getRandStart()))
@@ -70,7 +72,7 @@ const FallingCoins: FunctionComponent<FallingCoinsProps> = (props) => {
   }, [active]);
 
   return (
-    <ScreenContainer color={'transparent'}>
+    <ScreenContainer color={'transparent'} pointerEvents={'box-none'}>
       {coinPositions.map((coinPosition, index) => {
         const { left: translateX, top: translateY } = coinPosition.getLayout();
         return (
@@ -79,10 +81,13 @@ const FallingCoins: FunctionComponent<FallingCoinsProps> = (props) => {
             style={{
               ...initPosition,
               opacity: 0.5,
-              transform: [{translateX}, {translateY}]
+              transform: [{translateX}, {translateY}],
             }}
           >
-            <Coin />
+            <Coin
+              onPress={onCoinPress && (() => onCoinPress(index))}
+              found={coinsFound?.has(index)}
+            />
           </Animated.View>
         );
       })}

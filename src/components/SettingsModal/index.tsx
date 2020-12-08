@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { Text, Modal, View, TouchableOpacity, Button } from 'react-native';
+import { Button } from 'react-native';
 import styled from 'styled-components/native';
 
 import useSettings from 'hooks/useSettings';
@@ -38,7 +38,7 @@ const FullScreenModal = styled.View`
   background-color: #000000e0;
   width: 100%;
   /* ${windowWidth}px; */
-  height: 100%;
+  height: ${windowHeight}px;
   /* ${windowHeight}px; */
   margin: 0px;
   z-index: ${styles.levelNavZIndex + 1};
@@ -51,6 +51,11 @@ const CloseArea = styled.TouchableOpacity`
   height: 100%;
   justify-content: flex-start;
   align-items: center;
+`;
+
+const ScrollContainer = styled.ScrollView`
+  width: 100%;
+  height: 100%;
 `;
 
 const SettingsTitleContainer = styled.View`
@@ -102,7 +107,6 @@ const SettingsButton = styled.TouchableHighlight.attrs({
   margin-bottom: ${subtitleTextSize}px;
 `;
 
-// TODO: Add ScrollView to modal
 const SettingsModal: FunctionComponent<SettingsModalProps> = (props) => {
   const { onClose, title, visible, onGoToLevelSelect, onRestart, children } = props;
   const [
@@ -118,7 +122,7 @@ const SettingsModal: FunctionComponent<SettingsModalProps> = (props) => {
 
   return (
     <FullScreenModal>
-      {/* <CloseArea> */}
+      <ScrollContainer>
         <SettingsTitleContainer>
           {title && <LevelText color={colors.lightText}>{title}</LevelText>}
           <SettingsText>Settings</SettingsText>
@@ -145,8 +149,8 @@ const SettingsModal: FunctionComponent<SettingsModalProps> = (props) => {
         </SettingsButtonsContainer>
         <SwitchableSetting
           value={music}
-          label={'Music'}
           icon={MusicIcon}
+          label={'Music'}
           onValueChange={toggleMusic}
         />
         <SwitchableSetting
@@ -158,13 +162,13 @@ const SettingsModal: FunctionComponent<SettingsModalProps> = (props) => {
         <SwitchableSetting
           value={colorblind}
           icon={ColorblindIcon}
-          label={'Colorblind mode'}
+          label={'Color blind mode'}
           onValueChange={toggleColorblind}
         />
         {children}
         <Button title={'Clear settings'} onPress={clearSettings} />
         <Button title={'Pass all levels'} onPress={handlePassAllLevels} />
-      {/* </CloseArea> */}
+      </ScrollContainer>
     </FullScreenModal>
   );
 };

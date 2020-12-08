@@ -24,9 +24,9 @@ import HintModal from 'components/HintModal';
 import useSettings from 'hooks/useSettings';
 
 interface LevelNavProps {
-  settingsOpen: boolean;
-  hintOpen: boolean;
   onBack: () => any;
+  settingsOpen?: boolean;
+  hintOpen?: boolean;
   onToggleSettings?: () => any;
   onPrevLevel?: () => any;
   onNextLevel?: () => any;

@@ -176,6 +176,7 @@ const Level: Screen = (props) => {
         setCoinsFound={handleSetCoinsFound}
         onNextLevel={handleNextLevel}
         setSettingsOpen={setSettingsOpen}
+        navigation={props.navigation}
       />
     </>
   );

@@ -66,7 +66,8 @@ const LevelBalloon: Level = (props) => {
       Animated.timing(cloudAnim, {
         toValue: -levelWidth,
         easing: Easing.linear,
-        duration: 24000
+        duration: 24000,
+        useNativeDriver: true,
       })
     ).start();
   }, []);

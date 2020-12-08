@@ -25,28 +25,24 @@ const LevelThreeStacks: Level = (props) => {
   const numCoinsFound = props.coinsFound.size;
 
   const handleStackPress = (index: number) => {
-    if (lastPressed === -1) {
-      setLastPressed(index);
-      return;
-    }
-    if (stacks[lastPressed].length > 0 && lastPressed !== index) {
+    if (stacks[index].length > 0) {
       setStacks(stacks => {
-        const oldStack = stacks[lastPressed].slice();
+        const oldStack = stacks[index].slice();
         const elem = oldStack.pop()!;
-        const newStack = [...stacks[index], elem];
+        const nextIndex = (index + 1) % stacks.length;
+        const newStack = [...stacks[nextIndex], elem];
         if (elem === 'e') {
-          if (newStack.join('') === 'twelve') setFinalIndex(index);
+          if (newStack.join('') === 'twelve') setFinalIndex(nextIndex);
         }
         return stacks.map((stack, stackIndex) => {
           switch (stackIndex) {
-            case lastPressed: return oldStack;
-            case index: return newStack;
+            case index: return oldStack;
+            case nextIndex: return newStack;
             default: return stack;
           }
         });
       });
     }
-    setLastPressed(-1);
   };
 
   return (
@@ -55,7 +51,6 @@ const LevelThreeStacks: Level = (props) => {
       {stacks.map((stack, stackIndex) => (
         <DequeTower
           key={String(stackIndex)}
-          active={stackIndex === lastPressed}
           onPress={() => handleStackPress(stackIndex)}
           disabled={finalIndex !== -1}
         >

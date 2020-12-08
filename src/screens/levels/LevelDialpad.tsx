@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { View } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { Animated } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
 
@@ -80,10 +80,22 @@ const BackspaceIcon = styled(MaterialCommunityIcons).attrs({
   color: colors.foreground,
 })``;
 
+const CoinsContainer = styled(Animated.View)`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  background-color: ${colors.background};
+`;
+
 const LevelDialpad: Level = (props) => {
   const [message, setMessage] = useState('');
   const [keyIndex, setKeyIndex] = useState(-1);
   const [letterIndex, setLetterIndex] = useState(-1);
+  const [coinsRevealed, setCoinsRevealed] = useState(false);
+
+  const [anim] = useState(new Animated.Value(0));
 
   const lastUpdated = useRef<Date | null>(null);
 
@@ -93,6 +105,20 @@ const LevelDialpad: Level = (props) => {
   const lastLetter = ((keyIndex !== -1) && (letterIndex !== -1))
     ? keyLetters[keyIndex][letterIndex]
     : '';
+
+  useEffect(() => {
+    if (lastLetter !== 'e') return;
+    if (message === 'twelv') setCoinsRevealed(true);
+  }, [lastLetter]);
+
+  useEffect(() => {
+    if (!coinsRevealed) return;
+    Animated.timing(anim, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
+  }, [coinsRevealed]);
 
   const handlePress = (index: number) => {
     const currDate = new Date();
@@ -134,8 +160,6 @@ const LevelDialpad: Level = (props) => {
     setMessage('');
   };
 
-  if (!twelve && message === 'twelve') props.setCoinsFound(new Set([0,1,2,3,4,5,6,7,8,9,10,11]));
-
   return (
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
@@ -160,6 +184,20 @@ const LevelDialpad: Level = (props) => {
             </Coin>
           </CoinContainer>
         ))}
+        {coinsRevealed && (
+          <CoinsContainer style={{ opacity: anim }}>
+            {Array.from(Array(12), (_, index) => (
+              <CoinContainer key={String(index)}>
+                <Coin
+                  size={coinSize}
+                  hidden={props.coinsFound.has(index)}
+                  disabled={props.coinsFound.has(index)}
+                  onPress={() => props.onCoinPress(index)}
+                />
+              </CoinContainer>
+            ))}
+          </CoinsContainer>
+        )}
       </Grid>
     </LevelContainer>
   );

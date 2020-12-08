@@ -1,6 +1,7 @@
 import React, { FunctionComponent, memo, ComponentProps } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
+import { Switch, SwitchProps } from 'react-native';
 
 import getDimensions from 'utils/getDimensions';
 import colors from 'res/colors';
@@ -69,7 +70,7 @@ const SwitchableSettingSwitch = styled.Switch.attrs({
 export const switchableIconSize = settingsTextSize;
 
 // TODO: Find a proper way to extend these props from MaterialCommunityIcons
-interface SwitchableSettingIconProps {
+export interface SwitchableSettingIconProps {
   disabled?: boolean;
   size?: number;
   color?: string;
@@ -93,9 +94,12 @@ export const ColorblindIcon = styled(MaterialCommunityIcons).attrs<SwitchableSet
   color: props.color || colors.lightText,
 }))<SwitchableSettingIconProps>``;
 
-type SwitchableSettingIcon = typeof MusicIcon | typeof SfxIcon | typeof ColorblindIcon;
+type SwitchableSettingIcon = FunctionComponent<SwitchableSettingIconProps>
+  | typeof MusicIcon
+  | typeof SfxIcon
+  | typeof ColorblindIcon;
 
-interface SwitchableSettingProps extends ComponentProps<typeof SwitchableSettingSwitch> {
+interface SwitchableSettingProps extends SwitchProps {
   label: string;
   icon?: SwitchableSettingIcon;
 }
@@ -106,6 +110,7 @@ export const SwitchableSetting: FunctionComponent<SwitchableSettingProps> = memo
     <SwitchableSettingContainer>
       {Icon && <Icon disabled={!switchProps.value} />}
       <SwitchableSettingText> {label}</SwitchableSettingText>
+      {/* @ts-ignore */}
       <SwitchableSettingSwitch {...switchProps} />
     </SwitchableSettingContainer>
   );
