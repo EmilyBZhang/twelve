@@ -55,8 +55,38 @@ const LetterInputContainer = styled.View`
 `;
 
 // TODO: Replace with actual level numbers
-const hints = [64, 3, 7, 18, 42, 12, 55, 39, 30, 26, 11, 61];
+const hints = [37, 53, 63, 54, 68, 42, 3, 15, 25, 51, 2, 17];
 const answer = 'thx4playing!';
+
+const messages = [
+  `Wow, you did it! You really did it!`,
+  `How does it feel? Having bested all the challenges?`,
+  `That's all I have for you now.`,
+  `This game was a year in the making, and it was a blast to create.`,
+  `Maybe I'll add more levels, or maybe I'll work on another game...`,
+  `...like eleven?`,
+  `Time will tell, and it really depends on how much people enjoyed twelve.`,
+  'So remember to give it a rating if you enjoyed it ;)',
+  `Also, this game wouldn't have been possible without my friends' music and art.`,
+  `So don't forget to check out their links in the credits!`,
+  'And thank YOU, once again, for playing...',
+  'twelve.',
+];
+
+const CoinContainer = styled.View`
+  position: absolute;
+  right: ${styles.coinSize}px;
+  bottom: ${styles.coinSize}px;
+`;
+
+const EndMessageText = styled.Text`
+  width: 100%;
+  padding: 12.5%;
+  font-size: ${styles.coinSize * 2 / 3}px;
+  color: ${colors.darkText};
+  font-family: montserrat;
+  text-align: center;
+`;
 
 const LevelScavengerHunt: Level = (props) => {
 
@@ -66,11 +96,6 @@ const LevelScavengerHunt: Level = (props) => {
   const message = messageChars.join('');
   const messageFound = message === answer;
   
-  useEffect(() => {
-    if (!messageFound) return;
-    props.setCoinsFound(new Set([0,1,2,3,4,5,6,7,8,9,10,11]));
-  }, [messageFound]);
-
   const handleTextChange = (index: number) => (newText: string) => {
     setMessageChars(messageChars => [
       ...messageChars.slice(0, index),
@@ -88,19 +113,34 @@ const LevelScavengerHunt: Level = (props) => {
 
   return (
     <LevelContainer>
-    <LevelText>{message}</LevelText>
-      <LetterInputsContainer>
-        {messageChars.map((messageChar, index) => (
-          <LetterInput
-            key={String(index)}
-            // value={messageChar}
-            // ref={ref => { inputs.current[index] = ref; }}
-            onChangeText={handleTextChange(index)}
-            placeholder={String(hints[index])}
-            // onSubmitEditing={() => inputs.current[index + 1]?.focus()}
-          />
-        ))}
-      </LetterInputsContainer>
+      {messageFound ? (
+        <>
+          <LevelCounter count={numCoinsFound} position={{ left: 0, bottom: 0 }} />
+          <EndMessageText>{messages[numCoinsFound]}</EndMessageText>
+          <CoinContainer>
+            <Coin
+              size={styles.coinSize * 2}
+              onPress={() => props.onCoinPress()}
+            />
+          </CoinContainer>
+        </>
+      ) : (
+        <>
+          <LevelText>{message}</LevelText>
+          <LetterInputsContainer>
+            {messageChars.map((messageChar, index) => (
+              <LetterInput
+                key={String(index)}
+                // value={messageChar}
+                // ref={ref => { inputs.current[index] = ref; }}
+                onChangeText={handleTextChange(index)}
+                placeholder={String(hints[index])}
+                // onSubmitEditing={() => inputs.current[index + 1]?.focus()}
+              />
+            ))}
+          </LetterInputsContainer>
+        </>
+      )}
     </LevelContainer>
   );
 };

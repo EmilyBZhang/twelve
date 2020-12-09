@@ -46,6 +46,8 @@ const CoinContainer = styled(Animated.View)`
   position: absolute;
 `;
 
+const bound = (num: number) => Math.max(-999999, Math.min(999999, num));
+
 const LevelThreeMagicButtons: Level = (props) => {
 
   const [anim] = useState(new Animated.Value(0));
@@ -62,9 +64,9 @@ const LevelThreeMagicButtons: Level = (props) => {
     }).start();
   }, [madeTwelve]);
 
-  const add7 = useCallback(() => setMagicNumber(magicNumber => magicNumber + 7), []);
-  const mul2 = useCallback(() => setMagicNumber(magicNumber => magicNumber * 2), []);
-  const neg = useCallback(() => setMagicNumber(magicNumber => -magicNumber), []);
+  const add7 = useCallback(() => setMagicNumber(magicNumber => bound(magicNumber + 7)), []);
+  const mul2 = useCallback(() => setMagicNumber(magicNumber => bound(magicNumber * 2)), []);
+  const neg = useCallback(() => setMagicNumber(magicNumber => bound(-magicNumber)), []);
 
   const numCoinsFound = props.coinsFound.size;
 

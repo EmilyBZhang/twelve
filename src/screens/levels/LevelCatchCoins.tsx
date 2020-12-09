@@ -11,6 +11,7 @@ import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
+import ScavengerText from 'components/ScavengerText';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 const deltaX = levelWidth / 3;
@@ -42,7 +43,9 @@ const LevelCatchCoins: Level = (props) => {
   return (
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
-      <LevelText hidden={twelve}>Can you catch them?</LevelText>
+      <LevelText hidden={twelve}>
+        C<ScavengerText>a</ScavengerText>n you catch them?
+      </LevelText>
       {coinPositions.map((coinPosition, index) => (
         <Animated.View
           key={String(index)}

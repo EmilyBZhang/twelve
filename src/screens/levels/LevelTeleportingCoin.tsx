@@ -8,6 +8,7 @@ import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
+import ScavengerText from 'components/ScavengerText';
 
 interface CoinContainerProps {
   x: number;
@@ -38,7 +39,7 @@ const LevelTeleportingCoin: Level = (props) => {
         hidden={twelve}
       >
         Where'd you come from?{'\n'}
-        Where'd you go?
+        Where'd <ScavengerText>y</ScavengerText>ou go?
       </LevelText>
       <LevelCounter count={numCoinsFound} />
       <CoinContainer {...coinPosition}>

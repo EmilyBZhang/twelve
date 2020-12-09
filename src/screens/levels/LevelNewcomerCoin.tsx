@@ -13,6 +13,7 @@ import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
 import ColorHint from 'components/ColorHint';
+import ScavengerText from 'components/ScavengerText';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 const coinSize = styles.coinSize;
@@ -95,7 +96,9 @@ const LevelNewcomerCoin: Level = (props) => {
       {((visible && showNext) || twelve) && (
         <LevelCounter count={numCoinsFound} />
       )}
-      <LevelText hidden={twelve}>Don't blink!</LevelText>
+      <LevelText hidden={twelve}>
+        Do<ScavengerText>n</ScavengerText>'t blink!
+      </LevelText>
       {coinPositions.map((coinPosition, index) => (
         <View
           key={String(index)}

@@ -8,6 +8,7 @@ import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
+import ScavengerText from 'components/ScavengerText';
 
 const FadeContainer = styled.View`
   width: 100%;
@@ -25,7 +26,7 @@ const LevelFadeOut: Level = (props) => {
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
       <FadeContainer style={{ opacity: Math.max(0, 1 - numCoinsFound / 6) }}>
-        <LevelText hidden={twelve}>twelve</LevelText>
+        <LevelText hidden={twelve}><ScavengerText>t</ScavengerText>welve</LevelText>
         {coinPositions.map((coinPosition, index) => (
           <View
             key={String(index)}

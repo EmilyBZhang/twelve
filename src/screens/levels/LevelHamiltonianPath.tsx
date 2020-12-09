@@ -9,6 +9,7 @@ import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
+import ScavengerText from 'components/ScavengerText';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 const { coinSize } = styles;
@@ -66,7 +67,9 @@ const LevelHamiltonianPath: Level = (props) => {
   return (
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
-      <LevelText hidden={twelve}>Careful...</LevelText>
+      <LevelText hidden={twelve}>
+        Pockets full{'\n'}of <ScavengerText>p</ScavengerText>osies
+      </LevelText>
       {coinPositions.map((coinPosition, index) => (
         <View
           key={String(index)}

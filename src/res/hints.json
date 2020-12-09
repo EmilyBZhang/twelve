@@ -5,14 +5,15 @@
         "Press the twelve coins to beat the level!"
     ],
     [
+        "Underlined text is irrelevant to a level's solution.",
         "The coins are there. I wish there was a way to show where...",
         "Notice anything that might help you reveal the coins?",
-        "Drag the slider to reveal the coins."
+        "Drag the slider."
     ],
     [
+        "Underlined text is irrelevant to a level's solution.",
         "It's the same, but it moves.",
         "They come back with time.",
-        "Collect the coins as you normally would."
     ],
     [
         "Is something resetting your progress?",
@@ -23,7 +24,7 @@
         "Does the image look like anything?",
         "Don't you want to let some fresh air in?",
         "It's a window.",
-        "Try to open the window."
+        "Open the window."
     ],
     [
         "Level 6: Hint 1",
@@ -36,7 +37,7 @@
         "Level 7: Hint 3"
     ],
     [
-        "What's the name of the game?",
+        "Name of the game",
         "+",
         "How could you make 12 from the numbers?",
         "Add two numbers."
@@ -52,25 +53,27 @@
         "Level 10: Hint 3"
     ],
     [
-        "Level 11: Hint 1",
-        "Level 11: Hint 2",
-        "Level 11: Hint 3"
+        "Have you clicked the letters?",
+        "Can you resolve the equality?",
+        "Try spelling some numbers.",
+        "2 + 11 = 1 + 12"
     ],
     [
-        "What's the name of the game?",
+        "Name of the game",
         "Do you see twelve anywhere?",
         "Do you see 12 anywhere?",
         "Welcome to Level 12."
     ],
     [
-        "Level 13: Hint 1",
-        "Level 13: Hint 2",
-        "Level 13: Hint 3"
+        "Don't let coins leave the screen.",
+        "Start from the bottom.",
+        "Always clear the bottom row first."
     ],
     [
-        "Level 14: Hint 1",
-        "Level 14: Hint 2",
-        "Level 14: Hint 3"
+        "Remember the colors.",
+        "Repeat the colors.",
+        "Simon says...",
+        "Press the colors in the order you saw them."
     ],
     [
         "Level 15: Hint 1",
@@ -350,14 +353,14 @@
         "The i's dot and the period look like something."
     ],
     [
-        "Level 70: Hint 1",
-        "Level 70: Hint 2",
-        "Level 70: Hint 3"
+        "I'm glad you're looking for hints.",
+        "Did you see that?",
+        "Pay close attention to the ad."
     ],
     [
-        "Level 71: Hint 1",
-        "Level 71: Hint 2",
-        "Level 71: Hint 3"
+        "What can you press?",
+        "There's blue falling from the screen.",
+        "Click the coins as they're falling down."
     ],
     [
         "The hints are all in plain sight.",

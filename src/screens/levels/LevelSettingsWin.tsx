@@ -63,7 +63,7 @@ const LevelSettingsWin: Level = (props) => {
   }, []);
   const handleRestart = useCallback(() => {
     props.navigation.goBack();
-    props.navigation.navigate('Level', { level: 51 });
+    props.navigation.navigate('Level', { level: props.levelNum });
   }, []);
 
   return (

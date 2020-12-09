@@ -11,6 +11,7 @@ import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
 import { shuffleArray } from 'utils/random';
+import ScavengerText from 'components/ScavengerText';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 const coinSize = styles.coinSize;
@@ -80,7 +81,7 @@ const LevelClockPointer: Level = (props) => {
   return (
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
-      <LevelText hidden={twelve}>The Circle of 12</LevelText>
+      <LevelText hidden={twelve}>T<ScavengerText>h</ScavengerText>e Circle of 12</LevelText>
       {coinPositions.map((coinPosition, index) => (
         <View
           key={String(index)}

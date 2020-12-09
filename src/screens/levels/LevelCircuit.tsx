@@ -1,18 +1,27 @@
-import React from 'react';
-import { View } from 'react-native';
+import React, { FunctionComponent, memo, useState, useRef, useCallback } from 'react';
+import { Animated, View } from 'react-native';
+import {
+  State,
+  PanGestureHandler,
+  PanGestureHandlerStateChangeEvent,
+  TapGestureHandler,
+  TapGestureHandlerStateChangeEvent,
+} from 'react-native-gesture-handler';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import Svg, { Line, Polyline } from 'react-native-svg';
+import Svg, { Polyline } from 'react-native-svg';
 import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
 import { getLevelDimensions } from 'utils/getDimensions';
 import styles from 'res/styles';
 import colors from 'res/colors';
-import coinPositions from 'utils/coinPositions';
+// import coinPositions from 'utils/coinPositions';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
+import { HintIcon } from 'components/LevelNav/components'
+import HintModal from 'components/HintModal';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 const { coinSize } = styles;
@@ -57,6 +66,30 @@ const polylinePoints = [
   baseY + segmentLength * 3,
 ];
 
+const margin = coinSize;
+const midX = circuitWidth / 2;
+const midY = baseY + segmentLength * 3 + styles.levelNavHeight;
+const bounds = {
+  minX: midX - margin,
+  maxX: midX + margin,
+  minY: midY - margin,
+  maxY: midY + margin,
+};
+
+const withinBounds = (x: number, y: number) => (
+  x >= bounds.minX && x <= bounds.maxX && y >= bounds.minY && y <= bounds.maxY
+);
+
+const coinPositions = Array.from(Array(12), (_, index) => {
+  const yIndex = Math.floor(index / 2) + 1;
+  const xShift = Math.round(-Math.cos(Math.floor(index / 2) * Math.PI / 2));
+  const xBase = leftX - coinSize / 2 + (xShift + 1) * segmentLength / 2;
+  return {
+    ...(index % 2) ? { right: xBase } : { left: xBase },
+    top: baseY + segmentLength * yIndex / 2 - coinSize / 2
+  };
+});
+
 const BatteryIcon = styled(MaterialCommunityIcons).attrs({
   name: 'car-battery',
   size: coinSize,
@@ -75,34 +108,148 @@ const CircuitContainer = styled(Svg).attrs({})`
   height: ${circuitHeight}px;
 `;
 
+const HintBulbContainer = styled(Animated.View)`
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  z-index: ${styles.levelNavZIndex};
+  width: ${styles.levelNavHeight}px;
+  height: ${styles.levelNavHeight}px;
+  justify-content: center;
+  align-items: center;
+`;
+
+interface HintBulbProps {
+  locked: boolean;
+  onPlace: () => any;
+  onPress: () => any;
+}
+
+const HintBulb: FunctionComponent<HintBulbProps> = memo((props) => {
+  const { onPlace, onPress, locked } = props;
+
+  const [active, setActive] = useState(false);
+  const [baseX] = useState(new Animated.Value(0));
+  const [baseY] = useState(new Animated.Value(0));
+  const [panX] = useState(new Animated.Value(0));
+  const [panY] = useState(new Animated.Value(0));
+
+  const panRef = useRef();
+  const tapRef = useRef();
+
+  const handleGestureEvent = Animated.event(
+    [{ nativeEvent: { translationX: panX, translationY: panY }}],
+    { useNativeDriver: false }
+  );
+
+  const handleStateChange = useCallback((e: PanGestureHandlerStateChangeEvent) => {
+    if (e.nativeEvent.state === State.END) {
+      const { absoluteX, absoluteY, translationX, translationY } = e.nativeEvent;
+      panX.setValue(0);
+      panY.setValue(0);
+      if (withinBounds(absoluteX, absoluteY)) {
+        baseX.setValue(midX + styles.levelNavHeight / 2 - levelWidth);
+        baseY.setValue(midY - styles.levelNavHeight / 2);
+        onPlace();
+      } else {
+        baseX.setOffset(translationX);
+        baseX.flattenOffset();
+        baseY.setOffset(translationY);
+        baseY.flattenOffset();
+      }
+      setActive(false);
+    } else if (e.nativeEvent.state === State.BEGAN) {
+      setActive(true);
+    }
+  }, []);
+
+  const handleTap = useCallback((e: TapGestureHandlerStateChangeEvent) => {
+    if (e.nativeEvent.state === State.END) onPress();
+  }, []);
+
+  return (
+    <PanGestureHandler
+      enabled={!locked}
+      onGestureEvent={handleGestureEvent}
+      onHandlerStateChange={handleStateChange}
+      simultaneousHandlers={[tapRef]}
+    >
+      <TapGestureHandler
+        onHandlerStateChange={handleTap}
+        simultaneousHandlers={[panRef]}
+      >
+        <HintBulbContainer style={{
+          transform: [
+            { translateX: Animated.add(baseX, panX) },
+            { translateY: Animated.add(baseY, panY) },
+            { scale: active ? 13/12 : 1 },
+          ],
+          ...(locked && { zIndex: 1 })
+        }}>
+          <HintIcon />
+        </HintBulbContainer>
+      </TapGestureHandler>
+    </PanGestureHandler>
+  );
+});
+
+const Circuit: FunctionComponent = memo(() => (
+  <>
+    <CircuitContainer>
+    <Polyline
+      points={polylinePoints}
+      stroke={colors.offCoin}
+      strokeWidth={styles.coinSize / 12}
+    />
+    </CircuitContainer>
+    <BatteryIcon />
+  </>
+));
+
 const LevelCircuit: Level = (props) => {
+  const [circuitComplete, setCircuitComplete] = useState(false);
+  const [hintModalOpen, setHintModelOpen] = useState(false);
+
+  const handlePlace = useCallback(() => setCircuitComplete(true), []);
+  const handlePress = useCallback(() => setHintModelOpen(true), []);
+  const handleClose = useCallback(() => setHintModelOpen(false), []);
+
+  const handleCoinPress = (index: number) => circuitComplete && props.onCoinPress(index);
 
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
 
   return (
-    <LevelContainer>
-      <LevelCounter count={numCoinsFound} />
-      <CircuitContainer>
-        <Polyline
-          points={polylinePoints}
-          stroke={colors.offCoin}
-          strokeWidth={styles.coinSize / 12}
-        />
-      </CircuitContainer>
-      <BatteryIcon />
-      {/* {coinPositions.map((coinPosition, index) => (
-        <View
-          key={String(index)}
-          style={{position: 'absolute', ...coinPosition}}
-        >
-          <Coin
-            found={props.coinsFound.has(index)}
-            onPress={() => props.onCoinPress(index)}
-          />
-        </View>
-      ))} */}
-    </LevelContainer>
+    <>
+      {!twelve && <HintBulbContainer style={{ backgroundColor: colors.background }} />}
+      <HintBulb
+        locked={circuitComplete}
+        onPlace={handlePlace}
+        onPress={handlePress}
+      />
+      <HintModal
+        level={68}
+        visible={hintModalOpen}
+        onClose={handleClose}
+      />
+      <LevelContainer>
+        <LevelCounter count={numCoinsFound} />
+        <Circuit />
+        {coinPositions.map((coinPosition, index) => (
+          <View
+            key={String(index)}
+            style={{position: 'absolute', ...coinPosition}}
+          >
+            <Coin
+              disabled={!circuitComplete}
+              color={circuitComplete ? colors.coin : colors.offCoin}
+              found={props.coinsFound.has(index)}
+              onPress={() => handleCoinPress(index)}
+            />
+          </View>
+        ))}
+      </LevelContainer>
+    </>
   );
 };
 

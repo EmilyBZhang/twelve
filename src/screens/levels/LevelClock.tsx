@@ -9,6 +9,7 @@ import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
 import Clock, { clockSize, clockRadius } from './components/LevelClock/Clock';
+import ScavengerText from 'components/ScavengerText';
 
 const coinSize = clockSize * 13 / 144;
 const coinPositions = Array.from(Array(12), (_, index) => {
@@ -40,7 +41,7 @@ const LevelClock: Level = (props) => {
   return (
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
-      <LevelText>It's about time!</LevelText>
+      <LevelText>It's about time<ScavengerText>!</ScavengerText></LevelText>
       <Clock>
         {coinPositions.map((coinPosition, index) => (
           <View

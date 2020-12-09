@@ -158,6 +158,7 @@ const LevelBinary1: Level = (props) => {
     // See if the bit at index should be on (i.e. its position is 1)
     const bit = (result >> shift) & 1;
     const bitColor = bit ? colors.onCoin : colors.offCoin;
+    const textColor = bit ? colors.offCoin : colors.onCoin;
     return (
       <BitColor
         square
@@ -167,10 +168,12 @@ const LevelBinary1: Level = (props) => {
           ...resultBitPosition
         }}
       >
-        <ColorHint
-          color={bitColor}
-          size={coinSize / 2}
-        />
+        <LevelText
+          fontSize={coinSize / 2}
+          color={textColor}
+        >
+          {1 << (resultBitPositions.length - 1 - index)}
+        </LevelText>
       </BitColor>
     );
   });

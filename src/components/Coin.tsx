@@ -8,6 +8,7 @@ import ColorHint from 'components/ColorHint';
 
 export interface CoinProps {
   onPress?: () => any;
+  onPressIn?: () => any;
   size?: number;
   color?: CoinColor;
   disabled?: boolean;
@@ -46,6 +47,7 @@ const Coin: CoinType = (props) => {
     size = styles.coinSize,
     color = colors.coin,
     onPress,
+    onPressIn,
     found,
     hidden,
     disabled,
@@ -80,6 +82,7 @@ const Coin: CoinType = (props) => {
       size={size}
       color={color}
       onPress={onPress}
+      onPressIn={onPressIn}
       found={found}
       hidden={hidden}
       disabled={disabled || found}

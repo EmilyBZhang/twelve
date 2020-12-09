@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { View } from 'react-native';
 import styled from 'styled-components/native';
 
@@ -11,6 +11,7 @@ import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
+import ScavengerText from 'components/ScavengerText';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 
@@ -57,13 +58,7 @@ const Cover = styled.View.attrs({
 `;
 
 const LevelSlider: Level = (props) => {
-  const [rendered, setRendered] = useState(false);
   const [sliderVal, setSliderVal] = useState<number>(0);
-
-  const handleValueChange = useCallback((value) => {
-    setRendered(true);
-    setSliderVal(value);
-  }, []);
 
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
@@ -71,8 +66,8 @@ const LevelSlider: Level = (props) => {
   return (
     <LevelContainer>
       <ColorSlider
-        value={rendered ? undefined : 0}
-        onValueChange={handleValueChange}
+        value={0}
+        onValueChange={setSliderVal}
       />
       <LevelCounter count={numCoinsFound} />
       <LevelText hidden={twelve}>There they are!</LevelText>
@@ -89,7 +84,7 @@ const LevelSlider: Level = (props) => {
       ))}
       <Cover opacity={1 - sliderVal}>
         <LevelText color={colors.darkText} hidden={twelve}>
-          Where'd they go?
+          Where'd they <ScavengerText>g</ScavengerText>o?
         </LevelText>
       </Cover>
     </LevelContainer>

@@ -23,7 +23,7 @@ const ColaImage = styled.Image.attrs({
   height: ${levelWidth * 5 / 6};
 `;
 
-const LevelShake: Level = (props) => {
+const LevelSodaShake: Level = (props) => {
 
   const [shake] = useState(new Animated.Value(-1));
   const [shakeFactor] = useState(new Animated.Value(0));
@@ -83,4 +83,4 @@ const LevelShake: Level = (props) => {
   );
 };
 
-export default LevelShake;
+export default LevelSodaShake;

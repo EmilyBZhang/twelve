@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import styled from 'styled-components/native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 import { Level } from 'utils/interfaces';
 import coinPositions from 'utils/coinPositions';
@@ -11,7 +12,7 @@ import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
-import { ScrollView } from 'react-native-gesture-handler';
+import ScavengerText from 'components/ScavengerText';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 
@@ -39,7 +40,9 @@ const LevelRabbitHole: Level = (props) => {
       >
         <UnitContainer>
           <LevelContainer>
-            <LevelText hidden={twelve}>Down the rabbit hole</LevelText>
+            <LevelText hidden={twelve}>
+              Down the rabb<ScavengerText>i</ScavengerText>t hole
+            </LevelText>
           </LevelContainer>
         </UnitContainer>
         <ScreenContainer gradientColors={[colors.background, 'black']} />

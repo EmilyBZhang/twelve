@@ -71,17 +71,6 @@ const SettingsButtonsContainer = styled.View`
   padding: ${styles.coinSize / 2}px 0px;
 `;
 
-const SettingsSquareButton = styled.TouchableHighlight.attrs({
-  underlayColor: colors.foregroundPressed
-})`
-  background-color: ${colors.foreground};
-  margin: 8px;
-  width: 40px;
-  height: 40px;
-  justify-content: center;
-  align-items: center;
-`;
-
 const subtitleTextSize = styles.coinSize / 3;
 
 const SubtitleText = styled.Text`

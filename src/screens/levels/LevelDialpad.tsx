@@ -12,6 +12,7 @@ import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
+import ScavengerText from 'components/ScavengerText';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 
@@ -179,7 +180,7 @@ const LevelDialpad: Level = (props) => {
               onPress={() => handlePress(index)}
             >
               <LevelText color={colors.darkText}>
-                {keyLabel}
+                {keyLabel === '4' ? <ScavengerText>{keyLabel}</ScavengerText> : keyLabel}
               </LevelText>
             </Coin>
           </CoinContainer>

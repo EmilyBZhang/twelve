@@ -157,6 +157,7 @@ const LevelBipartiteCircuit: Level = (props) => {
 
   const resultBits = resultBitPositions.map((resultBitPosition, index) => {
     const bitColor = onBits.has(index + 4) ? colors.onCoin : colors.offCoin;
+    const textColor = onBits.has(index + 4) ? colors.offCoin : colors.onCoin;
     return (
       <BitColor
         square
@@ -167,10 +168,12 @@ const LevelBipartiteCircuit: Level = (props) => {
           ...resultBitPosition
         }}
       >
-        <ColorHint
-          color={bitColor}
-          size={coinSize / 2}
-        />
+        <LevelText
+          fontSize={coinSize / 2}
+          color={textColor}
+        >
+          {1 << (resultBitPositions.length - 1 - index)}
+        </LevelText>
       </BitColor>
     );
   });

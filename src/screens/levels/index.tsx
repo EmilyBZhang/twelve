@@ -66,7 +66,7 @@ import Level12 from './Level12';
 import LevelPermuteTwoTwelves from './LevelPermuteTwoTwelves';
 import LevelScavengerHunt from './LevelScavengerHunt';
 import LevelWordSearch from './LevelWordSearch';
-import LevelSoda from './LevelSoda';
+import LevelSodaShake from './LevelSodaShake';
 import LevelPulley from './LevelPulley';
 import LevelSettingsWin from './LevelSettingsWin';
 import LevelThreeMagicButtons from './LevelThreeMagicButtons';
@@ -76,7 +76,7 @@ import LevelSelfTimer from './LevelSelfTimer';
 import LevelPrismDimensions from './LevelPrismDimensions';
 import LevelSettingsToggle from './LevelSettingsToggle';
 import LevelScreenshot from './LevelScreenshot';
-import LevelShake from './LevelShake';
+import LevelSodaDeviceShake from './LevelSodaDeviceShake';
 import LevelConveyorBelt from './LevelConveyorBelt';
 import LevelCredits from './LevelCredits';
 import LevelClockPointer from './LevelClockPointer';
@@ -88,7 +88,7 @@ import LevelHamiltonianPath from './LevelHamiltonianPath';
 import LevelHamiltonianGrid from './LevelHamiltonianGrid';
 import LevelEulerPath from './LevelEulerPath';
 import LevelAd from './LevelAd';
-
+import LevelSpellTwelve from './LevelSpellTwelve';
 
 
 
@@ -99,85 +99,83 @@ import LevelAd from './LevelAd';
 export default [
   LevelSelect,
   Level1,
-  LevelSlider, // IMPROVE: always start at 0
+  LevelSlider,
   LevelCatchCoins,
   LevelRedLight,
   LevelWindow,
   LevelScratchOff, // IMPROVE: eliminate loading time if possible
   LevelShrinkingCoin,
   LevelBinary0,
-  LevelSimonSays, // IMPROVE: keep pattern consistent after failing
   LevelArrows, // IMPROVE: consider randomizing arrows
   LevelFloatingPoint,
+  LevelElevenPlusTwo, // IMPROVE: allow twelve + one
   Level12,
   LevelSlideDown,
-  LevelNewcomerCoin,
-  LevelBipartiteCircuit, // IMPROVE: add bit labels
-  LevelMouseMaze, // IMPROVE: move counter to mouse
-  LevelRabbitHole,
-  LevelClock,
-  Level12Wire,
+  LevelSimonSays, // IMPROVE: keep pattern consistent after failing
   LevelTeleportingCoin,
-  LevelSimonDoesNotSay, // IMPROVE: guarantee "not says" is half (via shuffling)
-  LevelBinary1, // IMPROVE: add bit labels
-  LevelElevenPlusTwo, // IMPROVE: allow twelve + one
-  LevelZoomInCoin,
-  LevelUpsideDown, // IMPROVE: check if sensor is working
-  LevelVolcano, // IMPROVE: update asset
-  LevelMonths, // IMPROVE: consider adding leap year (29) and adding current year label
-  LevelPiano, // IMPROVE: update asset
-  LevelBinary2, // IMPROVE: add bit labels
-  LevelDraw12,
-  LevelFitSquares, // IMPROVE: eliminate race condition
+  LevelBipartiteCircuit,
+  LevelClock,
   LevelMatchCards, // IMPROVE: improve look
-  LevelMultiplyTo12,
-  LevelA1Z26, // IMPROVE: fix 'overflow' issue for last ticker
-  LevelClockOrder,
-  LevelLandscape, // IMPROVE: update asset
-  LevelDodecahedron,
-  LevelBalloon, // IMPROVE: update assets
-  LevelThreeStacks,
-  LevelStackQueue,
-  LevelBallMaze,
-  LevelAcyclicAddition,
-  LevelSearch,
-  LevelSlidingPuzzle,
-  LevelBalance,
-  LevelPlusFlip,
-  LevelPermuteTwoTwelves,
-  LevelWordSearch,
-  LevelHoleJigsaw, // IMPROVE: add assets to jigsaw pieces
-  LevelPulley,
-  LevelSettingsWin, // IMPROVE: add icon to switch
-  LevelThreeMagicButtons, // IMPROVE: limit number text to one line
-  LevelFadeOut,
   LevelSelfTimer,
-  LevelSettingsToggle, // IMPROVE: put settings icons on coins
-  LevelClockPointer,
-  LevelDialpad, // IMPROVE: Give progress meter
-  LevelSeaOfTwelves,
+  LevelPlusFlip,
+  LevelMouseMaze, // IMPROVE: move counter to mouse
+  Level12Wire,
+  LevelMultiplyTo12,
+  LevelSettingsWin, // IMPROVE: add icon to switch
+  LevelRabbitHole,
+  LevelSpellTwelve,
+  LevelZoomInCoin,
+  LevelMonths, // IMPROVE: consider adding leap year (29) and adding current year label
+  LevelSodaShake,
+  LevelHoleJigsaw, // IMPROVE: add assets to jigsaw pieces
+  LevelThreeStacks,
+  LevelBinary1,
+  LevelDodecahedron,
+  LevelDraw12,
+  LevelClockOrder,
+  LevelConveyorBelt,
+  LevelFadeOut,
+  LevelSimonDoesNotSay, // IMPROVE: guarantee "not says" is half (via shuffling)
+  LevelSearch,
+  LevelVolcano, // IMPROVE: update asset
+  LevelPulley,
+  LevelWordSearch,
+  LevelBalloon, // IMPROVE: update assets
+  LevelAcyclicAddition,
   LevelHamiltonianGrid,
   LevelPrismDimensions,
-  LevelConveyorBelt,
-  LevelHamiltonianPath,
-  LevelEulerPath,
-  LevelWarning,
-  LevelSoda,
-  LevelShake,
-  LevelRacecar,
+  LevelThreeMagicButtons, // IMPROVE: limit number text to one line
   LevelCircuit,
-  Level69, // IMPROVE: fix position
-  // LevelSpellTwelveBalls,
+  LevelUpsideDown, // IMPROVE: check if sensor is working
+  LevelBalance,
+  LevelNewcomerCoin,
+  LevelA1Z26, // IMPROVE: fix 'overflow' issue for last ticker
+  LevelClockPointer,
+  LevelDialpad,
+  LevelStackQueue,
+  LevelLandscape, // IMPROVE: update asset
+  LevelEulerPath,
+  LevelFitSquares, // IMPROVE: eliminate race condition
+  LevelPermuteTwoTwelves,
+  LevelSettingsToggle, // IMPROVE: put settings icons on coins
+  LevelSeaOfTwelves,
+  LevelBallMaze,
+  LevelRacecar,
+  LevelBinary2,
+  LevelSodaDeviceShake,
+  LevelSlidingPuzzle,
+  LevelPiano, // IMPROVE: update asset
+  LevelHamiltonianPath,
+  Level69,
   LevelAd,
   LevelCredits,
   LevelScavengerHunt,
+
   // 12:12
   // credits/main menu level
   // LevelOctahedron,
   // bowling
   // 12 in picture
-  // ad
-  // light bulb
   // neighbor coins fade away
   // Ice-sliding puzzle
   
@@ -189,6 +187,7 @@ export default [
   // LevelRaceGE,
   // LevelRace,
   // LevelBalloon2,
+  // LevelSpellTwelveBalls,
   // LevelPolygons,
   // LevelThreeCardMonte,
   // LevelExpandingCoin,
@@ -207,7 +206,6 @@ export default [
 //   should include piano, binary2, settings-to-win, and "scavenger hunt" level
 
 // GENERAL TODO:
-// Add hints
 // Fix screen for iPhones with notches
 // Redesign main menu
 // Figure out in-app purchases

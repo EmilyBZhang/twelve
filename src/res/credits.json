@@ -2,12 +2,6 @@
   "title": "Credits",
   "body": [
     {
-      "header": "Programming",
-      "names": [
-        "Bradon Zhang"
-      ]
-    },
-    {
       "header": "Level Design",
       "names": [
         "Bradon Zhang",
@@ -15,8 +9,15 @@
       ]
     },
     {
-      "header": "Graphics",
+      "header": "Programming",
       "names": [
+        "Bradon Zhang"
+      ]
+    },
+    {
+      "header": "Graphics & Art",
+      "names": [
+        "Steffi Shew",
         "Bradon Zhang"
       ]
     },
@@ -39,8 +40,8 @@
         "Jaeson Alcoriza",
         "Lauren Colaco",
         "Mark Itkin",
+        "Nathan Ji",
         "Matthew Po",
-        "Steffi Shew",
         "Sagan Sutherland",
         "Rohil Tuli"
       ]

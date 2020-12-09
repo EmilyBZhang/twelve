@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Animated, Easing } from 'react-native';
+import { Animated, Easing, View } from 'react-native';
 import {
   State,
   PanGestureHandler,
@@ -36,7 +36,7 @@ enum Y {
   NEUTRAL,
 }
 
-const LevelSoda: Level = (props) => {
+const LevelSodaShake: Level = (props) => {
 
   const [baseY] = useState(new Animated.Value(0));
   const [panY] = useState(new Animated.Value(0));
@@ -115,17 +115,6 @@ const LevelSoda: Level = (props) => {
   return (
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
-      {/* {coinPositions.map((coinPosition, index) => (
-        <View
-          key={String(index)}
-          style={{position: 'absolute', ...coinPosition}}
-        >
-          <Coin
-            found={props.coinsFound.has(index)}
-            onPress={() => props.onCoinPress(index)}
-          />
-        </View>
-      ))} */}
       <PanGestureHandler
         enabled={!coinsRevealed}
         onGestureEvent={handleGestureEvent}
@@ -138,8 +127,19 @@ const LevelSoda: Level = (props) => {
           <ColaImage />
         </Animated.View>
       </PanGestureHandler>
+      {coinsRevealed && coinPositions.map((coinPosition, index) => (
+        <View
+          key={String(index)}
+          style={{position: 'absolute', ...coinPosition}}
+        >
+          <Coin
+            found={props.coinsFound.has(index)}
+            onPress={() => props.onCoinPress(index)}
+          />
+        </View>
+      ))}
     </LevelContainer>
   );
 };
 
-export default LevelSoda;
+export default LevelSodaShake;

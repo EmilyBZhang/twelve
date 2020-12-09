@@ -10,8 +10,10 @@ interface NumberPickerProps {
   onChange: (direction: 'up' | 'down') => any;
   onCoin1Press?: () => any;
   onCoin2Press?: () => any;
+  showLetter?: boolean;
 }
 
+const lowercaseOffset = 'a'.charCodeAt(0) - 1;
 const numberPickerWidth = styles.coinSize;
 const displayWidth = numberPickerWidth;
 const displayHeight = displayWidth;
@@ -39,13 +41,16 @@ const DisplayText = styled.Text`
 
 interface DisplayProps {
   count: number;
+  showLetter?: boolean;
 }
 
 const Display: FunctionComponent<DisplayProps> = (props) => {
-  const { count } = props;
+  const { count, showLetter } = props;
   return (
     <DisplayContainer>
-      <DisplayText>{count}</DisplayText>
+      <DisplayText>
+        {showLetter ? String.fromCharCode(count + lowercaseOffset) : count}
+      </DisplayText>
     </DisplayContainer>
   );
 };
@@ -124,7 +129,7 @@ const ArrowButton: FunctionComponent<ArrowButtonProps> = (props) => {
 };
 
 const NumberPicker: FunctionComponent<NumberPickerProps> = (props) => {
-  const { count, onChange, onCoin1Press, onCoin2Press } = props;
+  const { count, onChange, onCoin1Press, onCoin2Press, showLetter } = props;
 
   return (
     <NumberPickerContainer>
@@ -135,6 +140,7 @@ const NumberPicker: FunctionComponent<NumberPickerProps> = (props) => {
       />
       <Display
         count={count}
+        showLetter={showLetter}
       />
       <ArrowButton
         direction={'down'}

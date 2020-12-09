@@ -13,6 +13,7 @@ import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
+import ScavengerText from 'components/ScavengerText';
 
 const numRows = 8;
 const numCols = 8;
@@ -153,6 +154,8 @@ const LevelWordSearch: Level = (props) => {
             const index = getIndex(rowIndex, colIndex);
             const active = activeCells.current.has(index);
             const cleared = clearedCells.current.has(index);
+            const scavenge = (rowIndex === 7) && (colIndex === 0);
+            const letterText = scavenge ? <ScavengerText>{letter}</ScavengerText> : letter;
             return (
               <CellTouchable
                 key={String(colIndex)}
@@ -168,7 +171,7 @@ const LevelWordSearch: Level = (props) => {
                     />
                   </CoinContainer>
                 )}
-                <Letter>{(!cleared || active) ? letter : ' '}</Letter>
+                <Letter>{(!cleared || active) ? letterText : ' '}</Letter>
                 {cleared && (
                   <CoinContainer style={{ opacity: active ? anim : 1 }}>
                     <Coin

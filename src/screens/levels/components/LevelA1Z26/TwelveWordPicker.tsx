@@ -9,6 +9,7 @@ const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 
 interface TwelveWordPickerProps {
   onCoinPress: (index: number) => any;
+  showLetter?: boolean;
 }
 
 const TwelveWordPickerContainer = styled.View`
@@ -21,9 +22,11 @@ const twelveArray = [20, 23, 5, 12, 22, 5];
 
 const TwelveWordPicker: FunctionComponent<TwelveWordPickerProps> = (props) => {
 
-  const { onCoinPress } = props;
+  const { onCoinPress, showLetter } = props;
 
-  const [counts, setCounts] = useState(() => twelveArray.map(() => 26));
+  const [counts, setCounts] = useState<Array<number>>(() => (
+    twelveArray.map(() => showLetter ? 1 : 26)
+  ));
   const twelveAchieved = useRef(false);
 
   const handleChange = useMemo(() => {
@@ -46,6 +49,7 @@ const TwelveWordPicker: FunctionComponent<TwelveWordPickerProps> = (props) => {
         <NumberPicker
           key={String(index)}
           count={count}
+          showLetter={showLetter}
           onChange={handleChange[index]}
           onCoin1Press={twelveAchieved.current ? (() => onCoinPress(index)) : undefined}
           onCoin2Press={twelveAchieved.current ? (() => onCoinPress(index + 6)) : undefined}
