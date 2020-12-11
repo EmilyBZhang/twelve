@@ -11,8 +11,11 @@ import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
+import playAudio from 'utils/playAudio';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
+
+const mouseSound = require('assets/sfx/mouse.mp3');
 
 type Direction = 'bottom' | 'left' | 'right' | 'top';
 
@@ -175,6 +178,7 @@ const LevelMouseMaze: Level = (props) => {
       }
       props.onCoinPress(numCoinsFound);
       if (foundCheese) {
+        playAudio(mouseSound);
         const newCheeseIndices = new Set(cheeseIndices);
         newCheeseIndices.delete(newMouseIndex);
         setCheeseIndices(newCheeseIndices);

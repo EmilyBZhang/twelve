@@ -18,7 +18,8 @@ import { Audio } from 'expo-av';
 
 const LevelSelect = levels[0];
 
-const heaven = require('assets/sounds/heaven.mp3');
+const victorySound = require('assets/sfx/victory.mp3');
+const buzzSound = require('assets/sfx/buzz.mp3');
 
 const Level: Screen = (props) => {
   
@@ -37,7 +38,7 @@ const Level: Screen = (props) => {
 
   useEffect(() => {
     if (twelve) {
-      playAudio(heaven, (playback) => musicPlayback.current = playback);
+      playAudio(victorySound, (playback) => musicPlayback.current = playback, { volume: 0.5 });
       return () => {
         if (musicPlayback.current?.sound) {
           musicPlayback.current.sound.stopAsync()
@@ -58,6 +59,7 @@ const Level: Screen = (props) => {
 
   const handleSetCoinsFound = (indices?: Set<number>) => {
     if (!indices) indices = new Set();
+    if (!indices.size) playAudio(buzzSound);
     setSelectedIndices(indices);
     if (indices.size === 12) completeLevel(levelNum);
   };

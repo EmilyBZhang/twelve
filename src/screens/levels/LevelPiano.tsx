@@ -6,6 +6,7 @@ import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
 import { getLevelDimensions } from 'utils/getDimensions';
+import playAudio from 'utils/playAudio';
 import { playPiano } from 'utils/playPitch';
 import styles from 'res/styles';
 import LevelContainer from 'components/LevelContainer';
@@ -23,8 +24,11 @@ const lambHeight = levelWidth * 699 / 1000; // Adjust for dimensions of image
 const lambInit = -styles.levelNavHeight;
 const pianoInit = lambInit + lambHeight;
 
+const lambSound = require('assets/sfx/lamb.mp3');
+
 const Lamb = styled(Animated.Image).attrs({
-  source: require('assets/images/lamb.jpg')
+  source: require('assets/images/lamb.png'),
+  resizeMode: 'contain',
 })`
   position: absolute;
   top: ${lambInit}px;
@@ -113,6 +117,7 @@ const LevelPiano: Level = (props) => {
 
   // TODO: Consider whether to push piano off-screen or to make it fade to reveal coins
   const handleWin = () => {
+    playAudio(lambSound);
     Animated.sequence([
       Animated.timing(lambAnim, {
         toValue: -lambHeight * 2 / 3,

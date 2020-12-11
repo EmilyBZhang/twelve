@@ -22,6 +22,7 @@ import {
   createWalls,
 } from './components/balloon';
 import system from './components/LevelBalloon/system';
+import colors from 'res/colors';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 
@@ -59,18 +60,18 @@ interface BalloonEvent extends GameEvent {
 
 const LevelBalloon: Level = (props) => {
   const { onCoinPress, coinsFound } = props;
-  const [cloudAnim] = useState(new Animated.Value(0));
+  // const [cloudAnim] = useState(new Animated.Value(0));
 
-  useEffect(() => {
-    Animated.loop(
-      Animated.timing(cloudAnim, {
-        toValue: -levelWidth,
-        easing: Easing.linear,
-        duration: 24000,
-        useNativeDriver: true,
-      })
-    ).start();
-  }, []);
+  // useEffect(() => {
+  //   Animated.loop(
+  //     Animated.timing(cloudAnim, {
+  //       toValue: -levelWidth,
+  //       easing: Easing.linear,
+  //       duration: 24000,
+  //       useNativeDriver: true,
+  //     })
+  //   ).start();
+  // }, []);
 
   const gameEngine = useRef<GameEngine | null>(null);
   const entities = useMemo(() => {
@@ -101,11 +102,11 @@ const LevelBalloon: Level = (props) => {
   const numCoinsFound = coinsFound.size;
 
   return (
-    <LevelContainer gradientColors={['#0080ff', 'cyan']}>
-      <Cloud style={{transform: [{translateX: cloudAnim}]}} />
+    <LevelContainer gradientColors={[colors.coin, colors.background]}>
+      {/* <Cloud style={{transform: [{translateX: cloudAnim}]}} />
       <Cloud style={{
         transform: [{translateX: Animated.add(cloudAnim, levelWidth)}]
-      }} />
+      }} /> */}
       <GameEngine
         ref={ref => gameEngine.current = ref}
         style={{

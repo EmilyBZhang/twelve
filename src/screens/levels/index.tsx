@@ -111,7 +111,7 @@ export default [
   LevelElevenPlusTwo, // IMPROVE: allow twelve + one
   Level12,
   LevelSlideDown,
-  LevelSimonSays, // IMPROVE: keep pattern consistent after failing
+  LevelSimonSays,
   LevelTeleportingCoin,
   LevelBipartiteCircuit,
   LevelClock,
@@ -126,7 +126,7 @@ export default [
   LevelSpellTwelve,
   LevelZoomInCoin,
   LevelMonths, // IMPROVE: consider adding leap year (29) and adding current year label
-  LevelSodaShake,
+  LevelSodaShake, // IMPROVE: add animation
   LevelHoleJigsaw, // IMPROVE: add assets to jigsaw pieces
   LevelThreeStacks,
   LevelBinary1,
@@ -135,7 +135,7 @@ export default [
   LevelClockOrder,
   LevelConveyorBelt,
   LevelFadeOut,
-  LevelSimonDoesNotSay, // IMPROVE: guarantee "not says" is half (via shuffling)
+  LevelSimonDoesNotSay,
   LevelSearch,
   LevelVolcano, // IMPROVE: update asset
   LevelPulley,
@@ -144,7 +144,7 @@ export default [
   LevelAcyclicAddition,
   LevelHamiltonianGrid,
   LevelPrismDimensions,
-  LevelThreeMagicButtons, // IMPROVE: limit number text to one line
+  LevelThreeMagicButtons,
   LevelCircuit,
   LevelUpsideDown, // IMPROVE: check if sensor is working
   LevelBalance,
@@ -162,9 +162,9 @@ export default [
   LevelBallMaze,
   LevelRacecar,
   LevelBinary2,
-  LevelSodaDeviceShake,
+  LevelSodaDeviceShake, // IMPROVE: Add animation
   LevelSlidingPuzzle,
-  LevelPiano, // IMPROVE: update asset
+  LevelPiano,
   LevelHamiltonianPath,
   Level69,
   LevelAd,

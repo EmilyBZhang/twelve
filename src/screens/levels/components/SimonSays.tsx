@@ -1,10 +1,10 @@
-import React, { FunctionComponent, useState, useEffect, useRef } from 'react';
-import { Button, FlatList } from 'react-native';
+import React, { FunctionComponent, useState, useEffect, useRef, useMemo } from 'react';
+import { FlatList } from 'react-native';
 import styled from 'styled-components/native';
 
 import { LevelProps } from 'utils/interfaces';
 import { getLevelDimensions } from 'utils/getDimensions';
-import { randElem, bernoulli } from 'utils/random';
+import { randElem, shuffleArray } from 'utils/random';
 import colors, { CoinColor } from 'res/colors';
 import styles from 'res/styles';
 import LevelContainer from 'components/LevelContainer';
@@ -64,9 +64,10 @@ const generateColorOrder = () => {
 };
 
 const generateNegateOrder = (simonDoesNotSay: boolean) => {
-  return Array.from(Array(12), () => (
-    simonDoesNotSay && bernoulli()
-  ))
+  if (!simonDoesNotSay) return Array.from(Array(12), () => false);
+  const order = [true, true, true, true, true, true, false, false, false, false, false, false];
+  shuffleArray(order);
+  return order;
 };
 
 // TODO: Consider changing this to [3, 4, 5] and [0, 3, 7]
@@ -81,18 +82,14 @@ const SimonSays: FunctionComponent<SimonSaysProps> = (props) => {
 
   const [blinkingColors, setBlinkingColors] = useState(true);
   const [iterationsIndex, setIterationsIndex] = useState(0);
-  const [colorOrder, setColorOrder] = useState(generateColorOrder());
-  const [negateOrder, setNegateOrder] = useState(
-    generateNegateOrder(!!simonDoesNotSay)
-  );
+  const colorOrder = useMemo(generateColorOrder, []);
+  const negateOrder = useMemo(() => generateNegateOrder(!!simonDoesNotSay), [!!simonDoesNotSay]);
   const [colorIndex, setColorIndex] = useState(-1);
   
   const iterations = numIterations[iterationsIndex];
 
   const resetColors = () => {
     setIterationsIndex(0);
-    setColorOrder(generateColorOrder());
-    setNegateOrder(generateNegateOrder(!!simonDoesNotSay));
     setColorIndex(-1);
     setBlinkingColors(true);
   };

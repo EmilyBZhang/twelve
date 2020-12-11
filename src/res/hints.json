@@ -13,7 +13,7 @@
     [
         "Underlined text is irrelevant to a level's solution.",
         "It's the same, but it moves.",
-        "They come back with time.",
+        "They come back with time."
     ],
     [
         "Is something resetting your progress?",
@@ -27,14 +27,14 @@
         "Open the window."
     ],
     [
-        "Level 6: Hint 1",
-        "Level 6: Hint 2",
-        "Level 6: Hint 3"
+        "The loading has nothing to do with the puzzle.",
+        "Move around.",
+        "Move your finger around the screen."
     ],
     [
-        "Level 7: Hint 1",
-        "Level 7: Hint 2",
-        "Level 7: Hint 3"
+        "Notice how the screen gets darker when you press it?",
+        "Tap.",
+        "Tap the screen multiple times."
     ],
     [
         "Name of the game",
@@ -43,17 +43,19 @@
         "Add two numbers."
     ],
     [
-        "Level 9: Hint 1",
-        "Level 9: Hint 2",
-        "Level 9: Hint 3"
+        "There's a certain order you have to press them in.",
+        "The arrows pertain to the order.",
+        "The number of arrows on each coin pertains to the order.",
+        "Each arrow points in the direction of the next coin.",
+        "The number of arrows tells you how many coins away the next one is."
     ],
     [
-        "Level 10: Hint 1",
-        "Level 10: Hint 2",
-        "Level 10: Hint 3"
+        "If the colors are hard to see, try color blind mode (settings)!",
+        "Blue is good. Red is bad.",
+        "The coin turns from blue to red back to blue."
     ],
     [
-        "Have you clicked the letters?",
+        "Have you tapped the letters?",
         "Can you resolve the equality?",
         "Try spelling some numbers.",
         "2 + 11 = 1 + 12"
@@ -76,277 +78,312 @@
         "Press the colors in the order you saw them."
     ],
     [
-        "Level 15: Hint 1",
-        "Level 15: Hint 2",
-        "Level 15: Hint 3"
+        "The underline is not part of the solution to this level.",
+        "The coin moves after each tap.",
+        "Just tap the coins."
     ],
     [
-        "Level 16: Hint 1",
-        "Level 16: Hint 2",
-        "Level 16: Hint 3"
+        "Name of the game",
+        "Add to 12",
+        "You want to light up the lines to add to 12.",
+        "A number is lit up if there are an odd number of lines connected to it lit up."
     ],
     [
-        "Level 17: Hint 1",
-        "Level 17: Hint 2",
-        "Level 17: Hint 3"
+        "Things that don't matter: the underline, the hour hand, and the minute hand.",
+        "Thing that matters a lot: the second hand.",
+        "Careful not to act when the second hand is around.",
+        "You can't press any coins when the second hand is over any coin."
     ],
     [
-        "Level 18: Hint 1",
-        "Level 18: Hint 2",
-        "Level 18: Hint 3"
+        "Tap two",
+        "Notice the repeated cards.",
+        "Match card pairs."
     ],
     [
-        "Level 19: Hint 1",
-        "Level 19: Hint 2",
-        "Level 19: Hint 3"
+        "You set the difficulty.",
+        "The longer the hold, the longer you'll have.",
+        "Try to hold the button as long as you can."
     ],
     [
-        "Level 20: Hint 1",
-        "Level 20: Hint 2",
-        "Level 20: Hint 3"
+        "Notice what tapping one of them does?",
+        "Get all of them lit up.",
+        "Tapping one lights up everything around it, including itself.",
+        "Focus on the middle."
     ],
     [
-        "Level 21: Hint 1",
-        "Level 21: Hint 2",
-        "Level 21: Hint 3"
+        "This mouse likes cheese.",
+        "This mouse wants to eat all the cheese.",
+        "You only have 12 moves."
     ],
     [
-        "Level 22: Hint 1",
-        "Level 22: Hint 2",
-        "Level 22: Hint 3"
+        "Name of the game",
+        "Imagine '12' on a digital clock.",
+        "Spin the wires to make '12'."
     ],
     [
-        "Level 23: Hint 1",
-        "Level 23: Hint 2",
-        "Level 23: Hint 3"
+        "Each coin has a partner coin.",
+        "Name of the game",
+        "Times Square",
+        "Okay, maybe just times",
+        "Each pair multiples to 12"
     ],
     [
-        "Level 24: Hint 1",
-        "Level 24: Hint 2",
-        "Level 24: Hint 3"
+        "Is this level grinding your gears?",
+        "Update your preferences, perhaps?",
+        "Don't click the hints, silly, click the other button!",
+        "The settings for this level are quite interesting."
     ],
     [
-        "Level 25: Hint 1",
-        "Level 25: Hint 2",
-        "Level 25: Hint 3"
+        "The underline doesn't pertain to the solution of the level.",
+        "First word",
+        "Scroll",
+        "Scroll down."
     ],
     [
-        "Level 26: Hint 1",
-        "Level 26: Hint 2",
-        "Level 26: Hint 3"
+        "Spell a word",
+        "One syllable",
+        "First letter is T",
+        "Name of the game"
     ],
     [
-        "Level 27: Hint 1",
-        "Level 27: Hint 2",
-        "Level 27: Hint 3"
+        "Zoom",
+        "Zoom in",
+        "Zoom in with two fingers."
     ],
     [
-        "Level 28: Hint 1",
-        "Level 28: Hint 2",
-        "Level 28: Hint 3"
+        "What do 28, 30, and 31 have in common?",
+        "Perhaps 29 should be included every four years or so",
+        "J F M A M J J A S O N D",
+        "Months"
     ],
     [
-        "Level 29: Hint 1",
-        "Level 29: Hint 2",
-        "Level 29: Hint 3"
+        "What could be hiding in that can?",
+        "Any way to force the can open?",
+        "What should you never do to a soda can?",
+        "Shake!",
+        "...by sliding it"
     ],
     [
-        "Level 30: Hint 1",
-        "Level 30: Hint 2",
-        "Level 30: Hint 3"
+        "Do these images make anything?",
+        "Jigsaw",
+        "Line up the coins with each other"
     ],
     [
-        "Level 31: Hint 1",
-        "Level 31: Hint 2",
-        "Level 31: Hint 3"
+        "Name of the game",
+        "Stacks",
+        "Each box is a stack. The last letter gets removed."
     ],
     [
-        "Level 32: Hint 1",
-        "Level 32: Hint 2",
-        "Level 32: Hint 3"
+        "I'm a computer. I'm a computer-y guy.",
+        "Do those numbers look familiar?",
+        "Binary",
+        "110 + 110 = 1100"
     ],
     [
-        "Level 33: Hint 1",
-        "Level 33: Hint 2",
-        "Level 33: Hint 3"
+        "Blue good. Red bad.",
+        "Beware every third tap.",
+        "Tapping changes the axis of rotation. Be careful with every third tap."
     ],
     [
-        "Level 34: Hint 1",
-        "Level 34: Hint 2",
-        "Level 34: Hint 3"
+        "Where have you seen this 3x3 configuration before?",
+        "Name of the game",
+        "Level 22 called. It wants its level back."
     ],
     [
-        "Level 35: Hint 1",
-        "Level 35: Hint 2",
-        "Level 35: Hint 3"
+        "Tick tock",
+        "Hours",
+        "Start at 1 o'clock"
     ],
     [
-        "Level 36: Hint 1",
-        "Level 36: Hint 2",
-        "Level 36: Hint 3"
+        "Looks like the conveyor belt's broken.",
+        "Where could you find an extra gear?",
+        "Have you tried updating your game preferences?"
     ],
     [
-        "Level 37: Hint 1",
-        "Level 37: Hint 2",
-        "Level 37: Hint 3"
+        "The underline is unrelated to this level's solution.",
+        "Try to remember the positions.",
+        "The grid is 4x3."
     ],
     [
-        "Level 38: Hint 1",
-        "Level 38: Hint 2",
-        "Level 38: Hint 3"
+        "It's like Level 14, but something's changed...",
+        "The black bordered squares don't behave like the other colors.",
+        "Simon does not say (black borders)",
+        "The black border acts as a 'not'."
     ],
     [
-        "Level 39: Hint 1",
-        "Level 39: Hint 2",
-        "Level 39: Hint 3"
+        "Color blind mode doesn't show the pluses for this level. :(",
+        "Move the spotlight.",
+        "Can you find the hidden coins?"
     ],
     [
-        "Level 40: Hint 1",
-        "Level 40: Hint 2",
-        "Level 40: Hint 3"
+        "Blue good. Red bad.",
+        "Can't tap the same coin twice.",
+        "The level gets more difficult as you progress."
     ],
     [
-        "Level 41: Hint 1",
-        "Level 41: Hint 2",
-        "Level 41: Hint 3"
+        "Blue shift",
+        "Pulley",
+        "Pull the pulley.",
+        "Where could the blue coins be?"
     ],
     [
-        "Level 42: Hint 1",
-        "Level 42: Hint 2",
-        "Level 42: Hint 3"
+        "Name of the game",
+        "The underline is not part of the solution to this level.",
+        "Can you find it? (there are two of them)",
+        "Find 'twelve' in the word search!",
+        "Make sure you also check diagonals and backwards."
     ],
     [
-        "Level 43: Hint 1",
-        "Level 43: Hint 2",
-        "Level 43: Hint 3"
+        "Pop!",
+        "Balloons pop at high altitudes.",
+        "Tap and hold."
     ],
     [
-        "Level 44: Hint 1",
-        "Level 44: Hint 2",
-        "Level 44: Hint 3"
+        "Name of the game",
+        "You want to fill up the battery (not too high, not too low).",
+        "Add to 12.",
+        "Start with -2."
     ],
     [
-        "Level 45: Hint 1",
-        "Level 45: Hint 2",
-        "Level 45: Hint 3"
+        "Stay close.",
+        "Love thy neighbor.",
+        "You can't tap non-neighbors.",
+        "Start with the top coin."
     ],
     [
-        "Level 46: Hint 1",
-        "Level 46: Hint 2",
-        "Level 46: Hint 3"
+        "Volume = length * width * height",
+        "Name of the game",
+        "Balance the dimensions to get 12 on each."
     ],
     [
-        "Level 47: Hint 1",
-        "Level 47: Hint 2",
-        "Level 47: Hint 3"
+        "Name of the game",
+        "+7 *2 *(-1)",
+        "Try to get to -2 first (and then to 12).",
+        "Don't forget you can restart if you're stuck."
     ],
     [
-        "Level 48: Hint 1",
-        "Level 48: Hint 2",
-        "Level 48: Hint 3"
+        "Circuit",
+        "Complete the circuit.",
+        "I wonder if there are any electronics nearby...",
+        "A light bulb moment?",
+        "No more tapping the hint button."
     ],
     [
-        "Level 49: Hint 1",
-        "Level 49: Hint 2",
-        "Level 49: Hint 3"
+        "˙˙˙uʍop ǝpᴉsdn sᴉ ƃuᴉɥʇʎɹǝʌǝ sɹɐǝddɐ ʇI",
+        "How would you make it right-side up?",
+        "Perhaps physically rotate your device.",
+        "If the level doesn't work, it might be a bug (or you're using an emulator)."
     ],
     [
-        "Level 50: Hint 1",
-        "Level 50: Hint 2",
-        "Level 50: Hint 3"
+        "Balance",
+        "Name of the game",
+        "+",
+        "Balance both sides to sum to 12."
     ],
     [
-        "Level 51: Hint 1",
-        "Level 51: Hint 2",
-        "Level 51: Hint 3"
+        "The underline is not part of the level's solution.",
+        "You only need to tap one coin at a time.",
+        "A new challenger approaches!",
+        "Don't tap the old coins."
     ],
     [
-        "Level 52: Hint 1",
-        "Level 52: Hint 2",
-        "Level 52: Hint 3"
+        "This level looks familiar...",
+        "A1Z26",
+        "Throwback to Level 26",
+        "A = 1, B = 2, ..., Z = 26",
+        "Name of the game"
     ],
     [
-        "Level 53: Hint 1",
-        "Level 53: Hint 2",
-        "Level 53: Hint 3"
+        "Tick tock",
+        "They tell you what's next.",
+        "Go to the hand position indicated by the clocks."
     ],
     [
-        "Level 54: Hint 1",
-        "Level 54: Hint 2",
-        "Level 54: Hint 3"
+        "The underline is not part of the solution.",
+        "SMS",
+        "Ever texted on an old phone?",
+        "2 = ABC, 3 = DEF, ..., 9 = WXYZ"
     ],
     [
-        "Level 55: Hint 1",
-        "Level 55: Hint 2",
-        "Level 55: Hint 3"
+        "Stack and queue",
+        "The first one removes the last letter. The second one removes the first letter.",
+        "Name of the game",
+        "When solving the queue, try to keep the next letter you need in the queue."
     ],
     [
-        "Level 56: Hint 1",
-        "Level 56: Hint 2",
-        "Level 56: Hint 3"
+        "If only you could see the whole image...",
+        "Portrait mode is not doing its job.",
+        "Maybe someone should have made this game in landscape."
     ],
     [
-        "Level 57: Hint 1",
-        "Level 57: Hint 2",
-        "Level 57: Hint 3"
+        "Each path is crossed only once.",
+        "You can repeat coins as long as they're adjacent to the current one.",
+        "Start from the middle-left or the bottom-middle."
     ],
     [
-        "Level 58: Hint 1",
-        "Level 58: Hint 2",
-        "Level 58: Hint 3"
+        "Do you see the squares?",
+        "There are twelve squares.",
+        "Resize, rotate, and move the square to fit the squares.",
+        "5 at 0 degrees, 5 at 45 degrees, 2 at 26.6 degrees."
     ],
     [
-        "Level 59: Hint 1",
-        "Level 59: Hint 2",
-        "Level 59: Hint 3"
+        "Name of the game (both horizontal and vertical)",
+        "The middle E should be shared.",
+        "It might help to solve for one of them first."
     ],
     [
-        "Level 60: Hint 1",
-        "Level 60: Hint 2",
-        "Level 60: Hint 3"
+        "Have you seen these icons somewhere before?",
+        "Perhaps you could change some of these preferences.",
+        "On and off",
+        "You need to satisfy both conditions for the ones on the right."
     ],
     [
-        "Level 61: Hint 1",
-        "Level 61: Hint 2",
-        "Level 61: Hint 3"
+        "Clean up the clutter.",
+        "Move aside!",
+        "Move all the 'twelve' texts away to reveal the coins."
     ],
     [
-        "Level 62: Hint 1",
-        "Level 62: Hint 2",
-        "Level 62: Hint 3"
+        "Can you get the balls to the hole in the middle?",
+        "Tilt it",
+        "Tilt your device"
     ],
     [
-        "Level 63: Hint 1",
-        "Level 63: Hint 2",
-        "Level 63: Hint 3"
+        "Blue good. Red bad.",
+        "Photo finish across the finish line!",
+        "Cars travel at different speeds and at different patterns.",
+        "Take a picture of the car as it travels over the finish line."
     ],
     [
-        "Level 64: Hint 1",
-        "Level 64: Hint 2",
-        "Level 64: Hint 3"
+        "Name of the game",
+        "More binary",
+        "011 * 101 - 011 = 001100"
     ],
     [
-        "Level 65: Hint 1",
-        "Level 65: Hint 2",
-        "Level 65: Hint 3"
+        "The glass is blocking me from shaking it!",
+        "Shake the vending machine itself.",
+        "Shake shake shake (but not with the screen)",
+        "Shake your physical device."
     ],
     [
-        "Level 66: Hint 1",
-        "Level 66: Hint 2",
-        "Level 66: Hint 3"
+        "Try to make the image 12.",
+        "You can solve this in twelve moves with perfect play.",
+        "The order is of the tiles is given by the number on the tile.",
+        "Start by moving Tile 11."
     ],
     [
-        "Level 67: Hint 1",
-        "Level 67: Hint 2",
-        "Level 67: Hint 3"
+        "Mary had what?",
+        "Mary had a little lamb",
+        "You only need the white notes.",
+        "E D C D E E E D D D E G G",
+        "C is the first white note, D is the second, E the third, F the fourth, G the fifth."
     ],
     [
-        "Level 68: Hint 1",
-        "Level 68: Hint 2",
-        "Level 68: Hint 3"
+        "Numbers denote distance.",
+        "You can only tap coins that many numbers away from it.",
+        "You can travel in either direction.",
+        "Start with the top left coin."
     ],
     [
-        "Where could the coins be?",
         "i.",
         "Dots.",
         "Do you see the dots?",
@@ -360,13 +397,12 @@
     [
         "What can you press?",
         "There's blue falling from the screen.",
-        "Click the coins as they're falling down."
+        "Tap the coins as they're falling down."
     ],
     [
         "The hints are all in plain sight.",
-        "You might feel a bit nostalgic after this level.",
-        "It's a scavenger hunt!",
         "The clues are contained in the past.",
+        "It's a scavenger hunt!",
         "Previous levels contain the components needed for the level.",
         "There's an pattern underlining it all...",
         "Combine the underlined characters in the levels listed."

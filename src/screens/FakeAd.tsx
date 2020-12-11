@@ -115,7 +115,7 @@ const FakeAd: Screen = (props) => {
   useEffect(() => {
     let player: CreateAudioResult | null = null;
     playAudio(
-      require('assets/sounds/twelvebars.mp3'),
+      require('assets/music/twelvebars.mp3'),
       res => { player = res; },
       { isMuted: false, isLooping: true }
     );

@@ -230,7 +230,7 @@ const LevelFitSquares: Level = (props) => {
     };
     // TODO: Currently implemented w/ race condition, fix this
     if (isWithinMargin(currentSquare, square)) {
-      playAudio(require('assets/sounds/success.wav'));
+      playAudio(require('assets/sfx/success.wav'));
       toggleSquareIndex(index);
       setTimeout(() => {
         flashSquare();

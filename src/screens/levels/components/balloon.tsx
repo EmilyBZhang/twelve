@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import styles from 'res/styles';
 import Coin from 'components/Coin';
 import { getLevelDimensions } from 'utils/getDimensions';
+import colors from 'res/colors';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 
@@ -42,6 +43,7 @@ export const Balloon: FunctionComponent<BodyComponentProps> = memo((props) => {
     >
       <Image
         source={require('assets/images/balloon.gif')}
+        resizeMode={'contain'}
         style={{
           width: balloonWidth,
           height: balloonHeight
@@ -57,7 +59,7 @@ export const Ground: FunctionComponent<BodyComponentProps> = (props) => {
   return (
     <View style={{
       position: 'absolute',
-      backgroundColor: 'green',
+      backgroundColor: colors.selectCoin,
       top: min.y,
       left: min.x,
       width: max.x - min.x,
@@ -97,7 +99,7 @@ export const createWalls = () => ({
     levelWidth / 2,
     levelHeight * 1.75,
     levelWidth,
-    levelHeight * 2,
+    levelHeight * 1.75,
     { isStatic: true }
   ),
   wallL: Matter.Bodies.rectangle(

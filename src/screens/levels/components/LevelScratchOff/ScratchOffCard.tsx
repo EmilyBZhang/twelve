@@ -9,7 +9,7 @@ import colors from 'res/colors';
 import styles from 'res/styles';
 
 const { width: windowWidth, height: windowHeight } = getDimensions();
-const particleSize = styles.coinSize / 3;
+const particleSize = styles.coinSize;
 const particleCols = Math.ceil(windowWidth / particleSize);
 const particleRows = Math.ceil(windowHeight / particleSize);
 const numParticles = particleRows * particleCols;
