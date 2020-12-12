@@ -42,7 +42,7 @@
       }
     },
     "androidNavigationBar": {},
-    "description": "A puzzle game about collecting twelve dots... with a special twist in each level!",
+    "description": "A puzzle game about collecting twelve dots... with a special twist in each level!\n\nTest your pattern recognition, memory, reflexes, and more.\n\n72 levels in all!",
     "githubUrl": "https://github.com/BradonZhang/twelve"
   }
 }

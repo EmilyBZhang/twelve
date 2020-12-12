@@ -25,7 +25,8 @@ interface HintModalProps {
 
 const waitingText = 'Your hint will come after this ad...';
 const skippingText = 'Level will be skipped after this ad...';
-const nudgeText = `Psst... don't like ads? Please consider buying the No Ads bundle to remove all ads and support the developers. It really would mean a lot to us. ♥`
+const nudgeText = `Twelve only shows ads for hints and skipping levels.\n\nWe're working on a No Ads bundle so you can choose to play without ads!`
+// const nudgeText = `Psst... don't like ads? Please consider buying the No Ads bundle to remove all ads and support the developers. It really would mean a lot to us. ♥`
 const noHintText = 'No hint available';
 
 const FullScreenModal = styled.View`
