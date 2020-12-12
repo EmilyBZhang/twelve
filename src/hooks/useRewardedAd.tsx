@@ -31,8 +31,11 @@ const useRewardedAd = (callbacks: EventMap) => {
 
   const requestAd = useCallback(async () => {
     // TODO: Check for in-app purchase
-    await AdMobRewarded.requestAdAsync({ servePersonalizedAds: true });
-    await AdMobRewarded.showAdAsync();
+    try {
+      await AdMobRewarded.requestAdAsync({ servePersonalizedAds: true });
+    } finally {
+      await AdMobRewarded.showAdAsync();
+    }
   }, []);
 
   return requestAd;

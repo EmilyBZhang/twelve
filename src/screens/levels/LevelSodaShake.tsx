@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { Animated, Easing, View } from 'react-native';
 import {
   State,
@@ -6,29 +6,20 @@ import {
   PanGestureHandlerGestureEvent,
   PanGestureHandlerStateChangeEvent,
 } from 'react-native-gesture-handler';
-import styled from 'styled-components/native';
+import { GameEngine, GameEvent } from 'react-native-game-engine';
 
 import { Level } from 'utils/interfaces';
-import styles from 'res/styles';
-import colors from 'res/colors';
-import coinPositions from 'utils/coinPositions';
 import LevelContainer from 'components/LevelContainer';
-import Coin from 'components/Coin';
-import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
 import { getLevelDimensions } from 'utils/getDimensions';
+import Soda from './components/Soda';
+import initEntities from './components/Soda/entities';
+import system, { CoinEvent } from './components/Soda/system';
+import Physics from './systems/Physics';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 
 const threshold = levelWidth / 6;
-
-const ColaImage = styled.Image.attrs({
-  source: require('assets/images/cola.png'),
-  resizeMode: 'contain',
-})`
-  width: ${levelWidth / 2};
-  height: ${levelWidth * 5 / 6};
-`;
 
 enum Y {
   UP,
@@ -40,10 +31,13 @@ const LevelSodaShake: Level = (props) => {
 
   const [baseY] = useState(new Animated.Value(0));
   const [panY] = useState(new Animated.Value(0));
-  const [shake] = useState(new Animated.Value(-1));
   const [shakeFactor] = useState(new Animated.Value(0));
   const [coinsRevealed, setCoinsRevealed] = useState(false);
+  const [engineStarted, setEngineStarted] = useState(false);
   const numShakes = useRef(0);
+
+  const gameEngine = useRef<GameEngine | null>(null);
+  const entities = useMemo(initEntities, []);
 
   useEffect(() => {
     let direction = Y.NEUTRAL;
@@ -69,31 +63,14 @@ const LevelSodaShake: Level = (props) => {
   }, []);
 
   useEffect(() => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(shake, {
-          toValue: 1,
-          duration: 1000 / 24,
-          easing: Easing.inOut(Easing.sin),
-          useNativeDriver: true,
-        }),
-        Animated.timing(shake, {
-          toValue: -1,
-          duration: 1000 / 24,
-          easing: Easing.inOut(Easing.sin),
-          useNativeDriver: true,
-        }),
-      ])
-    ).start();
-  }, []);
-
-  useEffect(() => {
     if (!coinsRevealed) return;
     Animated.timing(baseY, {
-      toValue: threshold,
+      toValue: levelHeight / 4,
       duration: 1000,
       useNativeDriver: true,
-    }).start();
+    }).start(() => {
+      setEngineStarted(true);
+    });
   }, [coinsRevealed]);
 
   const handleGestureEvent = Animated.event(
@@ -108,6 +85,10 @@ const LevelSodaShake: Level = (props) => {
       baseY.flattenOffset();
     }
   };
+  
+  const handleEvent = (e: CoinEvent) => {
+    if (e.type === 'coinPress') props.onCoinPress(e.index);
+  };
 
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
@@ -120,24 +101,28 @@ const LevelSodaShake: Level = (props) => {
         onGestureEvent={handleGestureEvent}
         onHandlerStateChange={handleStateChange}
       >
-        <Animated.View style={{ transform: [
-          { translateY: Animated.add(baseY, panY) },
-          { translateX: Animated.multiply(shake, shakeFactor) },
-        ]}}>
-          <ColaImage />
+        <Animated.View style={{ transform: [{ translateY: Animated.add(baseY, panY) }]}}>
+          <Soda
+            opened={engineStarted}
+            shakeFactor={shakeFactor}
+          />
         </Animated.View>
       </PanGestureHandler>
-      {coinsRevealed && coinPositions.map((coinPosition, index) => (
-        <View
-          key={String(index)}
-          style={{position: 'absolute', ...coinPosition}}
-        >
-          <Coin
-            found={props.coinsFound.has(index)}
-            onPress={() => props.onCoinPress(index)}
-          />
-        </View>
-      ))}
+      {engineStarted && (
+        <GameEngine
+          ref={ref => gameEngine.current = ref}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: levelWidth,
+            height: levelHeight,
+          }}
+          entities={entities}
+          systems={[Physics, system]}
+          onEvent={handleEvent}
+        />
+      )}
     </LevelContainer>
   );
 };

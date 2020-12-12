@@ -21,7 +21,7 @@ interface SimonSaysProps extends LevelProps {
 }
 
 const colorScreenSize = levelWidth / 2;
-const colorScreenBorderWidth = 4;
+const colorScreenBorderWidth = coinSize / 12;
 
 interface ColorScreenProps {
   color: CoinColor | null;

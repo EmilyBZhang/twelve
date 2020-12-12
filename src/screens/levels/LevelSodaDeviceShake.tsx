@@ -1,61 +1,67 @@
-import React, { useState, useEffect } from 'react';
-import { Alert, Animated, Easing, View } from 'react-native';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { Animated, View } from 'react-native';
+import { GameEngine } from 'react-native-game-engine';
 import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
 import { getLevelDimensions } from 'utils/getDimensions';
-import styles from 'res/styles';
-import colors from 'res/colors';
-import coinPositions from 'utils/coinPositions';
 import LevelContainer from 'components/LevelContainer';
-import Coin from 'components/Coin';
-import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
+import colors from 'res/colors';
 import DeviceShake from 'utils/DeviceShake';
+import Soda from './components/Soda';
+import initEntities from './components/Soda/entities';
+import system, { CoinEvent } from './components/Soda/system';
+import Physics from './systems/Physics';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 
-const ColaImage = styled.Image.attrs({
-  source: require('assets/images/cola.png'),
-  resizeMode: 'contain',
-})`
-  width: ${levelWidth / 2};
-  height: ${levelWidth * 5 / 6};
+const Screen = styled(Animated.View)`
+  top: 0px;
+  left: 0px;
+  position: absolute;
+  width: ${levelWidth}px;
+  height: ${levelHeight}px;
+  background-color: ${colors.badCoin}80;
 `;
 
 const LevelSodaShake: Level = (props) => {
 
-  const [shake] = useState(new Animated.Value(-1));
+  const [anim] = useState(new Animated.Value(0));
   const [shakeFactor] = useState(new Animated.Value(0));
   const [coinsRevealed, setCoinsRevealed] = useState(false);
+  const [engineStarted, setEngineStarted] = useState(false);
 
+  const gameEngine = useRef<GameEngine | null>(null);
+  const entities = useMemo(initEntities, []);
+  
   useEffect(() => {
     let numShakes = 0;
     const listener = DeviceShake.addListener(() => {
-      shakeFactor.setValue(numShakes++ / 6);
-      if (numShakes === 12) setCoinsRevealed(true);
+      if (numShakes === 12) {
+        setCoinsRevealed(true);
+        return;
+      }
+      numShakes++;
+      shakeFactor.setValue(numShakes / 6);
     });
     return () => DeviceShake.removeSubscription(listener);
   }, []);
 
   useEffect(() => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(shake, {
-          toValue: 1,
-          duration: 1000 / 24,
-          easing: Easing.inOut(Easing.sin),
-          useNativeDriver: true,
-        }),
-        Animated.timing(shake, {
-          toValue: -1,
-          duration: 1000 / 24,
-          easing: Easing.inOut(Easing.sin),
-          useNativeDriver: true,
-        }),
-      ])
-    ).start();
-  }, []);
+    if (!coinsRevealed) return;
+    Animated.timing(anim, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start(() => {
+      setEngineStarted(true);
+    });
+  }, [coinsRevealed]);
+  
+  const handleEvent = (e: CoinEvent) => {
+    if (e.type === 'coinPress') props.onCoinPress(e.index);
+  };
 
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
@@ -63,22 +69,29 @@ const LevelSodaShake: Level = (props) => {
   return (
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
-      <Animated.View style={{ transform: [
-        { translateX: Animated.multiply(shake, shakeFactor) },
-      ]}}>
-        <ColaImage />
+      <Animated.View style={{ transform: [{ translateY: Animated.multiply(anim, levelHeight / 4) }]}}>
+        <Soda
+          opened={engineStarted}
+          shakeFactor={shakeFactor}
+        />
       </Animated.View>
-      {coinsRevealed && coinPositions.map((coinPosition, index) => (
-        <View
-          key={String(index)}
-          style={{position: 'absolute', ...coinPosition}}
-        >
-          <Coin
-            found={props.coinsFound.has(index)}
-            onPress={() => props.onCoinPress(index)}
-          />
-        </View>
-      ))}
+      {engineStarted ? (
+        <GameEngine
+          ref={ref => gameEngine.current = ref}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: levelWidth,
+            height: levelHeight,
+          }}
+          entities={entities}
+          systems={[Physics, system]}
+          onEvent={handleEvent}
+        />
+      ) : (
+        <Screen style={{ opacity: Animated.subtract(1, anim) }} />
+      )}
     </LevelContainer>
   );
 };

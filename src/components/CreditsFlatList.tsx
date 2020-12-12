@@ -5,7 +5,7 @@
 import React, { FunctionComponent, useCallback, useRef, useState, useEffect } from 'react';
 import { FlatList, Linking, Animated, Easing } from 'react-native';
 import { NavigationActions } from 'react-navigation';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 import styled from 'styled-components/native';
 
 import credits from 'res/credits.json';
@@ -39,16 +39,28 @@ const TitleText = styled.Text`
   margin-bottom: ${smallMarginSize}px;
 `;
 
-const SectionContainer = styled.View`
+interface SectionProps {
+  small?: boolean;
+}
+
+const SectionContainer = styled.View<SectionProps>`
   width: 100%;
-  margin-top: ${smallMarginSize}px;
-  margin-bottom: ${smallMarginSize}px;
+  margin-top: ${props => smallMarginSize / (props.small ? 4 : 1)}px;
+  margin-bottom: ${props => smallMarginSize / (props.small ? 4 : 1)}px;
 `;
 
 const SectionHeader = styled.Text`
   width: 100%;
   text-align: center;
   font-size: ${styles.coinSize / 2}px;
+  font-family: montserrat-bold;
+  color: black;
+`;
+
+const SectionSubheader = styled.Text`
+  width: 100%;
+  text-align: center;
+  font-size: ${styles.coinSize / 3}px;
   font-family: montserrat-bold;
   color: black;
 `;
@@ -82,15 +94,16 @@ const BadgeLink = styled.TouchableOpacity`
 
 interface BadgeProps {
   url: string;
-  iconName: string;
+  icon: string;
+  color: string;
 }
 
 const Badge: FunctionComponent<BadgeProps> = (props) => (
   <BadgeLink onPress={() => Linking.openURL(props.url)}>
-    <MaterialCommunityIcons
-      name={props.iconName}
-      size={styles.coinSize * 4 / 3}
-      color={'black'}
+    <FontAwesome
+      name={props.icon}
+      size={styles.coinSize}
+      color={props.color}
     />
   </BadgeLink>
 );
@@ -104,28 +117,39 @@ const CreditsFlatList: FunctionComponent = () => (
     )}
     contentContainerStyle={contentContainerStyle}
     renderItem={({ item: section }) => (
-      <SectionContainer>
-        <SectionHeader>{section.header}</SectionHeader>
-        {section.names.map((name, index) => (
+      <SectionContainer small={!section.header}>
+        {section.header && <SectionHeader>{section.header}</SectionHeader>}
+        {section.subheader && <SectionSubheader>{section.subheader}</SectionSubheader>}
+        {section.names && section.names.map((name, index) => (
           <SectionItem key={String(index)}>
             {name}
           </SectionItem>
         ))}
+        <BadgeRow>
+        {section.links && section.links.map(({ icon, url, color }, index) => (
+          <Badge
+            key={String(index)}
+            icon={icon}
+            url={url}
+            color={color}
+          />
+        ))}
+        </BadgeRow>
       </SectionContainer>
     )}
     // Maybe convert this to an array in the JSON file?
-    ListFooterComponent={(
-      <BadgeRow>
-        <Badge
-          url={strings.urls.github}
-          iconName={'github-box'}
-        />
-        <Badge
-          url={strings.urls.youtube}
-          iconName={'youtube'}
-        />
-      </BadgeRow>
-    )}
+    // ListFooterComponent={(
+    //   <BadgeRow>
+    //     <Badge
+    //       url={strings.urls.github}
+    //       iconName={'github-box'}
+    //     />
+    //     <Badge
+    //       url={strings.urls.youtube}
+    //       iconName={'youtube'}
+    //     />
+    //   </BadgeRow>
+    // )}
   />
 );
 

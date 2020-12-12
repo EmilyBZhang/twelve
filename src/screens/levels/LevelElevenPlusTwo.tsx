@@ -52,9 +52,21 @@ const targetLetters = [
   'one +',
   'twelve',
 ].map(text => text.split(''));
+const targetLettersAlt = [
+  'twelve',
+  '+ one',
+].map(text => text.split(''))
 const targetMessage = 'one+twelve';
+const targetMessageAlt = 'twelve+one';
+
+enum Methods {
+  NONE,
+  ONE,
+  TWELVE,
+};
 
 const LevelElevenPlusTwo: Level = (props) => {
+  const [method, setMethod] = useState(Methods.NONE);
   const [messageIndex, setMessageIndex] = useState(0);
   const [
     usedLettersIndices,
@@ -68,11 +80,17 @@ const LevelElevenPlusTwo: Level = (props) => {
   const madeMessage = messageIndex === targetMessage.length;
 
   const handleLetterTouch = (letter: string, index: number) => {
-    if (targetMessage[messageIndex] === letter) {
+    if (method !== Methods.TWELVE && targetMessage[messageIndex] === letter) {
       setMessageIndex(state => state + 1);
+      setMethod(Methods.ONE)
+      toggleUsedLetterIndex(index);
+    } else if (method !== Methods.ONE && targetMessageAlt[messageIndex] === letter) {
+      setMessageIndex(state => state + 1);
+      setMethod(Methods.TWELVE)
       toggleUsedLetterIndex(index);
     } else {
-      setMessageIndex((targetMessage[0] === letter) ? 1 : 0);
+      setMessageIndex(0);
+      setMethod(Methods.NONE);
       setUsedLetterIndices(new Set());
     }
   };
@@ -87,10 +105,14 @@ const LevelElevenPlusTwo: Level = (props) => {
   );
 
   let numLetters = 0;
-  const revealedLetters = targetLetters.map((row, rowIndex) => (
+  const target = (method === Methods.TWELVE) ? targetLettersAlt : targetLetters;
+  const revealedLetters = target.map((row, rowIndex) => (
     <WordContainer key={String(rowIndex)}>
       {row.map((letter, index) => {
         const showLetter = (letter === ' ') || (messageIndex > numLetters++);
+        const showCoins = madeMessage && (
+          (method === Methods.TWELVE) ? (rowIndex === 0) : (rowIndex === 1)
+        );
         return (
           <LetterTouchable
             key={String(index)}
@@ -99,7 +121,7 @@ const LevelElevenPlusTwo: Level = (props) => {
             <Letter>
               {showLetter ? letter : ' '}
             </Letter>
-            {(madeMessage && rowIndex === 1) && (
+            {showCoins && (
               <>
                 {renderCoin(index)}
                 {renderCoin(index + 6)}

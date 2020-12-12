@@ -60,8 +60,8 @@ export const coinSounds = {
 export const coinOrder = ['G5', 'Ab5', 'A5', 'Bb5', 'B5', 'C6', 'Db6', 'D6', 'Eb6', 'E6', 'F6', 'Gb6', 'G6'];
 
 export const playCoinSound = (index: number) => {
-  playElectricGuitar(coinOrder[index]);
-  // playAudio(coinSounds[coinOrder[index]]);
+  // playElectricGuitar(coinOrder[index]);
+  playAudio(coinSounds[coinOrder[index]]);
 };
 
 export const pianoSounds = {
@@ -82,4 +82,23 @@ export const pianoSounds = {
 
 export const playPiano = (note: string) => {
   playAudio(pianoSounds[note]);
+};
+
+export const phoneSounds = {
+  '1': require('assets/sfx/phone/phone1.mp3'),
+  '2': require('assets/sfx/phone/phone2.mp3'),
+  '3': require('assets/sfx/phone/phone3.mp3'),
+  '4': require('assets/sfx/phone/phone4.mp3'),
+  '5': require('assets/sfx/phone/phone5.mp3'),
+  '6': require('assets/sfx/phone/phone6.mp3'),
+  '7': require('assets/sfx/phone/phone7.mp3'),
+  '8': require('assets/sfx/phone/phone8.mp3'),
+  '9': require('assets/sfx/phone/phone9.mp3'),
+  '*': require('assets/sfx/phone/phonestar.mp3'),
+  '0': require('assets/sfx/phone/phone0.mp3'),
+  '#': require('assets/sfx/phone/phonepound.mp3'),
+} as {[key: string]: any};
+
+export const playPhoneTone = (key: string) => {
+  playAudio(phoneSounds[key], undefined, { volume: 0.5 });
 };

@@ -4,7 +4,7 @@
 // TODO: Add volcano image that the coins spawn out of (z-index 1)
 
 import React, { useEffect, useRef, useState, FunctionComponent } from 'react';
-import { Animated, Easing } from 'react-native';
+import { Animated, Easing, View } from 'react-native';
 import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
@@ -24,7 +24,10 @@ const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 // const initX = deltaX - styles.coinSize;
 // const initY = -styles.levelNavHeight - styles.coinSize;
 const initX = (levelWidth - styles.coinSize) / 2;
-const initY = levelHeight * 2 / 3;
+const volcanoWidth = levelWidth * 13/12;
+const volcanoRatio = 2480 / 1435;
+const volcanoHeight = levelWidth / volcanoRatio;
+const initY = levelHeight - levelWidth / volcanoRatio;
 
 const coinPosition = {
   position: 'absolute',
@@ -36,15 +39,31 @@ const generateInitOffsets = () => (
   Array.from(Array(12), () => new Animated.Value(0))
 );
 
-const Volcano = styled.Image.attrs({
-  source: require('assets/images/volcano.png'),
-  resizeMode: 'stretch'
+const VolcanoContainer = styled.View.attrs({
+  pointerEvents: 'none',
 })`
   position: absolute;
   bottom: 0px;
   left: 0px;
-  width: ${levelWidth}px;
-  height: ${levelHeight - initY}px;
+  width: ${volcanoWidth}px;
+  height: ${volcanoHeight}px;
+`;
+
+const VolcanoFG = styled.Image.attrs({
+  source: require('assets/images/volcano-fg.png'),
+})`
+  position: absolute;
+  width: ${volcanoWidth}px;
+  height: ${volcanoHeight}px;
+`;
+
+const VolcanoBG = styled.Image.attrs({
+  source: require('assets/images/volcano-bg.png'),
+})`
+  position: absolute;
+  width: ${volcanoWidth}px;
+  height: ${volcanoHeight}px;
+  z-index: -1;
 `;
 
 const counterPosition = {top: 0};
@@ -110,13 +129,15 @@ const LevelVolcano: Level = (props) => {
 
   return (
     <LevelContainer
-      gradientColors={['black', 'darkred', 'darkred', '#322110']}
+      gradientColors={[`${colors.badCoin}80`, colors.background]}
     >
       <LevelCounter
         count={numCoinsFound}
         position={counterPosition}
       />
-      <Volcano />
+      <VolcanoContainer>
+        <VolcanoBG />
+      </VolcanoContainer>
       {yOffsets.map((yOffset, index: number) => (
         <Animated.View
           key={String(index)}
@@ -134,6 +155,9 @@ const LevelVolcano: Level = (props) => {
           />
         </Animated.View>
       ))}
+      <VolcanoContainer>
+        <VolcanoFG />
+      </VolcanoContainer>
     </LevelContainer>
   );
 };

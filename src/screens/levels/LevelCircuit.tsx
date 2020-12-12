@@ -22,6 +22,9 @@ import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
 import { HintIcon } from 'components/LevelNav/components'
 import HintModal from 'components/HintModal';
+import playAudio from 'utils/playAudio';
+
+const zapSound = require('assets/sfx/zap.mp3');
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 const { coinSize } = styles;
@@ -210,7 +213,10 @@ const LevelCircuit: Level = (props) => {
   const [circuitComplete, setCircuitComplete] = useState(false);
   const [hintModalOpen, setHintModelOpen] = useState(false);
 
-  const handlePlace = useCallback(() => setCircuitComplete(true), []);
+  const handlePlace = useCallback(() => {
+    setCircuitComplete(true);
+    playAudio(zapSound);
+  }, []);
   const handlePress = useCallback(() => setHintModelOpen(true), []);
   const handleClose = useCallback(() => setHintModelOpen(false), []);
 

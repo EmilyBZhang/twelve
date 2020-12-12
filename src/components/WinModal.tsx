@@ -7,7 +7,7 @@ import getDimensions from 'utils/getDimensions';
 import colors from 'res/colors';
 import styles from 'res/styles';
 import LevelText from './LevelText';
-import { LargeVictoryButton, LargeVictoryButtonText } from './LargeVictoryButton';
+import { LargeVictoryButton, LargeVictoryButtonText } from './VictoryButton';
 
 const { width: windowWidth, height: windowHeight } = getDimensions();
 

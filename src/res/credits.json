@@ -17,7 +17,7 @@
     {
       "header": "Graphics & Art",
       "names": [
-        "Steffi Shew",
+        "Soh Arsquare",
         "Bradon Zhang"
       ]
     },
@@ -44,6 +44,71 @@
         "Matthew Po",
         "Sagan Sutherland",
         "Rohil Tuli"
+      ]
+    },
+    {
+      "header": "Social Media",
+      "links": [
+        {
+          "icon": "facebook-square",
+          "url": "https://github.com/BradonZhang/twelve",
+          "color": "#4267b2"
+        },
+        {
+          "icon": "twitter",
+          "url": "https://www.youtube.com/channel/UCAsBq_Z2WhRYgBEH8vDlEQg",
+          "color": "#1da1f2"
+        },
+        {
+          "icon": "reddit",
+          "url": "https://www.reddit.com/r/TwelvePuzzle/",
+          "color": "#ff0000"
+        },
+        {
+          "icon": "github",
+          "url": "https://github.com/BradonZhang/twelve",
+          "color": "#000000"
+        }
+      ]
+    },
+    {
+      "subheader": "Bradon Zhang",
+      "links": [
+        {
+          "icon": "github",
+          "url": "https://github.com/BradonZhang/",
+          "color": "#000000"
+        }
+      ]
+    },
+    {
+      "subheader": "Alan Dai",
+      "links": [
+        {
+          "icon": "youtube-play",
+          "url": "https://www.youtube.com/channel/UCAsBq_Z2WhRYgBEH8vDlEQg",
+          "color": "#fe0000"
+        }
+      ]
+    },
+    {
+      "subheader": "Soh Arsquare",
+      "links": [
+        {
+          "icon": "tumblr-square",
+          "url": "https://github.com/BradonZhang/twelve",
+          "color": "#001936"
+        },
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/arsquare3",
+          "color": "#1da1f2"
+        },
+        {
+          "icon": "instagram",
+          "url": "https://www.instagram.com/sohhsu/",
+          "color": "#000000"
+        }
       ]
     }
   ]

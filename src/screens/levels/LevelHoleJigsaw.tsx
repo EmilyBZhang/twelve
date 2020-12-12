@@ -17,6 +17,20 @@ import LevelCounter from 'components/LevelCounter';
 import { getLevelDimensions } from 'utils/getDimensions';
 import { randCoinPoint } from 'utils/random';
 
+const jigsawImages = [
+  require('assets/images/12-partition-3-3/0.png'),
+  require('assets/images/12-partition-3-3/1.png'),
+  require('assets/images/12-partition-3-3/2.png'),
+  require('assets/images/12-partition-3-3/3.png'),
+  require('assets/images/12-partition-3-3/4.png'),
+  require('assets/images/12-partition-3-3/5.png'),
+  require('assets/images/12-partition-3-3/6.png'),
+  require('assets/images/12-partition-3-3/7.png'),
+  require('assets/images/12-partition-3-3/8.png'),
+];
+
+const finalImage = require('assets/images/12-opaque-1-1.png');
+
 const { coinSize } = styles;
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 const { UP, LEFT, RIGHT, DOWN } = Directions;
@@ -52,6 +66,16 @@ const CoinBoard = styled(Animated.View)`
   width: ${boardSize}px;
   height: ${boardSize}px;
   background-color: ${colors.lightWood};
+`;
+
+const FinalJigsaw = styled.Image.attrs({
+  source: finalImage,
+  width: boardSize,
+  height: boardSize,
+})`
+  position: absolute;
+  width: ${boardSize}px;
+  height: ${boardSize}px;
 `;
 
 const CoinContainer = styled.View`
@@ -117,10 +141,23 @@ const JigsawPieceContainer = styled(Animated.View)`
   /* elevation: 12; */
 `;
 
+interface JigsawPieceImageProps {
+  index: number;
+}
+
+const JigsawPieceImage = styled.Image.attrs<JigsawPieceImageProps>(props => ({
+  source: jigsawImages[props.index],
+}))<JigsawPieceImageProps>`
+  position: absolute;
+  width: ${cellSize}px;
+  height: ${cellSize}px;
+`;
+
 interface JigsawPieceProps {
   // Bitmap of Directions values as defined in react-native-gesture-handler
   directions: number;
   onPlace: (index: number) => any;
+  index: number;
 }
 
 const anchors = {
@@ -148,7 +185,7 @@ const AnchoredCoin: FunctionComponent<AnchoredCoinProps> = (props) => {
 };
 
 const JigsawPiece: FunctionComponent<JigsawPieceProps> = memo((props) => {
-  const { directions, onPlace } = props;
+  const { directions, onPlace, index } = props;
 
   const [active, setActive] = useState(false);
 
@@ -209,6 +246,7 @@ const JigsawPiece: FunctionComponent<JigsawPieceProps> = memo((props) => {
           { scaleY: active ? 7/6 : 1 },
         ],
       }} >
+        <JigsawPieceImage index={index} />
         {!!(directions & UP) && <AnchoredCoin direction={UP} />}
         {!!(directions & LEFT) && <AnchoredCoin direction={LEFT} />}
         {!!(directions & RIGHT) && <AnchoredCoin direction={RIGHT} />}
@@ -267,11 +305,13 @@ const LevelHoleJigsaw: Level = (props) => {
             key={String(index)}
             directions={hole}
             onPlace={onPlaceCallbacks[index]}
+            index={index}
           />
         ))}
       </JigsawContainer>
       {isRevealed && (
         <CoinBoard style={{ opacity: anim }}>
+          <FinalJigsaw />
           {coinPositions.map((coinPosition, index) => (
             <CoinContainer
               key={String(index)}

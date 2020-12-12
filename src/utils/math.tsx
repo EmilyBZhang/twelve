@@ -35,3 +35,10 @@ export const toRad = (deg: number) => deg * Math.PI / 180;
  * @param rad Angle in radians.
  */
 export const toDeg = (rad: number) => rad * 180 / Math.PI;
+
+/**
+ * Finds the inverse cotangent of x.
+ * 
+ * @param x cot(theta)
+ */
+export const acot = (x: number) => Math.PI / 2 - Math.atan(x);

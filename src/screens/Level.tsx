@@ -59,7 +59,7 @@ const Level: Screen = (props) => {
 
   const handleSetCoinsFound = (indices?: Set<number>) => {
     if (!indices) indices = new Set();
-    if (!indices.size) playAudio(buzzSound);
+    if (!indices.size && selectedIndices.size) playAudio(buzzSound);
     setSelectedIndices(indices);
     if (indices.size === 12) completeLevel(levelNum);
   };
@@ -68,9 +68,7 @@ const Level: Screen = (props) => {
     setSelectedIndices(new Set<number>());
     props.navigation.dispatch(NavigationActions.navigate({
       routeName: 'Level',
-      params: {
-        level: index
-      }
+      params: { level: index },
     }));
   }, []);
 
@@ -91,9 +89,7 @@ const Level: Screen = (props) => {
   const goToCredits = useCallback(() => {
     props.navigation.dispatch(NavigationActions.navigate({
       routeName: 'Credits',
-      params: {
-        animateBg: true
-      }
+      params: { animateBg: true },
     }));
   }, []);
 
@@ -140,7 +136,8 @@ const Level: Screen = (props) => {
     onBack: levelNum ? goToLevelSelect : goToMainMenu,
     onToggleSettings: levelNum ? handleToggleSettings : undefined,
     onPrevLevel: levelStatus[levelNum - 2]?.unlocked ? handlePrevLevel : undefined,
-    onNextLevel: levelStatus[levelNum]?.unlocked ? handleNextLevel : undefined,
+    onNextLevel: handleNextLevel,
+    // onNextLevel: levelStatus[levelNum]?.unlocked ? handleNextLevel : undefined,
     // onPrevLevel: levelStatus[levelNum - 2]?.unlocked ? handlePrevLevel : undefined,
     // onNextLevel: levelStatus[levelNum]?.unlocked ? handleNextLevel : undefined,
     onGoToLevelSelect: levelNum ? handleGoToLevelSelect : undefined,

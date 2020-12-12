@@ -51,8 +51,8 @@ const ParticleView = styled.View<ParticleViewProps>`
     const { x, y } = calcXY(props.index);
     return `top: ${y}px; left: ${x}px;`
   }}
-  width: ${particleSize}px;
-  height: ${particleSize}px;
+  width: ${particleSize + 1}px;
+  height: ${particleSize + 1}px;
   background-color: ${colors.coin};
   z-index: 144;
   ${props => props.hidden && 'display: none;'}

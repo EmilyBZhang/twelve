@@ -13,6 +13,7 @@ import LevelCounter from 'components/LevelCounter';
 import colors from 'res/colors';
 import styles from 'res/styles';
 import styled from 'styled-components/native';
+import playAudio from 'utils/playAudio';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 const svgSize = levelWidth;
@@ -20,6 +21,8 @@ const svgPadding = {
   x: (levelWidth - svgSize) / 2,
   y: (levelHeight - svgSize) / 2,
 };
+
+const zapSound = require('assets/sfx/zap.mp3');
 
 const unit = svgSize / 9;
 const padding = styles.coinSize / 2;
@@ -167,6 +170,7 @@ const LevelAcyclicAddition: Level = (props) => {
 
   useEffect(() => {
     if (!unlocked) return;
+    playAudio(zapSound);
     Animated.timing(coinOpacity, {
       toValue: 1,
       duration: 500,

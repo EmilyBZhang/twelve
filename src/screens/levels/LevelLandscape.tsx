@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import styled from 'styled-components/native';
 
@@ -28,7 +28,7 @@ const LevelContainer = styled.View`
 `;
 
 const Map = styled.Image.attrs({
-  source: require('assets/images/world-map.jpg'),
+  source: require('assets/images/12-transparent-4-3.png'),
   resizeMode: 'cover',
 })`
   width: ${landscapeWidth}px;
@@ -53,18 +53,20 @@ const LevelLandscape: Level = (props) => {
   return (
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
-      <Map />
-      {coinPositions.map((coinPosition, index: number) => (
-        <View
-          key={String(index)}
-          style={{position: 'absolute', ...coinPosition}}
-        >
-          <Coin
-            found={props.coinsFound.has(index)}
-            onPress={() => props.onCoinPress(index)}
-          />
-        </View>
-      ))}
+      <ScrollView horizontal>
+        <Map />
+        {coinPositions.map((coinPosition, index: number) => (
+          <View
+            key={String(index)}
+            style={{position: 'absolute', ...coinPosition}}
+          >
+            <Coin
+              found={props.coinsFound.has(index)}
+              onPress={() => props.onCoinPress(index)}
+            />
+          </View>
+        ))}
+      </ScrollView>
     </LevelContainer>
   );
 };

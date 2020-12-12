@@ -15,18 +15,18 @@ const { coinSize } = styles;
 
 const finalImage = require('assets/images/12-opaque-4-3.png');
 const images = [
-  require('assets/images/12-partition/0.png'),
-  require('assets/images/12-partition/1.png'),
-  require('assets/images/12-partition/2.png'),
-  require('assets/images/12-partition/3.png'),
-  require('assets/images/12-partition/4.png'),
-  require('assets/images/12-partition/5.png'),
-  require('assets/images/12-partition/6.png'),
-  require('assets/images/12-partition/7.png'),
-  require('assets/images/12-partition/8.png'),
-  require('assets/images/12-partition/9.png'),
-  require('assets/images/12-partition/10.png'),
-  require('assets/images/12-partition/11.png'),
+  require('assets/images/12-partition-4-3/0.png'),
+  require('assets/images/12-partition-4-3/1.png'),
+  require('assets/images/12-partition-4-3/2.png'),
+  require('assets/images/12-partition-4-3/3.png'),
+  require('assets/images/12-partition-4-3/4.png'),
+  require('assets/images/12-partition-4-3/5.png'),
+  require('assets/images/12-partition-4-3/6.png'),
+  require('assets/images/12-partition-4-3/7.png'),
+  require('assets/images/12-partition-4-3/8.png'),
+  require('assets/images/12-partition-4-3/9.png'),
+  require('assets/images/12-partition-4-3/10.png'),
+  require('assets/images/12-partition-4-3/11.png'),
 ];
 
 const numRows = 3;

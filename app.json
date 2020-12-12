@@ -12,9 +12,9 @@
     "orientation": "portrait",
     "icon": "./src/assets/images/12.png",
     "splash": {
-      "image": "./src/assets/images/twelve-padded-title.png",
+      "image": "./src/assets/images/twelve-splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#00ffff"
+      "backgroundColor": "#e0e0e0"
     },
     "updates": {
       "fallbackToCacheTimeout": 0

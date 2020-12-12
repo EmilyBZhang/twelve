@@ -103,7 +103,7 @@ export default [
   LevelCatchCoins,
   LevelRedLight,
   LevelWindow,
-  LevelScratchOff, // IMPROVE: eliminate loading time if possible
+  LevelScratchOff,
   LevelShrinkingCoin,
   LevelBinary0,
   LevelArrows, // IMPROVE: consider randomizing arrows
@@ -137,7 +137,7 @@ export default [
   LevelFadeOut,
   LevelSimonDoesNotSay,
   LevelSearch,
-  LevelVolcano, // IMPROVE: update asset
+  LevelVolcano,
   LevelPulley,
   LevelWordSearch,
   LevelBalloon, // IMPROVE: update assets

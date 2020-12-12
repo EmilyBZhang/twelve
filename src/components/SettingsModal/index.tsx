@@ -155,8 +155,12 @@ const SettingsModal: FunctionComponent<SettingsModalProps> = (props) => {
           onValueChange={toggleColorblind}
         />
         {children}
-        <Button title={'Clear settings'} onPress={clearSettings} />
-        <Button title={'Pass all levels'} onPress={handlePassAllLevels} />
+        {__DEV__ && (
+          <>
+            <Button title={'Clear settings'} onPress={clearSettings} />
+            <Button title={'Pass all levels'} onPress={handlePassAllLevels} />
+          </>
+        )}
       </ScrollContainer>
     </FullScreenModal>
   );

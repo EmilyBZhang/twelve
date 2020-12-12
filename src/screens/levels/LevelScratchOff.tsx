@@ -12,22 +12,6 @@ import ScratchOffCard from './components/LevelScratchOff/ScratchOffCard';
 import styles from 'res/styles';
 
 const LevelScratchOff: Level = (props) => {
-  const [rendered, setRendered] = useState(false);
-
-  useEffect(() => {
-    setTimeout(() => setRendered(true), 50);
-  }, []);
-
-  if (!rendered) return (
-    <LevelContainer color={colors.coin}>
-      <LevelText color={'white'}>Loading...</LevelText>
-      {/* <ActivityIndicator
-        color={'white'}
-        size={styles.coinSize * 3}
-      /> */}
-    </LevelContainer>
-  );
-  
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
 

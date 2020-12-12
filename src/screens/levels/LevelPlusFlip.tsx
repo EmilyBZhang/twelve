@@ -123,6 +123,7 @@ const LevelPlusFlip: Level = (props) => {
               const found = coinIndices[index] < 0;
               return (
                 <Coin
+                  key={String(index)}
                   noShimmer
                   color={bits[index] ? colors.onCoin : colors.offCoin}
                   hidden={found}

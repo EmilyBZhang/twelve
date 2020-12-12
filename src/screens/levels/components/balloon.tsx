@@ -104,14 +104,14 @@ export const createWalls = () => ({
   ),
   wallL: Matter.Bodies.rectangle(
     -levelWidth,
-    (levelHeight - styles.levelNavHeight) / 2,
+    (levelHeight + styles.levelNavHeight) / 2,
     levelWidth * 2,
     levelHeight + styles.levelNavHeight,
     { isStatic: true }
   ),
   wallR: Matter.Bodies.rectangle(
     levelWidth * 2,
-    (levelHeight - styles.levelNavHeight) / 2,
+    (levelHeight + styles.levelNavHeight) / 2,
     levelWidth * 2,
     levelHeight + styles.levelNavHeight,
     { isStatic: true }

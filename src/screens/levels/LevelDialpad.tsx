@@ -13,6 +13,7 @@ import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
 import ScavengerText from 'components/ScavengerText';
+import { playPhoneTone } from 'utils/playPitch';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 
@@ -122,6 +123,7 @@ const LevelDialpad: Level = (props) => {
   }, [coinsRevealed]);
 
   const handlePress = (index: number) => {
+    playPhoneTone(keyLabels[index]);
     const currDate = new Date();
     lastUpdated.current = currDate;
     if ((letterIndex !== -1) && (index !== keyIndex)) {
