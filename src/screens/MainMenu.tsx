@@ -1,9 +1,9 @@
 // TODO: Move playAudio to a separate component which will be included in App.tsx
 // This should be done after user settings are stored and the useSettings hook is made
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Animated, BackHandler, Share, View } from 'react-native';
-import { MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
+import React, { FunctionComponent, useCallback, useEffect, useRef, useState } from 'react';
+import { Alert, Animated, BackHandler, Share, View } from 'react-native';
+import { MaterialCommunityIcons, Octicons, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
 import { NavigationActions } from 'react-navigation';
 
@@ -12,6 +12,7 @@ import { Screen } from 'utils/interfaces';
 import getDimensions from 'utils/getDimensions';
 import playAudio, { CreateAudioResult } from 'utils/playAudio';
 import colors from 'res/colors';
+import styles from 'res/styles';
 import strings from 'res/strings';
 import ScreenContainer from 'components/ScreenContainer';
 import MuteMusicIcon from 'components/icons/MuteMusicIcon';
@@ -20,16 +21,22 @@ import SettingsModal from 'components/SettingsModal';
 import FallingCoins from 'components/FallingCoins';
 
 const { width: windowWidth, height: windowHeight } = getDimensions();
-const titleSize = 54;
+const titleSize = windowWidth / 6;
 const initTitleHeight = (windowHeight + titleSize) / 2;
-const titleHeightEnd = titleSize * 3;
+const titleHeightEnd = titleSize * 2.5;
+
+const largeButtonSize = styles.coinSize * 3.5;
+const mediumButtonSize = styles.coinSize * 2.5;
+const smallButtonSize = styles.coinSize * 1.5;
 
 interface MenuButtonProps {
   playButton?: boolean;
+  selectLevelButton?: boolean;
 }
 
 interface MenuButtonTextProps {
   playButton?: boolean;
+  selectLevelButton?: boolean;
 }
 
 const TitleContainer = styled(Animated.View)`
@@ -47,9 +54,144 @@ const TwelveTitle = styled.Text.attrs({
   color: ${colors.foreground};
 `;
 
+const PlayButtonContainer = styled.View`
+  width: ${largeButtonSize}px;
+  height: ${largeButtonSize}px;
+  border-radius: ${largeButtonSize / 2}px;
+  background-color: ${colors.foreground};
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const CircularButtonRow = styled.View`
+  flex-direction: row;
+`;
+
+const MediumButton = styled.View`
+  width: ${mediumButtonSize}px;
+  height: ${mediumButtonSize}px;
+  border-radius: ${mediumButtonSize / 2}px;
+  background-color: ${colors.foreground};
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const SmallButton = styled.View`
+  width: ${smallButtonSize}px;
+  height: ${smallButtonSize}px;
+  border-radius: ${smallButtonSize / 2}px;
+  background-color: ${colors.foreground};
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const PlayIcon = styled(MaterialIcons).attrs({
+  name: 'play-arrow',
+  size: largeButtonSize / 2,
+  color: colors.lightText,
+})`
+  transform: scale(1.5, 1.5);
+`;
+
+const AdIcon = styled(FontAwesome5).attrs({
+  name: 'ad',
+  size: smallButtonSize / 4,
+  color: colors.lightText,
+})`
+  position: absolute;
+`;
+
+const CancelIcon = styled(MaterialCommunityIcons).attrs({
+  name: 'block-helper',
+  size: smallButtonSize / 2,
+  color: colors.lightText
+})`
+  position: absolute;
+`;
+
+const SettingsIcon = styled(MaterialCommunityIcons).attrs({
+  name: 'settings',
+  size: mediumButtonSize / 2,
+  color: colors.lightText,
+})``;
+
+const LevelSelectIcon = styled(MaterialCommunityIcons).attrs({
+  name: 'view-grid',
+  size: mediumButtonSize / 2,
+  color: colors.lightText,
+})``;
+
+const CreditsIcon = styled(MaterialCommunityIcons).attrs({
+  name: 'information-outline',
+  size: smallButtonSize / 2,
+  color: colors.lightText,
+})``;
+
+const PlayText = styled.Text`
+  font-family: montserrat;
+  font-size: ${largeButtonSize / 6}px;
+  color: ${colors.lightText};
+  width: 100%;
+  text-align: center;
+`;
+
+const MediumButtonText = styled.Text`
+  font-family: montserrat;
+  font-size: ${mediumButtonSize / 8}px;
+  color: ${colors.lightText};
+  width: 100%;
+  text-align: center;
+`;
+
+const SmallButtonText = styled.Text`
+  font-family: montserrat;
+  font-size: ${smallButtonSize / 6}px;
+  color: ${colors.lightText};
+  width: 100%;
+  text-align: center;
+`;
+
+const PlayButton: FunctionComponent = () => (
+  <PlayButtonContainer>
+    <PlayIcon />
+    <PlayText>play</PlayText>
+  </PlayButtonContainer>
+);
+
+const NoAdsButton: FunctionComponent = () => (
+  <SmallButton>
+    <SmallButtonText>ads</SmallButtonText>
+    <CancelIcon />
+  </SmallButton>
+);
+
+const SettingsButton: FunctionComponent = () => (
+  <MediumButton>
+    <SettingsIcon />
+    <MediumButtonText>settings</MediumButtonText>
+  </MediumButton>
+);
+
+const LevelSelectButton: FunctionComponent = () => (
+  <MediumButton>
+    <LevelSelectIcon />
+    <MediumButtonText>levels</MediumButtonText>
+  </MediumButton>
+);
+
+const CreditsButton: FunctionComponent = () => (
+  <SmallButton>
+    <CreditsIcon />
+  </SmallButton>
+);
+
 const MenuButtons = styled(Animated.View)`
   flex: 1;
-  justify-content: center;
+  justify-content: flex-start;
+  padding-top: 20%;
   align-items: center;
   width: 100%;
 `;
@@ -58,17 +200,23 @@ const MenuButton = styled.TouchableHighlight.attrs({
   underlayColor: colors.foregroundPressed
 })`
   width: ${windowWidth / 2}px;
-  height: ${(props: MenuButtonProps) => props.playButton ? 60 : 40}px;
-  padding: 8px;
+  height: ${(props: MenuButtonProps) => (
+    styles.coinSize * (props.playButton ? 11/6 : props.selectLevelButton ? 1.25 : 13/12)
+  )}px;
+  padding: 0px ${styles.coinSize / 4}px;
   background-color: ${colors.foreground};
   border: 1px solid ${colors.foreground};
-  margin: 8px;
+  border-radius: ${styles.coinSize}px;
+  margin: ${styles.coinSize / 5}px;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
 `;
 
 const MenuButtonText = styled.Text`
-  font-size: ${(props: MenuButtonTextProps) => props.playButton ? 24 : 16}px;
+  font-size: ${(props: MenuButtonTextProps) => (
+    styles.coinSize * (props.playButton ? 2/3 : props.selectLevelButton ? 0.5 : 5/12)
+  )}px;
   font-family: montserrat;
   text-align: center;
   color: ${colors.lightText};
@@ -83,6 +231,8 @@ const CornerButtons = styled(Animated.View)`
   width: 100%;
 `;
 
+const cornerButtonSize = styles.coinSize * 1.5;
+
 const CornerButton = styled.TouchableHighlight.attrs({
   underlayColor: colors.foregroundPressed
 })`
@@ -90,13 +240,14 @@ const CornerButton = styled.TouchableHighlight.attrs({
   border: 1px solid ${colors.foreground};
   position: absolute;
   ${(props: CornerButtonProps) => props.left !== undefined ? (
-      `left: ${8 + props.left * 48}px;`
+      `left: ${cornerButtonSize / 4}px;`
     ) : (
-      `right: ${8 + props.right! * 48}px;`
+      `right: ${cornerButtonSize / 4}px;`
   )}
-  bottom: 8px;
-  width: 40px;
-  height: 40px;
+  bottom: ${cornerButtonSize / 4}px;
+  width: ${cornerButtonSize}px;
+  height: ${cornerButtonSize}px;
+  border-radius: ${cornerButtonSize / 2}px;
   justify-content: center;
   align-items: center;
 `;
@@ -209,6 +360,13 @@ const MainMenu: Screen = (props) => {
     props.navigation.dispatch(goToCredits());
   }, []);
 
+  const handleRemoveAdsPress = useCallback(() => {
+    Alert.alert(
+      'Coming soon!',
+      `Twelve only shows ads for hints and skipping levels.\n\nWe're working on a No Ads bundle to remove ads for these too!`
+    );
+  }, []);
+
   const handleMuteMusicPress = useCallback(() => {
     toggleMusic();
   }, []);
@@ -240,12 +398,12 @@ const MainMenu: Screen = (props) => {
         visible={settingsOpen}
         onClose={handleToggleSettings}
       />
-      <View style={{position: 'absolute', top: 0, left: 0}}>
-        <FallingCoins active={screenActive} />
-      </View>
       <TitleContainer style={{height: titleHeightAnim, opacity: menuOpacityAnim}}>
         <TwelveTitle />
       </TitleContainer>
+      <View style={{position: 'absolute', top: 0, left: 0}}>
+        <FallingCoins active={screenActive} />
+      </View>
       <MenuButtons
         style={{opacity: menuOpacityAnim}}
       >
@@ -253,9 +411,13 @@ const MainMenu: Screen = (props) => {
           playButton
           onPress={handlePlayPress}
         >
-          <MenuButtonText playButton>PLAY</MenuButtonText>
+          <>
+            <MaterialCommunityIcons name={'play'} size={styles.coinSize} color={colors.lightText} />
+            <MenuButtonText playButton>PLAY</MenuButtonText>
+          </>
         </MenuButton>
         <MenuButton
+          selectLevelButton
           onPress={handleSelectLevelPress}
         >
           <MenuButtonText>SELECT LEVEL</MenuButtonText>
@@ -265,32 +427,43 @@ const MainMenu: Screen = (props) => {
         >
           <MenuButtonText>CREDITS</MenuButtonText>
         </MenuButton>
+        <MenuButton
+          onPress={handleRemoveAdsPress}
+        >
+          <>
+            <MaterialCommunityIcons name={'cancel'} size={styles.coinSize / 2} color={colors.lightText} />
+            <MenuButtonText>  REMOVE ADS</MenuButtonText>
+          </>
+        </MenuButton>
         <CornerButton
           left={0}
           onPress={handleToggleSettings}
         >
-          <Octicons name={'gear'} size={24} color={colors.lightText} />
-        </CornerButton>
-        <CornerButton
-          left={1}
-          onPress={handleShare}
-        >
-          <MaterialCommunityIcons name={'share-variant'} size={24} color={colors.lightText} />
-        </CornerButton>
-        <CornerButton
-          right={1}
-          onPress={handleMuteMusicPress}
-          disabled={!settingsReady}
-        >
-          <MuteMusicIcon muted={!music} />
+          <MaterialCommunityIcons
+            name={'settings'}
+            size={styles.coinSize * 5 / 6}
+            color={colors.lightText}
+          />
         </CornerButton>
         <CornerButton
           right={0}
-          onPress={handleMuteSfxPress}
+          onPress={handleShare}
         >
-          <MuteSfxIcon muted={!sfx} />
+          <MaterialCommunityIcons
+            name={'share-variant'}
+            size={styles.coinSize * 5 / 6}
+            color={colors.lightText}
+          />
         </CornerButton>
       </MenuButtons>
+      {/* <TitleContainer>
+        <TwelveTitle />
+      </TitleContainer>
+      <PlayButton />
+      <NoAdsButton />
+      <SettingsButton />
+      <LevelSelectButton />
+      <CreditsButton /> */}
     </ScreenContainer>
   );
 };
