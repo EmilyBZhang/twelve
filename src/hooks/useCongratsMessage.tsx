@@ -14,7 +14,7 @@ const messages = [
   'Superb!',
   'Terrific!',
   'Well done!',
-  'Wonderful!'
+  'Wonderful!',
 ];
 
 const getCongratsMessage = () => {

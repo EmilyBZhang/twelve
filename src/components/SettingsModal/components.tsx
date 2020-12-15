@@ -1,7 +1,8 @@
 import React, { FunctionComponent, memo, ComponentProps } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
-import { Switch, SwitchProps } from 'react-native';
+import { Octicons } from '@expo/vector-icons';
+import { Switch, SwitchProps, TouchableOpacityProps } from 'react-native';
 
 import getDimensions from 'utils/getDimensions';
 import colors from 'res/colors';
@@ -115,3 +116,58 @@ export const SwitchableSetting: FunctionComponent<SwitchableSettingProps> = memo
     </SwitchableSettingContainer>
   );
 });
+
+export const LevelNavContainer = styled.View.attrs({ pointerEvents: 'box-none' })`
+  width: 100%;
+  min-height: ${styles.levelNavHeight}px;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const LevelNavText = styled.Text`
+  color: ${colors.lightText};
+  font-family: montserrat-bold;
+  font-size: ${styles.levelNavHeight * 2/3}px;
+  text-align: center;
+  padding: ${styles.levelNavHeight / 6}px;
+  width: ${styles.levelNavHeight * 4/3}px;
+`;
+
+export interface LevelNavButtonProps {
+  disabled?: boolean;
+  onPress?: () => any;
+}
+
+export const LevelNavButton = styled.TouchableOpacity.attrs({
+  activeOpacity: 0.5
+})<LevelNavButtonProps>`
+  margin: ${styles.levelNavHeight / 12}px;
+  padding: ${styles.levelNavHeight / 12}px;
+  height: ${styles.levelNavHeight * 5/6}px;
+  width: ${styles.levelNavHeight * 5/6}px;
+  justify-content: center;
+  align-items: center;
+  border-radius: ${styles.levelNavHeight}px;
+  opacity: ${props => props.disabled ? 1/12 : 1};
+`;
+
+export const LevelNavLeft: FunctionComponent<LevelNavButtonProps> = (props) => (
+  <LevelNavButton {...props}>
+    <Octicons
+      name={'chevron-left'}
+      size={styles.levelNavHeight * 7/12}
+      color={colors.lightText}
+    />
+  </LevelNavButton>
+);
+
+export const LevelNavRight: FunctionComponent<LevelNavButtonProps> = (props) => (
+  <LevelNavButton {...props}>
+    <Octicons
+      name={'chevron-right'}
+      size={styles.levelNavHeight * 7/12}
+      color={colors.lightText}
+    />
+  </LevelNavButton>
+);

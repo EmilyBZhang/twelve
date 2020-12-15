@@ -32,7 +32,6 @@ const SettingsButton = styled.TouchableOpacity.attrs({
   justify-content: center;
   align-items: center;
   z-index: ${styles.levelNavZIndex + 1}px;
-  background-color: ${colors.background};
 `;
 
 const RevealIcon: FunctionComponent<SwitchableSettingIconProps> = memo((props) => {

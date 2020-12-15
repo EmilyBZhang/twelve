@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { Button } from 'react-native';
+import { Octicons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
 
 import useSettings from 'hooks/useSettings';
@@ -19,6 +20,10 @@ import {
   MusicIcon,
   SfxIcon,
   ColorblindIcon,
+  LevelNavContainer,
+  LevelNavText,
+  LevelNavLeft,
+  LevelNavRight,
 } from './components';
 
 const { width: windowWidth, height: windowHeight } = getDimensions();
@@ -29,6 +34,9 @@ interface SettingsModalProps {
   visible?: boolean;
   onRestart?: () => any;
   onGoToLevelSelect?: () => any;
+  level?: number;
+  onPrevLevel?: () => any;
+  onNextLevel?: () => any;
 }
 
 const FullScreenModal = styled.View`
@@ -97,9 +105,19 @@ const SettingsButton = styled.TouchableHighlight.attrs({
 `;
 
 const SettingsModal: FunctionComponent<SettingsModalProps> = (props) => {
-  const { onClose, title, visible, onGoToLevelSelect, onRestart, children } = props;
+  const {
+    onClose,
+    title,
+    visible,
+    onGoToLevelSelect,
+    onRestart,
+    children,
+    level,
+    onPrevLevel,
+    onNextLevel,
+  } = props;
   const [
-    { music, sfx, colorblind },
+    { music, sfx, colorblind, levelStatus },
     { toggleMusic, toggleSfx, toggleColorblind, completeLevel }
   ] = useSettings();
 
@@ -113,7 +131,15 @@ const SettingsModal: FunctionComponent<SettingsModalProps> = (props) => {
     <FullScreenModal>
       <ScrollContainer>
         <SettingsTitleContainer>
-          {title && <LevelText color={colors.lightText}>{title}</LevelText>}
+          {level !== undefined ? (
+            <LevelNavContainer>
+              <LevelNavLeft onPress={onPrevLevel} disabled={!levelStatus[level - 2]?.unlocked} />
+              <LevelNavText>{level}</LevelNavText>
+              <LevelNavRight onPress={onNextLevel} disabled={!levelStatus[level]?.unlocked} />
+            </LevelNavContainer>
+          ) : (
+            title && <LevelText color={colors.lightText}>{title}</LevelText>
+          )}
           <SettingsText>Settings</SettingsText>
         </SettingsTitleContainer>
         <SettingsButtonsContainer>

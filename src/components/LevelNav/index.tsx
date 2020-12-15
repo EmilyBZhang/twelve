@@ -87,6 +87,9 @@ const LevelNav: FunctionComponent<LevelNavProps> = (props) => {
           onClose={onToggleSettings}
           onRestart={onRestart}
           onGoToLevelSelect={onGoToLevelSelect}
+          level={level}
+          onNextLevel={onNextLevel}
+          onPrevLevel={onPrevLevel}
         />
       )}
       <CenterContainer>
