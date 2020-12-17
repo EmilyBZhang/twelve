@@ -4,7 +4,7 @@ import React, {
   useEffect,
   useRef,
 } from 'react';
-import { BackHandler, Alert, NativeEventSubscription } from 'react-native';
+import { BackHandler, Alert, NativeEventSubscription, Platform } from 'react-native';
 import { AntDesign, Octicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
 
@@ -93,7 +93,7 @@ const LevelNav: FunctionComponent<LevelNavProps> = (props) => {
         />
       )}
       <CenterContainer>
-        {!!level && (
+        {(!!level && Platform.OS === 'android') && (
           <>
             <NavButton onPress={onPrevLevel} disabled={!levelStatus[level - 2]?.unlocked}>
               <Octicons

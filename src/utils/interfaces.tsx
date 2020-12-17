@@ -13,7 +13,6 @@ export interface LevelProps {
   onNextLevel: () => any;
   setSettingsOpen: (settingsOpen: boolean) => any;
   navigation: NavigationScreenProp<any>;
-  noSound?: boolean;
 }
 
 export type Screen = FunctionComponent<ScreenProps>;

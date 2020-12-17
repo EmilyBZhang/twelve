@@ -183,7 +183,9 @@ const SettingsModal: FunctionComponent<SettingsModalProps> = (props) => {
         {children}
         {__DEV__ && (
           <>
+            <LevelText> </LevelText>
             <Button title={'Clear settings'} onPress={clearSettings} />
+            <LevelText> </LevelText>
             <Button title={'Pass all levels'} onPress={handlePassAllLevels} />
           </>
         )}

@@ -64,6 +64,12 @@ const LevelSettingsWin: Level = (props) => {
     props.navigation.goBack();
     props.navigation.navigate('Level', { level: props.levelNum });
   }, []);
+  const handlePrevLevel = useCallback(() => {
+    props.navigation.navigate('Level', { level: props.levelNum - 1 });
+  }, []);
+  const handleNextLevel = useCallback(() => {
+    props.navigation.navigate('Level', { level: props.levelNum + 1 });
+  }, []);
 
   return (
     <>
@@ -76,6 +82,9 @@ const LevelSettingsWin: Level = (props) => {
         onClose={handleSettingsClose}
         onGoToLevelSelect={handleGoToLevelSelect}
         onRestart={handleRestart}
+        level={props.levelNum}
+        onPrevLevel={handlePrevLevel}
+        onNextLevel={handleNextLevel}
       >
         <SwitchableSetting
           value={isRevealed}

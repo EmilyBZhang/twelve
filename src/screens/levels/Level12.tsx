@@ -10,6 +10,9 @@ import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelCounter from 'components/LevelCounter';
 import { CenterContainer, TopText } from 'components/LevelNav/components';
+import SettingsModal from 'components/SettingsModal';
+import { SettingsIcon } from 'components/LevelNav/components'
+import { LevelNavText, LevelNavContainer } from 'components/SettingsModal/components';
 
 const { width: windowWidth, height: windowHeight } = getDimensions();
 
@@ -28,28 +31,90 @@ const CoinsContainer = styled(Animated.View)`
   height: ${styles.coinSize}px;
 `;
 
-const LevelPressLevelDisplay: Level = (props) => {
+const SettingsButton = styled.TouchableOpacity.attrs({
+  activeOpacity: 0.5,
+})`
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: ${styles.levelNavHeight}px;
+  height: ${styles.levelNavHeight}px;
+  justify-content: center;
+  align-items: center;
+  z-index: ${styles.levelNavZIndex + 1}px;
+`;
+
+const Level12: Level = (props) => {
 
   const [coinOpacity] = useState(new Animated.Value(0));
-  const [coinsRevealed, setCoinsRevealed] = useState(false);
+  const [isRevealed, setIsRevealed] = useState(false);
+  const [modalOpened, setModalOpened] = useState(false);
 
   useEffect(() => {
-    if (!coinsRevealed) return;
+    if (!isRevealed) return;
     Animated.timing(coinOpacity, {
       toValue: 1,
       duration: 500,
       easing: Easing.linear,
       useNativeDriver: true,
     }).start();
-  }, [coinsRevealed]);
+  }, [isRevealed]);
 
-  const handleReveal = useCallback(() => setCoinsRevealed(true), []);
+  const handleReveal = useCallback(() => setIsRevealed(true), []);
+  const handleSettingsClose = useCallback(() => setModalOpened(false), []);
+  const handleGoToLevelSelect = useCallback(() => {
+    props.navigation.navigate('Level', { level: 0 });
+  }, []);
+  const handleRestart = useCallback(() => {
+    props.navigation.goBack();
+    props.navigation.navigate('Level', { level: props.levelNum });
+  }, []);
+  const handlePrevLevel = useCallback(() => {
+    props.navigation.navigate('Level', { level: props.levelNum - 1 });
+  }, []);
+  const handleNextLevel = useCallback(() => {
+    props.navigation.navigate('Level', { level: props.levelNum + 1 });
+  }, []);
 
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound === 12;
 
   return (
     <>
+      <SettingsButton onPress={() => setModalOpened(true)}>
+        <SettingsIcon />
+      </SettingsButton>
+      <SettingsModal
+        title={`Level ${props.levelNum}`}
+        visible={modalOpened}
+        onClose={handleSettingsClose}
+        onGoToLevelSelect={handleGoToLevelSelect}
+        onRestart={handleRestart}
+        level={props.levelNum}
+        onPrevLevel={handlePrevLevel}
+        onNextLevel={handleNextLevel}
+      >
+        <TransformedContainer pointerEvents={'box-none'} style={{ transform: [{ translateY: styles.levelNavHeight }]}}>
+          <LevelNavContainer
+            pointerEvents={'box-none'}
+            style={{ backgroundColor: 'transparent' }}
+          >
+            <Animated.View style={{ opacity: Animated.subtract(1, coinOpacity) }}>
+              <TouchableOpacity onPressIn={handleReveal}>
+                <LevelNavText style={{ color: colors.coin }}>12</LevelNavText>
+              </TouchableOpacity>
+            </Animated.View>
+            {isRevealed && (
+              <CoinsContainer style={{ opacity: coinOpacity }}>
+                <Coin
+                  found={twelve}
+                  onPress={() => props.onCoinPress(numCoinsFound)}
+                />
+              </CoinsContainer>
+            )}
+          </LevelNavContainer>
+        </TransformedContainer>
+      </SettingsModal>
       <TransformedContainer pointerEvents={'box-none'}>
         <CenterContainer
           pointerEvents={'box-none'}
@@ -61,7 +126,7 @@ const LevelPressLevelDisplay: Level = (props) => {
             </TouchableOpacity>
           </Animated.View>
         </CenterContainer>
-        {coinsRevealed && (
+        {isRevealed && (
           <CoinsContainer style={{ opacity: coinOpacity }}>
             <Coin
               found={twelve}
@@ -77,4 +142,4 @@ const LevelPressLevelDisplay: Level = (props) => {
   );
 };
 
-export default LevelPressLevelDisplay;
+export default Level12;
