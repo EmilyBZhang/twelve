@@ -26,7 +26,7 @@ export const SmallVictoryButton = styled.TouchableHighlight.attrs({
   background-color: ${colors.foreground};
   padding: ${styles.coinSize / 3}px;
   border-radius: ${styles.coinSize * 2 / 3}px;
-  /* margin: ${styles.coinSize * 2 / 3}px; */
+  margin: ${styles.coinSize / 4}px ${styles.coinSize / 2}px;
   opacity: ${props => props.disabled ? 0.5 : 1};
 `;
 

@@ -16,7 +16,7 @@ export interface CoinEvent extends GameEvent {
 const randAngle = () => Math.PI * randFloat(5/12, 7/12);
 const resetBody = (body: Matter.Body) => {
   const angle = randAngle();
-  const r = styles.coinSize / 6;
+  const r = levelHeight / 108;
   Matter.Body.setPosition(body, {
     x: levelWidth / 2,
     y: levelHeight / 2,

@@ -29,6 +29,13 @@ const largeButtonSize = styles.coinSize * 3.5;
 const mediumButtonSize = styles.coinSize * 2.5;
 const smallButtonSize = styles.coinSize * 1.5;
 
+const MainContainer = styled(Animated.View)`
+  flex: 1;
+  width: 100%;
+  flex-direction: column;
+  justify-content: flex-end;
+`;
+
 interface MenuButtonProps {
   playButton?: boolean;
   selectLevelButton?: boolean;
@@ -40,8 +47,9 @@ interface MenuButtonTextProps {
 }
 
 const TitleContainer = styled(Animated.View)`
-  width: ${windowWidth}px;
-  justify-content: flex-end;
+  flex: 1;
+  width: 100%;
+  justify-content: center;
 `;
 
 const TwelveTitle = styled.Text.attrs({
@@ -188,12 +196,16 @@ const CreditsButton: FunctionComponent = () => (
   </SmallButton>
 );
 
+const cornerButtonSize = styles.coinSize * 1.25;
+
 const MenuButtons = styled(Animated.View)`
-  flex: 1;
-  justify-content: flex-start;
-  padding-top: 20%;
+  justify-content: center;
+  /* padding-top: 20%; */
   align-items: center;
   width: 100%;
+  height: 75%;
+  /* background-color: purple; */
+  padding-bottom: ${cornerButtonSize}px;
 `;
 
 const MenuButton = styled.TouchableHighlight.attrs({
@@ -222,29 +234,20 @@ const MenuButtonText = styled.Text`
   color: ${colors.lightText};
 `;
 
-interface CornerButtonProps {
-  left?: number;
-  right?: number;
-}
-
 const CornerButtons = styled(Animated.View)`
+  position: absolute;
+  bottom: 0px;
   width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
 `;
-
-const cornerButtonSize = styles.coinSize * 1.5;
 
 const CornerButton = styled.TouchableHighlight.attrs({
   underlayColor: colors.foregroundPressed
 })`
   background-color: ${colors.foreground};
   border: 1px solid ${colors.foreground};
-  position: absolute;
-  ${(props: CornerButtonProps) => props.left !== undefined ? (
-      `left: ${cornerButtonSize / 4}px;`
-    ) : (
-      `right: ${cornerButtonSize / 4}px;`
-  )}
-  bottom: ${cornerButtonSize / 4}px;
+  margin: ${cornerButtonSize / 4}px;
   width: ${cornerButtonSize}px;
   height: ${cornerButtonSize}px;
   border-radius: ${cornerButtonSize / 2}px;
@@ -398,72 +401,64 @@ const MainMenu: Screen = (props) => {
         visible={settingsOpen}
         onClose={handleToggleSettings}
       />
-      <TitleContainer style={{height: titleHeightAnim, opacity: menuOpacityAnim}}>
-        <TwelveTitle />
-      </TitleContainer>
       <View style={{position: 'absolute', top: 0, left: 0}}>
         <FallingCoins active={screenActive} />
       </View>
-      <MenuButtons
-        style={{opacity: menuOpacityAnim}}
-      >
-        <MenuButton
-          playButton
-          onPress={handlePlayPress}
+      <MainContainer>
+        <TwelveTitle />
+        <MenuButtons
+          style={{opacity: menuOpacityAnim}}
         >
-          <>
-            <MaterialCommunityIcons name={'play'} size={styles.coinSize} color={colors.lightText} />
-            <MenuButtonText playButton>PLAY</MenuButtonText>
-          </>
-        </MenuButton>
-        <MenuButton
-          selectLevelButton
-          onPress={handleSelectLevelPress}
-        >
-          <MenuButtonText>SELECT LEVEL</MenuButtonText>
-        </MenuButton>
-        <MenuButton
-          onPress={handleCreditsPress}
-        >
-          <MenuButtonText>CREDITS</MenuButtonText>
-        </MenuButton>
-        <MenuButton
-          onPress={handleRemoveAdsPress}
-        >
-          <>
-            <MaterialCommunityIcons name={'cancel'} size={styles.coinSize / 2} color={colors.lightText} />
-            <MenuButtonText>  REMOVE ADS</MenuButtonText>
-          </>
-        </MenuButton>
+          <MenuButton
+            playButton
+            onPress={handlePlayPress}
+          >
+            <>
+              <MaterialCommunityIcons name={'play'} size={styles.coinSize} color={colors.lightText} />
+              <MenuButtonText playButton>PLAY</MenuButtonText>
+            </>
+          </MenuButton>
+          <MenuButton
+            selectLevelButton
+            onPress={handleSelectLevelPress}
+          >
+            <MenuButtonText>SELECT LEVEL</MenuButtonText>
+          </MenuButton>
+          <MenuButton
+            onPress={handleCreditsPress}
+          >
+            <MenuButtonText>CREDITS</MenuButtonText>
+          </MenuButton>
+          <MenuButton
+            onPress={handleRemoveAdsPress}
+          >
+            <>
+              <MaterialCommunityIcons name={'cancel'} size={styles.coinSize / 2} color={colors.lightText} />
+              <MenuButtonText>  REMOVE ADS</MenuButtonText>
+            </>
+          </MenuButton>
+        </MenuButtons>
+      </MainContainer>
+      <CornerButtons>
         <CornerButton
-          left={0}
           onPress={handleToggleSettings}
         >
           <MaterialCommunityIcons
             name={'settings'}
-            size={styles.coinSize * 5 / 6}
+            size={cornerButtonSize * 2/3}
             color={colors.lightText}
           />
         </CornerButton>
         <CornerButton
-          right={0}
           onPress={handleShare}
         >
-          <MaterialCommunityIcons
-            name={'share-variant'}
-            size={styles.coinSize * 5 / 6}
-            color={colors.lightText}
-          />
+        <MaterialCommunityIcons
+          name={'share-variant'}
+          size={cornerButtonSize * 2/3}
+          color={colors.lightText}
+        />
         </CornerButton>
-      </MenuButtons>
-      {/* <TitleContainer>
-        <TwelveTitle />
-      </TitleContainer>
-      <PlayButton />
-      <NoAdsButton />
-      <SettingsButton />
-      <LevelSelectButton />
-      <CreditsButton /> */}
+      </CornerButtons>
     </ScreenContainer>
   );
 };

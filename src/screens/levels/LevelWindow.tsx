@@ -12,11 +12,11 @@ import LevelCounter from 'components/LevelCounter';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 const windowWidth = levelWidth * 2 / 3;
-const windowFrameBorderWidth = 4;
+const windowFrameBorderWidth = styles.coinSize / 12;
 const windowFrameWidth = windowWidth + windowFrameBorderWidth * 2;
 const paneWidth = windowWidth / 2;
 const paneBorderWidth = windowFrameBorderWidth / 2;
-const windowsillHeight = 24;
+const windowsillHeight = styles.coinSize * 7/12;
 
 const WindowFrame = styled.View`
   width: ${windowFrameWidth}px;

@@ -187,6 +187,7 @@ const SettingsModal: FunctionComponent<SettingsModalProps> = (props) => {
             <Button title={'Clear settings'} onPress={clearSettings} />
             <LevelText> </LevelText>
             <Button title={'Pass all levels'} onPress={handlePassAllLevels} />
+            <LevelText> </LevelText>
           </>
         )}
       </ScrollContainer>

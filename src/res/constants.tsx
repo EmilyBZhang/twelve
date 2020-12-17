@@ -15,3 +15,10 @@ export const AD_UNIT_ID_PROD = Platform.select({
   default: 'ca-app-pub-5600114350279556/4329155269',
 });
 export const AD_UNIT_ID = (Constants.isDevice || __DEV__) ? AD_UNIT_ID_PROD : AD_UNIT_ID_TEST;
+
+// TODO: Find more legitimate way to detect notch
+export const HAS_NOTCH = Platform.select({
+  ios: Constants.platform.ios?.model.search(/iPhone [X1]/g) === 0,
+  android: false,
+  default: false,
+});

@@ -22,6 +22,7 @@ import {
 import SettingsModal from 'components/SettingsModal';
 import HintModal from 'components/HintModal';
 import useSettings from 'hooks/useSettings';
+import { HAS_NOTCH } from 'res/constants';
 
 interface LevelNavProps {
   onBack: () => any;
@@ -93,7 +94,7 @@ const LevelNav: FunctionComponent<LevelNavProps> = (props) => {
         />
       )}
       <CenterContainer>
-        {(!!level && Platform.OS === 'android') && (
+        {(!!level && !HAS_NOTCH) && (
           <>
             <NavButton onPress={onPrevLevel} disabled={!levelStatus[level - 2]?.unlocked}>
               <Octicons

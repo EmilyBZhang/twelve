@@ -12,6 +12,7 @@ export interface LevelProps {
   setCoinsFound: (indices?: Set<number>) => void;
   onNextLevel: () => any;
   setSettingsOpen: (settingsOpen: boolean) => any;
+  setHintOpen: (hintOpen: boolean) => any;
   navigation: NavigationScreenProp<any>;
 }
 

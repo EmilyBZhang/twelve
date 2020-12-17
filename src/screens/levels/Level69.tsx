@@ -12,7 +12,12 @@ import LevelCounter from 'components/LevelCounter';
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 
 const NiceTextContainer = styled.View`
+  position: absolute;
+  top: 0px;
   width: ${levelWidth * 3}px;
+  height: ${levelWidth}px;
+  justify-content: flex-end;
+  align-items: center;
 `;
 
 const NiceText = styled.Text`
@@ -24,12 +29,12 @@ const NiceText = styled.Text`
 
 const position1 = {
   left: levelWidth * 477/1440 - styles.coinSize / 2,
-  top: levelHeight * 1000/2368 - styles.coinSize / 2,
+  top: levelWidth * 884/1440 - styles.coinSize / 2,
 };
 
 const position2 = {
   left: levelWidth * 1280/1440,
-  top: levelHeight * 1360/2368 - styles.coinSize / 2,
+  top: levelWidth * 1220/1440 - styles.coinSize / 2,
 };
 
 const CoinContainer = styled.View`
@@ -38,10 +43,14 @@ const CoinContainer = styled.View`
   height: ${styles.coinSize}px;
 `;
 
+const InvisibleText = styled.Text`
+  color: transparent;
+`;
+
 const Level69: Level = (props) => (
   <LevelContainer>
     <LevelCounter count={props.coinsFound.size} />
-    <NiceTextContainer><NiceText>nıce </NiceText></NiceTextContainer>
+    <NiceTextContainer><NiceText>nıce<InvisibleText>.</InvisibleText></NiceText></NiceTextContainer>
     <CoinContainer style={position1} />
     {Array.from(Array(6), (_, index) => !props.coinsFound.has(index) && (
       <CoinContainer key={String(index)} style={position1}>

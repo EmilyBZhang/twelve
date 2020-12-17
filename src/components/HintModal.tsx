@@ -1,7 +1,7 @@
 import React, { FunctionComponent, memo, useState, useMemo, useEffect, useCallback, useRef } from 'react';
-import hints from 'res/hints.json';
 import styled from 'styled-components/native';
 
+import hints from 'res/hints.json';
 import colors from 'res/colors';
 import styles from 'res/styles';
 import useRewardedAd, { EventMap } from 'hooks/useRewardedAd';
@@ -40,7 +40,11 @@ const FullScreenModal = styled.View`
   z-index: ${styles.levelNavZIndex + 1};
   justify-content: flex-start;
   align-items: center;
-  padding: ${100/12}%;
+  padding: ${100/24}% ${100/12}%;
+`;
+
+const ButtonsContainer = styled.View`
+  width: 100%;
 `;
 
 const HintTitle = styled.Text`
@@ -49,7 +53,14 @@ const HintTitle = styled.Text`
   color: ${colors.foreground};
   text-align: center;
   width: 100%;
-  margin: ${styles.coinSize / 2}px;
+  margin-top: ${styles.coinSize / 2}px;
+`;
+
+const HintTextContainer = styled.View`
+  width: 100%;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
 `;
 
 const HintText = styled.Text`
@@ -57,8 +68,6 @@ const HintText = styled.Text`
   font-size: ${styles.coinSize * 2 / 3}px;
   color: ${colors.darkText};
   text-align: center;
-  width: 100%;
-  margin: ${styles.coinSize}px 0px;
 `;
 
 const NudgeText = styled.Text`
@@ -67,8 +76,6 @@ const NudgeText = styled.Text`
   color: ${colors.darkText};
   text-align: center;
   width: 100%;
-  position: absolute;
-  bottom: ${styles.coinSize}px;
 `;
 
 // TODO: IDEA: Light modal on black background
@@ -146,6 +153,7 @@ const HintModal: FunctionComponent<HintModalProps> = memo((props) => {
   const requestAd = useRewardedAd(callbacks);
 
   useEffect(() => {
+    setHint(waitingText);
     hintNum.current = 0;
   }, [level]);
 
@@ -167,17 +175,24 @@ const HintModal: FunctionComponent<HintModalProps> = memo((props) => {
   return (
     <FullScreenModal>
       <HintTitle>Hint {hintNum.current + 1}/{levelHints.length}</HintTitle>
-      <HintText>{hint}</HintText>
+      <HintTextContainer>
+        <HintText>{hint}</HintText>
+      </HintTextContainer>
+      <ButtonsContainer>
+        <LargeVictoryButton
+          onPress={handleClose}
+          disabled={!closable.current}
+        >
+          <LargeVictoryButtonText>Return to game</LargeVictoryButtonText>
+        </LargeVictoryButton>
+        <SmallVictoryButton
+          onPress={handleSkip}
+          disabled={!closable.current || level === NUM_LEVELS}
+        >
+          <SmallVictoryButtonText>Watch ad to skip level</SmallVictoryButtonText>
+        </SmallVictoryButton>
+      </ButtonsContainer>
       <NudgeText>{nudgeText}</NudgeText>
-      <LargeVictoryButton onPress={handleClose} disabled={!closable.current}>
-        <LargeVictoryButtonText>Return to game</LargeVictoryButtonText>
-      </LargeVictoryButton>
-      <SmallVictoryButton
-        onPress={handleSkip}
-        disabled={!closable.current || level === NUM_LEVELS}
-      >
-        <SmallVictoryButtonText>Watch ad to skip level</SmallVictoryButtonText>
-      </SmallVictoryButton>
     </FullScreenModal>
   );
 });

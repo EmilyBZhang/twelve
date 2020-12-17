@@ -16,8 +16,9 @@ const landscapeWidth = windowHeight;
 const landscapeHeight = windowWidth - styles.levelNavHeight;
 
 const coinPositions = calcPositions(4, 3, {
-  containerWidth: landscapeWidth,
+  containerWidth: landscapeWidth * 1.5,
   containerHeight: landscapeHeight,
+  xOffset: -landscapeWidth / 4
 });
 
 const LevelContainer = styled.View`

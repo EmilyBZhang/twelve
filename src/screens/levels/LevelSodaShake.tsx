@@ -101,7 +101,9 @@ const LevelSodaShake: Level = (props) => {
         onGestureEvent={handleGestureEvent}
         onHandlerStateChange={handleStateChange}
       >
-        <Animated.View style={{ transform: [{ translateY: Animated.add(baseY, panY) }]}}>
+        <Animated.View style={{ transform: [{
+          translateY: coinsRevealed ? Animated.add(baseY, panY) : Animated.diffClamp(Animated.add(baseY, panY), -threshold, threshold)
+        }]}}>
           <Soda
             opened={engineStarted}
             shakeFactor={shakeFactor}

@@ -13,6 +13,7 @@ import { CenterContainer, TopText } from 'components/LevelNav/components';
 import SettingsModal from 'components/SettingsModal';
 import { SettingsIcon } from 'components/LevelNav/components'
 import { LevelNavText, LevelNavContainer } from 'components/SettingsModal/components';
+import { HAS_NOTCH } from 'res/constants';
 
 const { width: windowWidth, height: windowHeight } = getDimensions();
 
@@ -118,7 +119,7 @@ const Level12: Level = (props) => {
           </LevelNavContainer>
         </TransformedContainer>
       </SettingsModal>
-      {(Platform.OS === 'android') && (
+      {!HAS_NOTCH && (
         <TransformedContainer pointerEvents={'box-none'}>
           <CenterContainer
             pointerEvents={'box-none'}

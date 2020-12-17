@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useState } from 'react';
-import { Animated } from 'react-native';
+import { Animated, Platform } from 'react-native';
 import {
   State,
   PanGestureHandler,
@@ -56,6 +56,12 @@ const ReversedView = styled.View`
   transform: scaleY(-1);
 `;
 
+const reverser = Platform.select({
+  ios: 1,
+  android: -1,
+  default: -1,
+});
+
 const LevelPulley: Level = (props) => {
 
   const [baseY] = useState(new Animated.Value(pulleyHeight / 2 - levelHeight));
@@ -66,7 +72,7 @@ const LevelPulley: Level = (props) => {
   );
 
   const handleGestureEventReverse = (e: PanGestureHandlerGestureEvent) => {
-    panY.setValue(-e.nativeEvent.translationY);
+    panY.setValue(e.nativeEvent.translationY * reverser);
   };
 
   const handleStateChange = (e: PanGestureHandlerStateChangeEvent) => {
@@ -78,7 +84,7 @@ const LevelPulley: Level = (props) => {
   };
 
   const handleStateChangeReverse = (e: PanGestureHandlerStateChangeEvent) => {
-    e.nativeEvent.translationY *= -1;
+    e.nativeEvent.translationY *= reverser;
     handleStateChange(e);
   };
 

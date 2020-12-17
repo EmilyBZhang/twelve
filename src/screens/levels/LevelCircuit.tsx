@@ -217,7 +217,7 @@ const LevelCircuit: Level = (props) => {
     setCircuitComplete(true);
     playAudio(zapSound);
   }, []);
-  const handlePress = useCallback(() => setHintModelOpen(true), []);
+  const handlePress = useCallback(() => props.setHintOpen(true), []);
   const handleClose = useCallback(() => setHintModelOpen(false), []);
 
   const handleCoinPress = (index: number) => circuitComplete && props.onCoinPress(index);
@@ -232,11 +232,6 @@ const LevelCircuit: Level = (props) => {
         locked={circuitComplete}
         onPlace={handlePlace}
         onPress={handlePress}
-      />
-      <HintModal
-        level={68}
-        visible={hintModalOpen}
-        onClose={handleClose}
       />
       <LevelContainer>
         <LevelCounter count={numCoinsFound} />

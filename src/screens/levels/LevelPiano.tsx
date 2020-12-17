@@ -80,6 +80,7 @@ const LyricsContainer = styled.View`
   position: absolute;
   bottom: 0px;
   align-items: center;
+  z-index: -1;
 `;
 
 const Lyrics = styled(LevelText)`
