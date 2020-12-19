@@ -24,7 +24,7 @@ const coinPositions = Array.from(Array(12), (_, index) => {
 const LevelClock: Level = (props) => {
 
   const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound === 12;
+  const twelve = numCoinsFound >= 12;
 
   // Since the level takes ~1 min to complete right now,
   // Consider inverting the relationship (you can't press things being crossed by red)

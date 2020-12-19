@@ -78,7 +78,7 @@ const SimonSays: FunctionComponent<SimonSaysProps> = (props) => {
   const { simonDoesNotSay } = props;
   
   const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound === 12;
+  const twelve = numCoinsFound >= 12;
 
   const [blinkingColors, setBlinkingColors] = useState(true);
   const [iterationsIndex, setIterationsIndex] = useState(0);

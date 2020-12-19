@@ -76,7 +76,7 @@ const LevelSettingsToggle: Level = (props) => {
   const reset = () => props.setCoinsFound(new Set());
 
   const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound === 12;
+  const twelve = numCoinsFound >= 12;
 
   return (
     <LevelContainer>

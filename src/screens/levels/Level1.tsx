@@ -11,7 +11,7 @@ import LevelCounter from 'components/LevelCounter';
 const Level1: Level = (props) => {
 
   const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound === 12;
+  const twelve = numCoinsFound >= 12;
 
   return (
     <LevelContainer>

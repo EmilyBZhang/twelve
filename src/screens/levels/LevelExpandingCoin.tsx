@@ -14,7 +14,7 @@ const coinSize = styles.coinSize;
 const LevelExpandingCoin: Level = (props) => {
 
   const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound === 12;
+  const twelve = numCoinsFound >= 12;
 
   return (
     <LevelContainer>

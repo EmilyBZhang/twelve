@@ -260,7 +260,7 @@ const LevelConveyorBelt: Level = (props) => {
   const handleSettingsGearPlace = useCallback(() => setBeltActive(true), []);
 
   const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound === 12;
+  const twelve = numCoinsFound >= 12;
 
   const rotate = gearAnim.interpolate({
     inputRange: [0, 1],

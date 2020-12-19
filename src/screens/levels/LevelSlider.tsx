@@ -61,7 +61,7 @@ const LevelSlider: Level = (props) => {
   const [sliderVal, setSliderVal] = useState<number>(0);
 
   const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound === 12;
+  const twelve = numCoinsFound >= 12;
 
   return (
     <LevelContainer>

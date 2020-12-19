@@ -172,7 +172,7 @@ const LevelPrismDimensions: Level = (props) => {
   }, [isRevealed]);
 
   const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound === 12;
+  const twelve = numCoinsFound >= 12;
 
   return (
     <LevelContainer style={{ justifyContent: 'flex-start' }}>

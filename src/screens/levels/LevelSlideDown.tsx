@@ -39,7 +39,7 @@ const RotatedContainer = styled.View`
 const LevelSlideDown: Level = (props) => {
 
   const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound === 12;
+  const twelve = numCoinsFound >= 12;
 
   const handleCoinPress = (index: number) => {
     const numRowsRemaining = 4 - Math.floor((numCoinsFound + 1) / 3);

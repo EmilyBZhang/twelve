@@ -247,7 +247,7 @@ const LevelSlidingPuzzle: Level = (props) => {
   }, []);
 
   const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound === 12;
+  const twelve = numCoinsFound >= 12;
 
   // TODO: look into disabling the touchable when not adjacent to blank
   return (

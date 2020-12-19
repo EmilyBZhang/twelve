@@ -75,7 +75,7 @@ const LevelFloatingPoint: Level = (props) => {
     return () => redOpacityAnim.removeListener(listener);
   }, [])
   
-  const twelve = numCoinsFound === 12;
+  const twelve = numCoinsFound >= 12;
 
   const handleCoinPress = () => {
     const newNumCoinsFound = Math.min(

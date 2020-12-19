@@ -13,7 +13,7 @@ import {
   Balloon,
   Ground,
   CoinContainer,
-  Cloud,
+  // Cloud,
   createBalloonBody,
   createWalls,
 } from './components/balloon';
@@ -107,10 +107,10 @@ const LevelBalloon2: Level = (props) => {
 
   return (
     <LevelContainer gradientColors={['#0080ff', 'cyan']}>
-      <Cloud style={{transform: [{translateX: cloudAnim}]}} />
+      {/* <Cloud style={{transform: [{translateX: cloudAnim}]}} />
       <Cloud style={{
         transform: [{translateX: Animated.add(cloudAnim, levelWidth)}]
-      }} />
+      }} /> */}
       <GameEngine
         ref={ref => gameEngine.current = ref}
         style={{

@@ -34,7 +34,7 @@ const Level: Screen = (props) => {
   const [{ levelStatus }, { completeLevel }] = useSettings();
 
   const coinsFound = selectedIndices.size;
-  const twelve = coinsFound === 12;
+  const twelve = coinsFound >= 12;
 
   useEffect(() => {
     if (twelve) {

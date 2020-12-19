@@ -137,7 +137,7 @@ const LevelClockOrder: Level = (props) => {
   }, []);
 
   const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound === 12;
+  const twelve = numCoinsFound >= 12;
 
   const handleCoinPress = (index: number) => {
     if (index === numCoinsFound) props.onCoinPress(index);

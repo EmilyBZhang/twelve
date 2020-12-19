@@ -25,7 +25,7 @@ const LevelTeleportingCoin: Level = (props) => {
   const [coinPosition, setCoinPosition] = useState(() => randCoinPoint());
 
   const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound === 12;
+  const twelve = numCoinsFound >= 12;
 
   const handleCoinPress = () => {
     props.onCoinPress(numCoinsFound);

@@ -117,7 +117,7 @@ const LevelVolcano: Level = (props) => {
   }, [loopAnim.current]);
 
   const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound === 12;
+  const twelve = numCoinsFound >= 12;
 
   const handleCoinPress = (index: number) => {
     if (props.coinsFound.has(index)) {

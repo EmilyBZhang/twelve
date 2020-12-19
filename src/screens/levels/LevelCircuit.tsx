@@ -223,7 +223,7 @@ const LevelCircuit: Level = (props) => {
   const handleCoinPress = (index: number) => circuitComplete && props.onCoinPress(index);
 
   const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound === 12;
+  const twelve = numCoinsFound >= 12;
 
   return (
     <>

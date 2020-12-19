@@ -17,7 +17,7 @@ import {
   Balloon,
   Ground,
   CoinContainer,
-  Cloud,
+  // Cloud,
   createBalloonBody,
   createWalls,
 } from './components/balloon';

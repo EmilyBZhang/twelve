@@ -75,7 +75,7 @@ const LevelElevenPlusTwo: Level = (props) => {
   ] = useSelectedIndices();
 
   const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound === 12;
+  const twelve = numCoinsFound >= 12;
 
   const madeMessage = messageIndex === targetMessage.length;
 

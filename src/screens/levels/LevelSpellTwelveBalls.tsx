@@ -17,7 +17,7 @@ const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 const LevelSpellTwelveBalls: Level = (props) => {
 
   const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound === 12;
+  const twelve = numCoinsFound >= 12;
 
   return (
     <LevelContainer>

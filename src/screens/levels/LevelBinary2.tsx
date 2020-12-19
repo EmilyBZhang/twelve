@@ -92,7 +92,7 @@ const LevelBinary: Level = (props) => {
   const [coinAnimComplete, setCoinAnimComplete] = useState(false);
 
   const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound === 12;
+  const twelve = numCoinsFound >= 12;
 
   const handleBitPress = (index: number) => {
     const nums = Array.from(Array(3), (_, rowIndex) => {

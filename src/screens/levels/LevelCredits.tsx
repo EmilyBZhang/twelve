@@ -23,7 +23,7 @@ const ScreenContainer = styled.View.attrs({
 
 const LevelCredits: Level = (props) => {
   const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound === 12;
+  const twelve = numCoinsFound >= 12;
 
   return (
     <>

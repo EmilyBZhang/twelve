@@ -102,7 +102,7 @@ const LevelDialpad: Level = (props) => {
   const lastUpdated = useRef<Date | null>(null);
 
   const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound === 12;
+  const twelve = numCoinsFound >= 12;
 
   const lastLetter = ((keyIndex !== -1) && (letterIndex !== -1))
     ? keyLetters[keyIndex][letterIndex]

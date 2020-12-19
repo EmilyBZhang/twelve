@@ -113,7 +113,7 @@ const LevelPiano: Level = (props) => {
   const [pianoAnim] = useState(() => new Animated.Value(0));
 
   const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound === 12;
+  const twelve = numCoinsFound >= 12;
   const lyrics = syllables.slice(0, songIndex + 1).join('');
 
   // TODO: Consider whether to push piano off-screen or to make it fade to reveal coins

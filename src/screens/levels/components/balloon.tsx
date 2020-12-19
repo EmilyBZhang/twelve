@@ -118,12 +118,12 @@ export const createWalls = () => ({
   ),
 });
 
-export const Cloud = styled(Animated.Image).attrs({
-  source: require('assets/images/cloud.png')
-})`
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: ${levelWidth}px;
-  height: ${levelWidth * 500 / 1171}px;
-`;
+// export const Cloud = styled(Animated.Image).attrs({
+//   source: require('assets/images/cloud.png')
+// })`
+//   position: absolute;
+//   top: 0px;
+//   left: 0px;
+//   width: ${levelWidth}px;
+//   height: ${levelWidth * 500 / 1171}px;
+// `;

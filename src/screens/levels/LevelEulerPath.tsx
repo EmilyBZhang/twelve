@@ -65,7 +65,7 @@ const LevelEulerPath: Level = (props) => {
   const adjMatrix = useRef(adjMatrixInit.map(set => new Set(set)));
 
   const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound === 12;
+  const twelve = numCoinsFound >= 12;
 
   const handleCoinPress = (index: number) => {
     if (prevIndex.current === -1) {

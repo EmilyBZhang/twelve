@@ -51,7 +51,7 @@ const LevelSettingsWin: Level = (props) => {
   const [modalOpened, setModalOpened] = useState(false);
 
   const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound === 12;
+  const twelve = numCoinsFound >= 12;
 
   const hintText = isRevealed ? 'twelve' : '[OUT OF ORDER]';
 

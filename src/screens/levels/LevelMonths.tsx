@@ -28,7 +28,7 @@ const CoinOptionsContainer = styled.View`
 const LevelMonths: Level = (props) => {
 
   const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound === 12;
+  const twelve = numCoinsFound >= 12;
 
   const handleCoinPress = (value: number) => {
     if (value === daysPerMonth[numCoinsFound]) {

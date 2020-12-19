@@ -117,7 +117,7 @@ const LevelRGBSliders: Level = (props) => {
   const lockOpacity = 1 - goodTotal / (255 * 3 + badTotal);
 
   const numCoinsFound = props.coinsFound.size;
-  const twelve = numCoinsFound === 12;
+  const twelve = numCoinsFound >= 12;
 
   // const hintText = colorVal === 255 ? 'There they are!' : `Where'd they go?`;
 
