@@ -33,6 +33,7 @@
     "android": {
       "package": "com.bradonzhang.twelve",
       "icon": "./src/assets/images/12-circle.png",
+      "permissions": [],
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/12-circle.png",
         "backgroundColor": "#00ffff"
