@@ -128,7 +128,7 @@ const LevelBox: FunctionComponent<LevelBoxProps> = memo((props) => {
     outputRange: [1, 3 / 4]
   });
 
-  const unlocked = levelStatus.unlocked || levelStatus.index < 14;
+  const unlocked = levelStatus.unlocked || levelStatus.index < 15;
   const completed = levelStatus.completed || levelStatus.index < 14;
 
   return (
