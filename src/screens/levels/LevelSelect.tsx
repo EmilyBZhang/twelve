@@ -128,17 +128,20 @@ const LevelBox: FunctionComponent<LevelBoxProps> = memo((props) => {
     outputRange: [1, 3 / 4]
   });
 
+  const unlocked = levelStatus.unlocked || levelStatus.index < 14;
+  const completed = levelStatus.completed || levelStatus.index < 14;
+
   return (
     <LevelBoxTouchable
       {...levelStatus}
-      unlocked={levelStatus.unlocked || levelStatus.index < 14}
-      completed={levelStatus.completed || levelStatus.index < 14}
+      unlocked={unlocked}
+      completed={completed}
       onPress={() => onGoToLevel(levelStatus.index + 1)}
     >
       <LevelBoxContainer style={{
         transform: [{scaleX: scale}, {scaleY: scale}],
       }}>
-        <CompletedIcon {...levelStatus} />
+        <CompletedIcon {...levelStatus} unlocked={unlocked} completed={completed} />
         <LevelBoxText>
           {children}
         </LevelBoxText>
