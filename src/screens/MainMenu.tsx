@@ -429,14 +429,14 @@ const MainMenu: Screen = (props) => {
           >
             <MenuButtonText>CREDITS</MenuButtonText>
           </MenuButton>
-          <MenuButton
+          {/* <MenuButton
             onPress={handleRemoveAdsPress}
           >
             <>
               <MaterialCommunityIcons name={'cancel'} size={styles.coinSize / 2} color={colors.lightText} />
               <MenuButtonText>  REMOVE ADS</MenuButtonText>
             </>
-          </MenuButton>
+          </MenuButton> */}
         </MenuButtons>
       </MainContainer>
       <CornerButtons>
