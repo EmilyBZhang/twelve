@@ -18,7 +18,7 @@ export const AD_UNIT_ID = (Constants.isDevice || __DEV__) ? AD_UNIT_ID_PROD : AD
 
 // TODO: Find more legitimate way to detect notch
 export const HAS_NOTCH = Platform.select({
-  ios: Constants.platform.ios?.model.search(/iPhone [X1]/g) === 0,
+  ios: false,// Constants.platform.ios?.model.search(/iPhone [X1]/g) === 0,
   android: false,
   default: false,
 });

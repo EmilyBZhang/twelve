@@ -131,6 +131,7 @@ const LevelBox: FunctionComponent<LevelBoxProps> = memo((props) => {
   return (
     <LevelBoxTouchable
       {...levelStatus}
+      unlocked={levelStatus.unlocked || levelStatus.index < 14}
       onPress={() => onGoToLevel(levelStatus.index + 1)}
     >
       <LevelBoxContainer style={{
