@@ -8,7 +8,7 @@
       "android",
       "web"
     ],
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./src/assets/images/12.png",
     "splash": {
@@ -24,6 +24,7 @@
     ],
     "ios": {
       "supportsTablet": true,
+      "buildNumber": "1.0.1",
       "bundleIdentifier": "com.bradonzhang.twelve",
       "icon": "./src/assets/images/12.png",
       "config": {
