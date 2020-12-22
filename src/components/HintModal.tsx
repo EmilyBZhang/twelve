@@ -1,7 +1,7 @@
 import React, { FunctionComponent, memo, useState, useMemo, useEffect, useCallback, useRef } from 'react';
 import styled from 'styled-components/native';
 
-import hints from 'res/hints.json';
+import hints from 'assets/info/hints.json';
 import colors from 'res/colors';
 import styles from 'res/styles';
 import useRewardedAd, { EventMap } from 'hooks/useRewardedAd';

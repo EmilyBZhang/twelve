@@ -8,7 +8,7 @@ import { NavigationActions } from 'react-navigation';
 import { FontAwesome } from '@expo/vector-icons';
 import styled from 'styled-components/native';
 
-import credits from 'res/credits.json';
+import credits from 'assets/info/credits.json';
 import colors from 'res/colors';
 import styles from 'res/styles';
 import strings from 'res/strings';

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PermissionsAndroid, Alert } from 'react-native';
-import { addScreenshotListener, removeScreenshotListener } from 'expo-screen-capture';
+// import { addScreenshotListener, removeScreenshotListener } from 'expo-screen-capture';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
 
@@ -26,25 +26,26 @@ const CameraIcon = styled(MaterialCommunityIcons).attrs({
 
 const LevelScreenshot: Level = (props) => {
 
-  useEffect(() => {
-    let subscription: { remove: () => void } | null = null;
-    const addSubscription = async () => {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('yay')
-        subscription = addScreenshotListener(() => {
-          console.log('ouch!');
-          Alert.alert('ouch!');
-        });
-      } else {
-        console.log('boo')
-      }
-    }
-    addSubscription();
-    return () => subscription?.remove();
-  }, []);
+  // TODO: Install expo-screen-capture for this to work
+  // useEffect(() => {
+  //   let subscription: { remove: () => void } | null = null;
+  //   const addSubscription = async () => {
+  //     const granted = await PermissionsAndroid.request(
+  //       PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
+  //     );
+  //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+  //       console.log('yay')
+  //       subscription = addScreenshotListener(() => {
+  //         console.log('ouch!');
+  //         Alert.alert('ouch!');
+  //       });
+  //     } else {
+  //       console.log('boo')
+  //     }
+  //   }
+  //   addSubscription();
+  //   return () => subscription?.remove();
+  // }, []);
 
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound >= 12;
