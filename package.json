@@ -1,10 +1,9 @@
 {
-  "main": "node_modules/expo/AppEntry.js",
   "name": "src",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "start": "react-native start",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
     "web": "expo start --web",
     "eject": "expo eject",
     "test": "node node_modules/jest/bin/jest.js"
@@ -31,7 +30,10 @@
     "expo-screen-capture": "^1.1.1",
     "expo-screen-orientation": "~2.0.0",
     "expo-sensors": "~9.1.0",
+    "expo-splash-screen": "~0.6.2",
+    "expo-status-bar": "~1.0.2",
     "expo-three": "^5.2.0",
+    "expo-updates": "~0.3.2",
     "global": "^4.4.0",
     "matter-js": "^0.14.2",
     "mem": "^5.1.1",
@@ -39,7 +41,7 @@
     "mobx-react": "^6.1.4",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "react-native": "0.63.3",
+    "react-native": "~0.63.3",
     "react-native-game-engine": "^1.1.1",
     "react-native-gesture-handler": "~1.7.0",
     "react-native-reanimated": "~1.13.0",
@@ -47,6 +49,7 @@
     "react-native-screens": "~2.10.1",
     "react-native-svg": "12.1.0",
     "react-native-typescript-transformer": "^1.2.13",
+    "react-native-unimodules": "^0.12.0",
     "react-native-web": "~0.13.7",
     "react-navigation": "^4.0.10",
     "react-navigation-stack": "^2.10.2",
@@ -56,12 +59,16 @@
     "three": "^0.110.0"
   },
   "devDependencies": {
+    "@babel/core": "~7.9.0",
     "@types/jest": "^24.0.18",
     "@types/react": "~16.9.35",
     "@types/react-dom": "^16.9.1",
     "@types/react-native": "~0.63.2",
     "@types/react-test-renderer": "^16.9.0",
+    "babel-jest": "~25.2.6",
     "babel-preset-expo": "^8.3.0",
+    "jest": "~25.2.6",
+    "react-test-renderer": "~16.13.1",
     "ts-jest": "^24.1.0",
     "tslint": "^5.20.0",
     "typescript": "~3.9.2"
@@ -77,5 +84,6 @@
   "watchAndRunIOS": "concurrently \"yarn run watch\" \"yarn run ios\"",
   "buildRunIOS": "yarn run build && yarn run watchAndRunIOS ",
   "watchAndStart": "concurrently \"yarn run watch\" \"yarn run start\"",
-  "buildAndStart": "yarn run build && yarn run watchAndStart "
+  "buildAndStart": "yarn run build && yarn run watchAndStart ",
+  "version": "1.0.0"
 }
