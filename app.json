@@ -5,10 +5,9 @@
     "privacy": "public",
     "platforms": [
       "ios",
-      "android",
-      "web"
+      "android"
     ],
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./src/assets/images/12.png",
     "splash": {
@@ -20,11 +19,12 @@
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": [
-      "assets/*/*"
+      "assets/*",
+      "assets/**/*"
     ],
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "1.0.1",
+      "buildNumber": "1.0.2",
       "bundleIdentifier": "com.bradonzhang.twelve",
       "icon": "./src/assets/images/12.png",
       "config": {
