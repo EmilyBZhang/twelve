@@ -33,8 +33,10 @@
     },
     "android": {
       "package": "com.bradonzhang.twelve",
+      "versionCode": 2,
       "icon": "./src/assets/images/12-circle.png",
       "permissions": [],
+      "enableDangerousExperimentalLeanBuilds": true,
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/12-circle.png",
         "backgroundColor": "#00ffff"

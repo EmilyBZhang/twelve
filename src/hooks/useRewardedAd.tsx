@@ -1,5 +1,6 @@
 import { useEffect, useCallback } from 'react';
 import { AdMobRewarded } from 'expo-ads-admob';
+import { PERSONALIZED_ADS } from 'res/constants';
 
 export type EventNameType = 'rewardedVideoDidRewardUser'
   | 'rewardedVideoDidLoad'
@@ -32,7 +33,7 @@ const useRewardedAd = (callbacks: EventMap) => {
   const requestAd = useCallback(async () => {
     // TODO: Check for in-app purchase
     try {
-      await AdMobRewarded.requestAdAsync({ servePersonalizedAds: true });
+      await AdMobRewarded.requestAdAsync({ servePersonalizedAds: PERSONALIZED_ADS });
     } finally {
       await AdMobRewarded.showAdAsync();
     }
