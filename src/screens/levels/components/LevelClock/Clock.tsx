@@ -22,11 +22,15 @@ interface Dims {
   height: number;
 }
 
+interface Hand extends Dims {
+  rotate?: number;
+}
+
 interface BodyProps {
   color: string;
 }
 
-const HandContainer = styled(Animated.View)<Dims>`
+const HandContainer = styled(Animated.View)<Hand>`
   position: absolute;
   top: ${props => clockRadius - props.height}px;
   left: ${props => clockRadius - props.width / 2}px;
@@ -148,7 +152,8 @@ const Clock: FunctionComponent<ClockProps> = (props) => {
       Animated.timing(msAnim, {
         toValue: msElapsed + msPerCycle,
         duration: msPerCycle,
-        easing: Easing.linear
+        easing: Easing.linear,
+        useNativeDriver: false,
       })
     ).start();
   }, []);

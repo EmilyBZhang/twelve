@@ -127,6 +127,13 @@ const Home = styled(MaterialCommunityIcons).attrs({
   size: styles.coinSize,
 })``;
 
+const AlignedContainer = styled.View`
+  height: ${levelHeight}px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+`;
+
 interface BatteryProps {
   selected: boolean;
   charge: number;
@@ -170,7 +177,7 @@ const LevelAcyclicAddition: Level = (props) => {
 
   useEffect(() => {
     if (!unlocked) return;
-    playAudio(zapSound);
+    playAudio(zapSound, undefined, { volume: 1/2 });
     Animated.timing(coinOpacity, {
       toValue: 1,
       duration: 500,
@@ -203,89 +210,91 @@ const LevelAcyclicAddition: Level = (props) => {
   return (
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
-      <Svg pointerEvents={'none'} width={svgSize} height={svgSize}>
-        <Defs>
-          <Marker
-            id={'OnArrow'}
-            refX={4.5}
-            refY={0.5}
-            orient={'auto'}
-          >
-            <Path
-              d={'M 0 0 L 1 0.5 L 0 1 z'}
-              stroke={colors.onCoin}
-              fill={colors.onCoin}
-            />
-          </Marker>
-          <Marker
-            id={'OffArrow'}
-            refX={4.5}
-            refY={0.5}
-            orient={'auto'}
-          >
-            <Path
-              d={'M 0 0 L 1 0.5 L 0 1 z'}
-              stroke={colors.offCoin}
-              fill={colors.offCoin}
-            />
-          </Marker>
-        </Defs>
-        {edges.map(([from, to]) => {
-          const isOn = pathEdges.find(([i, j]) => i === from && j === to);
-          return (
-            <Path
-              key={`${from},${to}`}
-              stroke={isOn ? colors.onCoin : colors.offCoin}
-              strokeWidth={styles.coinSize / 20}
-              d={`M${nodes[from].x} ${nodes[from].y} L${nodes[to].x} ${nodes[to].y}`}
-              markerEnd={`url(#${isOn ? 'On' : 'Off'}Arrow)`}
-            />
-          );
-        })}
-      </Svg>
-      {nodes.map(({ value, x, y }, index) => {
-        const isInPath = path.includes(index);
-        const isDisabled = !graph[path[path.length - 1]].includes(index);
-        const coinSize = styles.coinSize * ((index === 0 || index === 11) ? 2 : 1);
-        const offset =
-          (index === 0) ? { x: -styles.coinSize / 2, y: -styles.coinSize } :
-          (index === 11) ? { x: -styles.coinSize / 2, y: 0 } :
-          { x: 0, y: 0 };
-        const scale = Animated.diffClamp(pulseAnim, 1, isDisabled ? 1 : pulseMaxScale);
-
-        return (
-          <Animated.View key={String(index)} style={{
-            position: 'absolute',
-            left: svgPadding.x - padding + x + offset.x,
-            top: svgPadding.y - padding + y + offset.y,
-            transform: [{ scaleX: scale }, { scaleY: scale }],
-          }}>
-            <Coin
-              size={coinSize}
-              color={isInPath ? colors.onCoin : colors.offCoin}
-              colorHintOpacity={0}
-              disabled={isDisabled}
-              onPress={() => handleSwitchPress(index)}
+      <AlignedContainer>
+        <Svg pointerEvents={'none'} width={svgSize} height={svgSize}>
+          <Defs>
+            <Marker
+              id={'OnArrow'}
+              refX={4.5}
+              refY={0.5}
+              orient={'auto'}
             >
-              {(index === 11) && (
-                <Battery charge={total} selected={!isDisabled || isInPath} />
-              )}
-              {(index === 0) ? <Home /> : (
-                <NodeText on={isInPath}>
-                  {(index === graph.length - 1) ? total : value}
-                </NodeText>
-              )}
-            </Coin>
-            <Animated.View style={{ position: 'absolute', opacity: coinOpacity }}>
+              <Path
+                d={'M 0 0 L 1 0.5 L 0 1 z'}
+                stroke={colors.onCoin}
+                fill={colors.onCoin}
+              />
+            </Marker>
+            <Marker
+              id={'OffArrow'}
+              refX={4.5}
+              refY={0.5}
+              orient={'auto'}
+            >
+              <Path
+                d={'M 0 0 L 1 0.5 L 0 1 z'}
+                stroke={colors.offCoin}
+                fill={colors.offCoin}
+              />
+            </Marker>
+          </Defs>
+          {edges.map(([from, to]) => {
+            const isOn = pathEdges.find(([i, j]) => i === from && j === to);
+            return (
+              <Path
+                key={`${from},${to}`}
+                stroke={isOn ? colors.onCoin : colors.offCoin}
+                strokeWidth={styles.coinSize / 20}
+                d={`M${nodes[from].x} ${nodes[from].y} L${nodes[to].x} ${nodes[to].y}`}
+                markerEnd={`url(#${isOn ? 'On' : 'Off'}Arrow)`}
+              />
+            );
+          })}
+        </Svg>
+        {nodes.map(({ value, x, y }, index) => {
+          const isInPath = path.includes(index);
+          const isDisabled = !graph[path[path.length - 1]].includes(index);
+          const coinSize = styles.coinSize * ((index === 0 || index === 11) ? 2 : 1);
+          const offset =
+            (index === 0) ? { x: -styles.coinSize / 2, y: -styles.coinSize } :
+            (index === 11) ? { x: -styles.coinSize / 2, y: 0 } :
+            { x: 0, y: 0 };
+          const scale = Animated.diffClamp(pulseAnim, 1, isDisabled ? 1 : pulseMaxScale);
+
+          return (
+            <Animated.View key={String(index)} style={{
+              position: 'absolute',
+              left: svgPadding.x - padding + x + offset.x,
+              top: svgPadding.y - padding + y + offset.y,
+              transform: [{ scaleX: scale }, { scaleY: scale }],
+            }}>
               <Coin
                 size={coinSize}
-                found={!unlocked || props.coinsFound.has(index)}
-                onPress={() => props.onCoinPress(index)}
-              />
+                color={isInPath ? colors.onCoin : colors.offCoin}
+                colorHintOpacity={0}
+                disabled={isDisabled}
+                onPress={() => handleSwitchPress(index)}
+              >
+                {(index === 11) && (
+                  <Battery charge={total} selected={!isDisabled || isInPath} />
+                )}
+                {(index === 0) ? <Home /> : (
+                  <NodeText on={isInPath}>
+                    {(index === graph.length - 1) ? total : value}
+                  </NodeText>
+                )}
+              </Coin>
+              <Animated.View style={{ position: 'absolute', opacity: coinOpacity }}>
+                <Coin
+                  size={coinSize}
+                  found={!unlocked || props.coinsFound.has(index)}
+                  onPress={() => props.onCoinPress(index)}
+                />
+              </Animated.View>
             </Animated.View>
-          </Animated.View>
-        );
-      })}
+          );
+        })}
+      </AlignedContainer>
     </LevelContainer>
   );
 };

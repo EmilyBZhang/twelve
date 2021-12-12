@@ -160,8 +160,8 @@ const LevelSelect: LevelSelectType = (props) => {
         horizontal={false}
         keyExtractor={(_, index) => String(index)}
         contentContainerStyle={levelListStyle}
-        initialNumToRender={9}
-        maxToRenderPerBatch={9}
+        initialNumToRender={18}
+        maxToRenderPerBatch={18}
         ListHeaderComponent={
           <TitleText>Select Level</TitleText>
         }

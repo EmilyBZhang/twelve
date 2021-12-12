@@ -45,7 +45,7 @@ const LevelZoomInCoin: Level = (props) => {
 
   const handlePinchGestureEvent = Animated.event(
     [{nativeEvent: {scale: pinchScale}}],
-    { useNativeDriver: true }
+    { useNativeDriver: true },
   );
 
   const changeScale = (newScale: number) => {

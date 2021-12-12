@@ -1,5 +1,5 @@
 import React, { FunctionComponent, memo, useState, useEffect, useRef, useCallback } from 'react';
-import { Animated, Easing } from 'react-native';
+import { Animated, Easing, View } from 'react-native';
 import {
   State,
   PanGestureHandler,
@@ -110,6 +110,13 @@ interface BeltProps {
 
 const ReverseContainer = styled.View`
   transform: rotate(180deg);
+`;
+
+const BeltsContainer = styled.View`
+  position: absolute;
+  width: ${levelWidth}px;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Belt: FunctionComponent<BeltProps> = memo((props) => {
@@ -291,28 +298,30 @@ const LevelConveyorBelt: Level = (props) => {
       />
       <LevelContainer>
         <LevelCounter count={numCoinsFound} />
-        <Belt
-          active={beltActive}
-          children1={renderRow(0)}
-          children2={renderRow(1)}
-          children3={renderRow(2)}
-        />
-        <GearRow>
-          {Array.from(Array(numGears), (_, index) => (
-            <GearContainer
-              key={String(index)}
-              style={{
-                transform: [{ rotate }],
-                opacity: (index === missingGearIndex) ? 0 : 1
-              }}
-            >
-              <Gear />
-            </GearContainer>
-          ))}
-        </GearRow>
-        <ReverseContainer>
-          <Belt active={beltActive} />
-        </ReverseContainer>
+        <BeltsContainer>
+          <Belt
+            active={beltActive}
+            children1={renderRow(0)}
+            children2={renderRow(1)}
+            children3={renderRow(2)}
+          />
+          <GearRow>
+            {Array.from(Array(numGears), (_, index) => (
+              <GearContainer
+                key={String(index)}
+                style={{
+                  transform: [{ rotate }],
+                  opacity: (index === missingGearIndex) ? 0 : 1
+                }}
+              >
+                <Gear />
+              </GearContainer>
+            ))}
+          </GearRow>
+          <ReverseContainer>
+            <Belt active={beltActive} />
+          </ReverseContainer>
+        </BeltsContainer>
       </LevelContainer>
     </>
   );

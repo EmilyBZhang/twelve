@@ -166,6 +166,7 @@ const LevelPlusFlip: Level = (props) => {
                 const found = (coinIndex < 0) || props.coinsFound.has(coinIndex);
                 return (
                   <Coin
+                    key={col}
                     noShimmer
                     hidden={found}
                     disabled={found}

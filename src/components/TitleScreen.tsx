@@ -12,7 +12,8 @@ const imageHeight = windowWidth * 81 / 790;
 
 const TitleImage = styled.Image.attrs({
   source: require('assets/images/twelve-padded-title.png'),
-  resizeMode: 'contain'
+  resizeMode: 'contain',
+  fadeDuration: 0,
 })`
   width: ${windowWidth}px;
   height: ${imageHeight}px;

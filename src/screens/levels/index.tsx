@@ -108,7 +108,7 @@ export default [
   LevelBinary0,
   LevelArrows, // IMPROVE: consider randomizing arrows
   LevelFloatingPoint,
-  LevelElevenPlusTwo, // IMPROVE: allow twelve + one
+  LevelElevenPlusTwo,
   Level12,
   LevelSlideDown,
   LevelSimonSays,
@@ -121,13 +121,13 @@ export default [
   LevelMouseMaze, // IMPROVE: move counter to mouse
   Level12Wire,
   LevelMultiplyTo12,
-  LevelSettingsWin, // IMPROVE: add icon to switch
+  LevelSettingsWin,
   LevelRabbitHole,
   LevelSpellTwelve,
   LevelZoomInCoin,
   LevelMonths, // IMPROVE: consider adding leap year (29) and adding current year label
-  LevelSodaShake, // IMPROVE: add animation
-  LevelHoleJigsaw, // IMPROVE: add assets to jigsaw pieces
+  LevelSodaShake,
+  LevelHoleJigsaw,
   LevelThreeStacks,
   LevelBinary1,
   LevelDodecahedron,
@@ -153,7 +153,7 @@ export default [
   LevelClockPointer,
   LevelDialpad,
   LevelStackQueue,
-  LevelLandscape, // IMPROVE: update asset
+  LevelLandscape,
   LevelEulerPath,
   LevelFitSquares, // IMPROVE: eliminate race condition
   LevelPermuteTwoTwelves,
@@ -162,14 +162,14 @@ export default [
   LevelBallMaze,
   LevelRacecar,
   LevelBinary2,
-  LevelSodaDeviceShake, // IMPROVE: Add animation
+  LevelSodaDeviceShake,
   LevelSlidingPuzzle,
   LevelPiano,
   LevelHamiltonianPath,
   Level69,
   LevelAd,
   LevelCredits,
-  LevelScavengerHunt,
+  LevelScavengerHunt, // IMPROVE: Automatically move to next textbox
 
   // 12:12
   // credits/main menu level

@@ -44,6 +44,7 @@ export const Balloon: FunctionComponent<BodyComponentProps> = memo((props) => {
       <Image
         source={require('assets/images/balloon.gif')}
         resizeMode={'contain'}
+        fadeDuration={0}
         style={{
           width: balloonWidth,
           height: balloonHeight

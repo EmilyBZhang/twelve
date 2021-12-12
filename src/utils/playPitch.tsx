@@ -81,7 +81,7 @@ export const pianoSounds = {
 } as {[note: string]: any};
 
 export const playPiano = (note: string) => {
-  playAudio(pianoSounds[note]);
+  playAudio(pianoSounds[note], undefined, undefined, false);
 };
 
 export const phoneSounds = {
@@ -100,5 +100,5 @@ export const phoneSounds = {
 } as {[key: string]: any};
 
 export const playPhoneTone = (key: string) => {
-  playAudio(phoneSounds[key], undefined, { volume: 0.5 });
+  playAudio(phoneSounds[key], undefined, { volume: 1/2 }, false);
 };

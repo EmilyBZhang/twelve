@@ -31,8 +31,8 @@ const images = [
 
 const numRows = 3;
 const numCols = 4;
-const puzzleWidth = levelWidth;
-const tileSize = puzzleWidth / (numCols + 1);
+const tileSize = Math.floor(levelWidth / (numCols + 1));
+const puzzleWidth = tileSize * (numCols + 1);
 const puzzleHeight = tileSize * (numRows + 1);
 const puzzleBorderWidth = tileSize / 2;
 const innerPuzzleWidth = tileSize * numCols;
@@ -55,7 +55,7 @@ const TileTouchable = styled.TouchableHighlight`
   height: ${tileSize}px;
 `;
 
-const TileImage = styled.Image`
+const TileImage = styled.Image.attrs({ fadeDuration: 0 })`
   width: ${tileSize}px;
   height: ${tileSize}px;
   border-width: ${tileImageBorderWidth}px;
@@ -93,6 +93,7 @@ const CoinContainer = styled.View`
 
 const TwelveImage = styled.Image.attrs({
   source: finalImage,
+  fadeDuration: 0,
 })`
   position: absolute;
   width: ${innerPuzzleWidth}px;

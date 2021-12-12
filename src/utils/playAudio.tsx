@@ -10,7 +10,8 @@ import { ReduxState } from 'reducers/store';
 const defaultOptions = {
   shouldPlay: true,
   isLooping: false,
-  isMuted: false
+  isMuted: false,
+  positionMillis: 0,
 };
 
 type MiddlewareArg = {getState: () => ReduxState};
@@ -30,6 +31,10 @@ export const changePlaybackOptions = ({ getState }: MiddlewareArg) => (
 
 export const playAudioWithPreload = async (name: string, source: AVPlaybackSource, setSoundPlayback?: (res: any) => any, options?: AVPlaybackStatusToSet) => {
   // TODO: Make this function
+  const initialStatus = {
+    ...defaultOptions,
+    ...options,
+  }
 };
 
 export interface CreateAudioResult {
@@ -37,34 +42,58 @@ export interface CreateAudioResult {
   status: AVPlaybackStatus;
 }
 
+const cachedAudio = new Map<number, CreateAudioResult>();
+
 /**
  * Play an audio file asynchronously.
  * 
- * @param source Audio file to play
+ * @param source Audio file to play using require(file_name)
  * @param setSoundPlayback Optional callback to save a reference to the sound playback
  * @param options Options for playing the sound, as specified in the initialStatus param for Audio.Sound.createAsync()
  */
-export const playAudio = async (source: AVPlaybackSource, setSoundPlayback?: (res: CreateAudioResult) => any, options?: AVPlaybackStatusToSet) => {
-  const initialStatus = {
+export const playAudio = async (source: number, setSoundPlayback?: (res: CreateAudioResult) => any, options?: AVPlaybackStatusToSet, cache=true) => {
+  const status = {
     ...defaultOptions,
     ...options
   };
-  try { 
-    const audioObject = await Audio.Sound.createAsync(source, initialStatus);
-    if (setSoundPlayback) setSoundPlayback(audioObject);
-    const { sound, status } = audioObject;
-    sound.setOnPlaybackStatusUpdate(async (status) => {
+  try {
+    let audioObject: CreateAudioResult;
+    if (cache) {
+      audioObject = cachedAudio.get(source) || await Audio.Sound.createAsync(source, status);
+      if (!cachedAudio.has(source)) cachedAudio.set(source, audioObject);
+      else await audioObject.sound.setStatusAsync(status);
+    } else {
+      audioObject = await Audio.Sound.createAsync(source, status);
+    }
+    await audioObject.sound.setStatusAsync(status);
+    if (setSoundPlayback) {
+      setSoundPlayback(audioObject);
+      audioObject.sound.setOnPlaybackStatusUpdate(status => {
+        const newAudioObject = { sound: audioObject.sound, status };
+        setSoundPlayback(newAudioObject);
+        if (cache) cachedAudio.set(source, newAudioObject);
+      });
+    }
+    audioObject.sound.setOnPlaybackStatusUpdate(status => {
+      const newAudioObject = { sound: audioObject.sound, status };
+      if (setSoundPlayback) setSoundPlayback(newAudioObject);
+      if (cache) cachedAudio.set(source, newAudioObject);
       // @ts-ignore
-      if (status.didJustFinish && !initialStatus.isLooping) {
-        try {
-          await sound.unloadAsync();
-        } catch (err) {
-          console.warn(err + ' playAudio.tsx possible error #2');
-        }
-      }
+      else if (status.didJustFinish && !status.isLooping) audioObject.sound.unloadAsync();
     });
+    // audioObject.sound.setOnPlaybackStatusUpdate(async (status) => {
+    //   setSoundPlayback?({ sound: audioObject.sound, status });
+    //   // @ts-ignore
+    //   if (status.didJustFinish && !status.isLooping) {
+    //     try {
+    //       await audioObject.sound.unloadAsync();
+    //     } catch (err) {
+    //       console.warn(err + ' playAudio.tsx possible error #2');
+    //     }
+    //   }
+    // });
   } catch (err) {
-    console.warn(err + ' playAudio.tsx possible error #1');
+    console.warn(err);
   }
 };
 

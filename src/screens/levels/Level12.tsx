@@ -74,6 +74,7 @@ const Level12: Level = (props) => {
     props.navigation.navigate('Level', { level: props.levelNum - 1 });
   }, []);
   const handleNextLevel = useCallback(() => {
+    props.setCoinsFound(new Set<number>());
     props.navigation.navigate('Level', { level: props.levelNum + 1 });
   }, []);
 

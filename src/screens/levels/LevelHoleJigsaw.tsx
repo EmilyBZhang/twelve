@@ -1,5 +1,5 @@
 import React, { FunctionComponent, memo, useState, useEffect, useMemo, useRef } from 'react';
-import { Animated, Easing } from 'react-native';
+import { Animated, Easing, ImageURISource } from 'react-native';
 import {
   State,
   Directions,
@@ -27,7 +27,7 @@ const jigsawImages = [
   require('assets/images/12-partition-3-3/6.png'),
   require('assets/images/12-partition-3-3/7.png'),
   require('assets/images/12-partition-3-3/8.png'),
-];
+] as Array<ImageURISource>;
 
 const finalImage = require('assets/images/12-opaque-1-1.png');
 
@@ -72,6 +72,7 @@ const FinalJigsaw = styled.Image.attrs({
   source: finalImage,
   width: boardSize,
   height: boardSize,
+  fadeDuration: 0,
 })`
   position: absolute;
   width: ${boardSize}px;
@@ -147,6 +148,7 @@ interface JigsawPieceImageProps {
 
 const JigsawPieceImage = styled.Image.attrs<JigsawPieceImageProps>(props => ({
   source: jigsawImages[props.index],
+  fadeDuration: 0,
 }))<JigsawPieceImageProps>`
   position: absolute;
   width: ${cellSize}px;
@@ -204,7 +206,7 @@ const JigsawPiece: FunctionComponent<JigsawPieceProps> = memo((props) => {
 
   const handleGestureEvent = Animated.event(
     [{ nativeEvent: { translationX: panX, translationY: panY }}],
-    { useNativeDriver: true }
+    { useNativeDriver: true },
   );
 
   const handleStateChange = (e: PanGestureHandlerStateChangeEvent) => {
@@ -246,7 +248,7 @@ const JigsawPiece: FunctionComponent<JigsawPieceProps> = memo((props) => {
           { scaleY: active ? 7/6 : 1 },
         ],
       }} >
-        <JigsawPieceImage index={index} />
+        <JigsawPieceImage index={index} source={finalImage} />
         {!!(directions & UP) && <AnchoredCoin direction={UP} />}
         {!!(directions & LEFT) && <AnchoredCoin direction={LEFT} />}
         {!!(directions & RIGHT) && <AnchoredCoin direction={RIGHT} />}

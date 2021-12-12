@@ -65,6 +65,7 @@ const LevelThreeStacks: Level = (props) => {
               const coinIndex = getCoinIndex(stackIndex, index);
               return (
                 <Coin
+                  key={index}
                   onPress={() => props.onCoinPress(coinIndex)}
                   hidden={props.coinsFound.has(coinIndex)}
                   disabled={props.coinsFound.has(coinIndex)}

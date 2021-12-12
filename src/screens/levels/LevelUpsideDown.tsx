@@ -37,9 +37,8 @@ const LevelUpsideDown: Level = (props) => {
     const subscription = DeviceMotion.addListener(res => {
       if (res.rotation) {
         const opacity = Math.max(0, -res.rotation.beta / Math.PI * 2);
-        Animated.event([{opacity: opacityAnim}])(
-          {opacity},
-          {useNativeDriver: true}
+        Animated.event([{ opacity: opacityAnim }], { useNativeDriver: false })(
+          {opacity}
         );
       }
     });

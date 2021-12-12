@@ -1,8 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Constants from 'expo-constants';
 
 import { Language } from 'utils/types';
 import Actions from './actionTypes';
-// MARK: This may cause require cycles
 import levels from 'screens/levels';
 import { setSetting } from 'utils/settings';
 
@@ -49,6 +49,7 @@ interface Action {
 const settings = (state = initialState, action: Action) => {
   switch (action.type) {
     case Actions.INIT_SETTINGS: {
+      if (Constants.manifest?.version) setSetting('version', Constants.manifest.version);
       return ({
         ...state,
         ...action.payload as SettingsPartialState,

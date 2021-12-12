@@ -1,5 +1,9 @@
 import { Platform } from 'react-native';
 
+
+const iosUrl = 'https://apps.apple.com/us/app/twelve-a-puzzle-game/id1545782494';
+const androidUrl = 'https://play.google.com/store/apps/details?id=com.bradonzhang.twelve';
+
 const strings = {
   urls: {
     github: 'https://github.com/BradonZhang/twelve',
@@ -9,8 +13,8 @@ const strings = {
   generateShareMessage: (numLevelsCompleted: number) => (
     `I've solved ${numLevelsCompleted} level${
       (numLevelsCompleted === 1) ? '' : 's'
-    } in Twelve! How many can you solve?${
-      Platform.OS === 'android' ? ' https://expo.io/@bradonzhang/twelve' : ''
+    } in Twelve! How many can you solve? ${
+      Platform.OS === 'android' ? androidUrl : iosUrl
     }`
   ),
 };

@@ -105,6 +105,13 @@ const initX = squareSize / 2;
 const initY = squareSize / 2;
 const initScale = 1;
 
+const AlignedContainer = styled.View`
+  height: ${levelHeight}px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+`;
+
 const LevelFitSquares: Level = (props) => {
   const [squaresRevealed, toggleSquareIndex] = useSelectedIndices();
 
@@ -186,7 +193,7 @@ const LevelFitSquares: Level = (props) => {
 
   const handlePanGestureEvent = Animated.event(
     [{nativeEvent: {translationX: panX, translationY: panY}}],
-    // { useNativeDriver: true }
+    { useNativeDriver: false },
   );
 
   const handlePanGestureStateChange = (e: PanGestureHandlerStateChangeEvent) => {
@@ -198,7 +205,7 @@ const LevelFitSquares: Level = (props) => {
 
   const handlePinchGestureEvent = Animated.event(
     [{nativeEvent: {scale: pinchScale}}],
-    // { useNativeDriver: true }
+    { useNativeDriver: false },
   );
 
   const handlePinchHandlerStateChange = (e: PinchGestureHandlerStateChangeEvent) => {
@@ -209,7 +216,7 @@ const LevelFitSquares: Level = (props) => {
 
   const handleRotationGestureEvent = Animated.event(
     [{nativeEvent: {rotation: rotationRad}}],
-    // { useNativeDriver: true }
+    { useNativeDriver: false },
   );
 
   const handleRotationHandlerStateChange = (e: RotationGestureHandlerStateChangeEvent) => {
@@ -230,7 +237,7 @@ const LevelFitSquares: Level = (props) => {
     };
     // TODO: Currently implemented w/ race condition, fix this
     if (isWithinMargin(currentSquare, square)) {
-      playAudio(require('assets/sfx/success.wav'));
+      playAudio(require('assets/sfx/success.wav'), undefined, { volume: 1/6 });
       toggleSquareIndex(index);
       setTimeout(() => {
         flashSquare();
@@ -247,53 +254,55 @@ const LevelFitSquares: Level = (props) => {
   return (
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
-      <FullyConnectedGrid
-        revealedSquares={revealedSquares}
-      />
-      {Array.from(Array(12), (_, index) => (
-        squaresRevealed.has(index) && !props.coinsFound.has(index) && (
-          <CoinContainer key={String(index)}>
-            <Coin
-              onPress={() => props.onCoinPress(index)}
-            />
-          </CoinContainer>
-        )
-      ))}
-      <PanGestureHandler
-        ref={panRef}
-        onGestureEvent={handlePanGestureEvent}
-        onHandlerStateChange={handlePanGestureStateChange}
-        simultaneousHandlers={[rotationRef, pinchRef]}
-      >
-      <PinchGestureHandler
-        ref={pinchRef}
-        onGestureEvent={handlePinchGestureEvent}
-        onHandlerStateChange={handlePinchHandlerStateChange}
-        simultaneousHandlers={[panRef, rotationRef]}
-      >
-      <RotationGestureHandler
-        ref={rotationRef}
-        onGestureEvent={handleRotationGestureEvent}
-        onHandlerStateChange={handleRotationHandlerStateChange}
-        simultaneousHandlers={[panRef, pinchRef]}
-      >
-        <Container>
-          <SquareContainer style={{
-            transform: [
-              {translateX},
-              {translateY},
-              {scaleX: scale},
-              {scaleY: scale},
-              {rotate: rotation},
-            ]
-          }}>
-            <Square />
-            <FlashSquare style={{opacity: squareFlash}} />
-          </SquareContainer>
-        </Container>
-      </RotationGestureHandler>
-      </PinchGestureHandler>
-      </PanGestureHandler>
+      <AlignedContainer>
+        <FullyConnectedGrid
+          revealedSquares={revealedSquares}
+        />
+        {Array.from(Array(12), (_, index) => (
+          squaresRevealed.has(index) && !props.coinsFound.has(index) && (
+            <CoinContainer key={String(index)}>
+              <Coin
+                onPress={() => props.onCoinPress(index)}
+              />
+            </CoinContainer>
+          )
+        ))}
+        <PanGestureHandler
+          ref={panRef}
+          onGestureEvent={handlePanGestureEvent}
+          onHandlerStateChange={handlePanGestureStateChange}
+          simultaneousHandlers={[rotationRef, pinchRef]}
+        >
+        <PinchGestureHandler
+          ref={pinchRef}
+          onGestureEvent={handlePinchGestureEvent}
+          onHandlerStateChange={handlePinchHandlerStateChange}
+          simultaneousHandlers={[panRef, rotationRef]}
+        >
+        <RotationGestureHandler
+          ref={rotationRef}
+          onGestureEvent={handleRotationGestureEvent}
+          onHandlerStateChange={handleRotationHandlerStateChange}
+          simultaneousHandlers={[panRef, pinchRef]}
+        >
+          <Container>
+            <SquareContainer style={{
+              transform: [
+                {translateX},
+                {translateY},
+                {scaleX: scale},
+                {scaleY: scale},
+                {rotate: rotation},
+              ]
+            }}>
+              <Square />
+              <FlashSquare style={{opacity: squareFlash}} />
+            </SquareContainer>
+          </Container>
+        </RotationGestureHandler>
+        </PinchGestureHandler>
+        </PanGestureHandler>
+      </AlignedContainer>
     </LevelContainer>
   );
 };

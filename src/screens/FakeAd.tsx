@@ -15,6 +15,9 @@ import useSettings from 'hooks/useSettings';
 import playAudio, { CreateAudioResult } from 'utils/playAudio';
 import LevelCatchCoins from './levels/LevelCatchCoins';
 import LevelRedLight from './levels/LevelRedLight';
+import getDimensions from 'utils/getDimensions';
+
+const { width: windowWidth, height: windowHeight } = getDimensions();
 
 const CloseIcon = styled(MaterialCommunityIcons).attrs({
   name: 'close',
@@ -85,8 +88,8 @@ const LevelContainer = styled.View`
 const OpeningContainer = styled(Animated.View).attrs({
   pointerEvents: 'none',
 })`
-  width: 100%;
-  height: 100%;
+  width: ${windowWidth}px;
+  height: ${windowHeight}px;
   justify-content: center;
   align-items: center;
   background-color: ${colors.coin};

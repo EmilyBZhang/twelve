@@ -1,6 +1,7 @@
 import React, { FunctionComponent, memo } from 'react';
 import { View } from 'react-native';
 import Matter from 'matter-js';
+import Constants from 'expo-constants';
 
 import styles from 'res/styles';
 import { getLevelDimensions } from 'utils/getDimensions';
@@ -49,7 +50,7 @@ export const CoinContainer: FunctionComponent<CoinContainerProps> = memo((props)
 export const initEntities = () => {
   const engine = Matter.Engine.create();
   const { world } = engine;
-  world.gravity.y = 0.5;
+  world.gravity.y = 1/4;
 
   const ground = Matter.Bodies.rectangle(
     levelWidth / 2,
@@ -85,7 +86,7 @@ export const initEntities = () => {
     visible: false,
     body: Matter.Bodies.circle(
       levelWidth / 2,
-      levelHeight / 2,
+      levelHeight / 2 - Constants.statusBarHeight,
       coinSize / 2,
       { frictionAir: 0, restitution: 0.75 }
     ),

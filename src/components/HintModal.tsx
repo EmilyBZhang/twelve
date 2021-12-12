@@ -114,7 +114,7 @@ const HintModal: FunctionComponent<HintModalProps> = memo((props) => {
   }, [level]);
 
   const callbacks = useMemo<EventMap>(() => ({
-    rewardedVideoDidClose: () => {
+    rewardedVideoDidDismiss: () => {
       if (!adRewarded.current) onClose();
       else if (skipping.current) {
         closable.current = false;
@@ -129,7 +129,7 @@ const HintModal: FunctionComponent<HintModalProps> = memo((props) => {
         onClose();
       }
     },
-    rewardedVideoDidRewardUser: () => {
+    rewardedVideoUserDidEarnReward: () => {
       closable.current = true;
       if (adRewarded.current) {
         // Watch ad to skip

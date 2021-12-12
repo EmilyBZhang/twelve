@@ -80,7 +80,7 @@ export const NavButton = styled.TouchableOpacity.attrs({
 `;
 
 export const SettingsIcon = styled(MaterialCommunityIcons).attrs({
-  name: 'settings',
+  name: 'cog',
   size: navIconSize,
   color: colors.foreground,
 })``;

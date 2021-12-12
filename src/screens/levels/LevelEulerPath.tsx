@@ -52,12 +52,12 @@ const SvgContainer = styled(Svg)`
   height: ${containerSize}px;
 `;
 
-const measure = () => {
-  const t0 = new Date();
-  const newMatrix = adjMatrixInit.map(set => new Set(set));
-  console.log(new Date().getTime() - t0.getTime(), 'ms');
-  return newMatrix;
-}
+const AlignedContainer = styled.View`
+  height: ${levelHeight}px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+`;
 
 const LevelEulerPath: Level = (props) => {
 
@@ -88,36 +88,37 @@ const LevelEulerPath: Level = (props) => {
   return (
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
-      {/* <LevelText hidden={twelve}>twelve</LevelText> */}
-      <SvgContainer>
-        {edgeIndices.map(([i, j], index) => adjMatrix.current[i].has(j) && (
-          <Line
+      <AlignedContainer>
+        <SvgContainer>
+          {edgeIndices.map(([i, j], index) => adjMatrix.current[i].has(j) && (
+            <Line
+              key={String(index)}
+              stroke={colors.offCoin}
+              strokeWidth={styles.coinSize / 12}
+              x1={points[i][0]}
+              x2={points[j][0]}
+              y1={points[i][1]}
+              y2={points[j][1]}
+            />
+          ))}
+        </SvgContainer>
+        {points.map(([x, y], index) => (
+          <View
             key={String(index)}
-            stroke={colors.offCoin}
-            strokeWidth={styles.coinSize / 12}
-            x1={points[i][0]}
-            x2={points[j][0]}
-            y1={points[i][1]}
-            y2={points[j][1]}
-          />
+            style={{
+              position: 'absolute',
+              left: x - styles.coinSize / 2,
+              top: y + (levelHeight - levelWidth - styles.coinSize) / 2,
+            }}
+          >
+            <Coin
+              color={(index === prevIndex.current) ? colors.badCoin : colors.selectCoin}
+              found={adjMatrix.current[index].size === 0}
+              onPress={() => handleCoinPress(index)}
+            />
+          </View>
         ))}
-      </SvgContainer>
-      {points.map(([x, y], index) => (
-        <View
-          key={String(index)}
-          style={{
-            position: 'absolute',
-            left: x - styles.coinSize / 2,
-            top: y + (levelHeight - levelWidth - styles.coinSize) / 2,
-          }}
-        >
-          <Coin
-            color={(index === prevIndex.current) ? colors.badCoin : colors.selectCoin}
-            found={adjMatrix.current[index].size === 0}
-            onPress={() => handleCoinPress(index)}
-          />
-        </View>
-      ))}
+      </AlignedContainer>
     </LevelContainer>
   );
 };

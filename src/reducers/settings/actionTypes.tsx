@@ -4,7 +4,7 @@ enum Actions {
   TOGGLE_SFX,
   TOGGLE_COLORBLIND,
   COMPLETE_LEVEL,
-  UNLOCK_LEVEL
+  UNLOCK_LEVEL,
 }
 
 export default Actions;
