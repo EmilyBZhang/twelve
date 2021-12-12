@@ -10,6 +10,7 @@ import {
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Svg, { Polyline } from 'react-native-svg';
 import styled from 'styled-components/native';
+import Constants from 'expo-constants';
 
 import { Level } from 'utils/interfaces';
 import { getLevelDimensions } from 'utils/getDimensions';
@@ -71,7 +72,7 @@ const polylinePoints = [
 
 const margin = coinSize;
 const midX = circuitWidth / 2;
-const midY = baseY + segmentLength * 3 + styles.levelNavHeight;
+const midY = baseY + segmentLength * 3 + styles.levelNavHeight + Constants.statusBarHeight;
 const bounds = {
   minX: midX - margin,
   maxX: midX + margin,
@@ -142,7 +143,7 @@ const HintBulb: FunctionComponent<HintBulbProps> = memo((props) => {
 
   const handleGestureEvent = Animated.event(
     [{ nativeEvent: { translationX: panX, translationY: panY }}],
-    { useNativeDriver: false }
+    { useNativeDriver: false },
   );
 
   const handleStateChange = useCallback((e: PanGestureHandlerStateChangeEvent) => {
@@ -151,9 +152,9 @@ const HintBulb: FunctionComponent<HintBulbProps> = memo((props) => {
       panX.setValue(0);
       panY.setValue(0);
       if (withinBounds(absoluteX, absoluteY)) {
-        baseX.setValue(midX + styles.levelNavHeight / 2 - levelWidth);
-        baseY.setValue(midY - styles.levelNavHeight / 2);
         onPlace();
+        baseX.setValue(midX + styles.levelNavHeight / 2 - levelWidth);
+        baseY.setValue(midY - styles.levelNavHeight / 2 - Constants.statusBarHeight);
       } else {
         baseX.setOffset(translationX);
         baseX.flattenOffset();
@@ -218,9 +219,10 @@ const LevelCircuit: Level = (props) => {
     playAudio(zapSound);
   }, []);
   const handlePress = useCallback(() => props.setHintOpen(true), []);
-  const handleClose = useCallback(() => setHintModelOpen(false), []);
+  // const handleClose = useCallback(() => setHintModelOpen(false), []);
 
-  const handleCoinPress = (index: number) => circuitComplete && props.onCoinPress(index);
+  const handleCoinPress = (index: number) => props.onCoinPress(index);
+  // const handleCoinPress = (index: number) => circuitComplete && props.onCoinPress(index);
 
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound >= 12;

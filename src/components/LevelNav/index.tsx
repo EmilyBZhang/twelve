@@ -79,6 +79,7 @@ const LevelNav: FunctionComponent<LevelNavProps> = (props) => {
           visible={hintOpen}
           level={level}
           onClose={onHint}
+          onNextLevel={onNextLevel}
         />
       )}
       {onToggleSettings && (

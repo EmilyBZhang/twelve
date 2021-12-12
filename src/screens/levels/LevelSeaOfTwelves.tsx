@@ -54,7 +54,7 @@ const Twelve: FunctionComponent = memo(() => {
 
   const handleGestureEvent = Animated.event(
     [{ nativeEvent: { translationX: panX, translationY: panY }}],
-    { useNativeDriver: true }
+    { useNativeDriver: true },
   );
 
   const handleStateChange = (e: PanGestureHandlerStateChangeEvent) => {

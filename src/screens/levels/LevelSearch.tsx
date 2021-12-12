@@ -92,7 +92,8 @@ const LevelSearch: Level = (props) => {
   );
 
   const handleGestureEvent = Animated.event(
-    [{nativeEvent: {translationX: panX, translationY: panY}}]
+    [{nativeEvent: {translationX: panX, translationY: panY}}],
+    { useNativeDriver: true },
   );
 
   const handleStateChange = (e: PanGestureHandlerStateChangeEvent) => {

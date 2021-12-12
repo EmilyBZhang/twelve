@@ -31,6 +31,7 @@ const LevelContainer = styled.View`
 const Map = styled.Image.attrs({
   source: require('assets/images/12-transparent-4-3.png'),
   resizeMode: 'contain',
+  fadeDuration: 0,
 })`
   width: ${landscapeWidth}px;
   height: ${landscapeHeight}px;

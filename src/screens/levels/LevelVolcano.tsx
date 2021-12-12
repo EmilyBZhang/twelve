@@ -30,7 +30,7 @@ const volcanoHeight = levelWidth / volcanoRatio;
 const initY = levelHeight - levelWidth / volcanoRatio;
 
 const coinPosition = {
-  position: 'absolute',
+  position: 'absolute' as 'absolute',
   top: initY,
   left: initX
 };
@@ -51,6 +51,7 @@ const VolcanoContainer = styled.View.attrs({
 
 const VolcanoFG = styled.Image.attrs({
   source: require('assets/images/volcano-fg.png'),
+  fadeDuration: 0,
 })`
   position: absolute;
   width: ${volcanoWidth}px;
@@ -59,6 +60,7 @@ const VolcanoFG = styled.Image.attrs({
 
 const VolcanoBG = styled.Image.attrs({
   source: require('assets/images/volcano-bg.png'),
+  fadeDuration: 0,
 })`
   position: absolute;
   width: ${volcanoWidth}px;

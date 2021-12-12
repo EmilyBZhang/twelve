@@ -2,14 +2,15 @@
 // This should be done after user settings are stored and the useSettings hook is made
 
 import React, { FunctionComponent, useCallback, useEffect, useRef, useState } from 'react';
-import { Alert, Animated, BackHandler, Share, View } from 'react-native';
+import { Alert, Animated, BackHandler, Share, View, Text } from 'react-native';
 import { MaterialCommunityIcons, Octicons, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
 import { NavigationActions } from 'react-navigation';
+import { Audio } from 'expo-av';
 
 import useSettings from 'hooks/useSettings';
 import { Screen } from 'utils/interfaces';
-import getDimensions from 'utils/getDimensions';
+import getDimensions, { getFullDimensions } from 'utils/getDimensions';
 import playAudio, { CreateAudioResult } from 'utils/playAudio';
 import colors from 'res/colors';
 import styles from 'res/styles';
@@ -22,8 +23,6 @@ import FallingCoins from 'components/FallingCoins';
 
 const { width: windowWidth, height: windowHeight } = getDimensions();
 const titleSize = windowWidth / 6;
-const initTitleHeight = (windowHeight + titleSize) / 2;
-const titleHeightEnd = titleSize * 2.5;
 
 const largeButtonSize = styles.coinSize * 3.5;
 const mediumButtonSize = styles.coinSize * 2.5;
@@ -45,12 +44,6 @@ interface MenuButtonTextProps {
   playButton?: boolean;
   selectLevelButton?: boolean;
 }
-
-const TitleContainer = styled(Animated.View)`
-  flex: 1;
-  width: 100%;
-  justify-content: center;
-`;
 
 const TwelveTitle = styled.Text.attrs({
   children: 'twelve'
@@ -121,7 +114,7 @@ const CancelIcon = styled(MaterialCommunityIcons).attrs({
 `;
 
 const SettingsIcon = styled(MaterialCommunityIcons).attrs({
-  name: 'settings',
+  name: 'cog',
   size: mediumButtonSize / 2,
   color: colors.lightText,
 })``;
@@ -273,10 +266,7 @@ const bgMusic = require('assets/music/groovy.mp3');
 const MainMenu: Screen = (props) => {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [screenActive, setScreenActive] = useState(true);
-  const [titleHeightAnim] = useState(new Animated.Value(initTitleHeight));
   const [menuOpacityAnim] = useState(new Animated.Value(0));
-  // TODO: Fix the corner buttons
-  const [cornerOpacityAnim] = useState(new Animated.Value(0));
 
   const musicPlayback = useRef<CreateAudioResult | null>(null);
 
@@ -300,28 +290,11 @@ const MainMenu: Screen = (props) => {
   }, [settingsOpen]);
 
   useEffect(() => {
-    Animated.parallel([
-      Animated.timing(titleHeightAnim, {
-        toValue: titleHeightEnd,
-        duration: 2000,
-        useNativeDriver: false,
-      }),
-      // TODO: Make corner buttons respond to cornerOpacityAnim
-      // Then change menuOpacityAnim duration to 1000
-      Animated.sequence([
-        Animated.timing(menuOpacityAnim, {
-          toValue: 1,
-          duration: 2000,
-          useNativeDriver: false,
-          // useNativeDriver: true,
-        }),
-        Animated.timing(cornerOpacityAnim, {
-          toValue: 1,
-          duration: 1000,
-          useNativeDriver: true
-        }),
-      ]),
-    ]).start();
+    Animated.timing(menuOpacityAnim, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
   }, []);
 
   useEffect(() => {
@@ -339,6 +312,17 @@ const MainMenu: Screen = (props) => {
       playAudio(bgMusic, setMusicPlayback, options);
     }
   }, [music, settingsReady]);
+
+  // TODO: Delete this; it's testing code
+  // useEffect(() => {
+  //   (async () => {
+  //     const { sound, status } = await Audio.Sound.createAsync(require('assets/music/groovy.mp3'));
+  //     sound.playFromPositionAsync(4000);
+  //     setInterval(() => {
+  //       sound.playFromPositionAsync(4000);
+  //     }, 1000);
+  //   })();
+  // }, []);
 
   const handlePlayPress = useCallback(() => {
     setScreenActive(false);
@@ -404,11 +388,9 @@ const MainMenu: Screen = (props) => {
       <View style={{position: 'absolute', top: 0, left: 0}}>
         <FallingCoins active={screenActive} />
       </View>
-      <MainContainer>
+      <MainContainer style={{ opacity: menuOpacityAnim }}>
         <TwelveTitle />
-        <MenuButtons
-          style={{opacity: menuOpacityAnim}}
-        >
+        <MenuButtons>
           <MenuButton
             playButton
             onPress={handlePlayPress}
@@ -444,7 +426,7 @@ const MainMenu: Screen = (props) => {
           onPress={handleToggleSettings}
         >
           <MaterialCommunityIcons
-            name={'settings'}
+            name={'cog'}
             size={cornerButtonSize * 2/3}
             color={colors.lightText}
           />

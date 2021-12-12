@@ -1,5 +1,6 @@
 import Matter from 'matter-js';
 import { System, GameEvent } from 'react-native-game-engine';
+import Constants from 'expo-constants';
 
 import styles from 'res/styles';
 import { getLevelDimensions } from 'utils/getDimensions';
@@ -16,10 +17,10 @@ export interface CoinEvent extends GameEvent {
 const randAngle = () => Math.PI * randFloat(5/12, 7/12);
 const resetBody = (body: Matter.Body) => {
   const angle = randAngle();
-  const r = levelHeight / 108;
+  const r = levelHeight / 216;
   Matter.Body.setPosition(body, {
     x: levelWidth / 2,
-    y: levelHeight / 2,
+    y: levelHeight / 2 + Constants.statusBarHeight,
   });
   Matter.Body.setVelocity(body, {
     x: r * Math.cos(angle),

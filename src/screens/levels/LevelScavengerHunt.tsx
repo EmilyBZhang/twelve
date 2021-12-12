@@ -91,7 +91,8 @@ const EndMessageText = styled.Text`
 const LevelScavengerHunt: Level = (props) => {
 
   const [messageChars, setMessageChars] = useState(() => hints.map(() => ''));
-  const inputs = useRef<Array<typeof LetterInput | null>>(messageChars.map(() => null));
+  // TODO: Watch this issue: https://github.com/DefinitelyTyped/DefinitelyTyped/issues/30451
+  const inputs = useRef<Array<any>>(messageChars.map(() => null));
 
   const message = messageChars.join('');
   const messageFound = message === answer;
@@ -132,10 +133,10 @@ const LevelScavengerHunt: Level = (props) => {
               <LetterInput
                 key={String(index)}
                 // value={messageChar}
-                // ref={ref => { inputs.current[index] = ref; }}
+                ref={ref => inputs.current[index] = ref}
                 onChangeText={handleTextChange(index)}
                 placeholder={String(hints[index])}
-                // onSubmitEditing={() => inputs.current[index + 1]?.focus()}
+                onSubmitEditing={() => inputs.current[index + 1]?.focus()}
               />
             ))}
           </LetterInputsContainer>

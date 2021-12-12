@@ -5,7 +5,7 @@
 import React, { FunctionComponent, useCallback, useRef, useState, useEffect } from 'react';
 import { FlatList, Linking, Animated, Easing } from 'react-native';
 import { NavigationActions } from 'react-navigation';
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 import styled from 'styled-components/native';
 
 import credits from 'assets/info/credits.json';
@@ -92,17 +92,20 @@ const BadgeLink = styled.TouchableOpacity`
   align-items: center;
 `;
 
+type BadgeIconName = keyof typeof FontAwesome5.glyphMap;
+
 interface BadgeProps {
   url: string;
-  icon: string;
+  icon: BadgeIconName;
   color: string;
+  scale?: number;
 }
 
 const Badge: FunctionComponent<BadgeProps> = (props) => (
   <BadgeLink onPress={() => Linking.openURL(props.url)}>
-    <FontAwesome
+    <FontAwesome5
       name={props.icon}
-      size={styles.coinSize}
+      size={styles.coinSize * (props.scale || 1)}
       color={props.color}
     />
   </BadgeLink>
@@ -129,27 +132,15 @@ const CreditsFlatList: FunctionComponent = () => (
         {section.links && section.links.map(({ icon, url, color }, index) => (
           <Badge
             key={String(index)}
-            icon={icon}
+            icon={icon as BadgeIconName}
             url={url}
             color={color}
+            scale={section.links.length > 3 ? 3/4 : 1}
           />
         ))}
         </BadgeRow>
       </SectionContainer>
     )}
-    // Maybe convert this to an array in the JSON file?
-    // ListFooterComponent={(
-    //   <BadgeRow>
-    //     <Badge
-    //       url={strings.urls.github}
-    //       iconName={'github-box'}
-    //     />
-    //     <Badge
-    //       url={strings.urls.youtube}
-    //       iconName={'youtube'}
-    //     />
-    //   </BadgeRow>
-    // )}
   />
 );
 

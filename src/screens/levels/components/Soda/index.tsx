@@ -13,6 +13,7 @@ export const sodaHeight = levelWidth * 5 / 6;
 export const SodaImage = styled.Image.attrs({
   source: require('assets/images/can-closed.png'),
   resizeMode: 'contain',
+  fadeDuration: 0,
 })`
   width: ${sodaWidth};
   height: ${sodaHeight};

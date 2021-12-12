@@ -42,6 +42,7 @@ const LineDrawerContainer = styled.View`
   flex-direction: row;
   flex-wrap: wrap;
   background-color: transparent;
+  position: absolute;
 `;
 
 const CircuitContainer = styled.View.attrs({
@@ -96,7 +97,7 @@ const jointPositions = Array.from(Array(9), (_, index) => ({
   y: (Math.floor(index / 3) + 0.5) * wirePartSize,
 }));
 
-const initY = minY - styles.levelNavHeight * 3 / 2;
+const initY = levelHeight / 2 - wirePartSize * 1.5//0// minY - wirePartSize / 2;
 const initX = minX;
 const coinPositions = jointPositions.map((_, index) => ({
   top: initY + wirePartSize * Math.floor(index / 3),

@@ -4,48 +4,47 @@
     {
       "header": "Level Design",
       "names": [
-        "Bradon Zhang",
-        "Alan Dai"
+        "Bradon",
+        "Dai"
       ]
     },
     {
       "header": "Programming",
       "names": [
-        "Bradon Zhang"
+        "Bradon"
       ]
     },
     {
       "header": "Graphics & Art",
       "names": [
         "Soh Arsquare",
-        "Bradon Zhang"
+        "Bradon"
       ]
     },
     {
       "header": "Music",
       "names": [
-        "Alan Dai"
+        "Dai"
       ]
     },
     {
       "header": "Sound Effects",
       "names": [
-        "Alan Dai",
-        "Bradon Zhang"
+        "Dai",
+        "Bradon"
       ]
     },
     {
       "header": "Playtesting",
       "names": [
-        "Jaeson Alcoriza",
+        "Ahex",
         "Lauren Colaco",
-        "Mark Itkin",
-        "Zlata Itkin",
+        "Mark",
+        "Matthew A. Po",
         "Nathan Ji",
-        "Ruth Kim",
-        "Matthew Po",
-        "Sagan Sutherland",
-        "Rohil Tuli"
+        "Rohil Tuli",
+        "Ruth",
+        "Sagan Sutherland"
       ]
     },
     {
@@ -62,20 +61,35 @@
           "color": "#1da1f2"
         },
         {
+          "icon": "discord",
+          "url": "https://discord.gg/bzqubucqaf",
+          "color": "#7181c8"
+        },
+        {
           "icon": "reddit",
           "url": "https://www.reddit.com/r/TwelvePuzzle/",
           "color": "#ff0000"
         },
         {
-          "icon": "youtube-play",
+          "icon": "youtube",
           "url": "https://www.youtube.com/channel/UC6aHme0G8huzbMgi4lXD2pA",
           "color": "#fe0000"
         }
       ]
     },
     {
-      "subheader": "Bradon Zhang",
+      "subheader": "Bradon",
       "links": [
+        {
+          "icon": "twitch",
+          "url": "https://www.twitch.tv/FiresBZ",
+          "color": "#5d419a"
+        },
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/FiresBZ",
+          "color": "#1da1f2"
+        },
         {
           "icon": "github",
           "url": "https://github.com/BradonZhang/",
@@ -84,11 +98,21 @@
       ]
     },
     {
-      "subheader": "Alan Dai",
+      "subheader": "Dai",
       "links": [
         {
-          "icon": "youtube-play",
-          "url": "https://www.youtube.com/channel/UCAsBq_Z2WhRYgBEH8vDlEQg",
+          "icon": "twitch",
+          "url": "https://www.twitch.tv/Dai_Streaming",
+          "color": "#5d419a"
+        },
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/Dai_Streaming",
+          "color": "#1da1f2"
+        },
+        {
+          "icon": "youtube",
+          "url": "https://www.youtube.com/c/Dai_Streaming",
           "color": "#fe0000"
         }
       ]
@@ -98,7 +122,7 @@
       "links": [
         {
           "icon": "tumblr-square",
-          "url": "https://github.com/BradonZhang/twelve",
+          "url": "https://arsquare.tumblr.com",
           "color": "#001936"
         },
         {

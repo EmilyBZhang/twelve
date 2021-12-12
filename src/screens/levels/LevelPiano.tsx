@@ -29,6 +29,7 @@ const lambSound = require('assets/sfx/lamb.mp3');
 const Lamb = styled(Animated.Image).attrs({
   source: require('assets/images/lamb.png'),
   resizeMode: 'contain',
+  fadeDuration: 0,
 })`
   position: absolute;
   top: ${lambInit}px;

@@ -12,6 +12,7 @@ import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
 import playAudio from 'utils/playAudio';
+import styles from 'res/styles';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 
@@ -75,21 +76,21 @@ const MazeContainer = styled.View`
   height: ${mazeSize}px;
 `;
 
-interface MouseProps {
-  rotate: string;
-}
+const MouseContainer = styled(Animated.View)``;
 
 const Mouse = styled(Animated.Image).attrs({
   source: require('assets/images/mouse.png'),
-  resizeMode: 'contain'
-})<MouseProps>`
+  resizeMode: 'contain',
+  fadeDuration: 0,
+})`
   width: 100%;
   height: 100%;
 `;
 
 const Cheese = styled.Image.attrs({
   source: require('assets/images/cheese.png'),
-  resizeMode: 'contain'
+  resizeMode: 'contain',
+  fadeDuration: 0,
 })`
   width: 100%;
   height: 100%;
@@ -178,7 +179,7 @@ const LevelMouseMaze: Level = (props) => {
       }
       props.onCoinPress(numCoinsFound);
       if (foundCheese) {
-        playAudio(mouseSound);
+        playAudio(mouseSound, undefined, { volume: 3/4 });
         const newCheeseIndices = new Set(cheeseIndices);
         newCheeseIndices.delete(newMouseIndex);
         setCheeseIndices(newCheeseIndices);
@@ -212,7 +213,6 @@ const LevelMouseMaze: Level = (props) => {
 
   return (
     <LevelContainer>
-      <LevelCounter count={numCoinsFound} />
       <NavCoin direction={'top'} />
       <MazeRowContainer>
         <NavCoin direction={'left'} />
@@ -229,11 +229,21 @@ const LevelMouseMaze: Level = (props) => {
               if (index === 0) {
                 const { top: translateY, left: translateX } = moveAnim.getLayout();
                 children = (
-                  <Mouse style={{transform: [
+                  <MouseContainer style={{transform: [
                     {translateY},
                     {translateX},
                     {rotate},
-                  ]}} />
+                  ]}} >
+                    <Mouse />
+                    <LevelCounter
+                      count={numCoinsFound}
+                      color={colors.offCoin}
+                      width={mazeTileSize}
+                      height={mazeTileSize}
+                      position={{ left: styles.levelTextSize / 4, bottom: mazeTileSize / 6 }}
+                      fontSize={styles.levelTextSize / 2}
+                    />
+                  </MouseContainer>
                 )
               } else if (cheeseIndices.has(index)) {
                 children = <Cheese />

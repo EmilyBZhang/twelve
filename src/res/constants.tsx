@@ -18,7 +18,7 @@ export const PERSONALIZED_ADS = false;
 
 // TODO: Find more legitimate way to detect notch
 export const HAS_NOTCH = Platform.select({
-  ios: Constants.platform?.ios?.model.search(/iPhone [X1]/g) === 0,
+  ios: Constants.platform?.ios?.model?.search(/iPhone [X1]/g) === 0,
   android: false,
   default: false,
 });

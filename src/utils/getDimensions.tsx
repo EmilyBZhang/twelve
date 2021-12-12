@@ -1,4 +1,4 @@
-import { Dimensions } from 'react-native';
+import { Dimensions, StatusBar } from 'react-native';
 
 import styles from 'res/styles';
 
@@ -10,8 +10,8 @@ import styles from 'res/styles';
  * @param level Whether the dimensions should be for a level or not
  */
 export const getDimensions = (level = false) => {
-  const { width, height: windowHeight } = Dimensions.get('window');
-  const height = windowHeight - (level ? styles.levelNavHeight : 0);
+  const { width, height: windowHeight } = Dimensions.get('screen');
+  const height = windowHeight - (level ? styles.levelNavHeight : 0) - (StatusBar.currentHeight || 0);
   return { width, height };
 };
 
@@ -19,7 +19,7 @@ export const getDimensions = (level = false) => {
  * Get the dimensions of the screen
  */
 export const getFullDimensions = () => {
-  return Dimensions.get('window');
+  return Dimensions.get('screen');
 };
 
 /**
