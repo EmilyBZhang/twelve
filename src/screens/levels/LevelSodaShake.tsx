@@ -19,13 +19,7 @@ import Physics from './systems/Physics';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 
-const threshold = levelWidth / 6;
-
-enum Y {
-  UP,
-  DOWN,
-  NEUTRAL,
-}
+const threshold = levelWidth / 12;
 
 const LevelSodaShake: Level = (props) => {
 
@@ -40,30 +34,32 @@ const LevelSodaShake: Level = (props) => {
   const entities = useMemo(initEntities, []);
 
   useEffect(() => {
-    let direction = Y.NEUTRAL;
-    let baseYVal = 0;
-    baseY.addListener(({ value }) => { baseYVal = value; });
+    let lastY = 0;
+    let lastDirection = 0;
     panY.addListener(({ value }) => {
-      if (numShakes.current >= 12 || value === 0) return;
-      const y = baseYVal + value;
-      if (y <= -threshold) {
-        if (numShakes.current === 0) direction = Y.UP;
-        if ((numShakes.current % 2 === 0) === (direction === Y.UP)) numShakes.current++;
-      } else if (y >= threshold) {
-        if (numShakes.current === 0) direction = Y.DOWN;
-        if ((numShakes.current % 2 === 0) === (direction === Y.DOWN)) numShakes.current++;
-      } else return;
+      if (value === 0) {
+        lastY = 0;
+        return;
+      }
+      if (numShakes.current >= 12) return;
+      const direction = Math.sign(value - lastY);
+      if (lastDirection === 0) lastDirection = -direction;
+      if (direction === lastDirection) {
+        lastY = (direction === 1 ? Math.max : Math.min)(lastY, value);
+      } else if (Math.abs(value - lastY) >= threshold) {
+        numShakes.current++;
+        lastY = value;
+        lastDirection = direction;
+      }
       shakeFactor.setValue(numShakes.current / 6);
       if (numShakes.current >= 12) setCoinsRevealed(true);
     });
-    return () => {
-      baseY.removeAllListeners();
-      panY.removeAllListeners();
-    };
+    return () => panY.removeAllListeners();
   }, []);
 
   useEffect(() => {
     if (!coinsRevealed) return;
+    baseY.setValue(0);
     Animated.timing(baseY, {
       toValue: levelHeight / 4,
       duration: 1000,

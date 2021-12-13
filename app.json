@@ -7,7 +7,7 @@
       "ios",
       "android"
     ],
-    "version": "1.0.3",
+    "version": "1.0.5",
     "orientation": "portrait",
     "icon": "./src/assets/images/12.png",
     "splash": {
@@ -24,16 +24,16 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "1.0.3",
+      "buildNumber": "1.0.5",
       "bundleIdentifier": "com.bradonzhang.twelve",
       "icon": "./src/assets/images/12.png",
       "config": {
-        "googleMobileAdsAppId": "ca-app-pub-5600114350279556/6182482355"
+        "googleMobileAdsAppId": "ca-app-pub-5600114350279556~5091572592"
       }
     },
     "android": {
       "package": "com.bradonzhang.twelve",
-      "versionCode": 3,
+      "versionCode": 4,
       "icon": "./src/assets/images/12-circle.png",
       "permissions": [],
       "adaptiveIcon": {
@@ -41,7 +41,7 @@
         "backgroundColor": "#00ffff"
       },
       "config": {
-        "googleMobileAdsAppId": "ca-app-pub-5600114350279556/4329155269"
+        "googleMobileAdsAppId": "ca-app-pub-5600114350279556~7303992337"
       }
     },
     "androidNavigationBar": {
