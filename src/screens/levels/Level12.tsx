@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Animated, Easing, TouchableOpacity, Platform } from 'react-native';
+import { Animated, Easing, TouchableOpacity, Platform, View } from 'react-native';
 import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
@@ -9,7 +9,7 @@ import colors from 'res/colors';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelCounter from 'components/LevelCounter';
-import { CenterContainer, TopText } from 'components/LevelNav/components';
+import { CenterContainer, LeftContainer, NavButton, TopText } from 'components/LevelNav/components';
 import SettingsModal from 'components/SettingsModal';
 import { SettingsIcon } from 'components/LevelNav/components'
 import { LevelNavText, LevelNavContainer } from 'components/SettingsModal/components';
@@ -120,28 +120,59 @@ const Level12: Level = (props) => {
           </LevelNavContainer>
         </TransformedContainer>
       </SettingsModal>
-      {!HAS_NOTCH && (
-        <TransformedContainer pointerEvents={'box-none'}>
-          <CenterContainer
-            pointerEvents={'box-none'}
-            style={{ backgroundColor: 'transparent' }}
-          >
-            <Animated.View style={{ opacity: Animated.subtract(1, coinOpacity) }}>
+      <TransformedContainer pointerEvents={'box-none'}>
+        {!HAS_NOTCH && (
+          <>
+            <CenterContainer
+              pointerEvents={'box-none'}
+              style={{ backgroundColor: 'transparent' }}
+            >
+              <Animated.View style={{ opacity: Animated.subtract(1, coinOpacity) }}>
+                <TouchableOpacity onPressIn={handleReveal}>
+                  <TopText style={{ color: colors.coin }}>12</TopText>
+                </TouchableOpacity>
+              </Animated.View>
+            </CenterContainer>
+            {isRevealed && (
+              <CoinsContainer style={{ opacity: coinOpacity }}>
+                <Coin
+                  found={twelve}
+                  onPress={() => props.onCoinPress(numCoinsFound)}
+                />
+              </CoinsContainer>
+            )}
+          </>
+        )}
+        {HAS_NOTCH && (
+          <LeftContainer>
+            <NavButton>
+              <SettingsIcon />
+            </NavButton>
+            <View style={{height: styles.levelNavHeight, alignItems: 'center', justifyContent: 'flex-end'}}>
               <TouchableOpacity onPressIn={handleReveal}>
-                <TopText style={{ color: colors.coin }}>12</TopText>
+                <Animated.View style={{ opacity: Animated.subtract(1, coinOpacity) }}>
+                  <TopText style={{ color: colors.coin }}>12</TopText>
+                </Animated.View>
               </TouchableOpacity>
-            </Animated.View>
-          </CenterContainer>
-          {isRevealed && (
-            <CoinsContainer style={{ opacity: coinOpacity }}>
-              <Coin
-                found={twelve}
-                onPress={() => props.onCoinPress(numCoinsFound)}
-              />
-            </CoinsContainer>
-          )}
-        </TransformedContainer>
-      )}
+              {isRevealed && (
+                <CoinsContainer style={{ opacity: coinOpacity, backgroundColor: 'transparent' }}>
+                  <Coin
+                    found={twelve}
+                    onPress={() => props.onCoinPress(numCoinsFound)}
+                  />
+                </CoinsContainer>
+              )}
+            </View>
+          </LeftContainer>
+        )}
+      </TransformedContainer>
+      {/* {HAS_NOTCH && (
+        <LevelNavContainer style={{ zIndex: styles.levelNavZIndex + 1 }}>
+          <LeftContainer>
+            <SettingsIcon style={{ transform: [{translateX: 10}] }} />
+          </LeftContainer>
+        </LevelNavContainer>
+      )} */}
       <LevelContainer>
         <LevelCounter count={numCoinsFound} />
       </LevelContainer>

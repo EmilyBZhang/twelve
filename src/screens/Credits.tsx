@@ -1,9 +1,10 @@
 // TODO: Make credits screen scroll slowly to the bottom
 // IDEA: Make the links at the bottom of the credits each contained inside of a Coin
 
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { NavigationActions } from 'react-navigation';
 import styled from 'styled-components/native';
+import * as StoreReview from 'expo-store-review';
 
 import { Screen } from 'utils/interfaces';
 import ScreenContainer from 'components/ScreenContainer';
@@ -19,7 +20,7 @@ const FallingCoinsContainer = styled.View`
 `;
 
 const Credits: Screen = (props) => {
-  const animateBg = !!props.navigation.getParam('animateBg') || false;
+  const finishGame = !!props.navigation.getParam('finishGame') || false;
 
   const goToMainMenu = useCallback(() => {
     props.navigation.dispatch(NavigationActions.navigate({
@@ -27,11 +28,24 @@ const Credits: Screen = (props) => {
     }));
   }, []);
 
+  useEffect(() => {
+    if (!finishGame) return;
+    (async () => {
+      try {
+        if (await StoreReview.hasAction() && await StoreReview.isAvailableAsync()) {
+          StoreReview.requestReview();
+        }
+      } catch (err) {
+        console.warn(err);
+      }
+    })();
+  }, [finishGame]);
+
   return (
     <ScreenContainer>
       <LevelNav onBack={goToMainMenu} />
       <FallingCoinsContainer>
-        <FallingCoins active={animateBg} />
+        <FallingCoins active={finishGame} />
       </FallingCoinsContainer>
       <CreditsFlatList />
     </ScreenContainer>

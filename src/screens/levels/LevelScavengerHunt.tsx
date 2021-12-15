@@ -6,9 +6,6 @@
 // The final message will be "thx4playing!"
 // Maybe play a cute animation after to transition to credits~ uwu
 
-// TODO: Show coins upon unlocking the message
-// 
-
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components/native';
 
@@ -71,6 +68,26 @@ const messages = [
   `So don't forget to check out their links in the credits!`,
   'And thank YOU, once again, for playing...',
   'twelve.',
+];
+
+const messagesRhyme = [
+  `Wow, you did it! You've bested the game!`,
+  `I hope you enjoyed it and others the same.`,
+
+  `Development took the team more than a year`,
+  `But now it is done, and now you are here.`,
+
+  `Maybe I'll work on a game called eleven.`,
+  `It could take twelve months; it could take just seven`,
+
+  `It really depends on how much people hype it`,
+  `Remember to rate twelve if you really like it ;)`,
+
+  `And shoutout to friends for their music and art`,
+  `Go check out their links in their credits screen part!`,
+
+  `That's all I've to say; there's no need to delve`,
+  `Thank YOU, once again, for playing through twelve.`,
 ];
 
 const CoinContainer = styled.View`

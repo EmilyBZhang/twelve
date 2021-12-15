@@ -95,7 +95,7 @@ const LevelNav: FunctionComponent<LevelNavProps> = (props) => {
         />
       )}
       <CenterContainer>
-        {(!!level && !HAS_NOTCH) && (
+        {!HAS_NOTCH && !!level && (
           <>
             <NavButton onPress={onPrevLevel} disabled={!levelStatus[level - 2]?.unlocked}>
               <Octicons
@@ -130,6 +130,7 @@ const LevelNav: FunctionComponent<LevelNavProps> = (props) => {
             />
           </NavButton>
         )}
+        {HAS_NOTCH && !!level && <TopText>{level}</TopText>}
       </LeftContainer>
       <RightContainer>
         {onHint && (

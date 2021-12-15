@@ -8,6 +8,7 @@ import {
   TapGestureHandlerStateChangeEvent,
 } from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
+import Constants from 'expo-constants';
 
 import { Level } from 'utils/interfaces';
 import getDimensions, { getLevelDimensions } from 'utils/getDimensions';
@@ -29,7 +30,7 @@ const numGears = 12;
 const missingGearIndex = 8;
 const margin = coinSize;
 const midX = windowWidth * missingGearIndex / numGears + levelWidth / numGears / 2;
-const midY = (windowHeight + coinSize + styles.levelNavHeight) / 2;
+const midY = (windowHeight + coinSize) / 2;
 const bounds = {
   minX: midX - margin,
   maxX: midX + margin,
@@ -247,6 +248,14 @@ const SettingsGear: FunctionComponent<SettingsGearProps> = memo((props) => {
   );
 });
 
+const AlignedContainer = styled.View`
+  height: ${windowHeight}px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+`;
+
 const LevelConveyorBelt: Level = (props) => {
   const [gearAnim] = useState(new Animated.Value(0));
   const [beltActive, setBeltActive] = useState(false);
@@ -287,6 +296,8 @@ const LevelConveyorBelt: Level = (props) => {
     );
   });
 
+  console.log(Constants.statusBarHeight, styles.levelTopMargin - styles.levelNavHeight);
+
   return (
     <>
       {!twelve && <SettingsGearContainer style={{ backgroundColor: colors.background }} />}
@@ -298,31 +309,33 @@ const LevelConveyorBelt: Level = (props) => {
       />
       <LevelContainer>
         <LevelCounter count={numCoinsFound} />
-        <BeltsContainer>
-          <Belt
-            active={beltActive}
-            children1={renderRow(0)}
-            children2={renderRow(1)}
-            children3={renderRow(2)}
-          />
-          <GearRow>
-            {Array.from(Array(numGears), (_, index) => (
-              <GearContainer
-                key={String(index)}
-                style={{
-                  transform: [{ rotate }],
-                  opacity: (index === missingGearIndex) ? 0 : 1
-                }}
-              >
-                <Gear />
-              </GearContainer>
-            ))}
-          </GearRow>
-          <ReverseContainer>
-            <Belt active={beltActive} />
-          </ReverseContainer>
-        </BeltsContainer>
       </LevelContainer>
+        <AlignedContainer>
+          <BeltsContainer>
+            <Belt
+              active={beltActive}
+              children1={renderRow(0)}
+              children2={renderRow(1)}
+              children3={renderRow(2)}
+            />
+            <GearRow>
+              {Array.from(Array(numGears), (_, index) => (
+                <GearContainer
+                  key={String(index)}
+                  style={{
+                    transform: [{ rotate }],
+                    opacity: (index === missingGearIndex) ? 0 : 1
+                  }}
+                >
+                  <Gear />
+                </GearContainer>
+              ))}
+            </GearRow>
+            <ReverseContainer>
+              <Belt active={beltActive} />
+            </ReverseContainer>
+          </BeltsContainer>
+        </AlignedContainer>
     </>
   );
 };

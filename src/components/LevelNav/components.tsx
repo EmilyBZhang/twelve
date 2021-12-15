@@ -22,7 +22,7 @@ export const LeftContainer = styled.View`
   height: ${styles.levelNavHeight}px;
   flex-direction: row;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-end;
   overflow: hidden;
   z-index: ${styles.levelNavZIndex};
 `;
@@ -34,7 +34,7 @@ export const RightContainer = styled.View`
   height: ${styles.levelNavHeight}px;
   flex-direction: row;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-end;
   overflow: hidden;
   z-index: ${styles.levelNavZIndex};
 `;
@@ -57,8 +57,8 @@ export const TopText = styled.Text`
   font-family: montserrat-bold;
   font-size: ${styles.levelNavHeight * 2/3}px;
   text-align: center;
-  padding: ${styles.levelNavHeight / 6}px;
-  width: ${styles.levelNavHeight * 4/3}px;
+  padding-bottom: ${styles.levelNavHeight / 12}px;
+  width: ${styles.levelNavHeight * 17/12}px;
 `;
 
 export interface NavButtonProps {
