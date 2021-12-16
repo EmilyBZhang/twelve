@@ -94,7 +94,7 @@ const LevelNav: FunctionComponent<LevelNavProps> = (props) => {
           onPrevLevel={onPrevLevel}
         />
       )}
-      <CenterContainer>
+      <CenterContainer style={{ opacity: 0 }}>
         {!HAS_NOTCH && !!level && (
           <>
             <NavButton onPress={onPrevLevel} disabled={!levelStatus[level - 2]?.unlocked}>
@@ -115,7 +115,7 @@ const LevelNav: FunctionComponent<LevelNavProps> = (props) => {
           </>
         )}
       </CenterContainer>
-      <LeftContainer>
+      <LeftContainer style={{ opacity: 0 }}>
         {onToggleSettings ? (
           <NavButton onPress={onToggleSettings} outlined>
             <SettingsIcon />
@@ -132,7 +132,7 @@ const LevelNav: FunctionComponent<LevelNavProps> = (props) => {
         )}
         {HAS_NOTCH && !!level && <TopText>{level}</TopText>}
       </LeftContainer>
-      <RightContainer>
+      <RightContainer style={{ opacity: 0 }}>
         {onHint && (
           <NavButton onPress={onHint} outlined>
             <HintIcon />

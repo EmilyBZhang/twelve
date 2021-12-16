@@ -23,6 +23,7 @@ import {
   CoinsRenderer,
   CoinInfo,
 } from './entities';
+import LevelText from 'components/LevelText';
 
 const { width: windowWidth, height: windowHeight } = getDimensions();
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
@@ -111,20 +112,21 @@ interface LevelEvent extends GameEvent {
 const LevelBallMaze: Level = (props) => {
   const { onCoinPress, coinsFound } = props;
 
-  const [rotation, setRotation] = useState({alpha: 0, beta: 0, gamma: 0});
+  // const [rotation, setRotation] = useState({alpha: 0, beta: 0, gamma: 0});
+  const [rotation, setRotation] = useState({ alpha: 0, beta: Math.PI / 6, gamma: Math.PI / 12 });
 
-  useEffect(() => {
-    if (twelve) return;
-    DeviceMotion.setUpdateInterval(1000 / 60);
-    const subscription = DeviceMotion.addListener(res => {
-      if (res.rotation) {
-        setRotation(res.rotation);
-      }
-    });
-    return () => {
-      subscription.remove();
-    };
-  }, []);
+  // useEffect(() => {
+  //   if (twelve) return;
+  //   DeviceMotion.setUpdateInterval(1000 / 60);
+  //   const subscription = DeviceMotion.addListener(res => {
+  //     if (res.rotation) {
+  //       setRotation(res.rotation);
+  //     }
+  //   });
+  //   return () => {
+  //     subscription.remove();
+  //   };
+  // }, []);
 
   const entities = useMemo(() => {
     const engine = Matter.Engine.create();
@@ -252,6 +254,18 @@ const LevelBallMaze: Level = (props) => {
         ]}
         onEvent={handleEvent}
       />
+      <View style={{
+        position: 'absolute',
+        top: -styles.levelNavHeight,
+        left: 0,
+        height: levelHeight + styles.levelNavHeight,
+        width: levelWidth,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#ffffff80',
+      }}>
+        <LevelText>in 72 unique levels</LevelText>
+      </View>
     </LevelContainer>
   );
 };

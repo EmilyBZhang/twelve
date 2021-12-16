@@ -92,7 +92,7 @@ const LevelVolcano: Level = (props) => {
         }),
         Animated.sequence([
           Animated.timing(yOffset, {
-            toValue: -levelHeight / 3 * factor,
+            toValue: -levelHeight / 4 * factor,
             duration: duration / 2,
             easing: Easing.out(Easing.quad),
             useNativeDriver: true

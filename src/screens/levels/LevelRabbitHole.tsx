@@ -23,7 +23,7 @@ const UnitContainer = styled.View`
 
 const scrollContainerStyle = {
   width: levelWidth,
-  height: levelHeight * 4
+  height: levelHeight * 2.5
 };
 
 const LevelRabbitHole: Level = (props) => {
@@ -41,7 +41,7 @@ const LevelRabbitHole: Level = (props) => {
         <UnitContainer>
           <LevelContainer>
             <LevelText hidden={twelve}>
-              Down the rabb<ScavengerText>i</ScavengerText>t hole
+              find the twelve dots
             </LevelText>
           </LevelContainer>
         </UnitContainer>
