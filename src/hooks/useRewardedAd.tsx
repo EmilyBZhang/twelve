@@ -1,4 +1,5 @@
 import { useEffect, useCallback } from 'react';
+// TODO: DEPRECATED
 import { AdMobRewarded } from 'expo-ads-admob';
 import { PERSONALIZED_ADS } from 'res/constants';
 
@@ -9,7 +10,7 @@ export type EventNameType = 'rewardedVideoUserDidEarnReward'
   | 'rewardedVideoDidFailToPresent'
   | 'rewardedVideoDidDismiss';
 
-export type EventMap = { [eventName in EventNameType]?: () => any; };
+export type EventMap = { [eventName in EventNameType]?: (...args: any[]) => any; };
 
 const useRewardedAd = (callbacks: EventMap) => {
   useEffect(() => {

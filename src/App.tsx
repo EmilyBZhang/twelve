@@ -3,6 +3,7 @@ import { LogBox, StatusBar } from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { Provider } from 'react-redux';
+// TODO: DEPRECATED
 import AppLoading from 'expo-app-loading';
 
 import store from 'reducers/store';

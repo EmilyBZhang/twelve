@@ -1,4 +1,5 @@
 import { FunctionComponent, memo, useEffect } from 'react';
+// TODO: DEPRECATED
 import { AdMobRewarded } from 'expo-ads-admob';
 import { AD_UNIT_ID } from 'res/constants';
 

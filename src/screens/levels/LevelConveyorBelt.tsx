@@ -8,7 +8,6 @@ import {
   TapGestureHandlerStateChangeEvent,
 } from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
-import Constants from 'expo-constants';
 
 import { Level } from 'utils/interfaces';
 import getDimensions, { getLevelDimensions } from 'utils/getDimensions';
@@ -295,8 +294,6 @@ const LevelConveyorBelt: Level = (props) => {
       />
     );
   });
-
-  console.log(Constants.statusBarHeight, styles.levelTopMargin - styles.levelNavHeight);
 
   return (
     <>

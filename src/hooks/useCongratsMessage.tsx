@@ -4,8 +4,8 @@ import { randElem } from 'utils/random';
 
 const messages = [
   'Astounding!',
-  'Congratulations!',
   'Excellent!',
+  'Fantastic!',
   'Good job!',
   'Magnificent!',
   'Marvelous!',

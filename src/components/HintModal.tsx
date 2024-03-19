@@ -144,9 +144,23 @@ const HintModal: FunctionComponent<HintModalProps> = memo((props) => {
         setHint(levelHints ? levelHints[hintNum.current] : noHintText);
       }
     },
-    rewardedVideoDidFailToLoad: () => {
+    // TODO: Check for specific errors
+    rewardedVideoDidFailToLoad: (err) => {
       closable.current = true;
-      setHint(`Couldn't load hint :(\n\nCheck your internet connection.`);
+      // setHint(`Couldn't load hint :(\n\nCheck your internet connection.`);
+      // Let hints run if video fails to load - while it's worse for ad revenue it's better for UX
+      if (adRewarded.current) {
+        // Watch ad to skip
+        unlockLevel(level + 1);
+        if (onNextLevel) {
+          onNextLevel();
+          skipped.current = true;
+        }
+      } else {
+        // Watch ad for hint
+        adRewarded.current = true;
+        setHint(levelHints ? levelHints[hintNum.current] : noHintText);
+      }
     },
   }), [level]);
 
