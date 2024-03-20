@@ -3,36 +3,23 @@
   "body": [
     {
       "header": "Level Design",
-      "names": [
-        "Bradon",
-        "Dai"
-      ]
+      "names": ["Bradon", "Dai"]
     },
     {
       "header": "Programming",
-      "names": [
-        "Bradon"
-      ]
+      "names": ["Bradon"]
     },
     {
       "header": "Graphics & Art",
-      "names": [
-        "Soh Arsquare",
-        "Bradon"
-      ]
+      "names": ["Soh Arsquare", "Bradon"]
     },
     {
       "header": "Music",
-      "names": [
-        "Dai"
-      ]
+      "names": ["Dai"]
     },
     {
       "header": "Sound Effects",
-      "names": [
-        "Dai",
-        "Bradon"
-      ]
+      "names": ["Dai", "Bradon"]
     },
     {
       "header": "Playtesting",
@@ -48,34 +35,7 @@
       ]
     },
     {
-      "header": "Social Media",
-      "links": [
-        {
-          "icon": "facebook-square",
-          "url": "https://www.facebook.com/TwelvePuzzle",
-          "color": "#4267b2"
-        },
-        {
-          "icon": "twitter",
-          "url": "https://twitter.com/TwelvePuzzle",
-          "color": "#1da1f2"
-        },
-        {
-          "icon": "discord",
-          "url": "https://discord.gg/bzqubucqaf",
-          "color": "#7181c8"
-        },
-        {
-          "icon": "reddit",
-          "url": "https://www.reddit.com/r/TwelvePuzzle/",
-          "color": "#ff0000"
-        },
-        {
-          "icon": "youtube",
-          "url": "https://www.youtube.com/channel/UC6aHme0G8huzbMgi4lXD2pA",
-          "color": "#fe0000"
-        }
-      ]
+      "header": "Socials"
     },
     {
       "subheader": "Bradon",
