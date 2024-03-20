@@ -5,6 +5,8 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { Provider } from 'react-redux';
 // TODO: DEPRECATED
 import AppLoading from 'expo-app-loading';
+import Constants from 'expo-constants';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import store from 'reducers/store';
 import useSettings from 'hooks/useSettings';
@@ -22,11 +24,10 @@ import ScreenContainer from 'components/ScreenContainer';
 import MeasureScreen from 'components/init/MeasureScreen';
 import InitAudio from 'components/init/InitAudio';
 
-import Constants from 'expo-constants'
-
 LogBox.ignoreAllLogs(true);
 
-const AppNavigator = createStackNavigator({
+const AppNavigator = createStackNavigator(
+  {
     MainMenu: {
       screen: MainMenu,
     },
@@ -39,7 +40,8 @@ const AppNavigator = createStackNavigator({
     FakeAd: {
       screen: FakeAd,
     },
-  }, {
+  },
+  {
     initialRouteName: 'MainMenu',
     defaultNavigationOptions: {
       headerShown: false,
@@ -48,7 +50,8 @@ const AppNavigator = createStackNavigator({
         backgroundColor: colors.background,
       },
     },
-});
+  }
+);
 const AppContainer = createAppContainer(AppNavigator);
 
 // TODO: Consider keeping the twelve logo while the fonts are loading, or change the splash image to be blank
@@ -65,7 +68,13 @@ const App: FunctionComponent = () => {
   const initImages = useCallback(() => setImagesReady(true), []);
   const initAudio = useCallback(() => setAudioReady(true), []);
 
-  const isLoaded = [settingsReady, fontsReady, adMobReady, imagesReady, audioReady].every(x => x);
+  const isLoaded = [
+    settingsReady,
+    fontsReady,
+    adMobReady,
+    imagesReady,
+    audioReady,
+  ].every((x) => x);
 
   return (
     <Provider store={store}>
@@ -76,7 +85,9 @@ const App: FunctionComponent = () => {
       <InitAudio onLoad={initAudio} />
       {/* <MeasureScreen onLoad={} /> */}
       <StatusBar hidden />
-      {isLoaded ? <AppContainer /> : <AppLoading />}
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        {isLoaded ? <AppContainer /> : <AppLoading />}
+      </GestureHandlerRootView>
     </Provider>
   );
 };
