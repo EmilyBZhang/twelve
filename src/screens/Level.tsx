@@ -22,15 +22,15 @@ const victorySound = require('assets/sfx/victory.mp3');
 const buzzSound = require('assets/sfx/buzz.mp3');
 
 const Level: Screen = (props) => {
-  
-  const [selectedIndices, toggleIndex, setSelectedIndices] = useSelectedIndices();
+  const [selectedIndices, toggleIndex, setSelectedIndices] =
+    useSelectedIndices();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [hintOpen, setHintOpen] = useState(false);
   const musicPlayback = useRef<CreateAudioResult | null>(null);
-  
+
   let levelNum = props.navigation.getParam('level') || 0;
   if (levelNum > levels.length) levelNum = 0;
-  
+
   const [{ levelStatus }, { completeLevel }] = useSettings();
 
   const coinsFound = selectedIndices.size;
@@ -38,13 +38,18 @@ const Level: Screen = (props) => {
 
   useEffect(() => {
     if (twelve) {
-      playAudio(victorySound, (playback) => musicPlayback.current = playback, { volume: 0.5 });
+      playAudio(
+        victorySound,
+        (playback) => (musicPlayback.current = playback),
+        { volume: 0.5 }
+      );
       return () => {
         if (musicPlayback.current?.sound) {
-          musicPlayback.current.sound.stopAsync()
+          musicPlayback.current.sound
+            .stopAsync()
             .catch((err: any) => console.warn(err));
         }
-      }
+      };
     }
   }, [twelve]);
 
@@ -63,13 +68,15 @@ const Level: Screen = (props) => {
     setSelectedIndices(indices);
     if (indices.size === 12) completeLevel(levelNum);
   };
-  
+
   const goToLevel = useCallback((index: number) => {
     setSelectedIndices(new Set<number>());
-    props.navigation.dispatch(NavigationActions.navigate({
-      routeName: 'Level',
-      params: { level: index },
-    }));
+    props.navigation.dispatch(
+      NavigationActions.navigate({
+        routeName: 'Level',
+        params: { level: index },
+      })
+    );
   }, []);
 
   // TODO: Fix this function if possible, feels unclean
@@ -79,18 +86,22 @@ const Level: Screen = (props) => {
   };
 
   const goToMainMenu = useCallback(() => {
-    props.navigation.dispatch(NavigationActions.navigate({
-      routeName: 'MainMenu'
-    }));
+    props.navigation.dispatch(
+      NavigationActions.navigate({
+        routeName: 'MainMenu',
+      })
+    );
   }, []);
 
   const goToLevelSelect = useCallback(() => goToLevel(0), []);
 
   const goToCredits = useCallback(() => {
-    props.navigation.dispatch(NavigationActions.navigate({
-      routeName: 'Credits',
-      params: { finishGame: true },
-    }));
+    props.navigation.dispatch(
+      NavigationActions.navigate({
+        routeName: 'Credits',
+        params: { finishGame: true },
+      })
+    );
   }, []);
 
   // TODO: Check if prev/next levels are unlocked
@@ -105,13 +116,10 @@ const Level: Screen = (props) => {
     [levelNum]
   );
 
-  const handleRestart = useCallback(
-    restartLevel,
-    [levelNum]
-  );
+  const handleRestart = useCallback(restartLevel, [levelNum]);
 
   const handleToggleSettings = useCallback(
-    () => setSettingsOpen(state => !state),
+    () => setSettingsOpen((state) => !state),
     []
   );
 
@@ -121,11 +129,14 @@ const Level: Screen = (props) => {
   }, []);
 
   const handleHint = useCallback(() => {
-    setHintOpen(state => !state);
+    setHintOpen((state) => !state);
+  }, [levelNum]);
+
+  useEffect(() => {
+    if (levelNum === levels.length) goToCredits();
   }, [levelNum]);
 
   if (levelNum === levels.length) {
-    goToCredits();
     return null;
   }
 
@@ -135,7 +146,9 @@ const Level: Screen = (props) => {
     // TODO: Look into NavigationActions.back or props.navigation.goBack
     onBack: levelNum ? goToLevelSelect : goToMainMenu,
     onToggleSettings: levelNum ? handleToggleSettings : undefined,
-    onPrevLevel: levelStatus[levelNum - 2]?.unlocked ? handlePrevLevel : undefined,
+    onPrevLevel: levelStatus[levelNum - 2]?.unlocked
+      ? handlePrevLevel
+      : undefined,
     onNextLevel: handleNextLevel,
     // onNextLevel: levelStatus[levelNum]?.unlocked ? handleNextLevel : undefined,
     // onPrevLevel: levelStatus[levelNum - 2]?.unlocked ? handlePrevLevel : undefined,
@@ -148,15 +161,13 @@ const Level: Screen = (props) => {
     onHint: levelNum ? handleHint : undefined,
   };
 
-  if (levelNum === 0) return (
-    <>
-      <LevelNav {...levelNavProps} />
-      <LevelSelect
-        numLevels={levels.length - 1}
-        onGoToLevel={goToLevel}
-      />
-    </>
-  );
+  if (levelNum === 0)
+    return (
+      <>
+        <LevelNav {...levelNavProps} />
+        <LevelSelect numLevels={levels.length - 1} onGoToLevel={goToLevel} />
+      </>
+    );
 
   const LevelX = levels[levelNum] as LevelType;
 
