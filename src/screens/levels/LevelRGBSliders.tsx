@@ -3,6 +3,7 @@
 import React, { useState, FunctionComponent } from 'react';
 import { View } from 'react-native';
 import { Foundation } from '@expo/vector-icons';
+import Slider from '@react-native-community/slider';
 import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
@@ -19,11 +20,11 @@ const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 
 const { coinSize } = styles;
 
-const ColorSlider = styled.Slider.attrs(props => ({
+const ColorSlider = styled(Slider).attrs((props) => ({
   minimumValue: 0,
   maximumValue: 255,
   minimumTrackTintColor: props.thumbTintColor,
-  maximumTrackTintColor: 'black'
+  maximumTrackTintColor: 'black',
 }))`
   width: ${levelWidth / 2 - coinSize}px;
   height: ${coinSize / 2}px;
@@ -44,18 +45,9 @@ const RGBSliders: FunctionComponent<RGBSlidersProps> = (props) => {
 
   return (
     <>
-      <ColorSlider
-        thumbTintColor={'red'}
-        onValueChange={setRed}
-      />
-      <ColorSlider
-        thumbTintColor={'lime'}
-        onValueChange={setGreen}
-      />
-      <ColorSlider
-        thumbTintColor={'blue'}
-        onValueChange={setBlue}
-      />
+      <ColorSlider thumbTintColor={'red'} onValueChange={setRed} />
+      <ColorSlider thumbTintColor={'lime'} onValueChange={setGreen} />
+      <ColorSlider thumbTintColor={'blue'} onValueChange={setBlue} />
     </>
   );
 };
@@ -68,10 +60,10 @@ const Color = styled.View<ColorProps>`
   width: ${coinSize}px;
   height: ${coinSize}px;
   border-radius: ${coinSize / 2}px;
-  background-color: ${props => props.color};
+  background-color: ${(props) => props.color};
   justify-content: center;
   align-items: center;
-  /* ${props => props.color === 'rgb(0, 0, 255)' && `display: none;`} */
+  /* ${(props) => props.color === 'rgb(0, 0, 255)' && `display: none;`} */
 `;
 
 interface LockIconProps {
@@ -81,23 +73,25 @@ interface LockIconProps {
 const LockIcon = styled(Foundation).attrs({
   name: 'lock',
   size: coinSize / 2,
-  color: 'black'
+  color: 'black',
 })<LockIconProps>`
-  opacity: ${props => props.opacity};
+  opacity: ${(props) => props.opacity};
 `;
 
 const initY = levelHeight / 2 - coinSize * 3;
 const deltaY = coinSize;
 
-const coinPositions = Array.from(Array(12), (_, index) => (
-  (index < 6) ? ({
-    top: initY + index * deltaY,
-    left: coinSize / 2,
-  }) : ({
-    top: initY + (index % 6) * deltaY,
-    right: coinSize / 2,
-  })
-));
+const coinPositions = Array.from(Array(12), (_, index) =>
+  index < 6
+    ? {
+        top: initY + index * deltaY,
+        left: coinSize / 2,
+      }
+    : {
+        top: initY + (index % 6) * deltaY,
+        right: coinSize / 2,
+      }
+);
 
 const LevelRGBSliders: Level = (props) => {
   const [redBg, setRedBg] = useState<number>(0);
@@ -110,7 +104,7 @@ const LevelRGBSliders: Level = (props) => {
 
   const goodTotal = greenBg + blueBg + blueCoin;
   const badTotal = redBg + redCoin + greenCoin;
-  const canPress = (goodTotal >= 255 * 3 - 36) && (badTotal <= 36);
+  const canPress = goodTotal >= 255 * 3 - 36 && badTotal <= 36;
 
   const bgColor = `rgb(${redBg}, ${greenBg}, ${blueBg})`;
   const coinColor = `rgb(${redCoin}, ${greenCoin}, ${blueCoin})`;
@@ -126,13 +120,15 @@ const LevelRGBSliders: Level = (props) => {
       <LevelCounter count={numCoinsFound} />
       <RGBSliders setColors={[setRedBg, setGreenBg, setBlueBg] as SetColors} />
       {/* <LevelText color={'white'} hidden={twelve}>{hintText}</LevelText> */}
-      <RGBSliders setColors={[setRedCoin, setGreenCoin, setBlueCoin] as SetColors} />
+      <RGBSliders
+        setColors={[setRedCoin, setGreenCoin, setBlueCoin] as SetColors}
+      />
       {coinPositions.map((coinPosition, index) => (
         <View
           key={String(index)}
           style={{
             position: 'absolute',
-            ...coinPosition
+            ...coinPosition,
           }}
         >
           <Coin

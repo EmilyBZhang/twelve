@@ -1,6 +1,7 @@
 import React, { useState, FunctionComponent } from 'react';
 import { View } from 'react-native';
 import { Foundation } from '@expo/vector-icons';
+import Slider from '@react-native-community/slider';
 import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
@@ -17,11 +18,11 @@ const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 
 const { coinSize } = styles;
 
-const ColorSlider = styled.Slider.attrs(props => ({
+const ColorSlider = styled(Slider).attrs((props) => ({
   minimumValue: 0,
   maximumValue: 255,
   minimumTrackTintColor: props.thumbTintColor,
-  maximumTrackTintColor: 'black'
+  maximumTrackTintColor: 'black',
 }))`
   width: ${levelWidth / 2 - coinSize}px;
   height: ${coinSize / 2}px;
@@ -42,18 +43,9 @@ const CMYSliders: FunctionComponent<CMYSlidersProps> = (props) => {
 
   return (
     <>
-      <ColorSlider
-        thumbTintColor={'cyan'}
-        onValueChange={setCyan}
-      />
-      <ColorSlider
-        thumbTintColor={'magenta'}
-        onValueChange={setMagenta}
-      />
-      <ColorSlider
-        thumbTintColor={'yellow'}
-        onValueChange={setYellow}
-      />
+      <ColorSlider thumbTintColor={'cyan'} onValueChange={setCyan} />
+      <ColorSlider thumbTintColor={'magenta'} onValueChange={setMagenta} />
+      <ColorSlider thumbTintColor={'yellow'} onValueChange={setYellow} />
     </>
   );
 };
@@ -66,10 +58,10 @@ const Color = styled.View<ColorProps>`
   width: ${coinSize}px;
   height: ${coinSize}px;
   border-radius: ${coinSize / 2}px;
-  background-color: ${props => props.color};
+  background-color: ${(props) => props.color};
   justify-content: center;
   align-items: center;
-  /* ${props => props.color === 'rgb(0, 0, 255)' && `display: none;`} */
+  /* ${(props) => props.color === 'rgb(0, 0, 255)' && `display: none;`} */
 `;
 
 interface LockIconProps {
@@ -79,23 +71,25 @@ interface LockIconProps {
 const LockIcon = styled(Foundation).attrs({
   name: 'lock',
   size: coinSize / 2,
-  color: 'white'
+  color: 'white',
 })<LockIconProps>`
-  opacity: ${props => props.opacity};
+  opacity: ${(props) => props.opacity};
 `;
 
 const initY = levelHeight / 2 - coinSize * 3;
 const deltaY = coinSize;
 
-const coinPositions = Array.from(Array(12), (_, index) => (
-  (index < 6) ? ({
-    top: initY + index * deltaY,
-    left: coinSize / 2,
-  }) : ({
-    top: initY + (index % 6) * deltaY,
-    right: coinSize / 2,
-  })
-));
+const coinPositions = Array.from(Array(12), (_, index) =>
+  index < 6
+    ? {
+        top: initY + index * deltaY,
+        left: coinSize / 2,
+      }
+    : {
+        top: initY + (index % 6) * deltaY,
+        right: coinSize / 2,
+      }
+);
 
 const LevelCMYSliders: Level = (props) => {
   const [cyanBg, setCyanBg] = useState<number>(0);
@@ -108,10 +102,12 @@ const LevelCMYSliders: Level = (props) => {
 
   const goodTotal = cyanBg + cyanCoin + magentaCoin;
   const badTotal = magentaBg + yellowBg + yellowCoin;
-  const canPress = (goodTotal === 255 * 3) && (badTotal === 0);
+  const canPress = goodTotal === 255 * 3 && badTotal === 0;
 
   const bgColor = `rgb(${255 - cyanBg}, ${255 - magentaBg}, ${255 - yellowBg})`;
-  const coinColor = `rgb(${255 - cyanCoin}, ${255 - magentaCoin}, ${255 - yellowCoin})`;
+  const coinColor = `rgb(${255 - cyanCoin}, ${255 - magentaCoin}, ${
+    255 - yellowCoin
+  })`;
   const lockOpacity = 1 - goodTotal / (255 * 3 + badTotal);
 
   const numCoinsFound = props.coinsFound.size;
@@ -119,14 +115,18 @@ const LevelCMYSliders: Level = (props) => {
   return (
     <LevelContainer color={bgColor}>
       <LevelCounter count={numCoinsFound} />
-      <CMYSliders setColors={[setCyanBg, setMagentaBg, setYellowBg] as SetColors} />
-      <CMYSliders setColors={[setCyanCoin, setMagentaCoin, setYellowCoin] as SetColors} />
+      <CMYSliders
+        setColors={[setCyanBg, setMagentaBg, setYellowBg] as SetColors}
+      />
+      <CMYSliders
+        setColors={[setCyanCoin, setMagentaCoin, setYellowCoin] as SetColors}
+      />
       {coinPositions.map((coinPosition, index) => (
         <View
           key={String(index)}
           style={{
             position: 'absolute',
-            ...coinPosition
+            ...coinPosition,
           }}
         >
           <Coin

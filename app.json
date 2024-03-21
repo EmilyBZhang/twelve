@@ -51,6 +51,8 @@
         "projectId": "8ed798b0-ed63-11e9-a0f0-c3484fc13d1f"
       }
     },
-    "runtimeVersion": "1.0.8"
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    }
   }
 }

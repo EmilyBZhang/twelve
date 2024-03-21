@@ -31,8 +31,8 @@ const CloseTouchable = styled.TouchableOpacity`
   position: absolute;
   top: ${styles.levelNavHeight / 4}px;
   left: ${styles.levelNavHeight / 4}px;
-  width: ${styles.levelNavHeight * 2 / 3}px;
-  height: ${styles.levelNavHeight * 2 / 3}px;
+  width: ${(styles.levelNavHeight * 2) / 3}px;
+  height: ${(styles.levelNavHeight * 2) / 3}px;
   z-index: ${styles.levelNavZIndex};
   border: 2px solid ${colors.offCoin};
   justify-content: center;
@@ -95,7 +95,9 @@ const OpeningContainer = styled(Animated.View).attrs({
   background-color: ${colors.coin};
 `;
 
-type LevelPropsRef = React.MutableRefObject<React.PropsWithChildren<LevelProps>>;
+type LevelPropsRef = React.MutableRefObject<
+  React.PropsWithChildren<LevelProps>
+>;
 
 const FakeAd: Screen = (props) => {
   const [refresh, setRefresh] = useState(new Date());
@@ -112,19 +114,21 @@ const FakeAd: Screen = (props) => {
     toggleMusic();
     return () => {
       toggleMusic();
-    }
+    };
   }, []);
 
   useEffect(() => {
     let player: CreateAudioResult | null = null;
     playAudio(
       require('assets/music/twelvebars.mp3'),
-      res => { player = res; },
+      (res) => {
+        player = res;
+      },
       { isMuted: false, isLooping: true }
     );
     return () => {
       if (player) player.sound.stopAsync();
-    }
+    };
   }, []);
 
   useEffect(() => {
@@ -145,6 +149,10 @@ const FakeAd: Screen = (props) => {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    if (propsRef.current.coinsFound.size === 12) handleBack();
+  }, [propsRef.current.coinsFound.size]);
+
   const handleBack = useCallback(() => goBack(), [goBack]);
 
   const handleCoinPress = (index?: number) => {
@@ -155,9 +163,7 @@ const FakeAd: Screen = (props) => {
   const handleSetCoinsFound = (coinsFound?: Set<number>) => {
     propsRef.current.setCoinsFound(coinsFound);
     setRefresh(new Date());
-  }
-
-  if (propsRef.current.coinsFound.size === 12) handleBack();
+  };
 
   return (
     <ScreenContainer>

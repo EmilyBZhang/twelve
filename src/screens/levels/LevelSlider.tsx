@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
+import Slider from '@react-native-community/slider';
 import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
@@ -21,7 +22,7 @@ const sliderWidth = coinSize / 2;
 const sliderHeight = levelHeight / 6;
 
 // TODO: See if maximumValue needs to be greater than 1 for iOS
-const ColorSlider = styled.Slider.attrs({
+const ColorSlider = styled(Slider).attrs({
   minimumValue: 0,
   maximumValue: 1,
   minimumTrackTintColor: colors.coin,
@@ -31,12 +32,8 @@ const ColorSlider = styled.Slider.attrs({
   height: ${sliderWidth}px;
   z-index: 1;
   position: absolute;
-  transform:
-    rotate(90deg)
-    translateY(${sliderHeight / 2 - levelHeight / 4}px)
-    translateX(${levelWidth / 4 - sliderWidth * 3/4}px)
-    scale(2, 2)
-    ;
+  transform: rotate(90deg) translateY(${sliderHeight / 2 - levelHeight / 4}px)
+    translateX(${levelWidth / 4 - (sliderWidth * 3) / 4}px) scale(2, 2);
 `;
 
 interface CoverProps {
@@ -44,10 +41,10 @@ interface CoverProps {
 }
 
 const Cover = styled.View.attrs({
-  pointerEvents: 'none'
+  pointerEvents: 'none',
 })<CoverProps>`
   background-color: ${colors.coin};
-  opacity: ${props => props.opacity};
+  opacity: ${(props) => props.opacity};
   position: absolute;
   top: -${styles.levelNavHeight}px;
   padding-top: ${styles.levelNavHeight}px;
@@ -65,16 +62,13 @@ const LevelSlider: Level = (props) => {
 
   return (
     <LevelContainer>
-      <ColorSlider
-        value={0}
-        onValueChange={setSliderVal}
-      />
+      <ColorSlider value={0} onValueChange={setSliderVal} />
       <LevelCounter count={numCoinsFound} />
       <LevelText hidden={twelve}>There they are!</LevelText>
       {coinPositions.map((coinPosition, index) => (
         <View
           key={String(index)}
-          style={{position: 'absolute', ...coinPosition}}
+          style={{ position: 'absolute', ...coinPosition }}
         >
           <Coin
             found={props.coinsFound.has(index)}

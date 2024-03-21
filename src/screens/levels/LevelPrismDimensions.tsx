@@ -1,6 +1,7 @@
 import React, { FunctionComponent, memo, useState, useEffect } from 'react';
 import { Animated, Easing } from 'react-native';
 import Svg, { Polygon } from 'react-native-svg';
+import Slider from '@react-native-community/slider';
 import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
@@ -24,7 +25,8 @@ const maxHeight = 8;
 
 const angle = Math.PI / 6;
 
-const maxSliderHeight = (levelHeight - styles.levelNavHeight - containerHeight) / 3;
+const maxSliderHeight =
+  (levelHeight - styles.levelNavHeight - containerHeight) / 3;
 const sliderTextWidth = styles.coinSize * 2;
 const sliderWidth = levelWidth - 2 * sliderTextWidth;
 
@@ -69,7 +71,7 @@ const PrismSvg = styled(Svg)`
   height: ${containerHeight}px;
 `;
 
-const DimSlider = styled.Slider.attrs({
+const DimSlider = styled(Slider).attrs({
   minimumValue: 0,
   step: 1,
 })`
@@ -99,7 +101,7 @@ const Prism: FunctionComponent<PrismProps> = memo((props) => {
   const sHeight = height * sScale;
 
   const x0 = containerWidth / 2;
-  const y0 = containerHeight * 11 / 12;
+  const y0 = (containerHeight * 11) / 12;
   const x1 = x0;
   const y1 = y0 - sHeight;
 
@@ -116,7 +118,20 @@ const Prism: FunctionComponent<PrismProps> = memo((props) => {
   const x6 = x2 + x4 - x1;
   const y6 = y2 + y4 - y1;
 
-  const points0 = [x0, y0, x3, y3, x2, y2, x6, y6, x4, y4, x5, y5] as ReadonlyArray<number>;
+  const points0 = [
+    x0,
+    y0,
+    x3,
+    y3,
+    x2,
+    y2,
+    x6,
+    y6,
+    x4,
+    y4,
+    x5,
+    y5,
+  ] as ReadonlyArray<number>;
   const points1 = [x0, y0, x1, y1, x2, y2, x3, y3] as ReadonlyArray<number>;
   const points2 = [x0, y0, x1, y1, x4, y4, x5, y5] as ReadonlyArray<number>;
   const points3 = [x1, y1, x2, y2, x6, y6, x4, y4] as ReadonlyArray<number>;
@@ -124,25 +139,10 @@ const Prism: FunctionComponent<PrismProps> = memo((props) => {
   return (
     <PrismContainer>
       <PrismSvg>
-        <Polygon
-          points={points0}
-          fill={colors.coin}
-        />
-        <Polygon
-          points={points1}
-          fill={'#000000'}
-          fillOpacity={0.5}
-        />
-        <Polygon
-          points={points2}
-          fill={'#000000'}
-          fillOpacity={1 / 12}
-        />
-        <Polygon
-          points={points3}
-          fill={'#000000'}
-          fillOpacity={0.25}
-        />
+        <Polygon points={points0} fill={colors.coin} />
+        <Polygon points={points1} fill={'#000000'} fillOpacity={0.5} />
+        <Polygon points={points2} fill={'#000000'} fillOpacity={1 / 12} />
+        <Polygon points={points3} fill={'#000000'} fillOpacity={0.25} />
       </PrismSvg>
       <LevelText color={colors.darkText}>{length * width * height}</LevelText>
     </PrismContainer>
@@ -150,7 +150,6 @@ const Prism: FunctionComponent<PrismProps> = memo((props) => {
 });
 
 const LevelPrismDimensions: Level = (props) => {
-
   const [coinOpacity] = useState(new Animated.Value(0));
 
   const [length, setLength] = useState(3);
@@ -158,8 +157,9 @@ const LevelPrismDimensions: Level = (props) => {
   const [height, setHeight] = useState(8);
 
   const volume1 = length * width * height;
-  const volume2 = (maxLength - length) * (maxWidth - width) * (maxHeight - height);
-  const isRevealed = (volume1 === 12) && (volume2 === 12);
+  const volume2 =
+    (maxLength - length) * (maxWidth - width) * (maxHeight - height);
+  const isRevealed = volume1 === 12 && volume2 === 12;
 
   useEffect(() => {
     if (!isRevealed) return;
@@ -179,7 +179,11 @@ const LevelPrismDimensions: Level = (props) => {
       <LevelCounter count={numCoinsFound} />
       <RowContainer>
         <Prism length={length} width={width} height={height} />
-        <Prism length={maxLength - length} width={maxWidth - width} height={maxHeight - height} />
+        <Prism
+          length={maxLength - length}
+          width={maxWidth - width}
+          height={maxHeight - height}
+        />
       </RowContainer>
       <RowContainer>
         <SliderText>{length}</SliderText>
