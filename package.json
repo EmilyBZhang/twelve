@@ -69,6 +69,7 @@
     "@types/react-redux": "^7.1.5",
     "@types/react-test-renderer": "^16.9.0",
     "@types/styled-components": "^4.1.19",
+    "@types/three": "^0.162.0",
     "babel-preset-expo": "9.0.2",
     "ts-jest": "^24.1.0",
     "tslint": "^5.20.0",
