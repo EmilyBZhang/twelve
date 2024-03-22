@@ -89,12 +89,12 @@ import LevelHamiltonianGrid from './LevelHamiltonianGrid';
 import LevelEulerPath from './LevelEulerPath';
 import LevelAd from './LevelAd';
 import LevelSpellTwelve from './LevelSpellTwelve';
+import Level33Temp from './Level33Temp';
 
-
-
-
-
-
+`
+This string lets levels
+align to their position
+in level order!`;
 
 export default [
   LevelSelect,
@@ -130,7 +130,7 @@ export default [
   LevelHoleJigsaw,
   LevelThreeStacks,
   LevelBinary1,
-  LevelDodecahedron,
+  Level33Temp, // TODO: Add back LevelDodecahedron once we rewrite with https://docs.pmnd.rs/react-three-fiber/getting-started/installation
   LevelDraw12,
   LevelClockOrder,
   LevelConveyorBelt,
@@ -178,7 +178,7 @@ export default [
   // 12 in picture
   // neighbor coins fade away
   // Ice-sliding puzzle
-  
+
   // LevelRGBSliders,
   // LevelCMYSliders,
   // LevelScreenshot,
