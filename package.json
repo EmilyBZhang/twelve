@@ -9,8 +9,8 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^1.23.1",
-    "@react-native-community/slider": "^4.5.0",
+    "@react-native-async-storage/async-storage": "~1.21.0",
+    "@react-native-community/slider": "~4.4.2",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
     "expo": "~50.0.14",
@@ -30,9 +30,9 @@
     "react-native": "0.73.6",
     "react-native-game-engine": "^1.2.0",
     "react-native-gesture-handler": "~2.14.0",
-    "react-native-safe-area-context": "^4.9.0",
+    "react-native-safe-area-context": "~4.8.2",
     "react-native-screens": "^3.29.0",
-    "react-native-svg": "^15.1.0",
+    "react-native-svg": "~14.1.0",
     "react-redux": "^9.1.0",
     "redux": "^5.0.1",
     "styled-components": "^6.1.8"
