@@ -1,10 +1,18 @@
-import React, { FunctionComponent, memo, useState, useMemo, useEffect, useCallback, useRef } from 'react';
+import React, {
+  FunctionComponent,
+  memo,
+  useState,
+  useMemo,
+  useEffect,
+  useCallback,
+  useRef,
+} from 'react';
 import styled from 'styled-components/native';
 
 import hints from 'assets/info/hints.json';
 import colors from 'res/colors';
 import styles from 'res/styles';
-import useRewardedAd, { EventMap } from 'hooks/useRewardedAd';
+// import useRewardedAd, { EventMap } from 'hooks/useRewardedAd';
 import useSettings from 'hooks/useSettings';
 import {
   LargeVictoryButton,
@@ -25,7 +33,7 @@ interface HintModalProps {
 
 const waitingText = 'Your hint will come after this ad...';
 const skippingText = 'Level will be skipped after this ad...';
-const nudgeText = `Twelve only shows ads for hints and skipping levels.\n\nWe're working on a No Ads bundle so you can choose to play without ads!`
+const nudgeText = `Twelve only shows ads for hints and skipping levels.\n\nWe're working on a No Ads bundle so you can choose to play without ads!`;
 // const nudgeText = `Psst... don't like ads? Please consider buying the No Ads bundle to remove all ads and support the developers. It really would mean a lot to us. ♥`
 const noHintText = 'No hint available';
 
@@ -40,7 +48,7 @@ const FullScreenModal = styled.View`
   z-index: ${styles.levelNavZIndex + 1};
   justify-content: flex-start;
   align-items: center;
-  padding: ${100/24}% ${100/12}%;
+  padding: ${100 / 24}% ${100 / 12}%;
 `;
 
 const ButtonsContainer = styled.View`
@@ -65,7 +73,7 @@ const HintTextContainer = styled.View`
 
 const HintText = styled.Text`
   font-family: montserrat;
-  font-size: ${styles.coinSize * 2 / 3}px;
+  font-size: ${(styles.coinSize * 2) / 3}px;
   color: ${colors.darkText};
   text-align: center;
 `;
@@ -78,7 +86,61 @@ const NudgeText = styled.Text`
   width: 100%;
 `;
 
+const HintModal: FunctionComponent<HintModalProps> = memo((props) => {
+  const { level, visible, onClose, noAutoStart, showHint, onNextLevel } = props;
+
+  const [hintIndex, setHintIndex] = useState(0);
+  const { unlockLevel } = useSettings([])[1];
+
+  const levelHints = hints[level - 1];
+  const hint = levelHints[hintIndex];
+
+  useEffect(() => {
+    setHintIndex(0);
+  }, [level]);
+
+  const handleClose = () => {
+    onClose();
+    setHintIndex((hintIndex) => (hintIndex + 1) % levelHints.length);
+  };
+
+  const handleSkip = () => {
+    onClose();
+    unlockLevel(level + 1);
+    onNextLevel?.();
+  };
+
+  if (!visible) return null;
+
+  return (
+    <FullScreenModal>
+      <HintTitle>
+        Hint {hintIndex + 1}/{levelHints.length}
+      </HintTitle>
+      <HintTextContainer>
+        <HintText>{hint}</HintText>
+      </HintTextContainer>
+      <ButtonsContainer>
+        <LargeVictoryButton onPress={handleClose}>
+          <LargeVictoryButtonText>Return to game</LargeVictoryButtonText>
+        </LargeVictoryButton>
+        <SmallVictoryButton
+          onPress={handleSkip}
+          disabled={level === NUM_LEVELS}
+        >
+          <SmallVictoryButtonText>
+            Skip level
+            {/* Watch ad to skip level */}
+          </SmallVictoryButtonText>
+        </SmallVictoryButton>
+      </ButtonsContainer>
+      {/* <NudgeText>{nudgeText}</NudgeText> */}
+    </FullScreenModal>
+  );
+});
+
 // TODO: IDEA: Light modal on black background
+/*
 const HintModal: FunctionComponent<HintModalProps> = memo((props) => {
   const { level, visible, onClose, noAutoStart, showHint, onNextLevel } = props;
   const [hint, setHint] = useState(waitingText);
@@ -210,5 +272,6 @@ const HintModal: FunctionComponent<HintModalProps> = memo((props) => {
     </FullScreenModal>
   );
 });
+*/
 
 export default HintModal;

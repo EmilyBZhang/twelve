@@ -17,7 +17,7 @@ import FakeAd from 'screens/FakeAd';
 import colors from 'res/colors';
 import InitSettings from 'components/init/InitSettings';
 import InitFonts from 'components/init/InitFonts';
-import InitAdMob from 'components/init/InitAdMob';
+// import InitAdMob from 'components/init/InitAdMob';
 import InitImages from 'components/init/InitImages';
 import TitleScreen from 'components/TitleScreen';
 import ScreenContainer from 'components/ScreenContainer';
@@ -58,13 +58,13 @@ const AppContainer = createAppContainer(AppNavigator);
 const App: FunctionComponent = () => {
   const [settingsReady, setSettingsReady] = useState(false);
   const [fontsReady, setFontsReady] = useState(false);
-  const [adMobReady, setAdMobReady] = useState(false);
+  const [adMobReady, setAdMobReady] = useState(true);
   const [imagesReady, setImagesReady] = useState(false);
   const [audioReady, setAudioReady] = useState(false);
 
   const initSettings = useCallback(() => setSettingsReady(true), []);
   const initFonts = useCallback(() => setFontsReady(true), []);
-  const initAdMod = useCallback(() => setAdMobReady(true), []);
+  // const initAdMod = useCallback(() => setAdMobReady(true), []);
   const initImages = useCallback(() => setImagesReady(true), []);
   const initAudio = useCallback(() => setAudioReady(true), []);
 
@@ -80,7 +80,7 @@ const App: FunctionComponent = () => {
     <Provider store={store}>
       <InitSettings onLoad={initSettings} />
       <InitFonts onLoad={initFonts} />
-      <InitAdMob onLoad={initAdMod} />
+      {/* <InitAdMob onLoad={initAdMod} /> */}
       <InitImages onLoad={initImages} />
       <InitAudio onLoad={initAudio} />
       {/* <MeasureScreen onLoad={} /> */}

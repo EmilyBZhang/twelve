@@ -22,10 +22,7 @@
       "buildNumber": "1.0.8",
       "bundleIdentifier": "com.bradonzhang.twelve",
       "appStoreUrl": "https://apps.apple.com/us/app/twelve-a-puzzle-game/id1545782494",
-      "icon": "./src/assets/images/12.png",
-      "config": {
-        "googleMobileAdsAppId": "ca-app-pub-5600114350279556~5091572592"
-      }
+      "icon": "./src/assets/images/12.png"
     },
     "android": {
       "package": "com.bradonzhang.twelve",
@@ -36,9 +33,6 @@
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/12-circle.png",
         "backgroundColor": "#00ffff"
-      },
-      "config": {
-        "googleMobileAdsAppId": "ca-app-pub-5600114350279556~7303992337"
       }
     },
     "androidNavigationBar": {
@@ -53,6 +47,18 @@
     },
     "runtimeVersion": {
       "policy": "sdkVersion"
-    }
+    },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 33,
+            "targetSdkVersion": 33,
+            "buildToolsVersion": "33.0.0"
+          }
+        }
+      ]
+    ]
   }
 }
