@@ -1,0 +1,101 @@
+{
+  "title": "Credits",
+  "body": [
+    {
+      "header": "Level Design",
+      "names": ["Bradon", "Dai"]
+    },
+    {
+      "header": "Programming",
+      "names": ["Bradon"]
+    },
+    {
+      "header": "Graphics & Art",
+      "names": ["Soh Arsquare", "Bradon"]
+    },
+    {
+      "header": "Music",
+      "names": ["Dai"]
+    },
+    {
+      "header": "Sound Effects",
+      "names": ["Dai", "Bradon"]
+    },
+    {
+      "header": "Playtesting",
+      "names": [
+        "Ahex",
+        "Lauren Colaco",
+        "Mark",
+        "Matthew A. Po",
+        "Nathan Ji",
+        "Rohil Tuli",
+        "Ruth",
+        "Sagan Sutherland"
+      ]
+    },
+    {
+      "header": "Socials"
+    },
+    {
+      "subheader": "Bradon",
+      "links": [
+        {
+          "icon": "twitch",
+          "url": "https://www.twitch.tv/FiresBZ",
+          "color": "#5d419a"
+        },
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/FiresBZ",
+          "color": "#1da1f2"
+        },
+        {
+          "icon": "github",
+          "url": "https://github.com/BradonZhang/",
+          "color": "#000000"
+        }
+      ]
+    },
+    {
+      "subheader": "Dai",
+      "links": [
+        {
+          "icon": "twitch",
+          "url": "https://www.twitch.tv/Dai_Streaming",
+          "color": "#5d419a"
+        },
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/Dai_Streaming",
+          "color": "#1da1f2"
+        },
+        {
+          "icon": "youtube",
+          "url": "https://www.youtube.com/c/Dai_Streaming",
+          "color": "#fe0000"
+        }
+      ]
+    },
+    {
+      "subheader": "Soh Arsquare",
+      "links": [
+        {
+          "icon": "tumblr-square",
+          "url": "https://arsquare.tumblr.com",
+          "color": "#001936"
+        },
+        {
+          "icon": "twitter",
+          "url": "https://twitter.com/arsquare3",
+          "color": "#1da1f2"
+        },
+        {
+          "icon": "instagram",
+          "url": "https://www.instagram.com/sohhsu/",
+          "color": "#000000"
+        }
+      ]
+    }
+  ]
+}

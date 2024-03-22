@@ -1,6 +1,51 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true
-  }
+    "allowJs": false,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "noFallthroughCasesInSwitch": true,
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "isolatedModules": false,
+    "jsx": "react-native",
+    "lib": ["es6", "es2019"],
+    "moduleResolution": "node",
+    "noEmit": true,
+    "strict": true,
+    "target": "esnext",
+    "baseUrl": "./",
+    "paths": {
+      "assets/*": ["./src/assets/*"],
+      "components/*": ["./src/components/*"],
+      "hooks/*": ["./src/hooks/*"],
+      "reducers/*": ["./src/reducers/*"],
+      "res/*": ["./src/res/*"],
+      "screens/*": ["./src/screens/*"],
+      "utils/*": ["./src/utils/*"]
+    },
+    "plugins": [
+      {
+        "name": "ts-styled-plugin",
+        "lint": {
+          "validProperties": [
+            "shadow-color",
+            "shadow-opacity",
+            "shadow-offset",
+            "shadow-radius",
+            "padding-horizontal",
+            "padding-vertical",
+            "margin-vertical",
+            "margin-horizontal",
+            "tint-color",
+            "aspect-ratio",
+            "elevation"
+          ]
+        }
+      }
+    ],
+    "typeRoots": ["./types", "./node_modules/@types"],
+    "types": ["node"]
+  },
+  "exclude": ["node_modules", "typings"]
 }

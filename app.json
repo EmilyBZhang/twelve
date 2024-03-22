@@ -4,27 +4,41 @@
     "slug": "twelve-v2",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./src/assets/images/12.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./src/assets/images/twelve-splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#e0e0e0"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "buildNumber": "1.0.8",
+      "bundleIdentifier": "com.bradonzhang.twelve",
+      "appStoreUrl": "https://apps.apple.com/us/app/twelve-a-puzzle-game/id1545782494",
+      "icon": "./src/assets/images/12.png"
     },
     "android": {
+      "package": "com.bradonzhang.twelve",
+      "versionCode": 7,
+      "playStoreUrl": "https://play.google.com/store/apps/details?id=com.bradonzhang.twelve",
+      "icon": "./src/assets/images/12-circle.png",
+      "permissions": [],
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./src/assets/images/12-circle.png",
+        "backgroundColor": "#00ffff"
       }
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
+    "androidNavigationBar": {
+      "visible": "sticky-immersive"
+    },
+    "description": "A puzzle game about collecting twelve dots... with a special twist in each level!\n\nTest your pattern recognition, memory, reflexes, and more.\n\n72 levels in all!",
+    "githubUrl": "https://github.com/BradonZhang/twelve",
+    "extra": {
+      "eas": {
+        "projectId": "8ed798b0-ed63-11e9-a0f0-c3484fc13d1f"
+      }
     }
   }
 }
