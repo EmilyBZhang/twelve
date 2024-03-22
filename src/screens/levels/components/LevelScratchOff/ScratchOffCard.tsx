@@ -1,7 +1,7 @@
 import React, { FunctionComponent, memo, useMemo, useRef } from 'react';
 import { PanResponder, GestureResponderEvent } from 'react-native';
 import styled from 'styled-components/native';
-import { observable, computed, autorun, IComputedValue } from 'mobx';
+import { observable, computed, IComputedValue, runInAction } from 'mobx';
 import { observer } from 'mobx-react';
 
 import getDimensions from 'utils/getDimensions';
@@ -27,7 +27,7 @@ interface ParticleViewProps {
 }
 
 const ScratchOffCardContainer = styled.View.attrs({
-  pointerEvents: 'box-none'
+  pointerEvents: 'box-none',
 })`
   position: absolute;
   top: 0px;
@@ -42,40 +42,25 @@ const calcIndex = (x: number, y: number) => {
 const calcXY = (index: number, yOffset = -styles.levelNavHeight) => {
   const x = (index % particleCols) * particleSize;
   const y = Math.floor(index / particleCols) * particleSize + yOffset;
-  return {x, y};
+  return { x, y };
 };
 
 const ParticleView = styled.View<ParticleViewProps>`
   position: absolute;
-  ${props => {
+  ${(props) => {
     const { x, y } = calcXY(props.index);
-    return `top: ${y}px; left: ${x}px;`
+    return `top: ${y}px; left: ${x}px;`;
   }}
   width: ${particleSize + 1}px;
   height: ${particleSize + 1}px;
   background-color: ${colors.coin};
   z-index: 144;
-  ${props => props.hidden && 'display: none;'}
+  ${(props) => props.hidden && 'display: none;'}
 `;
 
 const Particle: FunctionComponent<ParticleProps> = observer((props) => {
-  return (
-    <ParticleView
-      index={props.index}
-      hidden={props.hidden.get()}
-    />
-  );
+  return <ParticleView index={props.index} hidden={props.hidden.get()} />;
 });
-
-// const squareOffsets = [
-//   // -particleCols - 1,
-//   -particleCols,
-//   // -particleCols + 1,
-//   -1, 0, 1,
-//   // particleCols - 1,
-//   particleCols,
-//   // particleCols + 1
-// ];
 
 const ScratchOffCard: FunctionComponent<ScratchOffCardProps> = (props) => {
   const initParticlesHidden = useMemo(
@@ -88,36 +73,32 @@ const ScratchOffCard: FunctionComponent<ScratchOffCardProps> = (props) => {
     const { pageX: x, pageY: y } = e.nativeEvent;
     const index = calcIndex(x, y);
     if (index >= 0 && index < particlesHidden.length) {
-      particlesHidden[index] = true;
+      runInAction(() => {
+        particlesHidden[index] = true;
+      });
     }
-    // squareOffsets.forEach((offset) => {
-    //   const i = index + offset;
-    //   if (i >= 0 && i < particlesHidden.length) {
-    //     particlesHidden[i] = true;
-    //   }
-    // });
   };
 
   // TODO: Maybe allow pan responder to begin when a non-particle is pressed
-  const panResponder = useMemo(() => PanResponder.create({
-    onStartShouldSetPanResponder: (e, gestureState) => true,
-    onStartShouldSetPanResponderCapture: (e, gestureState) => true,
-    onMoveShouldSetPanResponder: (e, gestureState) => true,
-    onMoveShouldSetPanResponderCapture: (e, gestureState) => true,
-    onPanResponderTerminationRequest: (e, gestureState) => true,
-    onShouldBlockNativeResponder: (evt, gestureState) => true,
-    onPanResponderGrant: handleCardGrantOrMove,
-    onPanResponderMove: handleCardGrantOrMove,
-    onPanResponderRelease: (e, gestureState) => {
-    },
-    onPanResponderTerminate: (e, gestureState) => {
-    },
-  }), []);
+  const panResponder = useMemo(
+    () =>
+      PanResponder.create({
+        onStartShouldSetPanResponder: (e, gestureState) => true,
+        onStartShouldSetPanResponderCapture: (e, gestureState) => true,
+        onMoveShouldSetPanResponder: (e, gestureState) => true,
+        onMoveShouldSetPanResponderCapture: (e, gestureState) => true,
+        onPanResponderTerminationRequest: (e, gestureState) => true,
+        onShouldBlockNativeResponder: (evt, gestureState) => true,
+        onPanResponderGrant: handleCardGrantOrMove,
+        onPanResponderMove: handleCardGrantOrMove,
+        onPanResponderRelease: (e, gestureState) => {},
+        onPanResponderTerminate: (e, gestureState) => {},
+      }),
+    []
+  );
 
   return (
-    <ScratchOffCardContainer
-      {...panResponder.panHandlers}
-    >
+    <ScratchOffCardContainer {...panResponder.panHandlers}>
       {Array.from(Array(numParticles), (_, index) => (
         <Particle
           key={String(index)}

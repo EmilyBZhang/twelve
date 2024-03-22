@@ -35,7 +35,7 @@ const initialState = {
   colorblind: false,
   levelStatus: levels.slice(1).map((_, index) => ({
     unlocked: index === 0,
-    completed: false
+    completed: false,
   })),
   language: 'en',
   settingsReady: false,
@@ -49,33 +49,34 @@ interface Action {
 const settings = (state = initialState, action: Action) => {
   switch (action.type) {
     case Actions.INIT_SETTINGS: {
-      if (Constants.manifest?.version) setSetting('version', Constants.manifest.version);
-      return ({
+      if (Constants.expoConfig?.version)
+        setSetting('version', Constants.expoConfig.version);
+      return {
         ...state,
-        ...action.payload as SettingsPartialState,
-        settingsReady: true
-      });
+        ...(action.payload as SettingsPartialState),
+        settingsReady: true,
+      };
     }
     case Actions.TOGGLE_MUSIC: {
       setSetting('music', !state.music);
-      return ({
+      return {
         ...state,
-        music: !state.music
-      });
+        music: !state.music,
+      };
     }
     case Actions.TOGGLE_SFX: {
       setSetting('sfx', !state.sfx);
-      return ({
+      return {
         ...state,
-        sfx: !state.sfx
-      });
+        sfx: !state.sfx,
+      };
     }
     case Actions.TOGGLE_COLORBLIND: {
       setSetting('colorblind', !state.colorblind);
-      return ({
+      return {
         ...state,
-        colorblind: !state.colorblind
-      });
+        colorblind: !state.colorblind,
+      };
     }
     case Actions.COMPLETE_LEVEL: {
       const index = action.payload.levelNum - 1;
@@ -87,20 +88,20 @@ const settings = (state = initialState, action: Action) => {
         newLevelStatus[index + 1].unlocked = true;
       }
       setSetting('levelStatus', newLevelStatus);
-      return ({
+      return {
         ...state,
-        levelStatus: newLevelStatus
-      });
+        levelStatus: newLevelStatus,
+      };
     }
     case Actions.UNLOCK_LEVEL: {
       const newLevelStatus = state.levelStatus.slice();
       const index = action.payload.levelNum - 1;
       newLevelStatus[index].unlocked = true;
       setSetting('levelStatus', newLevelStatus);
-      return ({
+      return {
         ...state,
-        levelStatus: newLevelStatus
-      });
+        levelStatus: newLevelStatus,
+      };
     }
     default:
       return state;
