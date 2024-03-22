@@ -2,7 +2,7 @@
 
 import React, { FunctionComponent, memo, useState, useCallback } from 'react';
 import { View } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
@@ -19,7 +19,7 @@ import {
   SwitchableSettingIconProps,
   switchableIconSize,
 } from 'components/SettingsModal/components';
-import { SettingsIcon } from 'components/LevelNav/components'
+import { SettingsIcon } from 'components/LevelNav/components';
 
 const SettingsButton = styled.TouchableOpacity.attrs({
   activeOpacity: 0.5,
@@ -31,22 +31,23 @@ const SettingsButton = styled.TouchableOpacity.attrs({
   height: ${styles.levelNavHeight}px;
   justify-content: center;
   align-items: center;
-  z-index: ${styles.levelNavZIndex + 1}px;
+  z-index: ${styles.levelNavZIndex + 1};
 `;
 
-const RevealIcon: FunctionComponent<SwitchableSettingIconProps> = memo((props) => {
-  const { disabled, size, color } = props;
-  return (
-    <MaterialCommunityIcons
-      name={disabled ? 'eye-off' : 'eye'}
-      size={size || switchableIconSize}
-      color={color || colors.lightText}
-    />
-  );
-});
+const RevealIcon: FunctionComponent<SwitchableSettingIconProps> = memo(
+  (props) => {
+    const { disabled, size, color } = props;
+    return (
+      <MaterialCommunityIcons
+        name={disabled ? 'eye-off' : 'eye'}
+        size={size || switchableIconSize}
+        color={color || colors.lightText}
+      />
+    );
+  }
+);
 
 const LevelSettingsWin: Level = (props) => {
-
   const [isRevealed, setIsRevealed] = useState(false);
   const [modalOpened, setModalOpened] = useState(false);
 
@@ -55,7 +56,10 @@ const LevelSettingsWin: Level = (props) => {
 
   const hintText = isRevealed ? 'twelve' : '[OUT OF ORDER]';
 
-  const toggleIsRevealed = useCallback(() => setIsRevealed(isRevealed => !isRevealed), []);
+  const toggleIsRevealed = useCallback(
+    () => setIsRevealed((isRevealed) => !isRevealed),
+    []
+  );
   const handleSettingsClose = useCallback(() => setModalOpened(false), []);
   const handleGoToLevelSelect = useCallback(() => {
     props.navigation.navigate('Level', { level: 0 });
@@ -106,7 +110,7 @@ const LevelSettingsWin: Level = (props) => {
             {coinPositions.map((coinPosition, index) => (
               <View
                 key={String(index)}
-                style={{position: 'absolute', ...coinPosition}}
+                style={{ position: 'absolute', ...coinPosition }}
               >
                 <Coin
                   found={props.coinsFound.has(index)}

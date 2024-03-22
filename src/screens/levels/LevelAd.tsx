@@ -21,7 +21,7 @@ const HintButton = styled.TouchableOpacity.attrs({
   height: ${styles.levelNavHeight}px;
   justify-content: center;
   align-items: center;
-  z-index: ${styles.levelNavZIndex}px;
+  z-index: ${styles.levelNavZIndex};
   background-color: ${colors.background};
 `;
 
