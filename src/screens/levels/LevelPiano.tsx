@@ -17,9 +17,9 @@ import LevelCounter from 'components/LevelCounter';
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 const whiteHeight = levelHeight / 3;
 const whiteWidth = levelWidth / 7;
-const blackHeight = whiteHeight * 7 / 12;
-const blackWidth = whiteWidth * 137 / 235;
-const lambHeight = levelWidth * 699 / 1000; // Adjust for dimensions of image
+const blackHeight = (whiteHeight * 7) / 12;
+const blackWidth = (whiteWidth * 137) / 235;
+const lambHeight = (levelWidth * 699) / 1000; // Adjust for dimensions of image
 
 const lambInit = -styles.levelNavHeight;
 const pianoInit = lambInit + lambHeight;
@@ -50,11 +50,10 @@ const PianoContainer = styled(Animated.View)`
   z-index: 1;
 `;
 
-const WhiteKeyContainer = styled.View`
-`;
+const WhiteKeyContainer = styled.View``;
 
 const WhiteKey = styled.TouchableHighlight.attrs({
-  underlayColor: '#C0C0C0'
+  underlayColor: '#C0C0C0',
 })`
   width: ${whiteWidth}px;
   height: ${whiteHeight}px;
@@ -62,14 +61,18 @@ const WhiteKey = styled.TouchableHighlight.attrs({
   background-color: white;
 `;
 
-const BlackKeyContainer = styled.View`
+interface BlackKeyContainerProps {
+  offset: number;
+}
+
+const BlackKeyContainer = styled.View<BlackKeyContainerProps>`
   position: absolute;
   z-index: 1;
-  left: ${(props: {offset: number}) => props.offset * whiteWidth - blackWidth / 2}px;
+  left: ${(props) => props.offset * whiteWidth - blackWidth / 2}px;
 `;
 
 const BlackKey = styled.TouchableHighlight.attrs({
-  underlayColor: 'black'
+  underlayColor: 'black',
 })`
   width: ${blackWidth}px;
   height: ${blackHeight}px;
@@ -90,21 +93,36 @@ const Lyrics = styled(LevelText)`
 
 const notes = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
 const maryIntervals = [-2, -2, 2, 2, 0, 0, -2, 0, 0, 2, 3, 0];
-const syllables = ['Ma', 'ry', ' had', ' a', ' lit', 'tle', ' lamb,', ' lit', 'tle', ' lamb,', ' lit', 'tle', ' lamb!'];
+const syllables = [
+  'Ma',
+  'ry',
+  ' had',
+  ' a',
+  ' lit',
+  'tle',
+  ' lamb,',
+  ' lit',
+  'tle',
+  ' lamb,',
+  ' lit',
+  'tle',
+  ' lamb!',
+];
 
 const coinSize = styles.coinSize;
 const coinPositions = notes.map((note: string, index: number) => {
   const whiteKey = note.length === 1;
   if (whiteKey) {
-    return ({
-      left: Math.floor((index + 1) / 2) * whiteWidth + (whiteWidth - coinSize) / 2,
-      top: pianoInit + (whiteHeight + blackHeight - coinSize) / 2
-    });
+    return {
+      left:
+        Math.floor((index + 1) / 2) * whiteWidth + (whiteWidth - coinSize) / 2,
+      top: pianoInit + (whiteHeight + blackHeight - coinSize) / 2,
+    };
   }
-  return ({
+  return {
     left: Math.floor(index / 2 + 1) * whiteWidth - coinSize / 2,
-    top: pianoInit + (blackHeight - coinSize) / 2
-  });
+    top: pianoInit + (blackHeight - coinSize) / 2,
+  };
 });
 
 const LevelPiano: Level = (props) => {
@@ -122,30 +140,30 @@ const LevelPiano: Level = (props) => {
     playAudio(lambSound);
     Animated.sequence([
       Animated.timing(lambAnim, {
-        toValue: -lambHeight * 2 / 3,
+        toValue: (-lambHeight * 2) / 3,
         duration: 1000,
-        useNativeDriver: true
+        useNativeDriver: true,
       }),
       Animated.timing(lambAnim, {
         toValue: 0,
         easing: Easing.quad,
         duration: 600,
-        useNativeDriver: true
+        useNativeDriver: true,
       }),
       Animated.parallel([
         Animated.timing(lambAnim, {
           toValue: levelHeight - lambInit,
           easing: Easing.linear,
           duration: 2000,
-          useNativeDriver: true
+          useNativeDriver: true,
         }),
         Animated.timing(pianoAnim, {
           toValue: levelHeight + lambHeight - pianoInit,
           easing: Easing.linear,
           duration: 2000,
-          useNativeDriver: true
-        })
-      ])
+          useNativeDriver: true,
+        }),
+      ]),
     ]).start();
   };
 
@@ -160,7 +178,7 @@ const LevelPiano: Level = (props) => {
       if (songIndex + 1 === maryIntervals.length) {
         handleWin();
       }
-      setSongIndex(state => state + 1);
+      setSongIndex((state) => state + 1);
     } else if (validFirst) {
       setSongIndex(0);
     } else {
@@ -171,21 +189,19 @@ const LevelPiano: Level = (props) => {
 
   return (
     <LevelContainer>
-      <LevelCounter
-        count={numCoinsFound}
-        position={{top: 0, right: 0}}
-      />
-      <Lamb style={{transform: [{translateY: lambAnim}]}} />
-      <PianoContainer style={{transform: [{translateY: pianoAnim}]}}>
+      <LevelCounter count={numCoinsFound} position={{ top: 0, right: 0 }} />
+      <Lamb style={{ transform: [{ translateY: lambAnim }] }} />
+      <PianoContainer style={{ transform: [{ translateY: pianoAnim }] }}>
         {notes.map((note: string, index: number) => {
           const whiteKey = note.length === 1;
-          if (whiteKey) return (
-            <WhiteKeyContainer key={String(index)}>
-              <WhiteKey onPressIn={() => handleNotePress(note, index)} >
-                <Text />
-              </WhiteKey>
-            </WhiteKeyContainer>
-          );
+          if (whiteKey)
+            return (
+              <WhiteKeyContainer key={String(index)}>
+                <WhiteKey onPressIn={() => handleNotePress(note, index)}>
+                  <Text />
+                </WhiteKey>
+              </WhiteKeyContainer>
+            );
           return (
             <BlackKeyContainer
               key={String(index)}
@@ -201,7 +217,7 @@ const LevelPiano: Level = (props) => {
       {notes.map((_, index: number) => (
         <View
           key={String(index)}
-          style={{position: 'absolute', ...coinPositions[index]}}
+          style={{ position: 'absolute', ...coinPositions[index] }}
         >
           <Coin
             found={props.coinsFound.has(index)}

@@ -41,7 +41,7 @@ const PulleyContainer = styled(Animated.View)`
 
 const Pulley = styled(LinearGradient).attrs({
   colors: [colors.badCoin, colors.coin],
-})`
+})<{ colors?: string[] }>`
   height: ${pulleyHeight}px;
   width: ${pulleyWidth}px;
   border-radius: ${pulleyWidth / 2}px;
@@ -63,12 +63,12 @@ const reverser = Platform.select({
 });
 
 const LevelPulley: Level = (props) => {
-
   const [baseY] = useState(new Animated.Value(pulleyHeight / 2 - levelHeight));
   const [panY] = useState(new Animated.Value(0));
 
   const handleGestureEvent = Animated.event(
-    [{ nativeEvent: { translationY: panY }}], { useNativeDriver: true }
+    [{ nativeEvent: { translationY: panY } }],
+    { useNativeDriver: true }
   );
 
   const handleGestureEventReverse = (e: PanGestureHandlerGestureEvent) => {
@@ -84,14 +84,19 @@ const LevelPulley: Level = (props) => {
   };
 
   const handleStateChangeReverse = (e: PanGestureHandlerStateChangeEvent) => {
-    e.nativeEvent.translationY *= reverser;
-    handleStateChange(e);
+    const translationY = reverser * e.nativeEvent.translationY;
+    handleStateChange({
+      ...e,
+      nativeEvent: { ...e.nativeEvent, translationY },
+    });
   };
 
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound >= 12;
 
-  const coin = <Coin found={twelve} onPress={() => props.onCoinPress(numCoinsFound)} />;
+  const coin = (
+    <Coin found={twelve} onPress={() => props.onCoinPress(numCoinsFound)} />
+  );
 
   return (
     <LevelContainer>
@@ -101,9 +106,11 @@ const LevelPulley: Level = (props) => {
           onGestureEvent={handleGestureEvent}
           onHandlerStateChange={handleStateChange}
         >
-          <PulleyContainer style={{
-            transform: [{ translateY: Animated.add(baseY, panY) }]
-          }}>
+          <PulleyContainer
+            style={{
+              transform: [{ translateY: Animated.add(baseY, panY) }],
+            }}
+          >
             <Pulley>{coin}</Pulley>
           </PulleyContainer>
         </PanGestureHandler>
@@ -111,13 +118,19 @@ const LevelPulley: Level = (props) => {
           onGestureEvent={handleGestureEventReverse}
           onHandlerStateChange={handleStateChangeReverse}
         >
-          <PulleyContainer style={{ transform: [
-            { scaleY: -1 },
-            { translateY: Animated.add(
-                Animated.add(baseY, panY),
-                levelHeight + styles.levelNavHeight * 2 + styles.coinSize
-              ) }]
-          }}>
+          <PulleyContainer
+            style={{
+              transform: [
+                { scaleY: -1 },
+                {
+                  translateY: Animated.add(
+                    Animated.add(baseY, panY),
+                    levelHeight + styles.levelNavHeight * 2 + styles.coinSize
+                  ),
+                },
+              ],
+            }}
+          >
             <Pulley>{coin}</Pulley>
           </PulleyContainer>
         </PanGestureHandler>

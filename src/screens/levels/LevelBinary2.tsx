@@ -16,7 +16,7 @@ import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
 import useSelectedIndices from 'hooks/useSelectedIndices';
-import ColorHint from 'components/ColorHint';
+import { FoundationProps } from 'utils/types';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 
@@ -29,23 +29,20 @@ const initY = deltaY - coinSize / 2;
 const bitPositions = Array.from(Array(9), (_, index) => {
   const r = Math.floor(index / 3);
   const c = index % 3;
-  return ({
+  return {
     position: 'absolute' as 'absolute',
     top: initY + deltaY * r,
-    left: initX + deltaX * c
-  });
+    left: initX + deltaX * c,
+  };
 });
 
 const resultBitPositions = Array.from(Array(6), (_, index) => ({
   position: 'absolute' as 'absolute',
   top: initY + deltaY * 3,
-  left: initX + deltaX * (index - 3)
+  left: initX + deltaX * (index - 3),
 }));
 
-const coinPositions = [
-  ...resultBitPositions,
-  ...resultBitPositions
-];
+const coinPositions = [...resultBitPositions, ...resultBitPositions];
 
 interface OpProps {
   row: number;
@@ -58,7 +55,7 @@ const Op = styled(LevelText)<OpProps>`
   justify-content: center;
   align-items: center;
   left: ${initX - deltaX}px;
-  top: ${props => initY + deltaY * props.row}px;
+  top: ${(props) => initY + deltaY * props.row}px;
   z-index: -1;
 `;
 
@@ -74,14 +71,14 @@ const Line = styled.View`
 const LockIcon = styled(Foundation).attrs({
   name: 'lock',
   size: coinSize / 2,
-  color: 'black'
-})``;
+  color: 'black',
+})<Partial<FoundationProps>>``;
 
 const MinusIcon = styled(Foundation).attrs({
   name: 'minus',
   size: coinSize / 2,
-  color: 'white'
-})``;
+  color: 'white',
+})<Partial<FoundationProps>>``;
 
 const lockedBits = new Set([2, 5]);
 
@@ -99,14 +96,14 @@ const LevelBinary: Level = (props) => {
       let result = 0;
       for (let i = 3 * rowIndex; i < 3 * (rowIndex + 1); i++) {
         result <<= 1;
-        result += ((i === index) !== onBits.has(i)) ? 1 : 0;
+        result += (i === index) !== onBits.has(i) ? 1 : 0;
       }
       return result;
     });
     const result = nums[0] * nums[1] - nums[2];
     toggleBit(index);
     setResult(result);
-  }
+  };
 
   const twelveAchieved = result === 12;
   const handleCoinPress = twelveAchieved ? props.onCoinPress : handleBitPress;
@@ -118,22 +115,22 @@ const LevelBinary: Level = (props) => {
         toValue: 3,
         duration: 1000,
         easing: Easing.elastic(2),
-        useNativeDriver: true
+        useNativeDriver: true,
       }),
       Animated.timing(coinRevealAnim, {
         toValue: 5,
         duration: 1000,
         easing: Easing.elastic(2),
-        useNativeDriver: true
+        useNativeDriver: true,
       }),
     ]).start();
   }, [twelveAchieved]);
 
   const calcTranslation = (index: number) => {
     const inputRange = [0, 3, 5];
-    const outputRange = inputRange.map(num => -num * deltaY / 2);
+    const outputRange = inputRange.map((num) => (-num * deltaY) / 2);
     if (index < 6) outputRange[2] = outputRange[1];
-    return coinRevealAnim.interpolate({inputRange, outputRange});
+    return coinRevealAnim.interpolate({ inputRange, outputRange });
   };
 
   const bits = bitPositions.map((bitPosition, index) => {
@@ -141,10 +138,7 @@ const LevelBinary: Level = (props) => {
     const locked = lockedBits.has(index);
 
     return (
-      <View
-        key={String(index)}
-        style={bitPosition}
-      >
+      <View key={String(index)} style={bitPosition}>
         <Coin
           color={bitColor}
           disabled={locked || twelveAchieved}
@@ -162,7 +156,7 @@ const LevelBinary: Level = (props) => {
       key={String(index)}
       style={{
         ...coinPosition,
-        transform: [{translateY: calcTranslation(index)}]
+        transform: [{ translateY: calcTranslation(index) }],
       }}
     >
       <Coin
@@ -186,14 +180,13 @@ const LevelBinary: Level = (props) => {
         key={String(index)}
         style={{
           backgroundColor: bitColor,
-          ...resultBitPosition
+          ...resultBitPosition,
         }}
       >
-        {(negative && index === 0) ? <MinusIcon /> : (
-          <LevelText
-            fontSize={coinSize / 2}
-            color={textColor}
-          >
+        {negative && index === 0 ? (
+          <MinusIcon />
+        ) : (
+          <LevelText fontSize={coinSize / 2} color={textColor}>
             {1 << (resultBitPositions.length - 1 - index)}
           </LevelText>
         )}

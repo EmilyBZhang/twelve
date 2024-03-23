@@ -1,15 +1,16 @@
 // TODO: Consider moving LinearGradient to LevelContainer to capture the top bar
 
 import React, { FunctionComponent, memo } from 'react';
+import { StyleProp, ViewStyle } from 'react-native';
 import styled from 'styled-components/native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import colors from 'res/colors';
 
 export interface ScreenContainerProps {
-  children?: any;
+  children?: React.ReactNode;
   color?: string;
-  style?: any;
+  style?: StyleProp<ViewStyle>;
   gradientColors?: Array<string>;
   pointerEvents?: 'box-none' | 'none' | 'box-only' | 'auto';
 }
@@ -17,10 +18,10 @@ export interface ScreenContainerProps {
 // TODO: See if SafeAreaView works on devices with notches
 const Container = styled.SafeAreaView<ScreenContainerProps>`
   flex: 1;
-  background-color: ${props => props.color};
+  background-color: ${(props) => props.color};
   justify-content: center;
   align-items: center;
-`
+`;
 
 const GradientContainer = styled(LinearGradient)`
   width: 100%;
@@ -36,23 +37,16 @@ const ScreenContainer: FunctionComponent<ScreenContainerProps> = (props) => {
   if (props.gradientColors) {
     color = 'transparent';
     children = (
-      <GradientContainer
-        colors={props.gradientColors}
-        style={props.style}
-      >
+      <GradientContainer colors={props.gradientColors} style={props.style}>
         {props.children}
       </GradientContainer>
     );
   }
   return (
-    <Container
-      color={color}
-      style={props.style}
-      pointerEvents={pointerEvents}
-    >
+    <Container color={color} style={props.style} pointerEvents={pointerEvents}>
       {children}
     </Container>
   );
-}
+};
 
 export default memo(ScreenContainer);

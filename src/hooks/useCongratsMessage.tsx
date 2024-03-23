@@ -21,7 +21,7 @@ const getCongratsMessage = () => {
   return randElem(messages);
 };
 
-const useCongratsMessage = (deps?: Array<any>) => {
+const useCongratsMessage = (deps: React.DependencyList) => {
   const congratsMessage = useMemo<string>(getCongratsMessage, deps);
   return congratsMessage;
 };

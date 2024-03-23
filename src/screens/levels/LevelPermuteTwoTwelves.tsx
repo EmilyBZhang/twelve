@@ -26,12 +26,15 @@ const correct = {
   shared: 'e',
   wordX: ['t', 'w', '', 'l', 'v', 'e'],
   wordY: ['t', 'w', '', 'l', 'v', 'e'],
-}
-const checkSolved = (wordX: Array<string>, wordY: Array<string>, shared: string) => (
-  shared === correct.shared
-  && arraysEqual(wordX, correct.wordX)
-  && arraysEqual(wordY, correct.wordY)
-);
+};
+const checkSolved = (
+  wordX: Array<string>,
+  wordY: Array<string>,
+  shared: string
+) =>
+  shared === correct.shared &&
+  arraysEqual(wordX, correct.wordX) &&
+  arraysEqual(wordY, correct.wordY);
 
 const wordLength = initWordX.length;
 const wordSize = levelWidth;
@@ -81,7 +84,7 @@ const Cell = styled.View`
 `;
 
 const sharedPosition = {
-  position: 'absolute',
+  position: 'absolute' as 'absolute',
   left: padding.x + cellSize * sharedIndex,
   top: padding.y + cellSize * sharedIndex,
 };
@@ -102,7 +105,6 @@ const CoinContainer = styled.View`
 `;
 
 const LevelPermuteTwoTwelves: Level = (props) => {
-
   const [wordX, setWordX] = useState(initWordX);
   const [wordY, setWordY] = useState(initWordY);
   const [animX] = useState(new Animated.Value(0));
@@ -123,7 +125,7 @@ const LevelPermuteTwoTwelves: Level = (props) => {
   const isSolved = isSolvedRef.current;
 
   const animate = (axis: 'x' | 'y', initValue: number) => {
-    const anim = (axis === 'x') ? animX : animY;
+    const anim = axis === 'x' ? animX : animY;
     anim.setValue(initValue);
     Animated.timing(anim, {
       toValue: 0,
@@ -133,49 +135,53 @@ const LevelPermuteTwoTwelves: Level = (props) => {
     }).start();
   };
 
-  const handleShiftX = (direction: number) => setWordX(wordX => {
-    const oldShared = shared.current;
-    const d = Math.sign(direction);
-    if (d === 0) return wordX;
-    shared.current = wordX[positiveModulo(sharedIndex - d, wordLength)];
-    animate('x', -d);
-    if (d < 0) return [
-      ...wordX.slice(1, sharedIndex),
-      oldShared,
-      '',
-      ...wordX.slice(sharedIndex + 2),
-      wordX[0],
-    ];
-    return [
-      wordX[wordLength - 1],
-      ...wordX.slice(0, sharedIndex - 1),
-      '',
-      oldShared,
-      ...wordX.slice(sharedIndex + 1, wordLength - 1),
-    ];
-  });
+  const handleShiftX = (direction: number) =>
+    setWordX((wordX) => {
+      const oldShared = shared.current;
+      const d = Math.sign(direction);
+      if (d === 0) return wordX;
+      shared.current = wordX[positiveModulo(sharedIndex - d, wordLength)];
+      animate('x', -d);
+      if (d < 0)
+        return [
+          ...wordX.slice(1, sharedIndex),
+          oldShared,
+          '',
+          ...wordX.slice(sharedIndex + 2),
+          wordX[0],
+        ];
+      return [
+        wordX[wordLength - 1],
+        ...wordX.slice(0, sharedIndex - 1),
+        '',
+        oldShared,
+        ...wordX.slice(sharedIndex + 1, wordLength - 1),
+      ];
+    });
 
-  const handleShiftY = (direction: number) => setWordY(wordY => {
-    const oldShared = shared.current;
-    const d = Math.sign(direction);
-    if (d === 0) return wordY;
-    shared.current = wordY[positiveModulo(sharedIndex - d, wordLength)];
-    animate('y', -d);
-    if (d < 0) return [
-      ...wordY.slice(1, sharedIndex),
-      oldShared,
-      '',
-      ...wordY.slice(sharedIndex + 2),
-      wordY[0],
-    ];
-    return [
-      wordY[wordLength - 1],
-      ...wordY.slice(0, sharedIndex - 1),
-      '',
-      oldShared,
-      ...wordY.slice(sharedIndex + 1, wordLength - 1),
-    ];
-  });
+  const handleShiftY = (direction: number) =>
+    setWordY((wordY) => {
+      const oldShared = shared.current;
+      const d = Math.sign(direction);
+      if (d === 0) return wordY;
+      shared.current = wordY[positiveModulo(sharedIndex - d, wordLength)];
+      animate('y', -d);
+      if (d < 0)
+        return [
+          ...wordY.slice(1, sharedIndex),
+          oldShared,
+          '',
+          ...wordY.slice(sharedIndex + 2),
+          wordY[0],
+        ];
+      return [
+        wordY[wordLength - 1],
+        ...wordY.slice(0, sharedIndex - 1),
+        '',
+        oldShared,
+        ...wordY.slice(sharedIndex + 1, wordLength - 1),
+      ];
+    });
 
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound >= 12;
@@ -183,50 +189,64 @@ const LevelPermuteTwoTwelves: Level = (props) => {
   return (
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
-        <XContainer>
-          <Animated.View style={{
+      <XContainer>
+        <Animated.View
+          style={{
             flexDirection: 'row',
             transform: [{ translateX: Animated.multiply(animX, cellSize) }],
-          }}>
-            <Cell><LevelText>{wordX[wordLength - 1]}</LevelText></Cell>
-            {wordX.map((letter, index) => (
-              <TouchableWithoutFeedback
-                key={String(index)}
-                onPressIn={() => handleShiftX(Math.sign(index - sharedIndex))}
-              >
-                <Cell>
-                  <LevelText>{letter}</LevelText>
-                </Cell>
-              </TouchableWithoutFeedback>
-            ))}
-            <Cell><LevelText>{wordX[0]}</LevelText></Cell>
-          </Animated.View>
-        </XContainer>
-      <YContainer>
-        <Animated.View style={{
-          transform: [{ translateY: Animated.multiply(animY, cellSize) }],
-        }}>
-          <Cell><LevelText>{wordY[wordLength - 1]}</LevelText></Cell>
-          {wordY.map((letter, index) => (
+          }}
+        >
+          <Cell>
+            <LevelText>{wordX[wordLength - 1]}</LevelText>
+          </Cell>
+          {wordX.map((letter, index) => (
             <TouchableWithoutFeedback
-                key={String(index)}
-                onPressIn={() => handleShiftY(Math.sign(index - sharedIndex))}
+              key={String(index)}
+              onPressIn={() => handleShiftX(Math.sign(index - sharedIndex))}
             >
               <Cell>
                 <LevelText>{letter}</LevelText>
               </Cell>
             </TouchableWithoutFeedback>
           ))}
-          <Cell><LevelText>{wordY[0]}</LevelText></Cell>
+          <Cell>
+            <LevelText>{wordX[0]}</LevelText>
+          </Cell>
+        </Animated.View>
+      </XContainer>
+      <YContainer>
+        <Animated.View
+          style={{
+            transform: [{ translateY: Animated.multiply(animY, cellSize) }],
+          }}
+        >
+          <Cell>
+            <LevelText>{wordY[wordLength - 1]}</LevelText>
+          </Cell>
+          {wordY.map((letter, index) => (
+            <TouchableWithoutFeedback
+              key={String(index)}
+              onPressIn={() => handleShiftY(Math.sign(index - sharedIndex))}
+            >
+              <Cell>
+                <LevelText>{letter}</LevelText>
+              </Cell>
+            </TouchableWithoutFeedback>
+          ))}
+          <Cell>
+            <LevelText>{wordY[0]}</LevelText>
+          </Cell>
         </Animated.View>
       </YContainer>
-      <Animated.View style={{
-        ...sharedPosition,
-        transform: [
-          { translateX: Animated.multiply(animX, cellSize) },
-          { translateY: Animated.multiply(animY, cellSize) },
-        ],
-      }}>
+      <Animated.View
+        style={{
+          ...sharedPosition,
+          transform: [
+            { translateX: Animated.multiply(animX, cellSize) },
+            { translateY: Animated.multiply(animY, cellSize) },
+          ],
+        }}
+      >
         <Cell>
           <LevelText>{shared.current}</LevelText>
         </Cell>
@@ -247,12 +267,12 @@ const LevelPermuteTwoTwelves: Level = (props) => {
             {Array.from(Array(6), (_, index) => (
               <CoinContainer
                 key={String(index + 6)}
-                pointerEvents={(index === sharedIndex) ? 'box-none' : 'auto'}
+                pointerEvents={index === sharedIndex ? 'box-none' : 'auto'}
               >
                 <Coin
                   found={props.coinsFound.has(index + 6)}
                   onPress={() => props.onCoinPress(index + 6)}
-                  size={(index === sharedIndex) ? largeCoinSize : coinSize}
+                  size={index === sharedIndex ? largeCoinSize : coinSize}
                 />
               </CoinContainer>
             ))}

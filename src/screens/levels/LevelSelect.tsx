@@ -1,6 +1,12 @@
-import React, { FunctionComponent, memo, useEffect, useRef, useState } from 'react';
+import React, {
+  FunctionComponent,
+  memo,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { Animated, FlatList } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
 
 import useSettings from 'hooks/useSettings';
@@ -58,19 +64,20 @@ const LevelBoxContainer = styled(Animated.View)`
 `;
 
 // TODO: Consider changing to TouchableHighlight with corresponding underlay colors
-const LevelBoxTouchable = styled.TouchableOpacity.attrs<LevelProps>(props => ({
-  disabled: !props.unlocked,
-  activeOpacity: 5/6,
-}))<LevelProps>`
+const LevelBoxTouchable = styled.TouchableOpacity.attrs<LevelProps>(
+  (props) => ({
+    disabled: !props.unlocked,
+    activeOpacity: 5 / 6,
+  })
+)<LevelProps>`
   margin-left: ${levelBoxMargin}px;
   margin-bottom: ${levelBoxMargin}px;
   border-radius: ${levelBoxSize / 2}px;
-  background-color: ${props => (
-    levelBubbleColors[Math.floor(props.index / 12) % levelBubbleColors.length]
-  )};
-  ${props => !props.unlocked && `opacity: 0.5;`}
+  background-color: ${(props) =>
+    levelBubbleColors[Math.floor(props.index / 12) % levelBubbleColors.length]};
+  ${(props) => !props.unlocked && `opacity: 0.5;`}
 `;
-  // ${props => props.completed && `border: 2px solid gold;`}
+// ${props => props.completed && `border: 2px solid gold;`}
 
 const LevelBoxText = styled.Text`
   color: white;
@@ -80,16 +87,17 @@ const LevelBoxText = styled.Text`
   transform: translateY(${-levelBoxSize / 8}px);
 `;
 
-const CompletedIcon = styled(MaterialCommunityIcons)
-  .attrs<LevelProps>(props => ({
+const CompletedIcon = styled(MaterialCommunityIcons).attrs<LevelProps>(
+  (props) => ({
     name: 'star',
     // TODO: Move these to colors.tsx
     color: props.completed ? 'gold' : 'black',
     size: levelBoxSize / 4,
-}))<LevelProps>`
+  })
+)<LevelProps & { name?: string }>`
   position: absolute;
   bottom: ${levelBoxSize / 8}px;
-  opacity: ${props => props.completed ? 1 : props.unlocked ? 0.5 : 0.25};
+  opacity: ${(props) => (props.completed ? 1 : props.unlocked ? 0.5 : 0.25)};
 `;
 
 const LevelBox: FunctionComponent<LevelBoxProps> = memo((props) => {
@@ -120,12 +128,12 @@ const LevelBox: FunctionComponent<LevelBoxProps> = memo((props) => {
 
   const scale = outlineAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: [1, 13 / 12]
+    outputRange: [1, 13 / 12],
   });
 
   const opacity = outlineAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: [1, 3 / 4]
+    outputRange: [1, 3 / 4],
   });
 
   return (
@@ -133,20 +141,20 @@ const LevelBox: FunctionComponent<LevelBoxProps> = memo((props) => {
       {...levelStatus}
       onPress={() => onGoToLevel(levelStatus.index + 1)}
     >
-      <LevelBoxContainer style={{
-        transform: [{scaleX: scale}, {scaleY: scale}],
-      }}>
+      <LevelBoxContainer
+        style={{
+          transform: [{ scaleX: scale }, { scaleY: scale }],
+        }}
+      >
         <CompletedIcon {...levelStatus} />
-        <LevelBoxText>
-          {children}
-        </LevelBoxText>
+        <LevelBoxText>{children}</LevelBoxText>
       </LevelBoxContainer>
     </LevelBoxTouchable>
   );
 });
 
 const levelListStyle = {
-  width: levelWidth
+  width: levelWidth,
 };
 
 const LevelSelect: LevelSelectType = (props) => {
@@ -162,9 +170,7 @@ const LevelSelect: LevelSelectType = (props) => {
         contentContainerStyle={levelListStyle}
         initialNumToRender={18}
         maxToRenderPerBatch={18}
-        ListHeaderComponent={
-          <TitleText>Select Level</TitleText>
-        }
+        ListHeaderComponent={<TitleText>Select Level</TitleText>}
         renderItem={({ item: levelStatus, index }) => (
           <LevelBox
             {...levelStatus}

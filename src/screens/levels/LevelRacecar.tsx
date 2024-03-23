@@ -15,6 +15,7 @@ import { getLevelDimensions } from 'utils/getDimensions';
 import { gaussian, randElem, shuffleArray } from 'utils/random';
 import ColorHint from 'components/ColorHint';
 import ScavengerText from 'components/ScavengerText';
+import { MaterialCommunityIconsProps } from 'utils/types';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 
@@ -27,9 +28,8 @@ const finishEnd = levelWidth - styles.coinSize;
 const finishHeight = levelHeight;
 const finishWidth = finishEnd - finishStart;
 
-const withinBounds = (x: number) => (
-  (x >= finishStart) && (x - carSize <= finishEnd)
-);
+const withinBounds = (x: number) =>
+  x >= finishStart && x - carSize <= finishEnd;
 
 const RaceTrack = styled.View`
   width: ${trackLength}px;
@@ -40,7 +40,7 @@ const RaceTrack = styled.View`
 const SportsCar = styled(MaterialCommunityIcons).attrs({
   name: 'car-sports',
   size: carSize,
-})``;
+})<Partial<MaterialCommunityIconsProps>>``;
 
 const CarContainer = styled(Animated.View)`
   justify-content: center;
@@ -94,7 +94,6 @@ const animParams = [
 ];
 
 const LevelRacecar: Level = (props) => {
-
   const [goodCar, setGoodCar] = useState(true);
   const [cameraDisabled, setCameraDisabled] = useState(false);
   const [anim] = useState(new Animated.Value(0));
@@ -103,7 +102,6 @@ const LevelRacecar: Level = (props) => {
 
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound >= 12;
-
 
   useEffect(() => {
     const listener = anim.addListener(({ value }) => {
@@ -120,7 +118,7 @@ const LevelRacecar: Level = (props) => {
       Animated.timing(anim, {
         toValue: trackLength - carSize,
         useNativeDriver: true,
-        ...animParams[numCoinsFoundRef.current % 12]
+        ...animParams[numCoinsFoundRef.current % 12],
       }).start(() => {
         setTimeout(() => {
           if (exited) return;
@@ -137,7 +135,9 @@ const LevelRacecar: Level = (props) => {
       });
     };
     iter();
-    return () => { exited = true; };
+    return () => {
+      exited = true;
+    };
   }, []);
 
   const handleCoinPress = () => {
@@ -146,11 +146,10 @@ const LevelRacecar: Level = (props) => {
     if (goodCar) {
       numCoinsFoundRef.current++;
       props.onCoinPress();
-    }
-    else {
+    } else {
       numCoinsFoundRef.current = 0;
       props.setCoinsFound();
-    } 
+    }
   };
 
   const color = goodCar ? colors.coin : colors.badCoin;
@@ -158,7 +157,9 @@ const LevelRacecar: Level = (props) => {
   return (
     <LevelContainer>
       <LevelTextContainer>
-        <LevelText>The Dozen Pri<ScavengerText>x</ScavengerText></LevelText>
+        <LevelText>
+          The Dozen Pri<ScavengerText>x</ScavengerText>
+        </LevelText>
       </LevelTextContainer>
       <LevelCounter count={numCoinsFound} position={{ right: 0, top: 0 }} />
       <FinishLine />

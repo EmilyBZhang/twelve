@@ -24,7 +24,7 @@ const MAZE_ROWS = 4;
 const MAZE_COLS = 4;
 
 const mazeBorderWidth = 1;
-const mazeSizeNoBorder = levelWidth * 3 / 4;
+const mazeSizeNoBorder = (levelWidth * 3) / 4;
 const mazeSize = mazeSizeNoBorder + mazeBorderWidth * 2;
 const mazeTileBorderWidth = 1;
 const mazeTileSize = mazeSizeNoBorder / MAZE_COLS;
@@ -34,10 +34,11 @@ const directions = {
   B: 'bottom',
   L: 'left',
   R: 'right',
-  T: 'top'
-} as {[initial: string]: Direction};
+  T: 'top',
+} as { [initial: string]: Direction };
 
 interface HasDirection {
+  name?: string;
   direction: Direction;
 }
 
@@ -45,7 +46,7 @@ enum Directions {
   bottom,
   left,
   top,
-  right
+  right,
 }
 
 const dirId = {
@@ -53,7 +54,7 @@ const dirId = {
   left: 1,
   top: 2,
   right: 3,
-} as {[direction: string]: number};
+} as { [direction: string]: number };
 
 const mazeStyle = {
   width: mazeSize,
@@ -62,7 +63,7 @@ const mazeStyle = {
   borderWidth: mazeBorderWidth,
   borderColor: 'black',
   padding: 0,
-  margin: 0
+  margin: 0,
 };
 
 const MazeRowContainer = styled.View`
@@ -109,21 +110,34 @@ const MazeTile = styled.View<MazeTileProps>`
   border-bottom-color: transparent;
   border-left-color: transparent;
   border-right-color: transparent;
-  ${props => props.borders.map(
-    direction => `border-${direction}-color: black;`
-  ).join('\n')}
+  ${(props) =>
+    props.borders
+      .map((direction) => `border-${direction}-color: black;`)
+      .join('\n')}
 `;
 
 const mazeBorderCodes = [
-  'LT', 'T', 'T', 'RT',
-  'LR', 'L', 'R', 'LR',
-  'BL', 'R', 'L', 'BR',
-  'BLT', 'B', 'B', 'BRT'
+  'LT',
+  'T',
+  'T',
+  'RT',
+  'LR',
+  'L',
+  'R',
+  'LR',
+  'BL',
+  'R',
+  'L',
+  'BR',
+  'BLT',
+  'B',
+  'B',
+  'BRT',
 ];
 
-const mazeBorders = mazeBorderCodes.map((direction) => (
-  Array.from(direction, dir => directions[dir])
-));
+const mazeBorders = mazeBorderCodes.map((direction) =>
+  Array.from(direction, (dir) => directions[dir])
+);
 
 const mouseStartIndex = 12;
 const cheeseStartIndices = new Set([4, 7, 15]);
@@ -132,10 +146,10 @@ const startDirection = Directions.top;
 const indexToXY = (index: number) => {
   const r = Math.floor(index / MAZE_COLS);
   const c = index % MAZE_COLS;
-  return ({
+  return {
     x: c * mazeTileSize,
-    y: r * mazeTileSize
-  });
+    y: r * mazeTileSize,
+  };
 };
 
 const startXY = indexToXY(mouseStartIndex);
@@ -168,7 +182,10 @@ const LevelMouseMaze: Level = (props) => {
       }
       const foundCheese = cheeseIndices.has(newMouseIndex);
       if (numCoinsFound + 1 === 12) {
-        if (cheeseIndices.size > 1 || (cheeseIndices.size === 1 && !foundCheese)) {
+        if (
+          cheeseIndices.size > 1 ||
+          (cheeseIndices.size === 1 && !foundCheese)
+        ) {
           props.setCoinsFound(new Set<number>());
           setMouseIndex(mouseStartIndex);
           setCheeseIndices(cheeseStartIndices);
@@ -179,7 +196,7 @@ const LevelMouseMaze: Level = (props) => {
       }
       props.onCoinPress(numCoinsFound);
       if (foundCheese) {
-        playAudio(mouseSound, undefined, { volume: 3/4 });
+        playAudio(mouseSound, undefined, { volume: 3 / 4 });
         const newCheeseIndices = new Set(cheeseIndices);
         newCheeseIndices.delete(newMouseIndex);
         setCheeseIndices(newCheeseIndices);
@@ -189,26 +206,26 @@ const LevelMouseMaze: Level = (props) => {
         toValue: indexToXY(newMouseIndex),
         duration: 125,
         easing: Easing.linear,
-        useNativeDriver: true
+        useNativeDriver: true,
       }).start();
     }
     Animated.timing(rotateAnim, {
       toValue: dirId[direction],
       duration: 125,
       easing: Easing.linear,
-      useNativeDriver: true
+      useNativeDriver: true,
     }).start();
   };
 
-  const NavCoin = styled(Coin).attrs((props: HasDirection) => ({
+  const NavCoin = styled(Coin).attrs<HasDirection>((props) => ({
     color: colors.orderedCoin,
     disabled: twelve,
-    onPress: () => handleCoinPress(props.direction)
+    onPress: () => handleCoinPress(props.direction),
   }))<HasDirection>``;
 
   const rotate = rotateAnim.interpolate({
     inputRange: [0, 4],
-    outputRange: ['0deg', '360deg']
+    outputRange: ['0deg', '360deg'],
   });
 
   return (
@@ -227,32 +244,32 @@ const LevelMouseMaze: Level = (props) => {
             renderItem={({ item: borders, index }) => {
               let children = null;
               if (index === 0) {
-                const { top: translateY, left: translateX } = moveAnim.getLayout();
+                const { top: translateY, left: translateX } =
+                  moveAnim.getLayout();
                 children = (
-                  <MouseContainer style={{transform: [
-                    {translateY},
-                    {translateX},
-                    {rotate},
-                  ]}} >
+                  <MouseContainer
+                    style={{
+                      transform: [{ translateY }, { translateX }, { rotate }],
+                    }}
+                  >
                     <Mouse />
                     <LevelCounter
                       count={numCoinsFound}
                       color={colors.offCoin}
                       width={mazeTileSize}
                       height={mazeTileSize}
-                      position={{ left: styles.levelTextSize / 4, bottom: mazeTileSize / 6 }}
+                      position={{
+                        left: styles.levelTextSize / 4,
+                        bottom: mazeTileSize / 6,
+                      }}
                       fontSize={styles.levelTextSize / 2}
                     />
                   </MouseContainer>
-                )
+                );
               } else if (cheeseIndices.has(index)) {
-                children = <Cheese />
+                children = <Cheese />;
               }
-              return (
-                <MazeTile borders={borders}>
-                  {children}
-                </MazeTile>
-              );
+              return <MazeTile borders={borders}>{children}</MazeTile>;
             }}
           />
         </MazeContainer>

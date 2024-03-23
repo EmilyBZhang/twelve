@@ -16,6 +16,7 @@ import playAudio, { CreateAudioResult } from 'utils/playAudio';
 import LevelCatchCoins from './levels/LevelCatchCoins';
 import LevelRedLight from './levels/LevelRedLight';
 import getDimensions from 'utils/getDimensions';
+import { MaterialCommunityIconsProps } from 'utils/types';
 
 const { width: windowWidth, height: windowHeight } = getDimensions();
 
@@ -23,7 +24,7 @@ const CloseIcon = styled(MaterialCommunityIcons).attrs({
   name: 'close',
   size: styles.levelNavHeight / 2,
   color: colors.foreground,
-})``;
+})<Partial<MaterialCommunityIconsProps>>``;
 
 const CloseTouchable = styled.TouchableOpacity`
   border-radius: ${styles.levelNavHeight / 2}px;

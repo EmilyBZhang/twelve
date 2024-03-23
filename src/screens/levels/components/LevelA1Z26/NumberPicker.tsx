@@ -4,6 +4,7 @@ import styled from 'styled-components/native';
 
 import styles from 'res/styles';
 import Coin from 'components/Coin';
+import { AntDesignProps } from 'utils/types';
 
 interface NumberPickerProps {
   count: number;
@@ -58,14 +59,14 @@ const Display: FunctionComponent<DisplayProps> = (props) => {
 const UpArrow = styled(AntDesign).attrs({
   name: 'caretup',
   size: numberPickerWidth,
-  color: 'black'
-})``;
+  color: 'black',
+})<Partial<AntDesignProps>>``;
 
 const DownArrow = styled(AntDesign).attrs({
   name: 'caretdown',
   size: numberPickerWidth,
-  color: 'black'
-})``;;
+  color: 'black',
+})<Partial<AntDesignProps>>``;
 
 const ArrowTouchable = styled.TouchableOpacity``;
 
@@ -84,7 +85,7 @@ const ArrowButton: FunctionComponent<ArrowButtonProps> = (props) => {
   const Arrow = direction === 'up' ? UpArrow : DownArrow;
 
   const [coinPressed, setCoinPressed] = useState(false);
-  const pressInterval = useRef<number | null>(null);
+  const pressInterval = useRef<NodeJS.Timeout | null>(null);
 
   const handlePressIn = () => {
     pressInterval.current = null;
@@ -118,14 +119,11 @@ const ArrowButton: FunctionComponent<ArrowButtonProps> = (props) => {
       <Arrow />
       {onCoinPress && (
         <CoinContainer>
-          <Coin
-            found={coinPressed}
-            onPress={handleCoinPress}
-          />
+          <Coin found={coinPressed} onPress={handleCoinPress} />
         </CoinContainer>
       )}
     </ArrowTouchable>
-  )
+  );
 };
 
 const NumberPicker: FunctionComponent<NumberPickerProps> = (props) => {
@@ -138,10 +136,7 @@ const NumberPicker: FunctionComponent<NumberPickerProps> = (props) => {
         onChange={() => onChange('up')}
         onCoinPress={onCoin1Press}
       />
-      <Display
-        count={count}
-        showLetter={showLetter}
-      />
+      <Display count={count} showLetter={showLetter} />
       <ArrowButton
         direction={'down'}
         onChange={() => onChange('down')}

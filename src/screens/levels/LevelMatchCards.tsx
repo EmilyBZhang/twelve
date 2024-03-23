@@ -1,17 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Animated, Easing, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
 
 import { Level } from 'utils/interfaces';
-import { calcPositions } from 'utils/coinPositions';
 import { getLevelDimensions } from 'utils/getDimensions';
 import useSelectedIndices from 'hooks/useSelectedIndices';
 import colors from 'res/colors';
 import styles from 'res/styles';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
-import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
 import { shuffleArray } from 'utils/random';
 
@@ -23,7 +21,7 @@ const cardHeight = cardWidth / 0.7;
 const xGap = (levelWidth - cardWidth * 4) / 5;
 const yGap = (levelHeight - cardHeight * 3) / 4;
 
-const symbols = [
+const symbols: (keyof typeof MaterialCommunityIcons.glyphMap)[] = [
   'egg',
   'dice-d12',
   'clock',
@@ -36,10 +34,10 @@ const cardLabelsInit = [...symbols, ...symbols];
 const coinPositions = Array.from(Array(12), (_, index) => {
   const r = Math.floor(index / 4);
   const c = index % 4;
-  return ({
+  return {
     top: yGap + r * (cardHeight + yGap),
-    left: xGap + c * (cardWidth + xGap)
-  });
+    left: xGap + c * (cardWidth + xGap),
+  };
 });
 
 const Card = styled(Animated.View)`
@@ -54,7 +52,7 @@ const CardLabel = styled(MaterialCommunityIcons).attrs({
 })``;
 
 const CardTouchable = styled.TouchableHighlight.attrs({
-  underlayColor: colors.selectCoinUnderlay
+  underlayColor: colors.selectCoinUnderlay,
 })`
   background-color: ${colors.selectCoin};
   width: ${cardWidth}px;
@@ -65,13 +63,14 @@ const CardTouchable = styled.TouchableHighlight.attrs({
 `;
 
 const LevelMatchCards: Level = (props) => {
-
   const [cardLabels] = useState(() => {
     const cardLabels = cardLabelsInit.slice();
     shuffleArray(cardLabels);
     return cardLabels;
   });
-  const [cardScales] = useState(() => cardLabels.map(() => new Animated.Value(1)));
+  const [cardScales] = useState(() =>
+    cardLabels.map(() => new Animated.Value(1))
+  );
   const [disabledCards, toggleDisabledCard] = useSelectedIndices();
   const [revealedCards, toggleRevealedCard] = useSelectedIndices();
   const [revealedCard1, setRevealedCard1] = useState(-1);
@@ -83,20 +82,24 @@ const LevelMatchCards: Level = (props) => {
 
   // }, [revealedCard2]);
 
-  const revealCard = (cardIndex: number, callback?: () => any, duration = 500) => {
+  const revealCard = (
+    cardIndex: number,
+    callback?: () => any,
+    duration = 500
+  ) => {
     toggleDisabledCard(cardIndex);
     Animated.timing(cardScales[cardIndex], {
       toValue: 1 / 144,
       duration: duration / 2,
       easing: Easing.quad,
-      useNativeDriver: true
+      useNativeDriver: true,
     }).start(() => {
       toggleRevealedCard(cardIndex);
       Animated.timing(cardScales[cardIndex], {
         toValue: 1,
         duration: duration / 2,
         easing: Easing.out(Easing.quad),
-        useNativeDriver: true
+        useNativeDriver: true,
       }).start(callback);
     });
   };
@@ -138,7 +141,7 @@ const LevelMatchCards: Level = (props) => {
           style={{
             ...coinPosition,
             position: 'absolute',
-            transform: [{scaleX: cardScales[index]}]
+            transform: [{ scaleX: cardScales[index] }],
           }}
         >
           <CardTouchable
@@ -151,13 +154,13 @@ const LevelMatchCards: Level = (props) => {
               color={revealedCards.has(index) ? 'white' : 'transparent'}
             />
           </CardTouchable>
-          <View style={{position: 'absolute'}}>
+          <View style={{ position: 'absolute' }}>
             <Coin
               found={
-                props.coinsFound.has(index)
-                || !revealedCards.has(index)
-                || index === revealedCard1
-                || index === revealedCard2
+                props.coinsFound.has(index) ||
+                !revealedCards.has(index) ||
+                index === revealedCard1 ||
+                index === revealedCard2
               }
               onPress={() => props.onCoinPress(index)}
             />
@@ -348,4 +351,3 @@ export default LevelMatchCards;
 // };
 
 // export default LevelMatchCards;
-

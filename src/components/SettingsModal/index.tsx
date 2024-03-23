@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useCallback } from 'react';
 import { Button } from 'react-native';
 import { Octicons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
@@ -37,6 +37,7 @@ interface SettingsModalProps {
   level?: number;
   onPrevLevel?: () => any;
   onNextLevel?: () => any;
+  children?: React.ReactNode;
 }
 
 const FullScreenModal = styled.View`
@@ -92,7 +93,7 @@ const SubtitleText = styled.Text`
 `;
 
 const SettingsButton = styled.TouchableHighlight.attrs({
-  underlayColor: colors.foregroundPressed
+  underlayColor: colors.foregroundPressed,
 })`
   width: ${settingsButtonSize}px;
   height: ${settingsButtonSize}px;
@@ -100,9 +101,13 @@ const SettingsButton = styled.TouchableHighlight.attrs({
   background-color: ${colors.foreground};
   justify-content: center;
   align-items: center;
-  opacity: ${props => props.onPress ? 1 : 0.5};
+  opacity: ${(props) => (props.onPress ? 1 : 0.5)};
   margin-bottom: ${subtitleTextSize}px;
 `;
+
+const voidReturn = (f: Function) => () => {
+  f();
+};
 
 const SettingsModal: FunctionComponent<SettingsModalProps> = (props) => {
   const {
@@ -118,8 +123,14 @@ const SettingsModal: FunctionComponent<SettingsModalProps> = (props) => {
   } = props;
   const [
     { music, sfx, colorblind, levelStatus },
-    { toggleMusic, toggleSfx, toggleColorblind, completeLevel }
+    { toggleMusic, toggleSfx, toggleColorblind, completeLevel },
   ] = useSettings();
+
+  const handleToggleMusic = useCallback(voidReturn(toggleMusic), [toggleMusic]);
+  const handleToggleSfx = useCallback(voidReturn(toggleSfx), [toggleSfx]);
+  const handleToggleColorblind = useCallback(voidReturn(toggleColorblind), [
+    toggleColorblind,
+  ]);
 
   if (!visible) return null;
 
@@ -133,9 +144,15 @@ const SettingsModal: FunctionComponent<SettingsModalProps> = (props) => {
         <SettingsTitleContainer>
           {level !== undefined ? (
             <LevelNavContainer>
-              <LevelNavLeft onPress={onPrevLevel} disabled={!levelStatus[level - 2]?.unlocked} />
+              <LevelNavLeft
+                onPress={onPrevLevel}
+                disabled={!levelStatus[level - 2]?.unlocked}
+              />
               <LevelNavText>{level}</LevelNavText>
-              <LevelNavRight onPress={onNextLevel} disabled={!levelStatus[level]?.unlocked} />
+              <LevelNavRight
+                onPress={onNextLevel}
+                disabled={!levelStatus[level]?.unlocked}
+              />
             </LevelNavContainer>
           ) : (
             title && <LevelText color={colors.lightText}>{title}</LevelText>
@@ -166,19 +183,19 @@ const SettingsModal: FunctionComponent<SettingsModalProps> = (props) => {
           value={music}
           icon={MusicIcon}
           label={'Music'}
-          onValueChange={toggleMusic}
+          onValueChange={handleToggleMusic}
         />
         <SwitchableSetting
           value={sfx}
           icon={SfxIcon}
           label={'Sound effects'}
-          onValueChange={toggleSfx}
+          onValueChange={handleToggleSfx}
         />
         <SwitchableSetting
           value={colorblind}
           icon={ColorblindIcon}
           label={'Color blind mode'}
-          onValueChange={toggleColorblind}
+          onValueChange={handleToggleColorblind}
         />
         {children}
         {__DEV__ && (

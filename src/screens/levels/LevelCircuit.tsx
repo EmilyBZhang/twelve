@@ -25,11 +25,10 @@ import colors from 'res/colors';
 // import coinPositions from 'utils/coinPositions';
 import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
-import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
 import { HintIcon } from 'components/LevelNav/components';
-import HintModal from 'components/HintModal';
 import playAudio from 'utils/playAudio';
+import { MaterialCommunityIconsProps } from 'utils/types';
 
 const zapSound = require('assets/sfx/zap.mp3');
 
@@ -104,7 +103,7 @@ const BatteryIcon = styled(MaterialCommunityIcons).attrs({
   name: 'car-battery',
   size: coinSize,
   color: colors.foreground,
-})`
+})<Partial<MaterialCommunityIconsProps>>`
   background-color: ${colors.background};
   position: absolute;
   top: ${baseY - coinSize / 2}px;

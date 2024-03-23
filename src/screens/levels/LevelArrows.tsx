@@ -23,35 +23,48 @@ const ArrowContainer = styled.View`
 `;
 
 interface ArrowIconProps {
+  name?: string;
   translateX?: number;
   translateY?: number;
 }
 
 const ArrowIcon = styled(MaterialCommunityIcons).attrs({
   size: styles.coinSize / 2,
-  color: 'black'
+  color: 'black',
 })<ArrowIconProps>`
-  ${props => (props.translateX || props.translateY) && (
+  ${(props) =>
+    (props.translateX || props.translateY) &&
     `transform:\
     ${props.translateX ? ` translateX(${props.translateX}px)` : ''}\
-    ${props.translateY ? ` translateY(${props.translateY}px)` : ''};`
-  )}
+    ${props.translateY ? ` translateY(${props.translateY}px)` : ''};`}
 `;
 
 const directions = [
-  '3D', '1D', '1L',
-  '1U', '1R', '2L',
-  '2R', '1D', '1L',
-  '1U', '1R', '3U',
+  '3D',
+  '1D',
+  '1L',
+  '1U',
+  '1R',
+  '2L',
+  '2R',
+  '1D',
+  '1L',
+  '1U',
+  '1R',
+  '3U',
 ];
 
 const pointers = directions.map((direction, index) => {
   const mult = parseInt(direction[0]);
   switch (direction[1]) {
-    case 'U': return index - mult * 3;
-    case 'D': return index + mult * 3;
-    case 'L': return index - mult;
-    default:  return index + mult;
+    case 'U':
+      return index - mult * 3;
+    case 'D':
+      return index + mult * 3;
+    case 'L':
+      return index - mult;
+    default:
+      return index + mult;
   }
 });
 
@@ -59,22 +72,18 @@ const fullDirections = {
   U: 'up',
   D: 'down',
   L: 'left',
-  R: 'right'
-} as {[firstLetter: string]: string};
+  R: 'right',
+} as { [firstLetter: string]: string };
 
 const icons = directions.map((direction) => {
   const fullDirection = fullDirections[direction[1]];
   let icon;
   switch (direction[0]) {
     case '1':
-      icon = (
-        <ArrowIcon name={`chevron-${fullDirection}`} />
-      );
+      icon = <ArrowIcon name={`chevron-${fullDirection}`} />;
       break;
     case '2':
-      icon = (
-        <ArrowIcon name={`chevron-double-${fullDirection}`} />
-      );
+      icon = <ArrowIcon name={`chevron-double-${fullDirection}`} />;
       break;
     default:
       // Combine two vector icons for a triple-arrow
@@ -92,11 +101,7 @@ const icons = directions.map((direction) => {
         </>
       );
   }
-  return (
-    <ArrowContainer>
-      {icon}
-    </ArrowContainer>
-  );
+  return <ArrowContainer>{icon}</ArrowContainer>;
 });
 
 const LevelArrows: Level = (props) => {
@@ -120,7 +125,7 @@ const LevelArrows: Level = (props) => {
       {coinPositions.map((coinPosition, index) => (
         <View
           key={String(index)}
-          style={{position: 'absolute', ...coinPosition}}
+          style={{ position: 'absolute', ...coinPosition }}
         >
           <Coin
             color={colors.orderedCoin}

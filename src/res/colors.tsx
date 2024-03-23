@@ -1,10 +1,16 @@
 // TODO: Consider adding transparent to CoinColor
 // TODO: Update CoinColor using new values
-export type CoinColor = 'blue' | '#fbbc05' | 'green' | 'red' | 'white' | 'black';
+export type CoinColor =
+  | 'blue'
+  | '#fbbc05'
+  | 'green'
+  | 'red'
+  | 'white'
+  | 'black';
 
 /**
  * Color constants for the project
- * 
+ *
  * Consider this color pallet: https://coolors.co/ffffff-00171f-003459-007ea7-00a8e8
  */
 const colors = {
@@ -39,7 +45,6 @@ const colors = {
   plainSurface: '#bfbfbf',
   grass: '#61b75d',
 
-
   // foreground: '#4b0082', // indigo
   // background: '#00ffff',// cyan
   // foregroundPressed: '#260041',
@@ -57,9 +62,8 @@ const colors = {
   onCoinUnderlay: 'lightgray',
   offCoinUnderlay: '#000000',
 
-
   disabledCoinOpacity: 0.5,
-};
+} as const;
 
 // #5D608E
 
@@ -74,8 +78,8 @@ export const coinUnderlayColors = {
   [colors.selectCoin]: colors.selectCoinUnderlay,
   [colors.badCoin]: colors.badCoinUnderlay,
   [colors.onCoin]: colors.onCoinUnderlay,
-  [colors.offCoin]: colors.offCoinUnderlay
-};
+  [colors.offCoin]: colors.offCoinUnderlay,
+} as const;
 
 /**
  * MaterialCommunityIcons name associated with each color
@@ -86,8 +90,8 @@ export const colorIcons = {
   [colors.selectCoin]: 'asterisk',
   [colors.badCoin]: 'stop',
   [colors.onCoin]: 'power-on',
-  [colors.offCoin]: 'power-off'
-};
+  [colors.offCoin]: 'power-off',
+} as const;
 
 /**
  * Set of CoinColor colors which are dark
@@ -95,5 +99,5 @@ export const colorIcons = {
 export const darkCoinColors = new Set([
   colors.coin,
   colors.selectCoin,
-  colors.offCoin
+  colors.offCoin,
 ]);

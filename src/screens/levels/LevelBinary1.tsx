@@ -12,7 +12,6 @@ import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
 import useSelectedIndices from 'hooks/useSelectedIndices';
-import ColorHint from 'components/ColorHint';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 
@@ -25,24 +24,26 @@ const initY = deltaY - coinSize / 2;
 const bitPositions = Array.from(Array(6), (_, index) => {
   const r = Math.floor(index / 3);
   const c = index % 3;
-  return ({
+  return {
     top: initY + deltaY * r,
-    left: initX + deltaX * c
-  });
+    left: initX + deltaX * c,
+  };
 });
 
 const resultBitPositions = Array.from(Array(4), (_, index) => ({
-  position: 'absolute',
+  position: 'absolute' as 'absolute',
   top: initY + deltaY * 2,
-  left: initX + deltaX * (index - 1)
+  left: initX + deltaX * (index - 1),
 }));
 
 const coinPositions = [
-  ...resultBitPositions, ...resultBitPositions, ...resultBitPositions
+  ...resultBitPositions,
+  ...resultBitPositions,
+  ...resultBitPositions,
 ];
 
 const Plus = styled.View.attrs({
-  children: <LevelText>+</LevelText>
+  children: <LevelText>+</LevelText>,
 })`
   position: absolute;
   width: ${coinSize}px;
@@ -75,14 +76,14 @@ const LevelBinary1: Level = (props) => {
       let result = 0;
       for (let i = 3 * rowIndex; i < 3 * (rowIndex + 1); i++) {
         result <<= 1;
-        result += ((i === index) !== onBits.has(i)) ? 1 : 0;
+        result += (i === index) !== onBits.has(i) ? 1 : 0;
       }
       return result;
     });
     const result = nums[0] + nums[1];
     toggleBit(index);
     setResult(result);
-  }
+  };
 
   const twelveAchieved = result === 12;
 
@@ -93,29 +94,29 @@ const LevelBinary1: Level = (props) => {
         toValue: 1,
         duration: 1000,
         easing: Easing.exp,
-        useNativeDriver: true
+        useNativeDriver: true,
       }),
       Animated.timing(coinRevealAnim, {
         toValue: 3,
         duration: 1000,
         easing: Easing.exp,
-        useNativeDriver: true
+        useNativeDriver: true,
       }),
       Animated.timing(coinRevealAnim, {
         toValue: 5,
         duration: 1000,
         easing: Easing.exp,
-        useNativeDriver: true
+        useNativeDriver: true,
       }),
     ]).start();
   }, [twelveAchieved]);
 
   const calcTranslation = (index: number) => {
     const inputRange = [0, 1, 3, 5];
-    const outputRange = inputRange.map(num => -num * deltaY / 2);
+    const outputRange = inputRange.map((num) => (-num * deltaY) / 2);
     if (index < 4) outputRange[2] = outputRange[1];
     if (index < 8) outputRange[3] = outputRange[2];
-    return coinRevealAnim.interpolate({inputRange, outputRange});
+    return coinRevealAnim.interpolate({ inputRange, outputRange });
   };
 
   const bits = bitPositions.map((bitPosition, index) => {
@@ -143,7 +144,7 @@ const LevelBinary1: Level = (props) => {
       key={String(index)}
       style={{
         ...coinPosition,
-        transform: [{translateY: calcTranslation(index)}]
+        transform: [{ translateY: calcTranslation(index) }],
       }}
     >
       <Coin
@@ -165,13 +166,10 @@ const LevelBinary1: Level = (props) => {
         key={String(index)}
         style={{
           backgroundColor: bitColor,
-          ...resultBitPosition
+          ...resultBitPosition,
         }}
       >
-        <LevelText
-          fontSize={coinSize / 2}
-          color={textColor}
-        >
+        <LevelText fontSize={coinSize / 2} color={textColor}>
           {1 << (resultBitPositions.length - 1 - index)}
         </LevelText>
       </BitColor>

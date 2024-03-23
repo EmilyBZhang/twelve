@@ -14,6 +14,7 @@ import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
 import ScavengerText from 'components/ScavengerText';
 import { playPhoneTone } from 'utils/playPitch';
+import { MaterialCommunityIconsProps } from 'utils/types';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 
@@ -51,7 +52,7 @@ const DisplayText = styled.Text.attrs({
   numberOfLines: 1,
 })`
   font-family: montserrat-extra-bold;
-  font-size: ${coinSize * 2 / 3}px;
+  font-size: ${(coinSize * 2) / 3}px;
   color: ${colors.darkText};
   width: 100%;
   flex: 1;
@@ -80,7 +81,7 @@ const BackspaceIcon = styled(MaterialCommunityIcons).attrs({
   name: 'backspace',
   size: coinSize / 2,
   color: colors.foreground,
-})``;
+})<Partial<MaterialCommunityIconsProps>>``;
 
 const CoinsContainer = styled(Animated.View)`
   position: absolute;
@@ -104,9 +105,10 @@ const LevelDialpad: Level = (props) => {
   const numCoinsFound = props.coinsFound.size;
   const twelve = numCoinsFound >= 12;
 
-  const lastLetter = ((keyIndex !== -1) && (letterIndex !== -1))
-    ? keyLetters[keyIndex][letterIndex]
-    : '';
+  const lastLetter =
+    keyIndex !== -1 && letterIndex !== -1
+      ? keyLetters[keyIndex][letterIndex]
+      : '';
 
   useEffect(() => {
     if (lastLetter !== 'e') return;
@@ -126,19 +128,20 @@ const LevelDialpad: Level = (props) => {
     playPhoneTone(keyLabels[index]);
     const currDate = new Date();
     lastUpdated.current = currDate;
-    if ((letterIndex !== -1) && (index !== keyIndex)) {
-      setMessage(message => message + keyLetters[keyIndex][letterIndex]);
+    if (letterIndex !== -1 && index !== keyIndex) {
+      setMessage((message) => message + keyLetters[keyIndex][letterIndex]);
     }
     setKeyIndex(index);
     if (!keyLetters[index]?.length) {
       setLetterIndex(-1);
       return;
-    };
-    const newLetterIndex = (index === keyIndex) ? (letterIndex + 1) % keyLetters[index].length : 0;
+    }
+    const newLetterIndex =
+      index === keyIndex ? (letterIndex + 1) % keyLetters[index].length : 0;
     setLetterIndex(newLetterIndex);
     setTimeout(() => {
       if (lastUpdated.current === currDate) {
-        setMessage(message => message + keyLetters[index][newLetterIndex]);
+        setMessage((message) => message + keyLetters[index][newLetterIndex]);
         setKeyIndex(-1);
         setLetterIndex(-1);
       }
@@ -146,13 +149,13 @@ const LevelDialpad: Level = (props) => {
   };
 
   const handleBackspace = () => {
-    if (!message && (letterIndex === -1)) return;
+    if (!message && letterIndex === -1) return;
     lastUpdated.current = new Date();
     if (letterIndex !== -1) {
       setLetterIndex(-1);
       setKeyIndex(-1);
     } else {
-      setMessage(message => message.slice(0, message.length - 1));
+      setMessage((message) => message.slice(0, message.length - 1));
     }
   };
 
@@ -167,7 +170,10 @@ const LevelDialpad: Level = (props) => {
     <LevelContainer>
       <LevelCounter count={numCoinsFound} />
       <TextContainer>
-        <DisplayText>{message}<TempLetter>{lastLetter}</TempLetter></DisplayText>
+        <DisplayText>
+          {message}
+          <TempLetter>{lastLetter}</TempLetter>
+        </DisplayText>
         <BackspaceTouchable onPress={handleBackspace} onLongPress={handleClear}>
           <BackspaceIcon />
         </BackspaceTouchable>
@@ -182,7 +188,11 @@ const LevelDialpad: Level = (props) => {
               onPress={() => handlePress(index)}
             >
               <LevelText color={colors.darkText}>
-                {keyLabel === '4' ? <ScavengerText>{keyLabel}</ScavengerText> : keyLabel}
+                {keyLabel === '4' ? (
+                  <ScavengerText>{keyLabel}</ScavengerText>
+                ) : (
+                  keyLabel
+                )}
               </LevelText>
             </Coin>
           </CoinContainer>
