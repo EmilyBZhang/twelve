@@ -1,4 +1,12 @@
-import React, { memo, FunctionComponent, useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import React, {
+  memo,
+  FunctionComponent,
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from 'react';
 import { Animated, Easing } from 'react-native';
 import styled from 'styled-components/native';
 
@@ -101,12 +109,13 @@ const TwelveImage = styled.Image.attrs({
 `;
 
 // Initial tile order after moves RDRURDLDLLUU
+// prettier-ignore
 const initTiles = [
   1, 3, 4, 8,
   10, 2, 6, 11,
   5, 9, 7, 0,
 ];
-
+// prettier-ignore
 const correctTiles = [
   1, 2, 3, 4,
   5, 6, 7, 8,
@@ -131,38 +140,40 @@ interface TileProps {
 const Tile: FunctionComponent<TileProps> = memo((props) => {
   const { value, slideAnim, handleTilePressIn } = props;
 
-  return (
-    (value) ? (
-      <Animated.View style={{
+  return value ? (
+    <Animated.View
+      style={{
         transform: [
           { translateX: Animated.multiply(slideAnim.x, tileSize) },
           { translateY: Animated.multiply(slideAnim.y, tileSize) },
-        ]
-      }}>
-        <TileTouchable onPressIn={handleTilePressIn}>
-          <>
-            <TileImage source={images[value]} />
-            <Animated.View style={{ position: 'absolute' }}>
-              <TileText>{value}</TileText>
-            </Animated.View>
-          </>
-        </TileTouchable>
-      </Animated.View>
-    ) : (
-      <BlankTile />
-    )
+        ],
+      }}
+    >
+      <TileTouchable onPressIn={handleTilePressIn}>
+        <>
+          <TileImage source={images[value]} />
+          <Animated.View style={{ position: 'absolute' }}>
+            <TileText>{value}</TileText>
+          </Animated.View>
+        </>
+      </TileTouchable>
+    </Animated.View>
+  ) : (
+    <BlankTile />
   );
 });
 
 const LevelSlidingPuzzle: Level = (props) => {
-
   const [tiles, setTiles] = useState(initTiles);
-  const [tileAnims] = useState(() => tiles.map(() => ({
-    x: new Animated.Value(0),
-    y: new Animated.Value(0),
-  })));
+  const [tileAnims] = useState(() =>
+    tiles.map(() => ({
+      x: new Animated.Value(0),
+      y: new Animated.Value(0),
+    }))
+  );
   const [coinOpacity] = useState(new Animated.Value(0));
 
+  const isAnimating = useRef(false);
   const bitmap = useRef<number>(initBitmap);
   const isSolved = bitmap.current === correctBitmap;
 
@@ -177,16 +188,18 @@ const LevelSlidingPuzzle: Level = (props) => {
   }, [isSolved]);
 
   const animate = (anim: Animated.Value, initValue: number) => {
+    isAnimating.current = true;
     anim.setValue(initValue);
     Animated.timing(anim, {
       toValue: 0,
       duration: 1000 / 12,
       useNativeDriver: true,
-    }).start();
+    }).start(() => (isAnimating.current = false));
   };
 
   const handleTilePress = useCallback((index: number) => {
-    setTiles(tiles => {
+    if (isAnimating.current) return;
+    setTiles((tiles) => {
       const row = Math.floor(index / numCols);
       const col = index % numCols;
       let blankIndex = -1;
@@ -223,15 +236,15 @@ const LevelSlidingPuzzle: Level = (props) => {
       const index2 = Math.max(index, blankIndex);
       // Update bitmap at index1
       if (correctTiles[index1] === tiles[index2]) {
-        bitmap.current |= (1 << index1);
+        bitmap.current |= 1 << index1;
       } else {
-        bitmap.current &= (-1 ^ (1 << index1));
+        bitmap.current &= -1 ^ (1 << index1);
       }
       // Update bitmap at index2
       if (correctTiles[index2] === tiles[index1]) {
-        bitmap.current |= (1 << index2);
+        bitmap.current |= 1 << index2;
       } else {
-        bitmap.current &= (-1 ^ (1 << index2));
+        bitmap.current &= -1 ^ (1 << index2);
       }
       return [
         ...tiles.slice(0, index1),
@@ -244,7 +257,7 @@ const LevelSlidingPuzzle: Level = (props) => {
   }, []);
 
   const handleTilePressArr = useMemo(() => {
-    return tiles.map((_, index) => () => handleTilePress(index))
+    return tiles.map((_, index) => () => handleTilePress(index));
   }, []);
 
   const numCoinsFound = props.coinsFound.size;

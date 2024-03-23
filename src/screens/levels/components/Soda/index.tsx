@@ -8,15 +8,15 @@ import playAudio from 'utils/playAudio';
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 
 export const sodaWidth = levelWidth / 2;
-export const sodaHeight = levelWidth * 5 / 6;
+export const sodaHeight = (levelWidth * 5) / 6;
 
 export const SodaImage = styled.Image.attrs({
   source: require('assets/images/can-closed.png'),
   resizeMode: 'contain',
   fadeDuration: 0,
 })`
-  width: ${sodaWidth};
-  height: ${sodaHeight};
+  width: ${sodaWidth}px;
+  height: ${sodaHeight}px;
 `;
 
 export const SodaImageOpened = styled.Image.attrs({
@@ -24,8 +24,8 @@ export const SodaImageOpened = styled.Image.attrs({
   resizeMode: 'contain',
 })`
   position: absolute;
-  width: ${sodaWidth};
-  height: ${sodaHeight};
+  width: ${sodaWidth}px;
+  height: ${sodaHeight}px;
 `;
 
 interface SodaProps {
@@ -63,9 +63,11 @@ export const Soda: FunctionComponent<SodaProps> = (props) => {
   }, []);
 
   return (
-    <Animated.View style={{ transform: [
-      { translateX: Animated.multiply(shake, shakeFactor) },
-    ]}}>
+    <Animated.View
+      style={{
+        transform: [{ translateX: Animated.multiply(shake, shakeFactor) }],
+      }}
+    >
       <SodaImage />
       {opened && <SodaImageOpened />}
     </Animated.View>
