@@ -69,7 +69,7 @@ const Level: Screen = (props) => {
 
   const goToLevel = useCallback((index: number) => {
     setSelectedIndices(new Set<number>());
-    props.navigation.dispatch(StackActions.replace('Level', { level: index }));
+    props.navigation.navigate('Level', { level: index });
   }, []);
 
   // TODO: Fix this function if possible, feels unclean
@@ -79,7 +79,7 @@ const Level: Screen = (props) => {
   };
 
   const goToMainMenu = useCallback(() => {
-    props.navigation.dispatch(StackActions.replace('MainMenu'));
+    props.navigation.navigate('MainMenu');
   }, []);
 
   const goToLevelSelect = useCallback(() => goToLevel(0), []);

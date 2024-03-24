@@ -5,11 +5,9 @@ import { Level } from 'utils/interfaces';
 import styles from 'res/styles';
 import colors from 'res/colors';
 import LevelContainer from 'components/LevelContainer';
-import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
 import HintModal from 'components/HintModal';
 import { HintIcon } from 'components/LevelNav/components';
-import { StackActions } from '@react-navigation/native';
 
 const HintButton = styled.TouchableOpacity.attrs({
   activeOpacity: 0.5,
@@ -43,10 +41,10 @@ const LevelAd: Level = (props) => {
   const handleShowHint = useCallback(() => {
     setHintVisible(true);
     setTimeout(() => {
-      props.navigation.dispatch(StackActions.push('FakeAd', { propsRef }));
+      props.navigation.navigate('FakeAd', { propsRef });
       setTimeout(() => {
         setShowHint(true);
-      }, 1000);
+      }, 1000 / 12);
     }, 2000);
   }, []);
 

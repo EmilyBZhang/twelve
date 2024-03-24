@@ -13,7 +13,6 @@ import ScreenContainer from 'components/ScreenContainer';
 import LevelText from 'components/LevelText';
 import useSettings from 'hooks/useSettings';
 import playAudio, { CreateAudioResult } from 'utils/playAudio';
-import LevelCatchCoins from './levels/LevelCatchCoins';
 import LevelRedLight from './levels/LevelRedLight';
 import getDimensions from 'utils/getDimensions';
 import { MaterialCommunityIconsProps } from 'utils/types';
@@ -109,6 +108,7 @@ const FakeAd: Screen = (props) => {
   const { goBack } = props.navigation;
 
   const [{ music }, { toggleMusic }] = useSettings(['music']);
+  const [shouldPlayMusic] = useState(music);
 
   useEffect(() => {
     if (!music) return;
@@ -119,15 +119,19 @@ const FakeAd: Screen = (props) => {
   }, []);
 
   useEffect(() => {
+    let isMounted = true;
     let player: CreateAudioResult | null = null;
-    playAudio(
-      require('assets/music/twelvebars.mp3'),
-      (res) => {
-        player = res;
-      },
-      { isMuted: false, isLooping: true }
-    );
+    if (shouldPlayMusic)
+      playAudio(
+        require('assets/music/twelvebars.mp3'),
+        (res) => {
+          player = res;
+          if (!isMounted) player.sound.stopAsync();
+        },
+        { isMuted: false, isLooping: true }
+      );
     return () => {
+      isMounted = false;
       if (player) player.sound.stopAsync();
     };
   }, []);
