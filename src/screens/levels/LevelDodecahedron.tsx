@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useRef, useCallback, useEffect } from 'react';
 import {
   TouchableWithoutFeedback,
   GestureResponderEvent,
@@ -15,7 +15,6 @@ import styles from 'res/styles';
 import LevelCounter from 'components/LevelCounter';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
-const getNow = global.nativePeformanceNow || Date.now;
 
 const axes = [
   new THREE.Vector3(1, 0, 0),
@@ -33,57 +32,82 @@ const LevelContainer = styled.View`
   background-color: ${colors.background};
 `;
 
+const { r: goodR, g: goodG, b: goodB } = new THREE.Color(colors.coin);
+const coinArray = [goodR, goodG, goodB];
+
+const { r: badR, g: badG, b: badB } = new THREE.Color(colors.badCoinUnderlay);
+const badCoinArray = [badR, badG, badB];
+
 const LevelDodecahedron: Level = (props) => {
-  let timeout = -1;
+  const { coinsFound, onCoinPress, setCoinsFound } = props;
+  const numCoinsFound = coinsFound.size;
 
-  useEffect(() => () => clearTimeout(timeout), []);
+  const { current: camera } = useRef(
+    new THREE.PerspectiveCamera(75, levelWidth / levelHeight, 0.1, 1000)
+  );
+  const { current: geometry } = useRef(new THREE.DodecahedronGeometry(1.5, 0));
+  const { current: material } = useRef(
+    new THREE.MeshLambertMaterial({ vertexColors: true })
+  );
+  const { current: mesh } = useRef(new THREE.Mesh(geometry, material));
+  const { current: raycaster } = useRef(new THREE.Raycaster());
 
-  const raycaster = useRef<THREE.Raycaster>(new THREE.Raycaster());
-  const camera = useRef<THREE.Camera>(new THREE.Camera());
-  const geometry = useRef<THREE.Geometry>(new THREE.Geometry());
-  const mesh = useRef<THREE.Mesh>(new THREE.Mesh());
-  const count = useRef<number>(0);
-
-  const numCoinsFound = props.coinsFound.size;
+  const coinCount = useRef(0);
 
   const handlePressIn = (e: GestureResponderEvent) => {
     const { locationX, locationY } = e.nativeEvent;
     const x = (locationX / levelWidth) * 2 - 1;
     const y = -(locationY / levelHeight) * 2 + 1;
-    raycaster.current.setFromCamera(new THREE.Vector2(x, y), camera.current);
+    raycaster.setFromCamera(new THREE.Vector2(x, y), camera);
 
-    const intersects = raycaster.current.intersectObject(mesh.current);
+    const intersects = raycaster.intersectObject(mesh);
     if (intersects.length) {
-      const index = intersects[0].faceIndex!;
-      const hex = `#${geometry.current.faces[index].color.getHexString()}`;
-      if (hex === colors.badCoin) return reset();
+      const { faceIndex } = intersects[0];
+      if (faceIndex != null) {
+        const coinIndex = Math.floor(faceIndex / 3);
+        if (coinsFound.has(coinIndex)) return reset();
 
-      props.onCoinPress(count.current);
-      count.current++;
-
-      const firstIndex = index - (index % 3);
-      for (let i = 0; i < 3; i++) {
-        geometry.current.faces[firstIndex + i].color.setStyle(colors.badCoin);
+        const color = geometry.getAttribute('color')?.array;
+        if (color) {
+          const newColor = new THREE.Float32BufferAttribute(
+            color.map((value, index) =>
+              index >= coinIndex * 27 && index < (coinIndex + 1) * 27
+                ? badCoinArray[index % 3]
+                : value
+            ),
+            3
+          );
+          geometry.setAttribute('color', newColor);
+          coinCount.current += 1;
+          onCoinPress(coinIndex);
+        }
       }
-      geometry.current.colorsNeedUpdate = true;
     }
   };
 
   const reset = () => {
-    props.setCoinsFound();
-    count.current = 0;
-    geometry.current.faces.forEach(face => {
-      face.color.setStyle(colors.coin);
-    });
-    geometry.current.colorsNeedUpdate = true;
+    coinCount.current = 0;
+    setCoinsFound();
+    const position = geometry.getAttribute('position')?.array;
+    if (position) {
+      const color = new THREE.Float32BufferAttribute(
+        position.map((_, index) => coinArray[index % 3]),
+        3
+      );
+      geometry.setAttribute('color', color);
+    }
   };
 
   const rotate = (angle: number) => {
-    mesh.current.rotateOnWorldAxis(
-      axes[count.current % axes.length],
-      angle
-    );
+    mesh.rotateOnWorldAxis(axes[coinCount.current % axes.length], angle);
   };
+
+  let timeout: number = -1;
+  useEffect(() => {
+    return () => {
+      if (timeout !== -1) clearTimeout(timeout);
+    };
+  }, []);
 
   const handleGLContextCreate = useCallback((gl: ExpoWebGLRenderingContext) => {
     const width = levelWidth;
@@ -93,38 +117,31 @@ const LevelDodecahedron: Level = (props) => {
     const renderer = new Renderer({ gl, pixelRatio: scale, width, height });
     renderer.setSize(width, height);
     renderer.setClearColor(colors.background);
-
-    camera.current = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-    camera.current.position.z = 5;
+    camera.position.z = 5;
 
     const scene = new THREE.Scene();
     scene.add(new THREE.AmbientLight(0xffffff, 0.5));
-    
+
     const light = new THREE.DirectionalLight(0xffffff, 0.5);
     light.position.set(3, 3, 3);
     scene.add(light);
 
-    geometry.current = new THREE.DodecahedronGeometry(1.5, 0);
-    const material = new THREE.MeshLambertMaterial({
-      vertexColors: THREE.FaceColors
-    });
     reset();
-    mesh.current = new THREE.Mesh(geometry.current, material);
-    scene.add(mesh.current);
+    scene.add(mesh);
 
     const update = (delta: number) => {
       rotate(rotateUnit * delta * 60);
-      renderer.render(scene, camera.current);
+      renderer.render(scene, camera);
     };
 
     let lastFrameTime = -1;
     const render = () => {
-      const now = 0.001 * getNow();
-      const delta = (now !== -1) ? (now - lastFrameTime) : 1/60;
+      const now = Date.now() / 1000;
+      const delta = lastFrameTime !== -1 ? now - lastFrameTime : 1 / 60;
 
       timeout = requestAnimationFrame(render);
       update(delta);
-      renderer.render(scene, camera.current);
+      renderer.render(scene, camera);
       gl.endFrameEXP();
 
       lastFrameTime = now;

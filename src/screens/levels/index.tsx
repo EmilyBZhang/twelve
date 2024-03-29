@@ -72,7 +72,7 @@ import LevelHamiltonianGrid from './LevelHamiltonianGrid';
 import LevelEulerPath from './LevelEulerPath';
 import LevelAd from './LevelAd';
 import LevelSpellTwelve from './LevelSpellTwelve';
-import Level33Temp from './Level33Temp';
+import LevelDodecahedron from './LevelDodecahedron';
 
 `
 
@@ -130,7 +130,7 @@ export default [
   LevelHoleJigsaw,
   LevelThreeStacks,
   LevelBinary1,
-  Level33Temp, // TODO: Add back LevelDodecahedron once we rewrite with https://docs.pmnd.rs/react-three-fiber/getting-started/installation
+  LevelDodecahedron, // TODO: Add back LevelDodecahedron once we rewrite with https://docs.pmnd.rs/react-three-fiber/getting-started/installation
   LevelDraw12,
   LevelClockOrder,
   LevelConveyorBelt,
