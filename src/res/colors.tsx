@@ -86,7 +86,7 @@ export const coinUnderlayColors = {
  */
 export const colorIcons = {
   [colors.coin]: 'plus',
-  [colors.orderedCoin]: 'axis',
+  [colors.orderedCoin]: 'circle-medium',
   [colors.selectCoin]: 'asterisk',
   [colors.badCoin]: 'stop',
   [colors.onCoin]: 'power-on',
