@@ -71,6 +71,7 @@ const LevelDodecahedron: Level = (props) => {
         if (color) {
           const newColor = new THREE.Float32BufferAttribute(
             color.map((value, index) =>
+              // 3 color values per vertex * 3 vertices per triangle * 3 triangles per face = 27 color values per face
               index >= coinIndex * 27 && index < (coinIndex + 1) * 27
                 ? badCoinArray[index % 3]
                 : value
