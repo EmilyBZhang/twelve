@@ -3,15 +3,15 @@
   "body": [
     {
       "header": "Level Design",
-      "names": ["Bradon", "Dai"]
+      "names": ["FiresBZ", "Dai"]
     },
     {
       "header": "Programming",
-      "names": ["Bradon"]
+      "names": ["FiresBZ"]
     },
     {
       "header": "Graphics & Art",
-      "names": ["Soh Arsquare", "Bradon"]
+      "names": ["Soh Arsquare", "FiresBZ"]
     },
     {
       "header": "Music",
@@ -19,7 +19,7 @@
     },
     {
       "header": "Sound Effects",
-      "names": ["Dai", "Bradon"]
+      "names": ["Dai", "FiresBZ"]
     },
     {
       "header": "Playtesting",
@@ -38,7 +38,7 @@
       "header": "Socials"
     },
     {
-      "subheader": "Bradon",
+      "subheader": "FiresBZ",
       "links": [
         {
           "icon": "twitch",
