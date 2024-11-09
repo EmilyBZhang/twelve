@@ -2,7 +2,7 @@
   "expo": {
     "name": "twelve",
     "slug": "twelve",
-    "version": "2.0.0",
+    "version": "2.3.0",
     "orientation": "portrait",
     "icon": "./src/assets/images/12.png",
     "userInterfaceStyle": "light",
@@ -14,17 +14,18 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "2.0.0",
+      "buildNumber": "2.3.0",
       "bundleIdentifier": "com.bradonzhang.twelve",
       "appStoreUrl": "https://apps.apple.com/us/app/twelve-a-puzzle-game/id1545782494",
       "icon": "./src/assets/images/12.png"
     },
     "android": {
       "package": "com.bradonzhang.twelve",
-      "versionCode": 8,
+      "versionCode": 13,
       "playStoreUrl": "https://play.google.com/store/apps/details?id=com.bradonzhang.twelve",
       "icon": "./src/assets/images/12-circle.png",
       "permissions": [],
+      "blockedPermissions": ["android.permission.ACTIVITY_RECOGNITION"],
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/12-circle.png",
         "backgroundColor": "#00ffff"
