@@ -15,7 +15,7 @@
     "@react-native-community/masked-view": "0.1.10",
     "@react-native-community/slider": "3.0.3",
     "deep-equal": "^1.1.0",
-    "expo": "^42.0.0",
+    "expo": "^48.0.0",
     "expo-ads-admob": "~10.1.2",
     "expo-app-loading": "1.1.2",
     "expo-av": "~9.2.3",
