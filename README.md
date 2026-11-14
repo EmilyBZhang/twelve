@@ -9,9 +9,7 @@ Coming soon to the App Store (iOS) and Play Store (Android).
 Built with ♥ and React Native (but mostly ♥).
 
 # TODO
-* Fix navigation issue with iOS for devices with notches
-* Preload sounds to make them more consistent on Android
-* Preload all assets for optimization
+* Switch notch handling to `useSafeAreaInsets()`
 
 # Social Media
 
