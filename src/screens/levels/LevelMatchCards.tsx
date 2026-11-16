@@ -69,7 +69,7 @@ const LevelMatchCards: Level = (props) => {
     return cardLabels;
   });
   const [cardScales] = useState(() =>
-    cardLabels.map(() => new Animated.Value(1))
+    cardLabels.map(() => new Animated.Value(1)),
   );
   const [disabledCards, toggleDisabledCard] = useSelectedIndices();
   const [revealedCards, toggleRevealedCard] = useSelectedIndices();
@@ -85,7 +85,7 @@ const LevelMatchCards: Level = (props) => {
   const revealCard = (
     cardIndex: number,
     callback?: () => any,
-    duration = 500
+    duration = 500,
   ) => {
     toggleDisabledCard(cardIndex);
     Animated.timing(cardScales[cardIndex], {
@@ -148,10 +148,10 @@ const LevelMatchCards: Level = (props) => {
             onPress={() => handleCardPress(index)}
             disabled={disabledCards.has(index)}
           >
-            {/* TODO: Fix CardLabel to hide when it is not revealed */}
             <CardLabel
               name={cardLabels[index]}
-              color={revealedCards.has(index) ? 'white' : 'transparent'}
+              color={'white'}
+              style={{ display: revealedCards.has(index) ? undefined : 'none' }}
             />
           </CardTouchable>
           <View style={{ position: 'absolute' }}>

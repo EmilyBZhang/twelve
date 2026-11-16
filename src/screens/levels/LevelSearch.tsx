@@ -43,7 +43,6 @@ const LookingGlass = styled(Animated.View)`
   left: 0px;
   width: ${lookingGlassSize}px;
   height: ${lookingGlassSize}px;
-  z-index: -1;
   border-radius: ${lookingGlassSize / 2}px;
   background-color: ${colors.background};
 `;

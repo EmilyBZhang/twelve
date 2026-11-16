@@ -79,10 +79,6 @@ const TileText = styled.Text`
   opacity: 0.75;
 `;
 
-const BlankTile = styled.View`
-  width: ${tileSize}px;
-  height: ${tileSize}px;
-`;
 
 const CoinsContainer = styled(Animated.View)`
   position: absolute;
@@ -128,27 +124,30 @@ const initBitmap = initTiles.reduce((bitmap, tile, index) => {
 
 const correctBitmap = ~(-1 << 12);
 
+const indexToPosition = (index: number) => ({
+  x: index % numCols,
+  y: Math.floor(index / numCols),
+});
+
 interface TileProps {
   value: number;
-  slideAnim: {
-    x: Animated.Value;
-    y: Animated.Value;
-  };
+  position: Animated.ValueXY;
   handleTilePressIn: () => any;
 }
 
 const Tile: FunctionComponent<TileProps> = memo((props) => {
-  const { value, slideAnim, handleTilePressIn } = props;
+  const { value, position, handleTilePressIn } = props;
+
+  const transform = useMemo(
+    () => [
+      { translateX: Animated.multiply(position.x, tileSize) },
+      { translateY: Animated.multiply(position.y, tileSize) },
+    ],
+    [position]
+  );
 
   return value ? (
-    <Animated.View
-      style={{
-        transform: [
-          { translateX: Animated.multiply(slideAnim.x, tileSize) },
-          { translateY: Animated.multiply(slideAnim.y, tileSize) },
-        ],
-      }}
-    >
+    <Animated.View style={{ position: 'absolute', transform }}>
       <TileTouchable onPressIn={handleTilePressIn}>
         <>
           <TileImage source={images[value]} />
@@ -158,19 +157,18 @@ const Tile: FunctionComponent<TileProps> = memo((props) => {
         </>
       </TileTouchable>
     </Animated.View>
-  ) : (
-    <BlankTile />
-  );
+  ) : null;
 });
 
 const LevelSlidingPuzzle: Level = (props) => {
   const [tiles, setTiles] = useState(initTiles);
-  const [tileAnims] = useState(() =>
-    tiles.map(() => ({
-      x: new Animated.Value(0),
-      y: new Animated.Value(0),
-    }))
-  );
+  const [tilePositions] = useState(() => {
+    const positions = Array<Animated.ValueXY>(initTiles.length);
+    initTiles.forEach((value, index) => {
+      positions[value] = new Animated.ValueXY(indexToPosition(index));
+    });
+    return positions;
+  });
   const [coinOpacity] = useState(new Animated.Value(0));
 
   const isAnimating = useRef(false);
@@ -187,51 +185,32 @@ const LevelSlidingPuzzle: Level = (props) => {
     }).start();
   }, [isSolved]);
 
-  const animate = (anim: Animated.Value, initValue: number) => {
+  const slideTile = (value: number, toIndex: number) => {
     isAnimating.current = true;
-    anim.setValue(initValue);
-    Animated.timing(anim, {
-      toValue: 0,
+    Animated.timing(tilePositions[value], {
+      toValue: indexToPosition(toIndex),
       duration: 1000 / 12,
       useNativeDriver: true,
     }).start(() => (isAnimating.current = false));
   };
 
-  const handleTilePress = useCallback((index: number) => {
+  const handleTilePress = useCallback((value: number) => {
     if (isAnimating.current) return;
     setTiles((tiles) => {
+      const index = tiles.indexOf(value);
       const row = Math.floor(index / numCols);
       const col = index % numCols;
       let blankIndex = -1;
       // Check tile to the right
-      if (col < numCols - 1) {
-        if (tiles[index + 1] === 0) {
-          blankIndex = index + 1;
-          animate(tileAnims[tiles[index]].x, -1);
-        }
-      }
+      if (col < numCols - 1 && tiles[index + 1] === 0) blankIndex = index + 1;
       // Check tile below
-      if (row < numRows - 1) {
-        if (tiles[index + numCols] === 0) {
-          blankIndex = index + numCols;
-          animate(tileAnims[tiles[index]].y, -1);
-        }
-      }
+      if (row < numRows - 1 && tiles[index + numCols] === 0) blankIndex = index + numCols;
       // Check tile to the left
-      if (col > 0) {
-        if (tiles[index - 1] === 0) {
-          blankIndex = index - 1;
-          animate(tileAnims[tiles[index]].x, 1);
-        }
-      }
+      if (col > 0 && tiles[index - 1] === 0) blankIndex = index - 1;
       // Check tile above
-      if (row > 0) {
-        if (tiles[index - numCols] === 0) {
-          blankIndex = index - numCols;
-          animate(tileAnims[tiles[index]].y, 1);
-        }
-      }
+      if (row > 0 && tiles[index - numCols] === 0) blankIndex = index - numCols;
       if (blankIndex === -1) return tiles;
+      slideTile(value, blankIndex);
       const index1 = Math.min(index, blankIndex);
       const index2 = Math.max(index, blankIndex);
       // Update bitmap at index1
@@ -257,7 +236,7 @@ const LevelSlidingPuzzle: Level = (props) => {
   }, []);
 
   const handleTilePressArr = useMemo(() => {
-    return tiles.map((_, index) => () => handleTilePress(index));
+    return tilePositions.map((_, value) => () => handleTilePress(value));
   }, []);
 
   const numCoinsFound = props.coinsFound.size;
@@ -267,12 +246,12 @@ const LevelSlidingPuzzle: Level = (props) => {
   return (
     <LevelContainer>
       <PuzzleContainer>
-        {tiles.map((value, index) => (
+        {tilePositions.map((position, value) => (
           <Tile
             key={value}
             value={value}
-            slideAnim={tileAnims[value]}
-            handleTilePressIn={handleTilePressArr[index]}
+            position={position}
+            handleTilePressIn={handleTilePressArr[value]}
           />
         ))}
         {isSolved && (

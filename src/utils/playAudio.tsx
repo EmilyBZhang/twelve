@@ -45,13 +45,15 @@ export const playAudioWithPreload = async (name: string, source: AudioSource, se
 };
 
 const cachedAudio = new Map<number, AudioPlayer>();
+// Players are released when garbage collected, so hold on to uncached ones until they finish
+const playingUncachedAudio = new Set<AudioPlayer>();
 
 /**
  * Play an audio file asynchronously.
  *
  * @param source Audio file to play using require(file_name)
  * @param setSoundPlayback Optional callback to save a reference to the audio player
- * @param options Options for playing the sound (expo-av style status fields, applied to the expo-audio player)
+ * @param options Options for playing the sound
  */
 export const playAudio = async (source: number, setSoundPlayback?: (player: AudioPlayer) => any, options?: PlaybackOptions, cache=true) => {
   const status = {
@@ -69,8 +71,12 @@ export const playAudio = async (source: number, setSoundPlayback?: (player: Audi
         cachedAudio.set(source, player);
       } else {
         const uncachedPlayer = player;
+        playingUncachedAudio.add(uncachedPlayer);
         uncachedPlayer.addListener('playbackStatusUpdate', (playbackStatus) => {
-          if (playbackStatus.didJustFinish && !playbackStatus.loop) uncachedPlayer.remove();
+          if (playbackStatus.didJustFinish && !playbackStatus.loop) {
+            playingUncachedAudio.delete(uncachedPlayer);
+            uncachedPlayer.remove();
+          }
         });
       }
     }

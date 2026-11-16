@@ -17,6 +17,7 @@ import Level from 'screens/Level';
 import Credits from 'screens/Credits';
 import FakeAd from 'screens/FakeAd';
 import colors from 'res/colors';
+import { contentTopOffset } from 'utils/getDimensions';
 
 // TODO: Change these to be a hook instead of dummy components
 import InitSettings from 'components/init/InitSettings';
@@ -67,9 +68,26 @@ const App: FunctionComponent = () => {
       <InitImages onLoad={initImages} />
       <InitAudio onLoad={initAudio} />
       <InitAndroid onLoad={initAndroid} />
-      <StatusBar hidden />
+      <StatusBar barStyle={'light-content'} />
+      <View
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: contentTopOffset,
+          backgroundColor: 'black',
+          zIndex: 1000000,
+        }}
+      />
       {isLoaded && (
-        <GestureHandlerRootView style={{ flex: 1 }}>
+        <GestureHandlerRootView
+          style={{
+            flex: 1,
+            paddingTop: contentTopOffset,
+            backgroundColor: colors.background,
+          }}
+        >
           <NavigationContainer>
             <Stack.Navigator
               initialRouteName="MainMenu"

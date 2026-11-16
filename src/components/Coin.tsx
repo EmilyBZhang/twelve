@@ -1,10 +1,11 @@
 import React, { FunctionComponent, memo, useState, useEffect } from 'react';
-import { Animated, Text, Easing } from 'react-native';
+import { Animated, Text, Easing, Dimensions } from 'react-native';
 import styled from 'styled-components/native';
 
 import colors, { CoinColor, coinUnderlayColors } from 'res/colors';
 import styles from 'res/styles';
 import ColorHint from 'components/ColorHint';
+import getDimensions from 'utils/getDimensions';
 
 export interface CoinProps {
   onPress?: () => any;
@@ -32,6 +33,21 @@ const CoinTouchable = styled.TouchableHighlight<CoinProps>`
   overflow: hidden;
   ${props => props.found && 'display: none;'}
 `;
+
+const CoinContent = styled.View`
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+`;
+
+const { width: windowWidth, height: windowHeight } = getDimensions();
+const pressRetentionOffset = {
+  top: windowHeight,
+  left: windowWidth,
+  bottom: windowHeight,
+  right: windowWidth,
+};
 
 const Shimmer = styled(Animated.View)<CoinProps>`
   position: absolute;
@@ -87,8 +103,9 @@ const Coin: CoinType = (props) => {
       hidden={hidden}
       disabled={disabled || found}
       underlayColor={coinUnderlayColors[color]}
+      pressRetentionOffset={pressRetentionOffset}
     >
-      <>
+      <CoinContent>
         {(!hidden && !disabled && !found && !noShimmer) && (
           <Shimmer size={size} style={{
             transform: [
@@ -106,7 +123,7 @@ const Coin: CoinType = (props) => {
           />
         )}
         {children || <Text>{label}</Text>}
-      </>
+      </CoinContent>
     </CoinTouchable>
   );
 }

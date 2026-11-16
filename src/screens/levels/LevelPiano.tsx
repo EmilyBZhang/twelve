@@ -84,7 +84,6 @@ const LyricsContainer = styled.View`
   position: absolute;
   bottom: 0px;
   align-items: center;
-  z-index: -1;
 `;
 
 const Lyrics = styled(LevelText)`
@@ -190,6 +189,9 @@ const LevelPiano: Level = (props) => {
   return (
     <LevelContainer>
       <LevelCounter count={numCoinsFound} position={{ top: 0, right: 0 }} />
+      <LyricsContainer>
+        <Lyrics>{lyrics}</Lyrics>
+      </LyricsContainer>
       <Lamb style={{ transform: [{ translateY: lambAnim }] }} />
       <PianoContainer style={{ transform: [{ translateY: pianoAnim }] }}>
         {notes.map((note: string, index: number) => {
@@ -225,9 +227,6 @@ const LevelPiano: Level = (props) => {
           />
         </View>
       ))}
-      <LyricsContainer>
-        <Lyrics>{lyrics}</Lyrics>
-      </LyricsContainer>
     </LevelContainer>
   );
 };

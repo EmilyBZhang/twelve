@@ -125,13 +125,13 @@ const LevelWordSearch: Level = (props) => {
         activeCells.current.add(getIndex(row, col));
         if (nextIndex + 1 === ans.length) {
           clearedCells.current = new Set([...clearedCells.current, ...activeCells.current]);
+          anim.setValue(0);
           Animated.timing(anim, {
             toValue: 1,
             duration: 500,
             easing: Easing.linear,
             useNativeDriver: true,
           }).start(() => {
-            anim.setValue(0);
             clearedCells.current.forEach(cell => {
               activeCells.current.delete(cell);
             });

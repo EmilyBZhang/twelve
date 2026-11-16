@@ -16,7 +16,6 @@ const FallingCoinsContainer = styled.View`
   position: absolute;
   top: 0px;
   left: 0px;
-  z-index: -1;
 `;
 
 const Credits: Screen = (props) => {

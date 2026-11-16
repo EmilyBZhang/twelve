@@ -44,7 +44,7 @@ const CoinContainer = styled.View`
 `;
 
 const InvisibleText = styled.Text`
-  color: transparent;
+  opacity: 0;
 `;
 
 const Level69: Level = (props) => (

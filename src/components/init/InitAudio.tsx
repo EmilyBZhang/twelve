@@ -14,7 +14,7 @@ const InitAudio: FunctionComponent<InitAudioProps> = (props) => {
 
   useEffect(() => {
     Promise.all([
-      // Respect the iOS silent switch, as expo-av did by default
+      // Respect the iOS silent switch
       setAudioModeAsync({ playsInSilentMode: Platform.OS !== 'ios' }),
       ...Object.values({ ...music, ...sfx })
         .map(source => Asset.fromModule(source).downloadAsync()),

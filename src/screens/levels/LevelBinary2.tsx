@@ -56,7 +56,6 @@ const Op = styled(LevelText)<OpProps>`
   align-items: center;
   left: ${initX - deltaX}px;
   top: ${(props) => initY + deltaY * props.row}px;
-  z-index: -1;
 `;
 
 const Line = styled.View`

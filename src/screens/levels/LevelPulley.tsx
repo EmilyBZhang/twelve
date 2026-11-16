@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { useState, useReducer } from 'react';
 import { Animated, Platform } from 'react-native';
 import {
   State,
@@ -65,6 +65,7 @@ const reverser = Platform.select({
 const LevelPulley: Level = (props) => {
   const [baseY] = useState(new Animated.Value(pulleyHeight / 2 - levelHeight));
   const [panY] = useState(new Animated.Value(0));
+  const [, rerender] = useReducer((count: number) => count + 1, 0);
 
   const handleGestureEvent = Animated.event(
     [{ nativeEvent: { translationY: panY } }],
@@ -80,6 +81,7 @@ const LevelPulley: Level = (props) => {
       panY.setValue(0);
       baseY.setOffset(e.nativeEvent.translationY);
       baseY.flattenOffset();
+      rerender();
     }
   };
 

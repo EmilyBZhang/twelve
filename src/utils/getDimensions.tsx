@@ -1,8 +1,11 @@
-import { Dimensions, StatusBar } from 'react-native';
+import { Dimensions, Platform, StatusBar } from 'react-native';
 
 import styles from 'res/styles';
 
 // TODO: Test if these dimensions are correct for SafeAreaView (e.g. iPhone X)
+
+export const contentTopOffset =
+  Platform.OS === 'android' ? StatusBar.currentHeight || 0 : 0;
 
 /**
  * Get the dimensions of the screen
@@ -11,7 +14,7 @@ import styles from 'res/styles';
  */
 export const getDimensions = (level = false) => {
   const { width, height: windowHeight } = Dimensions.get('screen');
-  const height = windowHeight - (level ? styles.levelNavHeight : 0) - (StatusBar.currentHeight || 0);
+  const height = windowHeight - (level ? styles.levelNavHeight : 0) - contentTopOffset;
   return { width, height };
 };
 
