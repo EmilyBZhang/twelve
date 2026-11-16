@@ -1,5 +1,3 @@
-// Generated using /Users/Bradon/GitHub/twelve/expose_assets.py
-
 export const music = {
   'groovy.mp3': require('assets/music/groovy.mp3'),
   'twelvebars.mp3': require('assets/music/twelvebars.mp3'),

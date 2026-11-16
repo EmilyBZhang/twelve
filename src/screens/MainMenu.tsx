@@ -209,7 +209,7 @@ const MainMenu: Screen = (props) => {
     Share.share({
       title: 'Try Twelve!',
       message: strings.generateShareMessage(numLevelsCompleted),
-      url: 'https://expo.io/@bradonzhang/twelve',
+      url: 'https://twelvepuzzle.github.io/',
     });
   }, []);
 

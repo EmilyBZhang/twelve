@@ -6,7 +6,7 @@ const androidUrl = 'https://play.google.com/store/apps/details?id=com.bradonzhan
 
 const strings = {
   urls: {
-    github: 'https://github.com/BradonZhang/twelve',
+    github: 'https://github.com/EmilyBZhang/twelve',
     soundcloud: 'https://soundcloud.com/alan-dai-4',
     youtube: 'https://www.youtube.com/channel/UCAsBq_Z2WhRYgBEH8vDlEQg',
   },
