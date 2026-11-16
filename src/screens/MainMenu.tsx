@@ -10,7 +10,8 @@ import { StackActions } from '@react-navigation/native';
 import useSettings from 'hooks/useSettings';
 import { Screen } from 'utils/interfaces';
 import getDimensions from 'utils/getDimensions';
-import playAudio, { CreateAudioResult } from 'utils/playAudio';
+import { AudioPlayer } from 'expo-audio';
+import playAudio from 'utils/playAudio';
 import colors from 'res/colors';
 import styles from 'res/styles';
 import strings from 'res/strings';
@@ -121,7 +122,7 @@ const MainMenu: Screen = (props) => {
   const [screenActive, setScreenActive] = useState(true);
   const [menuOpacityAnim] = useState(new Animated.Value(0));
 
-  const musicPlayback = useRef<CreateAudioResult | null>(null);
+  const musicPlayback = useRef<AudioPlayer | null>(null);
 
   const [
     { music, sfx, settingsReady, levelStatus },
@@ -153,16 +154,14 @@ const MainMenu: Screen = (props) => {
   useEffect(() => {
     if (!settingsReady) return;
     if (musicPlayback.current) {
-      musicPlayback.current.sound
-        .setIsMutedAsync(!music)
-        .catch((err: any) => console.warn(err));
+      musicPlayback.current.muted = !music;
     } else if (musicPlayback.current === null) {
       const options = {
         shouldPlay: true,
         isLooping: true,
         isMuted: !music,
       };
-      const setMusicPlayback = (playback: any) =>
+      const setMusicPlayback = (playback: AudioPlayer) =>
         (musicPlayback.current = playback);
       playAudio(bgMusic, setMusicPlayback, options);
     }

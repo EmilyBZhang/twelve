@@ -57,13 +57,13 @@ const Display: FunctionComponent<DisplayProps> = (props) => {
 };
 
 const UpArrow = styled(AntDesign).attrs({
-  name: 'caretup',
+  name: 'caret-up',
   size: numberPickerWidth,
   color: 'black',
 })<Partial<AntDesignProps>>``;
 
 const DownArrow = styled(AntDesign).attrs({
-  name: 'caretdown',
+  name: 'caret-down',
   size: numberPickerWidth,
   color: 'black',
 })<Partial<AntDesignProps>>``;

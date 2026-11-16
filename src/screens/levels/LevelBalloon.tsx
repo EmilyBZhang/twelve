@@ -108,7 +108,7 @@ const LevelBalloon: Level = (props) => {
         transform: [{translateX: Animated.add(cloudAnim, levelWidth)}]
       }} /> */}
       <GameEngine
-        ref={ref => gameEngine.current = ref}
+        ref={ref => { gameEngine.current = ref; }}
         style={{
           position: 'absolute',
           top: 0,

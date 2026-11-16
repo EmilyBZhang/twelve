@@ -10,11 +10,9 @@
     "isolatedModules": false,
     "jsx": "react-native",
     "lib": ["es6", "es2019"],
-    "moduleResolution": "node",
     "noEmit": true,
     "strict": true,
     "target": "esnext",
-    "baseUrl": "./",
     "paths": {
       "assets/*": ["./src/assets/*"],
       "components/*": ["./src/components/*"],

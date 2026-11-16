@@ -123,7 +123,7 @@ const LevelNav: FunctionComponent<LevelNavProps> = (props) => {
         ) : (
           <NavButton onPress={onBack} outlined>
             <AntDesign
-              name={'caretleft'}
+              name={'caret-left'}
               // TODO: import size from somewhere
               size={styles.levelNavHeight * 7/12}
               color={colors.foreground}
@@ -142,7 +142,7 @@ const LevelNav: FunctionComponent<LevelNavProps> = (props) => {
       {/* <LeftContainer>
         <NavButton onPress={onBack} outlined>
           <AntDesign
-            name={'caretleft'}
+            name={'caret-left'}
             size={styles.levelNavHeight * 7/12}
             color={colors.foreground}
           />

@@ -12,7 +12,8 @@ import colors from 'res/colors';
 import ScreenContainer from 'components/ScreenContainer';
 import LevelText from 'components/LevelText';
 import useSettings from 'hooks/useSettings';
-import playAudio, { CreateAudioResult } from 'utils/playAudio';
+import { AudioPlayer } from 'expo-audio';
+import playAudio from 'utils/playAudio';
 import LevelRedLight from './levels/LevelRedLight';
 import getDimensions from 'utils/getDimensions';
 import { MaterialCommunityIconsProps } from 'utils/types';
@@ -120,19 +121,19 @@ const FakeAd: Screen = (props) => {
 
   useEffect(() => {
     let isMounted = true;
-    let player: CreateAudioResult | null = null;
+    let player: AudioPlayer | null = null;
     if (shouldPlayMusic)
       playAudio(
         require('assets/music/twelvebars.mp3'),
         (res) => {
           player = res;
-          if (!isMounted) player.sound.stopAsync();
+          if (!isMounted) player.pause();
         },
         { isMuted: false, isLooping: true }
       );
     return () => {
       isMounted = false;
-      if (player) player.sound.stopAsync();
+      if (player) player.pause();
     };
   }, []);
 

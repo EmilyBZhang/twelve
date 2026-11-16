@@ -11,7 +11,7 @@ export interface ScreenContainerProps {
   children?: React.ReactNode;
   color?: string;
   style?: StyleProp<ViewStyle>;
-  gradientColors?: Array<string>;
+  gradientColors?: readonly [string, string, ...string[]];
   pointerEvents?: 'box-none' | 'none' | 'box-only' | 'auto';
 }
 

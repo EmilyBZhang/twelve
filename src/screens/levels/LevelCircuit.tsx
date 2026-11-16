@@ -143,8 +143,8 @@ const HintBulb: FunctionComponent<HintBulbProps> = memo((props) => {
   const [panX] = useState(new Animated.Value(0));
   const [panY] = useState(new Animated.Value(0));
 
-  const panRef = useRef();
-  const tapRef = useRef();
+  const panRef = useRef(null);
+  const tapRef = useRef(null);
 
   const handleGestureEvent = Animated.event(
     [{ nativeEvent: { translationX: panX, translationY: panY } }],

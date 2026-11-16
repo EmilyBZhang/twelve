@@ -150,7 +150,7 @@ const LevelScavengerHunt: Level = (props) => {
               <LetterInput
                 key={String(index)}
                 // value={messageChar}
-                ref={ref => inputs.current[index] = ref}
+                ref={ref => { inputs.current[index] = ref; }}
                 onChangeText={handleTextChange(index)}
                 placeholder={String(hints[index])}
                 onSubmitEditing={() => inputs.current[index + 1]?.focus()}

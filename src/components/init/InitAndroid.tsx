@@ -1,5 +1,5 @@
 import { FunctionComponent, useEffect, memo } from 'react';
-import { setBehaviorAsync, setVisibilityAsync } from 'expo-navigation-bar';
+import { NavigationBar } from 'expo-navigation-bar';
 
 interface InitAndroidProps {
   onLoad: () => any;
@@ -9,12 +9,12 @@ const InitAndroid: FunctionComponent<InitAndroidProps> = (props) => {
   const { onLoad } = props;
 
   useEffect(() => {
-    Promise.all([
-      setBehaviorAsync('overlay-swipe'),
-      setVisibilityAsync('hidden'),
-    ])
-      .catch(console.warn)
-      .finally(() => onLoad());
+    try {
+      NavigationBar.setHidden(true);
+    } catch (err) {
+      console.warn(err);
+    }
+    onLoad();
   }, []);
 
   return null;

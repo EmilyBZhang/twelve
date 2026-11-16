@@ -6,12 +6,9 @@
     "orientation": "portrait",
     "icon": "./src/assets/images/12.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./src/assets/images/twelve-splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#e0e0e0"
-    },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "buildNumber": "2.3.0",
@@ -25,14 +22,13 @@
       "playStoreUrl": "https://play.google.com/store/apps/details?id=com.bradonzhang.twelve",
       "icon": "./src/assets/images/12-circle.png",
       "permissions": [],
-      "blockedPermissions": ["android.permission.ACTIVITY_RECOGNITION"],
+      "blockedPermissions": [
+        "android.permission.ACTIVITY_RECOGNITION"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/12-circle.png",
         "backgroundColor": "#00ffff"
       }
-    },
-    "androidNavigationBar": {
-      "visible": "sticky-immersive"
     },
     "description": "A puzzle game about collecting twelve dots... with a special twist in each level!\n\nTest your pattern recognition, memory, reflexes, and more.\n\n72 levels in all!",
     "githubUrl": "https://github.com/BradonZhang/twelve",
@@ -40,6 +36,21 @@
       "eas": {
         "projectId": "8ed798b0-ed63-11e9-a0f0-c3484fc13d1f"
       }
-    }
+    },
+    "plugins": [
+      [
+        "expo-splash-screen",
+        {
+          "image": "./src/assets/images/twelve-splash.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#e0e0e0",
+          "imageWidth": 300
+        }
+      ],
+      "expo-status-bar",
+      "expo-audio",
+      "expo-asset",
+      "expo-font"
+    ]
   }
 }

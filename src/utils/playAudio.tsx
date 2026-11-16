@@ -1,11 +1,18 @@
 // TODO: Consider https://github.com/expo/expo/issues/146 (comment by gkufera) or webview
 // Also consider preloading all the audio and then resetting their positions back to 0, as per https://forums.expo.io/t/laggy-audio-on-multiple-plays/3169
 
-import { Audio } from 'expo-av';
-import { AVPlaybackSource, AVPlaybackStatus, AVPlaybackStatusToSet } from 'expo-av/build/AV';
+import { createAudioPlayer, AudioPlayer, AudioSource } from 'expo-audio';
 
 import Actions from 'reducers/settings/actionTypes';
 import { ReduxState } from 'reducers/store';
+
+export interface PlaybackOptions {
+  shouldPlay?: boolean;
+  isLooping?: boolean;
+  isMuted?: boolean;
+  volume?: number;
+  positionMillis?: number;
+}
 
 const defaultOptions = {
   shouldPlay: true,
@@ -29,7 +36,7 @@ export const changePlaybackOptions = ({ getState }: MiddlewareArg) => (
   }
 );
 
-export const playAudioWithPreload = async (name: string, source: AVPlaybackSource, setSoundPlayback?: (res: any) => any, options?: AVPlaybackStatusToSet) => {
+export const playAudioWithPreload = async (name: string, source: AudioSource, setSoundPlayback?: (res: any) => any, options?: PlaybackOptions) => {
   // TODO: Make this function
   const initialStatus = {
     ...defaultOptions,
@@ -37,61 +44,41 @@ export const playAudioWithPreload = async (name: string, source: AVPlaybackSourc
   }
 };
 
-export interface CreateAudioResult {
-  sound: Audio.Sound;
-  status: AVPlaybackStatus;
-}
-
-const cachedAudio = new Map<number, CreateAudioResult>();
+const cachedAudio = new Map<number, AudioPlayer>();
 
 /**
  * Play an audio file asynchronously.
- * 
+ *
  * @param source Audio file to play using require(file_name)
- * @param setSoundPlayback Optional callback to save a reference to the sound playback
- * @param options Options for playing the sound, as specified in the initialStatus param for Audio.Sound.createAsync()
+ * @param setSoundPlayback Optional callback to save a reference to the audio player
+ * @param options Options for playing the sound (expo-av style status fields, applied to the expo-audio player)
  */
-export const playAudio = async (source: number, setSoundPlayback?: (res: CreateAudioResult) => any, options?: AVPlaybackStatusToSet, cache=true) => {
+export const playAudio = async (source: number, setSoundPlayback?: (player: AudioPlayer) => any, options?: PlaybackOptions, cache=true) => {
   const status = {
     ...defaultOptions,
     ...options
   };
   try {
-    let audioObject: CreateAudioResult;
-    if (cache) {
-      audioObject = cachedAudio.get(source) || await Audio.Sound.createAsync(source, status);
-      if (!cachedAudio.has(source)) cachedAudio.set(source, audioObject);
-      else await audioObject.sound.setStatusAsync(status);
+    let player = cache ? cachedAudio.get(source) : undefined;
+    if (player) {
+      // expo-audio players stay paused at the end once finished, so rewind before replaying
+      await player.seekTo(status.positionMillis / 1000);
     } else {
-      audioObject = await Audio.Sound.createAsync(source, status);
+      player = createAudioPlayer(source);
+      if (cache) {
+        cachedAudio.set(source, player);
+      } else {
+        const uncachedPlayer = player;
+        uncachedPlayer.addListener('playbackStatusUpdate', (playbackStatus) => {
+          if (playbackStatus.didJustFinish && !playbackStatus.loop) uncachedPlayer.remove();
+        });
+      }
     }
-    await audioObject.sound.setStatusAsync(status);
-    if (setSoundPlayback) {
-      setSoundPlayback(audioObject);
-      audioObject.sound.setOnPlaybackStatusUpdate(status => {
-        const newAudioObject = { sound: audioObject.sound, status };
-        setSoundPlayback(newAudioObject);
-        if (cache) cachedAudio.set(source, newAudioObject);
-      });
-    }
-    audioObject.sound.setOnPlaybackStatusUpdate(status => {
-      const newAudioObject = { sound: audioObject.sound, status };
-      if (setSoundPlayback) setSoundPlayback(newAudioObject);
-      if (cache) cachedAudio.set(source, newAudioObject);
-      // @ts-ignore
-      else if (status.didJustFinish && !status.isLooping) audioObject.sound.unloadAsync();
-    });
-    // audioObject.sound.setOnPlaybackStatusUpdate(async (status) => {
-    //   setSoundPlayback?({ sound: audioObject.sound, status });
-    //   // @ts-ignore
-    //   if (status.didJustFinish && !status.isLooping) {
-    //     try {
-    //       await audioObject.sound.unloadAsync();
-    //     } catch (err) {
-    //       console.warn(err + ' playAudio.tsx possible error #2');
-    //     }
-    //   }
-    // });
+    player.loop = status.isLooping;
+    player.muted = status.isMuted;
+    if (status.volume !== undefined) player.volume = status.volume;
+    if (status.shouldPlay) player.play();
+    if (setSoundPlayback) setSoundPlayback(player);
   } catch (err) {
     console.warn(err);
   }

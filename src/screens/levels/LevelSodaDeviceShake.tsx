@@ -77,7 +77,7 @@ const LevelSodaShake: Level = (props) => {
       </Animated.View>
       {engineStarted ? (
         <GameEngine
-          ref={ref => gameEngine.current = ref}
+          ref={ref => { gameEngine.current = ref; }}
           style={{
             position: 'absolute',
             top: 0,

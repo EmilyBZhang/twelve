@@ -6,7 +6,8 @@ import { StackActions } from '@react-navigation/native';
 import useSettings from 'hooks/useSettings';
 import { Screen, Level as LevelType } from 'utils/interfaces';
 import useSelectedIndices from 'hooks/useSelectedIndices';
-import playAudio, { CreateAudioResult } from 'utils/playAudio';
+import { AudioPlayer } from 'expo-audio';
+import playAudio from 'utils/playAudio';
 import { playCoinSound } from 'utils/playPitch';
 
 import LevelNav from 'components/LevelNav';
@@ -23,7 +24,7 @@ const Level: Screen = (props) => {
     useSelectedIndices();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [hintOpen, setHintOpen] = useState(false);
-  const musicPlayback = useRef<CreateAudioResult | null>(null);
+  const musicPlayback = useRef<AudioPlayer | null>(null);
 
   let levelNum =
     (props.route.params as { level: number } | undefined)?.level ?? 0;
@@ -42,11 +43,7 @@ const Level: Screen = (props) => {
         { volume: 0.5 }
       );
       return () => {
-        if (musicPlayback.current?.sound) {
-          musicPlayback.current.sound
-            .stopAsync()
-            .catch((err: any) => console.warn(err));
-        }
+        musicPlayback.current?.pause();
       };
     }
   }, [twelve]);

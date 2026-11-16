@@ -112,7 +112,7 @@ const LevelSodaShake: Level = (props) => {
       </PanGestureHandler>
       {engineStarted && (
         <GameEngine
-          ref={ref => gameEngine.current = ref}
+          ref={ref => { gameEngine.current = ref; }}
           style={{
             position: 'absolute',
             top: 0,
