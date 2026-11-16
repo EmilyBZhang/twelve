@@ -9,7 +9,7 @@ import LevelContainer from 'components/LevelContainer';
 import Coin from 'components/Coin';
 import LevelText from 'components/LevelText';
 import LevelCounter from 'components/LevelCounter';
-import Compass, { compassSize, compassRadius } from './components/LevelCompass/Compass';
+import Compass, { compassSize, compassRadius } from '../components/LevelCompass/Compass';
 
 const coinSize = compassSize * 13 / 144;
 const coinPositions = Array.from(Array(12), (_, index) => {

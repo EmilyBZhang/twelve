@@ -8,7 +8,7 @@ import { getLevelDimensions } from 'utils/getDimensions';
 import styles from 'res/styles';
 import LevelContainer from 'components/LevelContainer';
 import LevelCounter from 'components/LevelCounter';
-import Physics from './systems/Physics';
+import Physics from '../systems/Physics';
 import {
   Balloon,
   Ground,
@@ -16,8 +16,8 @@ import {
   // Cloud,
   createBalloonBody,
   createWalls,
-} from './components/balloon';
-import system from './components/LevelBalloon2/system';
+} from '../components/balloon';
+import system from '../components/LevelBalloon2/system';
 
 const { width: levelWidth, height: levelHeight } = getLevelDimensions();
 
